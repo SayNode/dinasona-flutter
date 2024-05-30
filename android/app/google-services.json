@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "265595937590",
+    "project_id": "dinasona",
+    "storage_bucket": "dinasona.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265595937590:android:44172642403745d38e0997",
+        "android_client_info": {
+          "package_name": "org.dinasona.dinasona"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrxyDldzZc9GEsjvb-Y47-EtVElKxeNlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

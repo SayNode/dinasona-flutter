@@ -1,0 +1,40 @@
+name: dinasona
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  connectivity_plus: ^6.0.3
+  firebase_core: ^2.32.0
+  firebase_crashlytics: ^3.5.7
+  flutter:
+    sdk: flutter
+  flutter_native_splash: ^2.4.0
+  flutter_network_connectivity: ^0.0.6
+  flutter_secure_storage: ^9.2.2
+  flutter_svg: ^2.0.10+1
+  get: ^4.6.6
+  google_fonts: ^6.2.1
+  google_sign_in: ^6.2.1
+  http: ^1.2.1
+  is_first_run: ^1.0.0
+  package_info_plus: ^8.0.0
+  shared_preferences: ^2.2.3
+  sign_in_with_apple: ^6.1.0
+  thor_devkit_dart: ^1.1.0
+  url_launcher: ^6.2.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  assets:
+    - asset/
+    - asset/locale/
+
+  uses-material-design: true
