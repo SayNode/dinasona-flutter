@@ -36,5 +36,6 @@ flutter:
   assets:
     - asset/
     - asset/locale/
+    - asset/images/
 
   uses-material-design: true
