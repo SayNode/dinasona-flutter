@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/color.dart';
 import '../theme/typography.dart';
+import '../util/util.dart';
 
 class DinasonaButton extends StatelessWidget {
   const DinasonaButton({
@@ -43,7 +44,7 @@ class DinasonaButton extends StatelessWidget {
           backgroundColor: locked ? LightColor.graphite : color,
           disabledBackgroundColor: locked ? LightColor.graphite : color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(getRelativeHeight(20)),
           ),
         ),
         onPressed: loading || locked
@@ -63,7 +64,7 @@ class DinasonaButton extends StatelessWidget {
                   text,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: CustomTypography.fromColor(textColor).k14Reg,
+                  style: CustomTypography.fromColor(textColor).k16Reg,
                   maxLines: 1,
                 ),
               )
@@ -72,7 +73,7 @@ class DinasonaButton extends StatelessWidget {
                 text,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: CustomTypography.fromColor(textColor).k14Reg,
+                style: CustomTypography.fromColor(textColor).k16Reg,
                 maxLines: 1,
               ),
             if (showForwardIcon) ...<Widget>[

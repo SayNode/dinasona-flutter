@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
+import '../../../widgets/google_apple_sign_in.dart';
 import '../controller/sign_up_controller.dart';
 
 class SignupPage extends GetView<SignupController> {
@@ -28,7 +30,7 @@ class SignupPage extends GetView<SignupController> {
             Container(
               width: double.infinity,
               padding: EdgeInsets.only(
-                top: getRelativeWidth(40),
+                top: getRelativeWidth(50),
                 bottom: getRelativeWidth(30),
               ),
               decoration: BoxDecoration(
@@ -142,14 +144,42 @@ class SignupPage extends GetView<SignupController> {
                       const Expanded(child: Divider()),
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: getRelativeWidth(10)),
-                        child: const Text('OR'),
+                          horizontal: getRelativeWidth(15),
+                        ),
+                        child: const Text('or'),
                       ),
                       const Expanded(child: Divider()),
                     ],
                   ),
                   SizedBox(height: getRelativeHeight(40)),
-                  const Text('Google & Apple sign in'),
+                  const GoogleAppleSignIn(),
+                  Center(
+                    child: Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: getRelativeHeight(30)),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: 'Already have an account? '.tr,
+                          style:
+                              CustomTypography.fromColor(dinasonaTheme.shadowed)
+                                  .k16Reg,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Sign in'.tr,
+                              style: CustomTypography.fromColor(
+                                dinasonaTheme.amberglow,
+                              ).k16Reg,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  null;
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
