@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
-class LoginController extends GetxController {}
+class LoginController extends GetxController {
+  var test = ''.obs;
+}
 
 /* import 'dart:async';
 import 'dart:convert';
