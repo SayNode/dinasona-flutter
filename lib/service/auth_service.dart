@@ -178,9 +178,7 @@ class AuthService extends GetxService {
   Future<AuthResponse> registration(
     String email,
     String password,
-    String username, {
-    required bool biometrics,
-  }) async {
+  ) async {
     try {
       final http.Response response = await apiService.post(
         '/auth/registration/',
@@ -188,9 +186,7 @@ class AuthService extends GetxService {
         contentType: 'application/json',
         body: <String, dynamic>{
           'email': email,
-          'password1': password,
-          'password2': password,
-          'username': username,
+          'password': password,
         },
       );
 
@@ -213,7 +209,6 @@ class AuthService extends GetxService {
 
           await storageService.setString('email', email);
           await storageService.setString('password', password);
-          await storageService.setBool('biometrics', value: biometrics);
           await storageService.setInt('provider', ProviderTypes.email.index);
 
           return AuthResponse(

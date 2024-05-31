@@ -110,7 +110,6 @@ class SignupPage extends GetView<SignupController> {
                     () => Form(
                       child: Column(
                         children: <Widget>[
-                          Text('${controller.test}'),
                           DinasonaTextField(
                             hintText: 'Enter email'.tr,
                             hasVerticalMargin: true,
@@ -118,36 +117,53 @@ class SignupPage extends GetView<SignupController> {
                             controller: controller.email,
                             keyboardType: TextInputType.emailAddress,
                           ),
-                          DinasonaTextField(
-                            hintText: 'Enter password'.tr,
-                            hasVerticalMargin: true,
-                            prefix: const Icon(Icons.lock, size: 25),
-                            suffixIcon: GestureDetector(
-                              onTap: () => controller.setShowPassword(),
-                              child: Obx(
-                                () => Icon(
-                                  controller.showPassword.value
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  size: 25,
+                          Obx(
+                            () => DinasonaTextField(
+                              hintText: 'Enter password'.tr,
+                              hasVerticalMargin: true,
+                              prefix: const Icon(Icons.lock, size: 25),
+                              suffixIcon: GestureDetector(
+                                onTap: () => controller.setShowPassword(),
+                                child: Obx(
+                                  () => Icon(
+                                    controller.showPassword.value
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    size: 25,
+                                  ),
                                 ),
                               ),
+                              obscureText: !controller.showPassword.value,
+                              onChanged: (String value) {
+                                final int passStrengthIndex =
+                                    determinePasswordStrength(
+                                  controller.password.text,
+                                );
+                                controller.passwordStrength
+                                    .update(passStrengthIndex);
+                              },
+                              controller: controller.password,
                             ),
-                            obscureText: !controller.showPassword.value,
-                            onChanged: (String value) {
-                              final int passStrengthIndex =
-                                  determinePasswordStrength(
-                                controller.password.text,
-                              );
-                              controller.passwordStrength
-                                  .update(passStrengthIndex);
-                            },
-                            controller: controller.password,
+                          ),
+                          Obx(
+                            () => controller.error.value.isNotEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(
+                                        top: screenSize.height * 0.005),
+                                    child: Text(
+                                      controller.error.value,
+                                      style: CustomTypography.fromColor(
+                                        dinasonaTheme.inferno,
+                                      ).k14Reg,
+                                    ),
+                                  )
+                                : const SizedBox(),
                           ),
                           SizedBox(height: getRelativeHeight(20)),
-                          const DinasonaButton(
+                          DinasonaButton(
                             text: 'Create an account',
-                            onPressed: null,
+                            loading: controller.loading.value,
+                            onPressed: () => controller.signUpSubmit(),
                           ),
                         ],
                       ),
