@@ -115,9 +115,8 @@ class SignupPage extends GetView<SignupController> {
                             hintText: 'Enter email'.tr,
                             hasVerticalMargin: true,
                             prefix: const Icon(Icons.email, size: 25),
-                            controller: null,
+                            controller: controller.email,
                             keyboardType: TextInputType.emailAddress,
-                            validator: null,
                           ),
                           DinasonaTextField(
                             hintText: 'Enter password'.tr,
@@ -143,7 +142,7 @@ class SignupPage extends GetView<SignupController> {
                               controller.passwordStrength
                                   .update(passStrengthIndex);
                             },
-                            controller: null,
+                            controller: controller.password,
                           ),
                           SizedBox(height: getRelativeHeight(20)),
                           const DinasonaButton(

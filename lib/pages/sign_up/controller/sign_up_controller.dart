@@ -8,6 +8,7 @@ class SignupController extends GetxController {
   RxBool showPassword = false.obs;
   final Password passwordStrength = Password();
   final TextEditingController password = TextEditingController();
+  final TextEditingController email = TextEditingController();
 
   void setShowPassword() {
     showPassword.value = !showPassword.value;
