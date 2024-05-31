@@ -1,7 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../util/password.dart';
 
 class SignupController extends GetxController {
   var test = 'tets'.obs;
+  RxBool showPassword = false.obs;
+  final Password passwordStrength = Password();
+  final TextEditingController password = TextEditingController();
+
+  void setShowPassword() {
+    showPassword.value = !showPassword.value;
+  }
 }
 /* import 'dart:async';
 

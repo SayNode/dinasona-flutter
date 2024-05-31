@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
+import '../../../util/password.dart';
 import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
@@ -115,19 +116,34 @@ class SignupPage extends GetView<SignupController> {
                             hasVerticalMargin: true,
                             prefix: const Icon(Icons.email, size: 25),
                             controller: null,
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.emailAddress,
                             validator: null,
                           ),
                           DinasonaTextField(
                             hintText: 'Enter password'.tr,
                             hasVerticalMargin: true,
                             prefix: const Icon(Icons.lock, size: 25),
-                            suffixIcon:
-                                const Icon(Icons.visibility_off, size: 25),
-                            obscureText: true,
+                            suffixIcon: GestureDetector(
+                              onTap: () => controller.setShowPassword(),
+                              child: Obx(
+                                () => Icon(
+                                  controller.showPassword.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  size: 25,
+                                ),
+                              ),
+                            ),
+                            obscureText: !controller.showPassword.value,
+                            onChanged: (String value) {
+                              final int passStrengthIndex =
+                                  determinePasswordStrength(
+                                controller.password.text,
+                              );
+                              controller.passwordStrength
+                                  .update(passStrengthIndex);
+                            },
                             controller: null,
-                            keyboardType: TextInputType.name,
-                            validator: null,
                           ),
                           SizedBox(height: getRelativeHeight(20)),
                           const DinasonaButton(
