@@ -4,14 +4,15 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
+import 'pages/sign_up/donor/sign_up_page.dart';
 import 'service/theme_service.dart';
 import 'dart:async';
-import 'page/lost_connection/lost_connection_page.dart';
+import 'pages/lost_connection/lost_connection_page.dart';
 import 'firebase_options.dart';
 import 'service/network_service.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'page/error/error_page.dart';
+import 'pages/error/error_page.dart';
 import 'package:flutter/services.dart';
 import 'util/util.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -25,7 +26,7 @@ import 'service/main_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'page/splash_page.dart';
+import 'pages/splash_page.dart';
 
 bool isFirstRun = false;
 Future<void> handleError(
@@ -169,7 +170,7 @@ class MyApp extends StatelessWidget {
           getPages: <GetPage<void>>[
             GetPage<void>(
               name: '/',
-              page: () => const SplashPage(),
+              page: () => const SignupPage(),
             ),
           ],
           theme: Get.put<ThemeService>(ThemeService()).themeData,
