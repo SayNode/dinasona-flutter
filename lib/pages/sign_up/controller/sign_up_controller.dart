@@ -20,6 +20,7 @@ class SignupController extends GetxController {
   RxString passwordError = ''.obs;
   RxString error = ''.obs;
   RxBool loadingGoogle = false.obs;
+  RxBool loadingApple = false.obs;
   final Rx<GlobalKey<FormState>> registrationFormKey =
       GlobalKey<FormState>().obs;
   final AuthService authService = Get.put(AuthService());

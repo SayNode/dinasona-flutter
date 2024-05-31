@@ -1,3 +1,7 @@
+import 'package:get/get.dart';
+
+class LoginController extends GetxController {}
+
 /* import 'dart:async';
 import 'dart:convert';
 
