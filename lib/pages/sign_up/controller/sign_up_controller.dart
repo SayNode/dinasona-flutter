@@ -37,6 +37,7 @@ class SignupController extends GetxController {
         );
         if (registrationResult.success) {
           // TODO
+          print('Registration successful ${registrationResult.success}');
         } else {
           registrationFormKey.value.currentState!.validate();
           if (registrationResult.info.isNotEmpty) {

@@ -186,7 +186,8 @@ class AuthService extends GetxService {
         contentType: 'application/json',
         body: <String, dynamic>{
           'email': email,
-          'password': password,
+          'password1': password,
+          'password2': password,
         },
       );
 
@@ -195,10 +196,10 @@ class AuthService extends GetxService {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
           userStateService.user.value =
-              User.fromJson(userMap['user'] as Map<String, dynamic>);
+              User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
 
           /// save the token
-          authenticationToken = userMap['access_token'] as String;
+          authenticationToken = userMap['result']['access_token'] as String;
           debugPrint('AuthService - authenticationToken: $authenticationToken');
           debugPrint(
             'AuthService - user registered in: ${userStateService.user.value.email}',

@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "dinasona",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "API_URL=dev.devdinasona.ch",
+            ]
+        },
+    ]
+}

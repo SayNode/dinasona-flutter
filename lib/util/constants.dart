@@ -6,7 +6,7 @@
 // https://saynode.ch
 
 class DinasonaConstants {
-  static const String apiDomain = String.fromEnvironment('DATABASE_URL');
+  static const String apiDomain = String.fromEnvironment('API_URL');
   static const String apiKey = String.fromEnvironment('DATABASE_API_KEY');
-  static bool get devMode => apiDomain.contains('dev-');
+  static bool get devMode => apiDomain.contains('dev');
 }
