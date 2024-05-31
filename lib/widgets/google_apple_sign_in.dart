@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../pages/sign_up/controller/sign_up_controller.dart';
 import '../service/theme_service.dart';
 import '../theme/color.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 
-class GoogleAppleSignIn extends StatelessWidget {
-  const GoogleAppleSignIn({super.key});
+class GoogleAppleSignIn extends GetView<SignupController> {
+  const GoogleAppleSignIn({
+    super.key,
+    this.googleLoading = false,
+    this.appleLoading = false,
+  });
+
+  final bool googleLoading;
+  final bool appleLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +25,9 @@ class GoogleAppleSignIn extends StatelessWidget {
     return Column(
       children: <Widget>[
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            controller.googleSignInPressed();
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: LightColor.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
@@ -36,6 +46,16 @@ class GoogleAppleSignIn extends StatelessWidget {
                 style:
                     CustomTypography.fromColor(dinasonaTheme.shadowed).k16Reg,
               ),
+              if (googleLoading)
+                Container(
+                  margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                  width: 20,
+                  height: 20,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: LightColor.graphite,
+                  ),
+                ),
             ],
           ),
         ),
@@ -60,6 +80,16 @@ class GoogleAppleSignIn extends StatelessWidget {
                 style:
                     CustomTypography.fromColor(dinasonaTheme.shadowed).k16Reg,
               ),
+              if (appleLoading)
+                Container(
+                  margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                  width: 20,
+                  height: 20,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: LightColor.graphite,
+                  ),
+                ),
             ],
           ),
         ),
