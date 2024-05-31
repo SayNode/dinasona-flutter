@@ -6,7 +6,7 @@
 // https://saynode.ch
 
 import 'package:flutter/material.dart';
-import '../widget/custom_scaffold.dart';
+import '../widgets/custom_scaffold.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

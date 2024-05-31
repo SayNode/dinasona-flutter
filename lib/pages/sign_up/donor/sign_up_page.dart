@@ -7,7 +7,9 @@ import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
-import '../../../widget/custom_scaffold.dart';
+import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/dinasona_button.dart';
+import '../../../widgets/dinasona_textfield.dart';
 import '../controller/sign_up_controller.dart';
 
 class SignupPage extends GetView<SignupController> {
@@ -16,98 +18,144 @@ class SignupPage extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
+    final Size screenSize = MediaQuery.of(context).size;
+    Get.put(SignupController());
     return CustomScaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.only(
-              top: getRelativeWidth(40),
-              bottom: getRelativeWidth(30),
-            ),
-            decoration: BoxDecoration(
-              color: dinasonaTheme.amberglow,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                top: getRelativeWidth(40),
+                bottom: getRelativeWidth(30),
+              ),
+              decoration: BoxDecoration(
+                color: dinasonaTheme.silvershine,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: getRelativeWidth(17.5),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Get.back<void>();
+                        },
+                        borderRadius: BorderRadius.circular(50),
+                        child: Ink(
+                          width: getRelativeWidth(50),
+                          height: getRelativeWidth(50),
+                          child: const Icon(
+                            Icons.arrow_back_sharp,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: getRelativeHeight(30)),
+                      child: Image.asset(
+                        'assets/images/logos/dinasona_logo.png',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: getRelativeWidth(85),
+                  ),
+                ],
               ),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: getRelativeWidth(50),
-                  height: getRelativeWidth(50),
-                  margin:
-                      EdgeInsets.symmetric(horizontal: getRelativeWidth(17.5)),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(54, 0, 0, 0),
-                    borderRadius: BorderRadius.circular(100),
+            Container(
+              padding:
+                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: getRelativeHeight(30),
                   ),
-                  child: const Icon(
-                    Icons.arrow_back_sharp,
-                    color: Colors.white,
-                    size: 20,
+                  Text(
+                    'Create an account'.tr,
+                    style: CustomTypography.fromColor(dinasonaTheme.shadowed)
+                        .k36Bold,
                   ),
-                ),
-                Expanded(
-                  child: Image.asset(
-                    'asset/images/dinasona_logo.png',
+                  Text(
+                    "Your account is the key to sharing kindness. Let's begin your impact journey!"
+                        .tr,
+                    style: CustomTypography.fromColor(dinasonaTheme.shadowed)
+                        .k16Reg,
                   ),
-                ),
-                SizedBox(
-                  width: getRelativeWidth(85),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(20)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: getRelativeHeight(30),
-                ),
-                Text(
-                  'Create an account'.tr,
-                  style: CustomTypography.fromColor(dinasonaTheme.shadowed)
-                      .k36Bold,
-                ),
-                Text(
-                  "Your account is the key to sharing kindness. Let's begin your impact journey!"
-                      .tr,
-                  style:
-                      CustomTypography.fromColor(dinasonaTheme.shadowed).k16Reg,
-                ),
-                SizedBox(
-                  height: getRelativeHeight(30),
-                ),
-                Row(
-                  children: <Widget>[
-                    const Expanded(child: Divider()),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: getRelativeWidth(10)),
-                      child: const Text('OR'),
+                  SizedBox(
+                    height: getRelativeHeight(30),
+                  ),
+                  Obx(
+                    () => Form(
+                      child: Column(
+                        children: <Widget>[
+                          Text('${controller.test}'),
+                          DinasonaTextField(
+                            hintText: 'Enter email'.tr,
+                            hasVerticalMargin: true,
+                            prefix: const Icon(Icons.email, size: 25),
+                            controller: null,
+                            keyboardType: TextInputType.name,
+                            validator: null,
+                          ),
+                          DinasonaTextField(
+                            hintText: 'Enter password'.tr,
+                            hasVerticalMargin: true,
+                            prefix: const Icon(Icons.lock, size: 25),
+                            suffixIcon:
+                                const Icon(Icons.visibility_off, size: 25),
+                            obscureText: true,
+                            controller: null,
+                            keyboardType: TextInputType.name,
+                            validator: null,
+                          ),
+                          SizedBox(height: getRelativeHeight(20)),
+                          const DinasonaButton(
+                            text: 'Create an account',
+                            onPressed: null,
+                          ),
+                        ],
+                      ),
                     ),
-                    const Expanded(child: Divider()),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(height: getRelativeHeight(40)),
+                  Row(
+                    children: <Widget>[
+                      const Expanded(child: Divider()),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getRelativeWidth(10)),
+                        child: const Text('OR'),
+                      ),
+                      const Expanded(child: Divider()),
+                    ],
+                  ),
+                  SizedBox(height: getRelativeHeight(40)),
+                  const Text('Google & Apple sign in'),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
-/* Image.asset(
-              'asset/images/dinasona_logo.png',
-            ), */
-/* Text(
-        'Sign Up Page',
-        style: CustomTypography.fromColor(dinasonaTheme.amberglow).k24Bold,
-      ), */
