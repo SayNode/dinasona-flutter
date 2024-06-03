@@ -484,13 +484,13 @@ class AuthService extends GetxService {
             AppleIDAuthorizationScopes.fullName,
           ],
           webAuthenticationOptions: WebAuthenticationOptions(
-            clientId: '', // TODO
+            clientId: '', // TODO add client ID
             redirectUri:
                 // For web your redirect URI needs to be the host of the "current page",
                 // while for Android you will be using the API server that redirects back into your app via a deep link
                 kIsWeb
-                    ? Uri.parse('') // TODO
-                    : Uri.parse(''), // TODO
+                    ? Uri.parse('') // TODO add client ID
+                    : Uri.parse(''), // TODO add client ID
           ),
         );
         authorizationCode = credential.authorizationCode;
