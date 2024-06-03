@@ -17,7 +17,9 @@ import '../../login/donor/login_page.dart';
 import '../controller/sign_up_controller.dart';
 
 class SignupPage extends GetView<SignupController> {
-  const SignupPage({super.key});
+  const SignupPage({this.isDonor = true, super.key});
+
+  final bool isDonor;
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +101,11 @@ class SignupPage extends GetView<SignupController> {
                         .k36Bold,
                   ),
                   Text(
-                    "Your account is the key to sharing kindness. Let's begin your impact journey!"
-                        .tr,
+                    isDonor
+                        ? "Your account is the key to sharing kindness. Let's begin your impact journey!"
+                            .tr
+                        : "Create an account to start receiving help from generous individuals. We're here to support you on your journey."
+                            .tr,
                     style: CustomTypography.fromColor(dinasonaTheme.shadowed)
                         .k16Reg,
                   ),
@@ -166,6 +171,9 @@ class SignupPage extends GetView<SignupController> {
                             text: 'Create an account',
                             loading: controller.loading.value,
                             onPressed: () => controller.signUpSubmit(),
+                            color: dinasonaTheme.inferno,
+                            locked: controller.email.text.isEmpty ||
+                                controller.password.text.isEmpty,
                           ),
                         ],
                       ),

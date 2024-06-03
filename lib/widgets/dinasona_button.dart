@@ -10,13 +10,13 @@ class DinasonaButton extends StatelessWidget {
     required this.onPressed,
     super.key,
     this.color = LightColor.ferngreen,
-    this.textColor = LightColor.snowfall,
     this.expand = true,
     this.showForwardIcon = false,
     this.trailingWidget,
     this.fontSize,
     this.loading = false,
     this.locked = false,
+    this.textColor = LightColor.snowfall,
     this.padding = const EdgeInsets.all(20),
   });
 
@@ -41,8 +41,8 @@ class DinasonaButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           padding: padding,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          backgroundColor: locked ? LightColor.graphite : color,
-          disabledBackgroundColor: locked ? LightColor.graphite : color,
+          backgroundColor: locked ? LightColor.silvershine : color,
+          disabledBackgroundColor: locked ? LightColor.silvershine : color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(getRelativeHeight(20)),
           ),
@@ -64,7 +64,9 @@ class DinasonaButton extends StatelessWidget {
                   text,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: CustomTypography.fromColor(textColor).k16Reg,
+                  style: CustomTypography.fromColor(
+                    locked ? LightColor.graphite : textColor,
+                  ).k16SemiBold,
                   maxLines: 1,
                 ),
               )
@@ -73,18 +75,20 @@ class DinasonaButton extends StatelessWidget {
                 text,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: CustomTypography.fromColor(textColor).k16Reg,
+                style: CustomTypography.fromColor(
+                  locked ? LightColor.graphite : textColor,
+                ).k16SemiBold,
                 maxLines: 1,
               ),
             if (showForwardIcon) ...<Widget>[
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: textColor,
+                color: locked ? LightColor.graphite : textColor,
                 size: fontSize ?? 14,
               ),
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: textColor,
+                color: locked ? LightColor.graphite : textColor,
                 size: fontSize ?? 14,
               ),
             ],
