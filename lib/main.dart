@@ -4,6 +4,7 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
+import 'page/who_you_are.dart';
 import 'service/theme_service.dart';
 import 'dart:async';
 import 'page/lost_connection/lost_connection_page.dart';
@@ -24,8 +25,6 @@ import 'service/main_bindings.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'page/splash_page.dart';
 
 bool isFirstRun = false;
 Future<void> handleError(
@@ -169,7 +168,7 @@ class MyApp extends StatelessWidget {
           getPages: <GetPage<void>>[
             GetPage<void>(
               name: '/',
-              page: () => const SplashPage(),
+              page: () => const ChosePathPage(),
             ),
           ],
           theme: Get.put<ThemeService>(ThemeService()).themeData,

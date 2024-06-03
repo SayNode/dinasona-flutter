@@ -45,7 +45,6 @@ class ChosePathPage extends StatelessWidget {
                               CustomTypography.fromColor(diasonaTheme.moonstone)
                                   .k36Bold,
                         ),
-                        SizedBox(height: getRelativeHeight(10)),
                         Text(
                           'Support those in need by contributing money to help improve their lives.',
                           style:
@@ -85,7 +84,6 @@ class ChosePathPage extends StatelessWidget {
                               CustomTypography.fromColor(diasonaTheme.moonstone)
                                   .k36Bold,
                         ),
-                        SizedBox(height: getRelativeHeight(10)),
                         Text(
                           'Receive financial assistance and support to overcome your challenges..',
                           style:
