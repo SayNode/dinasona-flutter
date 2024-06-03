@@ -4,6 +4,7 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
+
 import 'service/theme_service.dart';
 import 'dart:async';
 import 'page/lost_connection/lost_connection_page.dart';

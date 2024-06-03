@@ -5,13 +5,28 @@
 //
 // https://saynode.ch
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../widget/custom_scaffold.dart';
+import 'who_you_are.dart';
 
 class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+  const SplashPage({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(body: Container());
+    Timer(
+      const Duration(seconds: 2),
+      () => Get.off<void>(() => const ChosePathPage()),
+    );
+
+    return CustomScaffold(
+      body: Center(
+        child: Image.asset('asset/images/logo.png'),
+      ),
+    );
   }
 }
