@@ -1,14 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../service/auth_service.dart';
+
 class LoginController extends GetxController {
+  final AuthService authService = Get.find<AuthService>();
   RxBool showPassword = false.obs;
   final TextEditingController password = TextEditingController();
   final TextEditingController email = TextEditingController();
   RxString error = ''.obs;
   RxBool loading = false.obs;
 
-  Future<void> loginSubmit() async {}
+  void setShowPassword() {
+    showPassword.value = !showPassword.value;
+  }
+
+  Future<void> loginSubmit() async {
+    loading.value = true;
+    error.value = '';
+    if (email.text.isEmail) {
+      if (password.text.isNotEmpty) {
+        final AuthResponse loginResult =
+            await authService.login(email.text, password.text);
+        if (loginResult.success) {
+          // TODO
+          print('Login successful ${loginResult.success}');
+        }
+      } else {
+        error.value = 'Password is required';
+      }
+    } else {
+      error.value = 'Invalid email';
+    }
+
+    loading.value = false;
+  }
 }
 
 /* import 'dart:async';

@@ -122,7 +122,7 @@ class LoginPage extends GetView<LoginController> {
                               hasVerticalMargin: true,
                               prefix: const Icon(Icons.lock, size: 25),
                               suffixIcon: GestureDetector(
-                                onTap: () => null,
+                                onTap: () => controller.setShowPassword(),
                                 child: Obx(
                                   () => Icon(
                                     controller.showPassword.value
@@ -133,14 +133,6 @@ class LoginPage extends GetView<LoginController> {
                                 ),
                               ),
                               obscureText: !controller.showPassword.value,
-                              onChanged: (String value) {
-                                final int passStrengthIndex =
-                                    determinePasswordStrength(
-                                  '',
-                                );
-                                /* controller.passwordStrength
-                                    .update(passStrengthIndex); */
-                              },
                               controller: controller.password,
                             ),
                           ),
@@ -151,7 +143,7 @@ class LoginPage extends GetView<LoginController> {
                                       top: screenSize.height * 0.005,
                                     ),
                                     child: Text(
-                                      '', //controller.error.value,
+                                      controller.error.value,
                                       style: CustomTypography.fromColor(
                                         dinasonaTheme.inferno,
                                       ).k14Reg,

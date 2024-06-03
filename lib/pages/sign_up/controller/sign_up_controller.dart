@@ -14,9 +14,6 @@ class SignupController extends GetxController {
   final TextEditingController password = TextEditingController();
   final TextEditingController email = TextEditingController();
   RxBool loading = false.obs;
-  RxBool invalidPassword = false.obs;
-  RxString emailError = ''.obs;
-  RxString passwordError = ''.obs;
   RxString error = ''.obs;
   RxBool loadingGoogle = false.obs;
   RxBool loadingApple = false.obs;
@@ -31,7 +28,7 @@ class SignupController extends GetxController {
 
   Future<void> signUpSubmit() async {
     loading.value = true;
-    invalidPassword.value = false;
+    error.value = '';
     if (email.text.isEmail) {
       if (determinePasswordStrength(password.value.text) >= 3) {
         final AuthResponse registrationResult = await authService.registration(
@@ -47,28 +44,26 @@ class SignupController extends GetxController {
             if ((json.decode(registrationResult.info.toString())
                     as Map<String, dynamic>)
                 .containsKey('email')) {
-              emailError.value =
+              error.value =
                   jsonDecode(registrationResult.info.toString())['email'][0]
                       as String;
-            } else {
-              emailError.value = '';
             }
             if ((json.decode(registrationResult.info.toString())
                     as Map<String, dynamic>)
                 .containsKey('password')) {
-              passwordError.value =
+              error.value =
                   jsonDecode(registrationResult.info.toString())['password'][0]
                       as String;
-            } else {
-              passwordError.value = '';
             }
           }
         }
       } else {
-        invalidPassword.value = true;
+        error.value =
+            'Password is too weak. Your password should contain: a minimum of 8 characters\nat least 1 lower case character\nat least 1 upper case character\nat least 1 special character.'
+                .tr;
       }
     } else {
-      emailError.value = 'Invalid email address'.tr;
+      error.value = 'Invalid email address'.tr;
     }
     loading.value = false;
   }

@@ -150,7 +150,8 @@ class SignupPage extends GetView<SignupController> {
                             () => controller.error.value.isNotEmpty
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                        top: screenSize.height * 0.005),
+                                      top: screenSize.height * 0.005,
+                                    ),
                                     child: Text(
                                       controller.error.value,
                                       style: CustomTypography.fromColor(
