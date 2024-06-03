@@ -13,7 +13,7 @@ import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
 import '../../../widgets/google_apple_sign_in.dart';
-import '../../login/donor/login_page.dart';
+import '../../login/donor_and_beneficiary/login_page.dart';
 import '../controller/sign_up_controller.dart';
 
 class SignupPage extends GetView<SignupController> {
