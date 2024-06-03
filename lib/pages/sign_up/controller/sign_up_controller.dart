@@ -80,4 +80,23 @@ class SignupController extends GetxController {
     loadingGoogle.value = false;
     return error.value;
   }
+
+  Future<String> appleSignInPressed({
+    String? authorizationCode,
+    String? identityToken,
+  }) async {
+    loadingApple.value = true;
+    error.value = '';
+    final AuthResponse loginResult = await authService.appleSignIn(
+      authorizationCode: authorizationCode,
+      identityToken: identityToken,
+    );
+    if (loginResult.success) {
+      print('Apple registration successful ${loginResult.success}');
+    } else {
+      error.value = loginResult.info.toString();
+    }
+    loadingApple.value = false;
+    return error.value;
+  }
 }

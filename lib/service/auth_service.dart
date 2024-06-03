@@ -43,13 +43,15 @@ class AuthService extends GetxService {
   String verificationToken = '';
   String verificationUid = '';
 
-  void init() {
+  @override
+  void onInit() {
     _googleSignIn = GoogleSignIn(
       scopes: <String>[
         'email',
       ],
     );
     debugPrint('AuthService - initializing...');
+    super.onInit();
   }
 
   String unexpectedError(http.Response response) {

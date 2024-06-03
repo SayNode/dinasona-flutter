@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../pages/login/controller/login_controller.dart';
 import '../pages/sign_up/controller/sign_up_controller.dart';
 import '../service/theme_service.dart';
 import '../theme/color.dart';
@@ -20,9 +21,7 @@ class GoogleAppleSignIn extends GetView<SignupController> {
     return Column(
       children: <Widget>[
         ElevatedButton(
-          onPressed: () {
-            controller.googleSignInPressed();
-          },
+          onPressed: controller.googleSignInPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: LightColor.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
@@ -56,7 +55,7 @@ class GoogleAppleSignIn extends GetView<SignupController> {
         ),
         SizedBox(height: getRelativeHeight(10)),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: controller.appleSignInPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: LightColor.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
