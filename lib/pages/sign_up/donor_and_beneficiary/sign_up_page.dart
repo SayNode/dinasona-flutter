@@ -15,14 +15,26 @@ import '../../../widgets/dinasona_textfield.dart';
 import '../../../widgets/google_apple_sign_in.dart';
 import '../../login/donor_and_beneficiary/login_page.dart';
 import '../controller/sign_up_controller.dart';
+import 'choose_language_and_currency_page.dart';
 
 class SignupPage extends GetView<SignupController> {
-  const SignupPage({this.isDonor = true, super.key});
+  const SignupPage({
+    this.isDonor = true,
+    super.key,
+    this.chosenLanguage = '',
+    this.chosenCountry = '',
+  });
 
   final bool isDonor;
+  final String chosenLanguage;
+  final String chosenCountry;
 
   @override
   Widget build(BuildContext context) {
+    if (chosenLanguage.isEmpty || chosenCountry.isEmpty) {
+      Get.offAll<void>(const ChooseLanguageAndCurrencyPage());
+    }
+
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     final Size screenSize = MediaQuery.of(context).size;
     Get.put(SignupController());
