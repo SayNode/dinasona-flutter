@@ -2,16 +2,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../service/theme_service.dart';
-import '../../theme/theme.dart';
-import '../../theme/typography.dart';
-import '../../util/password.dart';
-import '../../util/util.dart';
-import '../../widgets/custom_scaffold.dart';
-import '../../widgets/dinasona_button.dart';
-import '../../widgets/dinasona_textfield.dart';
-import '../../widgets/google_apple_sign_in.dart';
-import 'controller/login_controller.dart';
+import '../../../service/theme_service.dart';
+import '../../../theme/theme.dart';
+import '../../../theme/typography.dart';
+import '../../../util/password.dart';
+import '../../../util/util.dart';
+import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/dinasona_button.dart';
+import '../../../widgets/dinasona_textfield.dart';
+import '../../../widgets/google_apple_sign_in.dart';
+import '../../sign_up/donor/sign_up_page.dart';
+import '../controller/login_controller.dart';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({super.key});
@@ -91,12 +92,12 @@ class LoginPage extends GetView<LoginController> {
                     height: getRelativeHeight(30),
                   ),
                   Text(
-                    'Create an account'.tr,
+                    'Hello again! 👋 '.tr,
                     style: CustomTypography.fromColor(dinasonaTheme.shadowed)
                         .k36Bold,
                   ),
                   Text(
-                    "Your account is the key to sharing kindness. Let's begin your impact journey!"
+                    'Log in to resume your journey of giving. Your continued support means the world to those in need.'
                         .tr,
                     style: CustomTypography.fromColor(dinasonaTheme.shadowed)
                         .k16Reg,
@@ -112,7 +113,7 @@ class LoginPage extends GetView<LoginController> {
                             hintText: 'Enter email'.tr,
                             hasVerticalMargin: true,
                             prefix: const Icon(Icons.email, size: 25),
-                            controller: null,
+                            controller: controller.email,
                             keyboardType: TextInputType.emailAddress,
                           ),
                           Obx(
@@ -123,15 +124,15 @@ class LoginPage extends GetView<LoginController> {
                               suffixIcon: GestureDetector(
                                 onTap: () => null,
                                 child: Obx(
-                                  () => const Icon(
-                                    true
+                                  () => Icon(
+                                    controller.showPassword.value
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                     size: 25,
                                   ),
                                 ),
                               ),
-                              obscureText: false,
+                              obscureText: !controller.showPassword.value,
                               onChanged: (String value) {
                                 final int passStrengthIndex =
                                     determinePasswordStrength(
@@ -140,14 +141,15 @@ class LoginPage extends GetView<LoginController> {
                                 /* controller.passwordStrength
                                     .update(passStrengthIndex); */
                               },
-                              controller: null,
+                              controller: controller.password,
                             ),
                           ),
                           Obx(
-                            () => true //controller.error.value.isNotEmpty
+                            () => controller.error.value.isNotEmpty
                                 ? Padding(
                                     padding: EdgeInsets.only(
-                                        top: screenSize.height * 0.005),
+                                      top: screenSize.height * 0.005,
+                                    ),
                                     child: Text(
                                       '', //controller.error.value,
                                       style: CustomTypography.fromColor(
@@ -159,9 +161,10 @@ class LoginPage extends GetView<LoginController> {
                           ),
                           SizedBox(height: getRelativeHeight(20)),
                           DinasonaButton(
-                            text: 'Create an account',
-                            loading: false, //controller.loading.value,
-                            onPressed: () => null, // controller.signUpSubmit(),
+                            text: 'Sign in',
+                            loading: controller.loading.value,
+                            onPressed: () => controller.loginSubmit(),
+                            color: dinasonaTheme.amberglow,
                           ),
                         ],
                       ),
@@ -189,19 +192,19 @@ class LoginPage extends GetView<LoginController> {
                       child: RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
-                          text: 'Already have an account? '.tr,
+                          text: 'No account? '.tr,
                           style:
                               CustomTypography.fromColor(dinasonaTheme.shadowed)
                                   .k16Reg,
                           children: <TextSpan>[
                             TextSpan(
-                              text: 'Sign in'.tr,
+                              text: 'Register now'.tr,
                               style: CustomTypography.fromColor(
                                 dinasonaTheme.amberglow,
                               ).k16Reg,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Get.to<void>(const LoginPage());
+                                  Get.to<void>(const SignupPage());
                                 },
                             ),
                           ],

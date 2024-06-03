@@ -9,7 +9,6 @@ import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
 
 class SignupController extends GetxController {
-  var test = 'tets'.obs;
   RxBool showPassword = false.obs;
   final Password passwordStrength = Password();
   final TextEditingController password = TextEditingController();

@@ -1,7 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  var test = ''.obs;
+  RxBool showPassword = false.obs;
+  final TextEditingController password = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  RxString error = ''.obs;
+  RxBool loading = false.obs;
+
+  Future<void> loginSubmit() async {}
 }
 
 /* import 'dart:async';
