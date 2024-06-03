@@ -12,7 +12,20 @@
           "package_name": "org.dinasona.dinasona"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "265595937590-81eu4j17rfgbupti99ntpa5s6kotu2rn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.dinasona.dinasona",
+            "certificate_hash": "5aea051a51cd640d6e2bbcd42124e7d8429bf61a"
+          }
+        },
+        {
+          "client_id": "265595937590-j69ea0gcs1ns9g84ms09vcu409eiv9q6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDrxyDldzZc9GEsjvb-Y47-EtVElKxeNlw"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265595937590-j69ea0gcs1ns9g84ms09vcu409eiv9q6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "265595937590-tkh1g1g28ild34s536kikeoqml13573r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.dinasona.dinasona"
+              }
+            }
+          ]
         }
       }
     }
