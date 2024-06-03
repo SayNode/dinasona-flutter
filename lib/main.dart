@@ -4,7 +4,6 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
-
 import 'service/theme_service.dart';
 import 'dart:async';
 import 'page/lost_connection/lost_connection_page.dart';
@@ -126,7 +125,7 @@ void main() async {
     final LocalizationController localizationController =
         Get.put(LocalizationController());
     await localizationController.init();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2), () {});
     FlutterNativeSplash.remove();
     runApp(const MyApp());
     if (Firebase.apps.isEmpty) {
