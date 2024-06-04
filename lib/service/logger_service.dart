@@ -9,7 +9,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dinasona/util/constants.dart';
+import '../util/constants.dart';
 
 class LoggerService extends GetxService {
   final RxList<Widget> _logs = <Widget>[].obs;

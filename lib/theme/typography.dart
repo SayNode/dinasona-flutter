@@ -16,32 +16,32 @@ class CustomTypography {
   final Color color;
 //List of textstyles
   TextStyle get k24Bold => GoogleFonts.sourceSans3(
-        fontSize: 24.0,
+        fontSize: 24,
         color: color,
         fontWeight: FontWeight.w700,
       );
   TextStyle get k16SemiBold => GoogleFonts.sourceSans3(
-        fontSize: 16.0,
+        fontSize: 16,
         color: color,
         fontWeight: FontWeight.w600,
       );
   TextStyle get k36Bold => GoogleFonts.sourceSans3(
-        fontSize: 36.0,
+        fontSize: 36,
         color: color,
         fontWeight: FontWeight.w700,
       );
   TextStyle get k14Reg => GoogleFonts.sourceSans3(
-        fontSize: 14.0,
+        fontSize: 14,
         color: color,
         fontWeight: FontWeight.w400,
       );
   TextStyle get k20Bold => GoogleFonts.sourceSans3(
-        fontSize: 20.0,
+        fontSize: 20,
         color: color,
         fontWeight: FontWeight.w600,
       );
   TextStyle get k16Reg => GoogleFonts.sourceSans3(
-        fontSize: 16.0,
+        fontSize: 16,
         color: color,
         fontWeight: FontWeight.w400,
       );

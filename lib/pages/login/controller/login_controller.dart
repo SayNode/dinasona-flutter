@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/auth_service.dart';
-import '../../../widgets/dinasona_popup.dart';
 import '../../temp_home_page.dart';
 
 class LoginController extends GetxController {

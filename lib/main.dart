@@ -26,8 +26,6 @@ import 'service/main_bindings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'pages/splash_page.dart';
-
 bool isFirstRun = false;
 Future<void> handleError(
   Object error,

@@ -1,8 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
@@ -191,7 +189,8 @@ class SignupPage extends GetView<SignupController> {
                             text: 'Create an account',
                             loading: controller.loading.value,
                             onPressed: () => controller.signUpSubmit(
-                                isBeneficiary: isBeneficiary),
+                              isBeneficiary: isBeneficiary,
+                            ),
                             color: dinasonaTheme.ferngreen,
                             locked: controller.email.text.isEmpty ||
                                 controller.password.text.isEmpty,

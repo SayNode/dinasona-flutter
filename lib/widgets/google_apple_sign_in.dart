@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../pages/login/controller/login_controller.dart';
 import '../pages/sign_up/controller/sign_up_controller.dart';
 import '../service/theme_service.dart';
 import '../theme/color.dart';

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
-import '../../../util/password.dart';
 import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';

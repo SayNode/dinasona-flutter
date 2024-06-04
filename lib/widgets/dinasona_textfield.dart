@@ -120,7 +120,6 @@ class DinasonaTextField extends StatelessWidget {
               ),
               side: const BorderSide(
                 color: LightColor.graphite,
-                width: 1.0,
               ),
             ),
             child: Center(
