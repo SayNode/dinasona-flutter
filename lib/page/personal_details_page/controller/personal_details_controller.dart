@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../service/theme_service.dart';
+
 enum Gender {
   male('Male', Icons.male),
   female('Female', Icons.female),
@@ -37,6 +39,17 @@ class PersonalDetailsController extends GetxController {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Get.find<ThemeService>().theme.amberglow,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
     );
     if (selectedDate != null) {
       final DateTime dateOfBirth = selectedDate.toLocal();
@@ -50,11 +63,12 @@ class PersonalDetailsController extends GetxController {
 
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
-      log(selectedImage.value.toString());
     }
   }
 
   void submit() {
+    // TODO implement submit
+    log('Image: ${selectedImage.value?.path}');
     log('Full Name: ${fullNameController.text}');
     log('Email: ${emailController.text}');
     log('Gender: ${_selectedGender.value.text}');

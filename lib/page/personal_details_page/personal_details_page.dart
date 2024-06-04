@@ -58,7 +58,8 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                               ? null
                               : DecorationImage(
                                   image: FileImage(
-                                      controller.selectedImage.value!),
+                                    controller.selectedImage.value!,
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                         ),
