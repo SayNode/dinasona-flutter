@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/auth_service.dart';
+import '../../../widgets/dinasona_popup.dart';
+import '../../temp_home_page.dart';
 
 class LoginController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
@@ -25,8 +28,7 @@ class LoginController extends GetxController {
         final AuthResponse loginResult =
             await authService.login(email.text, password.text);
         if (loginResult.success) {
-          // TODO
-          print('Login successful ${loginResult.success}');
+          await Get.to<void>(() => const TempHomePage());
         }
       } else {
         error.value = 'Password is required';

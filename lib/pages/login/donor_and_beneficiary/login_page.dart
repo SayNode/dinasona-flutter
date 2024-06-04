@@ -117,7 +117,11 @@ class LoginPage extends GetView<LoginController> {
                           DinasonaTextField(
                             hintText: 'Enter email'.tr,
                             hasVerticalMargin: true,
-                            prefix: const Icon(Icons.email, size: 25),
+                            prefix: Icon(
+                              Icons.email,
+                              size: 25,
+                              color: dinasonaTheme.graphite,
+                            ),
                             controller: controller.email,
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -125,7 +129,11 @@ class LoginPage extends GetView<LoginController> {
                             () => DinasonaTextField(
                               hintText: 'Enter password'.tr,
                               hasVerticalMargin: true,
-                              prefix: const Icon(Icons.lock, size: 25),
+                              prefix: Icon(
+                                Icons.lock,
+                                size: 25,
+                                color: dinasonaTheme.graphite,
+                              ),
                               suffixIcon: GestureDetector(
                                 onTap: () => controller.setShowPassword(),
                                 child: Obx(
@@ -134,6 +142,7 @@ class LoginPage extends GetView<LoginController> {
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                     size: 25,
+                                    color: dinasonaTheme.graphite,
                                   ),
                                 ),
                               ),
@@ -160,8 +169,14 @@ class LoginPage extends GetView<LoginController> {
                           DinasonaButton(
                             text: 'Sign in',
                             loading: controller.loading.value,
-                            onPressed: () => controller.loginSubmit(),
-                            color: dinasonaTheme.amberglow,
+                            onPressed: () => controller.loginSubmit().then(
+                              (void value) {
+                                print('llllllll');
+                              },
+                            ),
+                            color: dinasonaTheme.ferngreen,
+                            locked: controller.email.text.isEmpty ||
+                                controller.password.text.isEmpty,
                           ),
                         ],
                       ),

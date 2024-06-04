@@ -111,11 +111,16 @@ class DinasonaTextField extends StatelessWidget {
               ),
             ),
           Card(
+            shadowColor: Colors.transparent,
             margin: EdgeInsets.zero,
-            //color: LightColor.moonstone, TODO change color to fit FIGMA
+            color: LightColor.moonstone,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(getRelativeWidth(10)),
+              ),
+              side: const BorderSide(
+                color: LightColor.graphite,
+                width: 1.0,
               ),
             ),
             child: Center(
@@ -129,7 +134,7 @@ class DinasonaTextField extends StatelessWidget {
                   textAlignVertical: TextAlignVertical.center,
                   controller: controller,
                   style: TextStyle(color: textColor),
-                  cursorColor: LightColor.silvershine,
+                  cursorColor: LightColor.graphite,
                   validator: validator,
                   autovalidateMode: autovalidateMode,
                   onChanged: onChanged,

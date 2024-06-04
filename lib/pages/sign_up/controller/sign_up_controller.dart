@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
+import '../../../widgets/dinasona_popup.dart';
+import '../../temp_home_page.dart';
 
 class SignupController extends GetxController {
   RxBool showPassword = false.obs;
@@ -28,7 +30,7 @@ class SignupController extends GetxController {
     showPassword.value = !showPassword.value;
   }
 
-  Future<void> signUpSubmit() async {
+  Future<void> signUpSubmit({bool isBeneficiary = false}) async {
     loading.value = true;
     error.value = '';
     if (email.text.isEmail) {
@@ -38,8 +40,10 @@ class SignupController extends GetxController {
           password.text,
         );
         if (registrationResult.success) {
-          // TODO
-          print('Registration successful ${registrationResult.success}');
+          await Get.to<void>(() {
+            showPopup(isBeneficiary: isBeneficiary);
+            return const TempHomePage();
+          });
         } else {
           registrationFormKey.value.currentState!.validate();
           if (registrationResult.info.isNotEmpty) {
@@ -47,6 +51,7 @@ class SignupController extends GetxController {
                     as Map<String, dynamic>)
                 .containsKey('email')) {
               error.value =
+                  // ignore: avoid_dynamic_calls
                   jsonDecode(registrationResult.info.toString())['email'][0]
                       as String;
             }
@@ -54,6 +59,7 @@ class SignupController extends GetxController {
                     as Map<String, dynamic>)
                 .containsKey('password')) {
               error.value =
+                  // ignore: avoid_dynamic_calls
                   jsonDecode(registrationResult.info.toString())['password'][0]
                       as String;
             }

@@ -130,7 +130,11 @@ class SignupPage extends GetView<SignupController> {
                           DinasonaTextField(
                             hintText: 'Enter email'.tr,
                             hasVerticalMargin: true,
-                            prefix: const Icon(Icons.email, size: 25),
+                            prefix: Icon(
+                              Icons.email,
+                              size: 25,
+                              color: dinasonaTheme.graphite,
+                            ),
                             controller: controller.email,
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -138,7 +142,11 @@ class SignupPage extends GetView<SignupController> {
                             () => DinasonaTextField(
                               hintText: 'Enter password'.tr,
                               hasVerticalMargin: true,
-                              prefix: const Icon(Icons.lock, size: 25),
+                              prefix: Icon(
+                                Icons.lock,
+                                size: 25,
+                                color: dinasonaTheme.graphite,
+                              ),
                               suffixIcon: GestureDetector(
                                 onTap: () => controller.setShowPassword(),
                                 child: Obx(
@@ -147,6 +155,7 @@ class SignupPage extends GetView<SignupController> {
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                     size: 25,
+                                    color: dinasonaTheme.graphite,
                                   ),
                                 ),
                               ),
@@ -181,7 +190,8 @@ class SignupPage extends GetView<SignupController> {
                           DinasonaButton(
                             text: 'Create an account',
                             loading: controller.loading.value,
-                            onPressed: () => controller.signUpSubmit(),
+                            onPressed: () => controller.signUpSubmit(
+                                isBeneficiary: isBeneficiary),
                             color: dinasonaTheme.ferngreen,
                             locked: controller.email.text.isEmpty ||
                                 controller.password.text.isEmpty,
