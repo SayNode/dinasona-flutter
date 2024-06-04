@@ -26,19 +26,19 @@ class ChosePathPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Expanded(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: BoxDecoration(
-                    color: diasonaTheme.amberglow,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to<void>(
-                        () => const SignupPage(),
-                      );
-                    },
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to<void>(
+                      () => const SignupPage(),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
+                    decoration: BoxDecoration(
+                      color: diasonaTheme.amberglow,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
@@ -67,21 +67,21 @@ class ChosePathPage extends StatelessWidget {
               ),
               SizedBox(height: getRelativeHeight(20)),
               Expanded(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: BoxDecoration(
-                    color: diasonaTheme.ferngreen,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to<void>(
-                        () => const SignupPage(
-                          isBeneficiary: true,
-                        ),
-                      );
-                    },
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to<void>(
+                      () => const SignupPage(
+                        isBeneficiary: true,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
+                    decoration: BoxDecoration(
+                      color: diasonaTheme.ferngreen,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
