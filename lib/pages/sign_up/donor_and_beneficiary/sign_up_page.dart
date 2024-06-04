@@ -19,18 +19,20 @@ import 'choose_language_page.dart';
 
 class SignupPage extends GetView<SignupController> {
   const SignupPage({
-    this.isDonor = true,
+    this.isBeneficiary = false,
     super.key,
   });
 
-  final bool isDonor;
+  final bool isBeneficiary;
 
   @override
   Widget build(BuildContext context) {
     Get.put(SignupController());
-    if (controller.chosenLanguage.isEmpty ||
-        controller.chosenCurrency.isEmpty) {
-      return const ChooseLanguagePage();
+    if (isBeneficiary) {
+      if (controller.chosenLanguage.isEmpty ||
+          controller.chosenCurrency.isEmpty) {
+        return const ChooseLanguagePage();
+      }
     }
 
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
@@ -110,7 +112,7 @@ class SignupPage extends GetView<SignupController> {
                         .k36Bold,
                   ),
                   Text(
-                    isDonor
+                    !isBeneficiary
                         ? "Your account is the key to sharing kindness. Let's begin your impact journey!"
                             .tr
                         : "Create an account to start receiving help from generous individuals. We're here to support you on your journey."
@@ -180,7 +182,7 @@ class SignupPage extends GetView<SignupController> {
                             text: 'Create an account',
                             loading: controller.loading.value,
                             onPressed: () => controller.signUpSubmit(),
-                            color: dinasonaTheme.inferno,
+                            color: dinasonaTheme.ferngreen,
                             locked: controller.email.text.isEmpty ||
                                 controller.password.text.isEmpty,
                           ),

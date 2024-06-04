@@ -80,7 +80,7 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                               print(controller.chosenLanguage.value);
                               Get.to<void>(
                                 () => const SignupPage(
-                                  isDonor: false,
+                                  isBeneficiary: true,
                                 ),
                               );
                             },
