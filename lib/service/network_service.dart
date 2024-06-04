@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_network_connectivity/flutter_network_connectivity.dart';
 import 'package:get/get.dart';
 
-import '../page/lost_connection/lost_connection_page.dart';
+import '../pages/lost_connection/lost_connection_page.dart';
 
 class NetworkService extends GetxService {
   RxBool isConnectedToInternet = true.obs;
