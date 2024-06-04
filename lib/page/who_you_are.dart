@@ -74,7 +74,7 @@ class ChosePathPage extends StatelessWidget {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      // this line is temporary to show the popup
+                      // this line is here to show the popup, should be remove when the home page is ready
                       showDialog<Widget>(
                         context: context,
                         builder: (BuildContext context) {
