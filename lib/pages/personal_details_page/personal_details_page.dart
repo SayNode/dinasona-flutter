@@ -7,6 +7,8 @@ import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
+import '../../widgets/dinasona_button.dart';
+import '../../widgets/dinasona_textfield.dart';
 import 'controller/personal_details_controller.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -79,25 +81,16 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                         ),
                       ),
                     ),
-                    TextField(
+                    DinasonaTextField(
                       controller: controller.fullNameController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: 'Full name',
-                      ),
+                      hintText: 'Full name',
                     ),
                     SizedBox(height: gap),
-                    TextField(
+                    DinasonaTextField(
                       controller: controller.emailController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: 'Email',
-                      ),
+                      hintText: 'Email',
                     ),
+
                     SizedBox(height: gap),
                     // gender & DOB
                     Row(
@@ -110,7 +103,12 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: DropdownButtonFormField<Gender>(
+                              value: controller.selectedGender,
+                              style: CustomTypography.fromColor(
+                                diasonaTheme.shadowed,
+                              ).k16Reg,
                               borderRadius: BorderRadius.circular(16),
+                              dropdownColor: diasonaTheme.moonstone,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -125,13 +123,31 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                   value: gender,
                                   child: Column(
                                     children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(gender.text),
-                                          Icon(gender.icon),
-                                        ],
+                                      Obx(
+                                        () => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              gender.text,
+                                              style: CustomTypography.fromColor(
+                                                gender.name ==
+                                                        controller
+                                                            .selectedGender.name
+                                                    ? diasonaTheme.ferngreen
+                                                    : diasonaTheme.shadowed,
+                                              ).k16Reg,
+                                            ),
+                                            Icon(
+                                              gender.icon,
+                                              color: gender.name ==
+                                                      controller
+                                                          .selectedGender.name
+                                                  ? diasonaTheme.ferngreen
+                                                  : diasonaTheme.shadowed,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -166,14 +182,9 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                       ],
                     ),
                     SizedBox(height: gap),
-                    TextField(
+                    DinasonaTextField(
                       controller: controller.locationController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: 'Location',
-                      ),
+                      hintText: 'Location',
                     ),
                     SizedBox(height: gap),
                     Container(
@@ -201,23 +212,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                 ),
               ),
               SizedBox(height: gap),
-              Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: getRelativeHeight(20)),
-                decoration: BoxDecoration(
-                  color: diasonaTheme.amberglow,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: InkWell(
-                  onTap: controller.submit,
-                  child: Text(
-                    'Continue',
-                    style: CustomTypography.fromColor(diasonaTheme.moonstone)
-                        .k16SemiBold,
-                  ),
-                ),
-              ),
+              DinasonaButton(text: 'Continue', onPressed: controller.submit),
               SizedBox(height: gap),
               TextButton(
                 onPressed: () => Get.back<void>(),

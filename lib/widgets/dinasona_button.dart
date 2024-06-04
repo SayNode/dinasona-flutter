@@ -44,7 +44,7 @@ class DinasonaButton extends StatelessWidget {
           backgroundColor: locked ? LightColor.silvershine : color,
           disabledBackgroundColor: locked ? LightColor.silvershine : color,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(getRelativeHeight(20)),
+            borderRadius: BorderRadius.circular(getRelativeHeight(16)),
           ),
         ),
         onPressed: loading || locked
