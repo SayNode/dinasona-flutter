@@ -7,6 +7,7 @@ import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 import '../widget/custom_scaffold.dart';
+import '../widget/popups/story_popup.dart';
 
 class ChosePathPage extends StatelessWidget {
   const ChosePathPage({super.key});
@@ -73,6 +74,13 @@ class ChosePathPage extends StatelessWidget {
                   ),
                   child: GestureDetector(
                     onTap: () {
+                      // this line is temporary to show the popup
+                      showDialog<Widget>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const StoryPopup();
+                        },
+                      );
                       // TODO go to Beneficiary page
                     },
                     child: Column(
