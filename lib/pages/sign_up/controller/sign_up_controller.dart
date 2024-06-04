@@ -85,7 +85,9 @@ class SignupController extends GetxController {
     error.value = '';
     final AuthResponse loginResult = await authService.googleSignIn();
     if (loginResult.success) {
-      print('Google registration successful ${loginResult.success}');
+      // TODO - Handle successful login
+      // Google sign in should be working fine in the frontend - backend is not ready at the moment of writing this
+      // The google sign in is only working in dev mode because the release signature hasn't been created yet
     } else {
       error.value = loginResult.info.toString();
     }
@@ -104,7 +106,9 @@ class SignupController extends GetxController {
       identityToken: identityToken,
     );
     if (loginResult.success) {
-      print('Apple registration successful ${loginResult.success}');
+      // TODO - Handle successful login
+      // Apple sign in needs the client ID from the Appstore to work -> The app is not yet initialized in the store
+      // The backend is not ready at the time of writing this
     } else {
       error.value = loginResult.info.toString();
     }
