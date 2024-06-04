@@ -6,7 +6,7 @@ import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
-import '../../widget/custom_scaffold.dart';
+import '../../widgets/custom_scaffold.dart';
 import 'controller/personal_details_controller.dart';
 import 'package:image_picker/image_picker.dart';
 
