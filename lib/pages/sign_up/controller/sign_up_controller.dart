@@ -45,24 +45,28 @@ class SignupController extends GetxController {
             return const TempHomePage();
           });
         } else {
-          registrationFormKey.value.currentState!.validate();
-          if (registrationResult.info.isNotEmpty) {
-            if ((json.decode(registrationResult.info.toString())
-                    as Map<String, dynamic>)
-                .containsKey('email')) {
-              error.value =
-                  // ignore: avoid_dynamic_calls
-                  jsonDecode(registrationResult.info.toString())['email'][0]
-                      as String;
+          try {
+            registrationFormKey.value.currentState!.validate();
+            if (registrationResult.info.isNotEmpty) {
+              if ((json.decode(registrationResult.info.toString())
+                      as Map<String, dynamic>)
+                  .containsKey('email')) {
+                error.value =
+                    // ignore: avoid_dynamic_calls
+                    jsonDecode(registrationResult.info.toString())['email'][0]
+                        as String;
+              }
+              if ((json.decode(registrationResult.info.toString())
+                      as Map<String, dynamic>)
+                  .containsKey('password')) {
+                error.value =
+                    // ignore: avoid_dynamic_calls
+                    jsonDecode(registrationResult.info.toString())['password']
+                        [0] as String;
+              }
             }
-            if ((json.decode(registrationResult.info.toString())
-                    as Map<String, dynamic>)
-                .containsKey('password')) {
-              error.value =
-                  // ignore: avoid_dynamic_calls
-                  jsonDecode(registrationResult.info.toString())['password'][0]
-                      as String;
-            }
+          } catch (e) {
+            error.value = 'This account is already in use';
           }
         }
       } else {
