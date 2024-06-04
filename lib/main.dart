@@ -5,7 +5,7 @@
 //
 // https://saynode.ch
 import 'pages/sign_up/donor_and_beneficiary/sign_up_page.dart';
-import 'page/who_you_are.dart';
+import 'pages/who_you_are.dart';
 import 'service/theme_service.dart';
 import 'dart:async';
 import 'pages/lost_connection/lost_connection_page.dart';

@@ -233,7 +233,8 @@ class SignupPage extends GetView<SignupController> {
                               ).k16Reg,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Get.to<void>(() => const LoginPage());
+                                  Get.to<void>(() =>
+                                      LoginPage(isBeneficiary: isBeneficiary));
                                 },
                             ),
                           ],

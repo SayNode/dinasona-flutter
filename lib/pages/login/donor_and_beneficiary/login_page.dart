@@ -14,9 +14,9 @@ import '../../sign_up/donor_and_beneficiary/sign_up_page.dart';
 import '../controller/login_controller.dart';
 
 class LoginPage extends GetView<LoginController> {
-  const LoginPage({this.isDonor = true, super.key});
+  const LoginPage({this.isBeneficiary = true, super.key});
 
-  final bool isDonor;
+  final bool isBeneficiary;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,7 @@ class LoginPage extends GetView<LoginController> {
                         .k36Bold,
                   ),
                   Text(
-                    isDonor
+                    !isBeneficiary
                         ? 'Log in to resume your journey of giving. Your continued support means the world to those in need.'
                             .tr
                         : 'Please log in to access your account and receive the assistance you need.'
