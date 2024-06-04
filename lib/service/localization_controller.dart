@@ -36,7 +36,7 @@ class LocalizationController extends GetxController implements GetxService {
   Future<void> _loadLanguages() async {
     for (final LanguageModel languageModel in _supportedLanguageList) {
       final String jsonStringValues = await rootBundle
-          .loadString('asset/locale/${languageModel.languageCode}.json');
+          .loadString('assets/locale/${languageModel.languageCode}.json');
       final Map<String, dynamic> mappedJson =
           jsonDecode(jsonStringValues) as Map<String, dynamic>;
       final Map<String, String> json = <String, String>{};

@@ -6,8 +6,8 @@ import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
-import '../widget/custom_scaffold.dart';
-import '../widget/popups/story_popup.dart';
+import '../widgets/custom_scaffold.dart';
+import 'sign_up/donor_and_beneficiary/sign_up_page.dart';
 
 class ChosePathPage extends StatelessWidget {
   const ChosePathPage({super.key});
@@ -26,17 +26,21 @@ class ChosePathPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Expanded(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: BoxDecoration(
-                    color: diasonaTheme.amberglow,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      // TODO go to Donor page
-                    },
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to<void>(
+                      () => const SignupPage(),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 30,
+                    ),
+                    decoration: BoxDecoration(
+                      color: diasonaTheme.amberglow,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
@@ -56,7 +60,7 @@ class ChosePathPage extends StatelessWidget {
                         SizedBox(height: getRelativeHeight(20)),
                         SizedBox(
                           width: getRelativeWidth(160),
-                          child: SvgPicture.asset('asset/images/give.svg'),
+                          child: SvgPicture.asset('assets/images/give.svg'),
                         ),
                       ],
                     ),
@@ -65,24 +69,23 @@ class ChosePathPage extends StatelessWidget {
               ),
               SizedBox(height: getRelativeHeight(20)),
               Expanded(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: BoxDecoration(
-                    color: diasonaTheme.ferngreen,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      // this line is here to show the popup, should be remove when the home page is ready
-                      showDialog<Widget>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const StoryPopup();
-                        },
-                      );
-                      // TODO go to Beneficiary page
-                    },
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to<void>(
+                      () => const SignupPage(
+                        isBeneficiary: true,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 30,
+                    ),
+                    decoration: BoxDecoration(
+                      color: diasonaTheme.ferngreen,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
@@ -102,7 +105,7 @@ class ChosePathPage extends StatelessWidget {
                         SizedBox(height: getRelativeHeight(20)),
                         SizedBox(
                           width: getRelativeWidth(160),
-                          child: SvgPicture.asset('asset/images/receive.svg'),
+                          child: SvgPicture.asset('assets/images/receive.svg'),
                         ),
                       ],
                     ),

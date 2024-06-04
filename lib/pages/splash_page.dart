@@ -5,8 +5,13 @@
 //
 // https://saynode.ch
 
-class DinasonaConstants {
-  static const String apiDomain = String.fromEnvironment('API_URL');
-  static const String apiKey = String.fromEnvironment('DATABASE_API_KEY');
-  static bool get devMode => apiDomain.contains('dev');
+import 'package:flutter/material.dart';
+import '../widgets/custom_scaffold.dart';
+
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return CustomScaffold(body: Container());
+  }
 }

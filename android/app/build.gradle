@@ -37,7 +37,7 @@ if (flutterVersionName == null) {
 android {
 
     signingConfigs {
-        release {
+        release { // TODO : add release key to Firebase to enable google auth in pro
             if (System.getenv()["CI"]) {
                 storeFile file(System.getenv()["CM_KEYSTORE_PATH"])
                 storePassword System.getenv()["CM_KEYSTORE_PASSWORD"]

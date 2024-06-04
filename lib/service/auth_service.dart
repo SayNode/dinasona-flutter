@@ -43,13 +43,15 @@ class AuthService extends GetxService {
   String verificationToken = '';
   String verificationUid = '';
 
-  void init() {
+  @override
+  void onInit() {
     _googleSignIn = GoogleSignIn(
       scopes: <String>[
         'email',
       ],
     );
     debugPrint('AuthService - initializing...');
+    super.onInit();
   }
 
   String unexpectedError(http.Response response) {
@@ -106,10 +108,12 @@ class AuthService extends GetxService {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
           userStateService.user.value =
-              User.fromJson(userMap['user'] as Map<String, dynamic>);
+              // ignore: avoid_dynamic_calls
+              User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
 
           /// save the token
-          authenticationToken = userMap['access_token'] as String;
+          // ignore: avoid_dynamic_calls
+          authenticationToken = userMap['result']['access_token'] as String;
           debugPrint('AuthService - authenticationToken: $authenticationToken');
           debugPrint(
             'AuthService - user logged in: ${userStateService.user.value.email}',
@@ -178,9 +182,7 @@ class AuthService extends GetxService {
   Future<AuthResponse> registration(
     String email,
     String password,
-    String username, {
-    required bool biometrics,
-  }) async {
+  ) async {
     try {
       final http.Response response = await apiService.post(
         '/auth/registration/',
@@ -190,7 +192,6 @@ class AuthService extends GetxService {
           'email': email,
           'password1': password,
           'password2': password,
-          'username': username,
         },
       );
 
@@ -199,10 +200,12 @@ class AuthService extends GetxService {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
           userStateService.user.value =
-              User.fromJson(userMap['user'] as Map<String, dynamic>);
+              // ignore: avoid_dynamic_calls
+              User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
 
           /// save the token
-          authenticationToken = userMap['access_token'] as String;
+          // ignore: avoid_dynamic_calls
+          authenticationToken = userMap['result']['access_token'] as String;
           debugPrint('AuthService - authenticationToken: $authenticationToken');
           debugPrint(
             'AuthService - user registered in: ${userStateService.user.value.email}',
@@ -213,7 +216,6 @@ class AuthService extends GetxService {
 
           await storageService.setString('email', email);
           await storageService.setString('password', password);
-          await storageService.setBool('biometrics', value: biometrics);
           await storageService.setInt('provider', ProviderTypes.email.index);
 
           return AuthResponse(
@@ -486,13 +488,18 @@ class AuthService extends GetxService {
             AppleIDAuthorizationScopes.fullName,
           ],
           webAuthenticationOptions: WebAuthenticationOptions(
-            clientId: '', // TODO
+            clientId:
+                '', // TODO add Bundle ID within App information from Apple Developer
             redirectUri:
                 // For web your redirect URI needs to be the host of the "current page",
                 // while for Android you will be using the API server that redirects back into your app via a deep link
                 kIsWeb
-                    ? Uri.parse('') // TODO
-                    : Uri.parse(''), // TODO
+                    ? Uri.parse(
+                        '',
+                      ) // TODO add Bundle ID within App information from Apple Developer
+                    : Uri.parse(
+                        '',
+                      ), // TODO add Bundle ID within App information from Apple Developer
           ),
         );
         authorizationCode = credential.authorizationCode;

@@ -22,6 +22,7 @@ dependencies:
   http: ^1.2.1
   image_picker: ^1.1.2
   is_first_run: ^1.0.0
+  local_auth: ^2.2.0
   package_info_plus: ^8.0.0
   shared_preferences: ^2.2.3
   sign_in_with_apple: ^6.1.0
@@ -35,8 +36,9 @@ dev_dependencies:
 
 flutter:
   assets:
-    - asset/
-    - asset/locale/
-    - asset/images/
+    - assets/
+    - assets/locale/
+    - assets/images/
+    - assets/images/logos/
 
   uses-material-design: true
