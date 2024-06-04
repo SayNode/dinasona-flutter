@@ -108,9 +108,11 @@ class AuthService extends GetxService {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
           userStateService.user.value =
+              // ignore: avoid_dynamic_calls
               User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
 
           /// save the token
+          // ignore: avoid_dynamic_calls
           authenticationToken = userMap['result']['access_token'] as String;
           debugPrint('AuthService - authenticationToken: $authenticationToken');
           debugPrint(
@@ -198,9 +200,11 @@ class AuthService extends GetxService {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
           userStateService.user.value =
+              // ignore: avoid_dynamic_calls
               User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
 
           /// save the token
+          // ignore: avoid_dynamic_calls
           authenticationToken = userMap['result']['access_token'] as String;
           debugPrint('AuthService - authenticationToken: $authenticationToken');
           debugPrint(

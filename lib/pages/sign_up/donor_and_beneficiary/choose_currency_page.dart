@@ -76,8 +76,6 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                               controller.chosenCurrency.value =
                                   languages[index]['code']!;
 
-                              print(controller.chosenCurrency.value);
-                              print(controller.chosenLanguage.value);
                               Get.to<void>(
                                 () => const SignupPage(
                                   isBeneficiary: true,
