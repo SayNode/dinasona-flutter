@@ -34,7 +34,9 @@ class ChosePathPage extends StatelessWidget {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
+                      horizontal: 20,
+                      vertical: 30,
+                    ),
                     decoration: BoxDecoration(
                       color: diasonaTheme.amberglow,
                       borderRadius: BorderRadius.circular(24),
@@ -77,7 +79,9 @@ class ChosePathPage extends StatelessWidget {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 30),
+                      horizontal: 20,
+                      vertical: 30,
+                    ),
                     decoration: BoxDecoration(
                       color: diasonaTheme.ferngreen,
                       borderRadius: BorderRadius.circular(24),
