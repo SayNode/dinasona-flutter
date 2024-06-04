@@ -21,6 +21,8 @@ class SignupController extends GetxController {
       GlobalKey<FormState>().obs;
   final AuthService authService = Get.put(AuthService());
   UserStateService userStateService = Get.find<UserStateService>();
+  RxString chosenLanguage = ''.obs;
+  RxString chosenCurrency = ''.obs;
 
   void setShowPassword() {
     showPassword.value = !showPassword.value;

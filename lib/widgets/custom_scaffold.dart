@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../service/logger_service.dart';
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({required this.body, super.key});
@@ -17,8 +19,10 @@ class CustomScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     return Scaffold(
       body: body,
+      backgroundColor: dinasonaTheme.moonstone,
       floatingActionButton: FloatingActionButton(
         heroTag: null,
         onPressed: () {
