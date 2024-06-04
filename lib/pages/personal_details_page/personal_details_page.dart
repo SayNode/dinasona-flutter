@@ -71,7 +71,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                               ? SizedBox(
                                   width: getRelativeWidth(30),
                                   child: SvgPicture.asset(
-                                    'asset/images/add_photo.svg',
+                                    'assets/images/add_photo.svg',
                                     fit: BoxFit.scaleDown,
                                   ),
                                 )

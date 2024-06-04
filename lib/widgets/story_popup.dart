@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../page/personal_details_page/personal_details_page.dart';
-import '../../service/theme_service.dart';
-import '../../theme/theme.dart';
-import '../../theme/typography.dart';
-import '../../util/util.dart';
+import '../pages/personal_details_page/personal_details_page.dart';
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
+import '../theme/typography.dart';
+import '../util/util.dart';
 
 class StoryPopup extends StatelessWidget {
   const StoryPopup({super.key});
@@ -17,7 +17,7 @@ class StoryPopup extends StatelessWidget {
     return AlertDialog(
       backgroundColor: diasonaTheme.moonstone,
       icon: SvgPicture.asset(
-        'asset/images/volunteer.svg',
+        'assets/images/volunteer.svg',
         width: getRelativeWidth(83),
         height: getRelativeHeight(83),
       ),
