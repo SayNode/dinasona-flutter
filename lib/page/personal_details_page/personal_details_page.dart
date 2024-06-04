@@ -8,6 +8,7 @@ import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widget/custom_scaffold.dart';
 import 'controller/personal_details_controller.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PersonalDetailsPage extends GetView<PersonalDetailsController> {
   const PersonalDetailsPage({super.key});
@@ -45,24 +46,35 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
               Form(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      width: getRelativeWidth(100),
-                      height: getRelativeHeight(100),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: diasonaTheme.graphite),
-                        shape: BoxShape.circle,
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          //TODO add photo
-                        },
-                        child: SizedBox(
-                          width: getRelativeWidth(30),
-                          child: SvgPicture.asset(
-                            'asset/images/add_photo.svg',
-                            fit: BoxFit.scaleDown,
-                          ),
+                    Obx(
+                      () => Container(
+                        margin: const EdgeInsets.all(20),
+                        width: getRelativeWidth(100),
+                        height: getRelativeHeight(100),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: diasonaTheme.graphite),
+                          shape: BoxShape.circle,
+                          image: controller.selectedImage.value == null
+                              ? null
+                              : DecorationImage(
+                                  image: FileImage(
+                                      controller.selectedImage.value!),
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            controller.pickImage(ImageSource.gallery);
+                          },
+                          child: controller.selectedImage.value == null
+                              ? SizedBox(
+                                  width: getRelativeWidth(30),
+                                  child: SvgPicture.asset(
+                                    'asset/images/add_photo.svg',
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                         ),
                       ),
                     ),

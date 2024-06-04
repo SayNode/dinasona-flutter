@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum Gender {
   male('Male', Icons.male),
@@ -23,6 +25,7 @@ class PersonalDetailsController extends GetxController {
   final TextEditingController descriptionTextController =
       TextEditingController();
   final int descriptionMaxLenth = 300;
+  final Rx<File?> selectedImage = Rx<File?>(null);
 
   set selectedGender(Gender value) {
     _selectedGender.value = value;
@@ -38,6 +41,16 @@ class PersonalDetailsController extends GetxController {
     if (selectedDate != null) {
       final DateTime dateOfBirth = selectedDate.toLocal();
       dateOfBirthController.value = dateOfBirth.toString().split(' ')[0];
+    }
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      selectedImage.value = File(pickedFile.path);
+      log(selectedImage.value.toString());
     }
   }
 
