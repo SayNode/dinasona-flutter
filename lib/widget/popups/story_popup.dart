@@ -41,7 +41,7 @@ class StoryPopup extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
-              Get.to<void>(() => const PersonalDetailsPage());
+              Get.off<void>(() => const PersonalDetailsPage());
             },
             child: Text(
               'Share my story',
