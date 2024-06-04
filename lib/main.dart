@@ -5,6 +5,7 @@
 //
 // https://saynode.ch
 import 'pages/sign_up/donor_and_beneficiary/sign_up_page.dart';
+import 'page/who_you_are.dart';
 import 'service/theme_service.dart';
 import 'dart:async';
 import 'pages/lost_connection/lost_connection_page.dart';
@@ -124,7 +125,7 @@ void main() async {
     final LocalizationController localizationController =
         Get.put(LocalizationController());
     await localizationController.init();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2), () {});
     FlutterNativeSplash.remove();
     runApp(const MyApp());
     if (Firebase.apps.isEmpty) {
@@ -168,7 +169,7 @@ class MyApp extends StatelessWidget {
           getPages: <GetPage<void>>[
             GetPage<void>(
               name: '/',
-              page: () => const SignupPage(),
+              page: () => const ChosePathPage(),
             ),
           ],
           theme: Get.put<ThemeService>(ThemeService()).themeData,

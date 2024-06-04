@@ -27,7 +27,7 @@ enum ProviderTypes {
 }
 
 class AuthResponse {
-  AuthResponse(this.info, this.success);
+  AuthResponse(this.info, {required this.success});
 
   final Map<String, dynamic> info;
   final bool success;
@@ -126,7 +126,7 @@ class AuthService extends GetxService {
 
           return AuthResponse(
             <String, dynamic>{'success': 'Successfully logged in.'},
-            true,
+            success: true,
           );
         } catch (error) {
           // Request parsing went wrong:
@@ -137,7 +137,7 @@ class AuthService extends GetxService {
         debugPrint(
           'AuthService - ${response.statusCode} ${response.body}',
         );
-        return AuthResponse(parseErrorMap(response), false);
+        return AuthResponse(parseErrorMap(response), success: false);
       }
     } catch (e) {
       // Endpoint failed:
@@ -162,7 +162,7 @@ class AuthService extends GetxService {
         await storageService.setInt('provider', ProviderTypes.none.index);
         return AuthResponse(
           <String, dynamic>{'success': 'Successful logout.'},
-          true,
+          success: true,
         );
       } else {
         // Unexpected status code:
@@ -216,7 +216,7 @@ class AuthService extends GetxService {
 
           return AuthResponse(
             <String, dynamic>{'success': 'Successfully signed up.'},
-            true,
+            success: true,
           );
         } catch (error) {
           // Request parsing went wrong:
@@ -227,7 +227,7 @@ class AuthService extends GetxService {
         debugPrint(
           'AuthService - ${unexpectedError(response)}',
         );
-        return AuthResponse(parseErrorMap(response), false);
+        return AuthResponse(parseErrorMap(response), success: false);
       }
     } catch (e) {
       // Endpoint failed:
@@ -251,14 +251,14 @@ class AuthService extends GetxService {
         debugPrint('AuthService - Reset Code Sent');
         return AuthResponse(
           <String, dynamic>{'success': 'Reset code sent.'},
-          true,
+          success: true,
         );
       } else {
         // Unexpected status code:
         debugPrint(
           'AuthService - ${unexpectedError(response)}',
         );
-        return AuthResponse(parseErrorMap(response), false);
+        return AuthResponse(parseErrorMap(response), success: false);
       }
     } catch (e) {
       // Endpoint failed:
@@ -291,12 +291,12 @@ class AuthService extends GetxService {
           );
           return AuthResponse(
             <String, dynamic>{'success': 'Verification code is valid.'},
-            true,
+            success: true,
           );
         } catch (error) {
           return AuthResponse(
             <String, dynamic>{'error': error.toString()},
-            false,
+            success: false,
           );
         }
       } else {
@@ -304,7 +304,7 @@ class AuthService extends GetxService {
         debugPrint(
           'AuthService - ${unexpectedError(response)}',
         );
-        return AuthResponse(parseErrorMap(response), false);
+        return AuthResponse(parseErrorMap(response), success: false);
       }
     } catch (e) {
       // Endpoint failed:
@@ -333,14 +333,14 @@ class AuthService extends GetxService {
       if (response.statusCode == 200) {
         return AuthResponse(
           <String, dynamic>{'success': 'Password changed.'},
-          true,
+          success: true,
         );
       } else {
         // Unexpected status code:
         debugPrint(
           'AuthService - ${unexpectedError(response)}',
         );
-        return AuthResponse(parseErrorMap(response), false);
+        return AuthResponse(parseErrorMap(response), success: false);
       }
     } catch (e) {
       // Endpoint failed:
@@ -436,7 +436,7 @@ class AuthService extends GetxService {
               <String, dynamic>{
                 'success': 'Successfully signed in with Google.',
               },
-              true,
+              success: true,
             );
           } catch (error) {
             await _disconnectProviders();
@@ -446,7 +446,7 @@ class AuthService extends GetxService {
           }
         } else if (response.statusCode == 400) {
           await _disconnectProviders();
-          return AuthResponse(parseErrorMap(response), false);
+          return AuthResponse(parseErrorMap(response), success: false);
         } else {
           await _disconnectProviders();
           throw Exception('AuthService - ${unexpectedError(response)}');
@@ -457,7 +457,7 @@ class AuthService extends GetxService {
           'error':
               "Google auth isn't working at the moment. Please try again later.",
         },
-        false,
+        success: false,
       );
     } catch (e) {
       // Other error occurred
@@ -553,7 +553,7 @@ class AuthService extends GetxService {
             <String, dynamic>{
               'success': 'Successfully signed in with Apple.',
             },
-            true,
+            success: true,
           );
         } catch (error) {
           await _disconnectProviders();
@@ -561,7 +561,7 @@ class AuthService extends GetxService {
         }
       } else {
         await _disconnectProviders();
-        return AuthResponse(parseErrorMap(response), false);
+        return AuthResponse(parseErrorMap(response), success: false);
       }
     } //handles the error if user cancels apple signin and stops app crashing
     on PlatformException catch (e) {
@@ -569,7 +569,7 @@ class AuthService extends GetxService {
         // User canceled the sign in
         return AuthResponse(
           <String, dynamic>{'error': 'Sign in cancelled'},
-          false,
+          success: false,
         );
       } else {
         // Other authorization error occurred
@@ -577,7 +577,10 @@ class AuthService extends GetxService {
       }
     } on SignInWithAppleAuthorizationException catch (e) {
       // Other error occurred
-      return AuthResponse(<String, dynamic>{'error': e.message}, false);
+      return AuthResponse(
+        <String, dynamic>{'error': e.message},
+        success: false,
+      );
     } catch (e) {
       // Other error occurred
       throw Exception('Authorization error: $e');
