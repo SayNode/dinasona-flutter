@@ -66,7 +66,7 @@ class SignupController extends GetxController {
               }
             }
           } catch (e) {
-            error.value = 'This account is already in use';
+            error.value = 'This account is already in use'.tr;
           }
         }
       } else {

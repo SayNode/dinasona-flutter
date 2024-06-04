@@ -186,7 +186,7 @@ class SignupPage extends GetView<SignupController> {
                           ),
                           SizedBox(height: getRelativeHeight(20)),
                           DinasonaButton(
-                            text: 'Create an account',
+                            text: 'Create an account'.tr,
                             loading: controller.loading.value,
                             onPressed: () => controller.signUpSubmit(
                               isBeneficiary: isBeneficiary,

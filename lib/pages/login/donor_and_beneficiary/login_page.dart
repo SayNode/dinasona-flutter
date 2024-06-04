@@ -166,13 +166,9 @@ class LoginPage extends GetView<LoginController> {
                           ),
                           SizedBox(height: getRelativeHeight(20)),
                           DinasonaButton(
-                            text: 'Sign in',
+                            text: 'Sign in'.tr,
                             loading: controller.loading.value,
-                            onPressed: () => controller.loginSubmit().then(
-                              (void value) {
-                                print('llllllll');
-                              },
-                            ),
+                            onPressed: () => controller.loginSubmit(),
                             color: dinasonaTheme.ferngreen,
                             locked: controller.email.text.isEmpty ||
                                 controller.password.text.isEmpty,
