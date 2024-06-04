@@ -44,7 +44,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
               SizedBox(height: gap),
               Form(
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Container(
                       margin: const EdgeInsets.all(20),
                       width: getRelativeWidth(100),
@@ -90,7 +90,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          flex: 4,
+                          flex: 5,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
                               border: Border.all(color: diasonaTheme.graphite),
@@ -115,27 +115,24 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children: [
+                                        children: <Widget>[
                                           Text(gender.text),
                                           Icon(gender.icon),
                                         ],
                                       ),
-                                      // const SizedBox(height: 10),
-                                      // Divider(
-                                      //   height: 1,
-                                      //   color: diasonaTheme.silvershine,
-                                      // ),
                                     ],
                                   ),
                                 );
                               }).toList(),
-                              onChanged: (Gender? value) {},
+                              onChanged: (Gender? value) {
+                                controller.selectedGender = value!;
+                              },
                             ),
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: Obx(
                             () => TextField(
                               onTap: () => controller.selectDate(context),
@@ -169,8 +166,9 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: diasonaTheme.graphite)),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: diasonaTheme.graphite),
+                      ),
                       child: Column(
                         children: <Widget>[
                           TextField(
@@ -195,8 +193,9 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: getRelativeHeight(20)),
                 decoration: BoxDecoration(
-                    color: diasonaTheme.amberglow,
-                    borderRadius: BorderRadius.circular(16)),
+                  color: diasonaTheme.amberglow,
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: InkWell(
                   onTap: controller.submit,
                   child: Text(

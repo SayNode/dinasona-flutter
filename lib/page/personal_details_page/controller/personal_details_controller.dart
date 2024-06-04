@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +14,8 @@ enum Gender {
 }
 
 class PersonalDetailsController extends GetxController {
-  final Rx<Gender> selectedGender = Gender.other.obs;
+  Gender get selectedGender => _selectedGender.value;
+  final Rx<Gender> _selectedGender = Gender.other.obs;
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final RxString dateOfBirthController = ''.obs;
@@ -21,13 +24,8 @@ class PersonalDetailsController extends GetxController {
       TextEditingController();
   final int descriptionMaxLenth = 300;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  void selectGender(Gender value) {
-    selectedGender.value = value;
+  set selectedGender(Gender value) {
+    _selectedGender.value = value;
   }
 
   Future<void> selectDate(BuildContext context) async {
@@ -44,12 +42,12 @@ class PersonalDetailsController extends GetxController {
   }
 
   void submit() {
-    print('Full Name: ${fullNameController.text}');
-    print('Email: ${emailController.text}');
-    print('Gender: ${selectedGender.value.text}');
-    print('Date of Birth: ${dateOfBirthController.value}');
-    print('Location: ${locationController.text}');
-    print('Description: ${descriptionTextController.text}');
+    log('Full Name: ${fullNameController.text}');
+    log('Email: ${emailController.text}');
+    log('Gender: ${_selectedGender.value.text}');
+    log('Date of Birth: ${dateOfBirthController.value}');
+    log('Location: ${locationController.text}');
+    log('Description: ${descriptionTextController.text}');
   }
 
   @override
