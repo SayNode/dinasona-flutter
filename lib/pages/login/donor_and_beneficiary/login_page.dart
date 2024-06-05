@@ -170,8 +170,7 @@ class LoginPage extends GetView<LoginController> {
                             loading: controller.loading.value,
                             onPressed: () => controller.loginSubmit(),
                             color: dinasonaTheme.ferngreen,
-                            locked: controller.email.text.isEmpty ||
-                                controller.password.text.isEmpty,
+                            locked: !controller.isSignInButtonActive.value,
                           ),
                         ],
                       ),
