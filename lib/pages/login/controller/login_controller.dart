@@ -45,6 +45,8 @@ class LoginController extends GetxController {
             await authService.login(email.text, password.text);
         if (loginResult.success) {
           await Get.to<void>(() => const TempHomePage());
+        } else {
+          error.value = 'Unable to log in with provided credentials';
         }
       } else {
         error.value = 'Password is required';
