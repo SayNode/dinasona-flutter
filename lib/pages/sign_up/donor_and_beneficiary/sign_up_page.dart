@@ -192,8 +192,8 @@ class SignupPage extends GetView<SignupController> {
                               isBeneficiary: isBeneficiary,
                             ),
                             color: dinasonaTheme.ferngreen,
-                            locked: controller.email.text.isEmpty ||
-                                controller.password.text.isEmpty,
+                            locked:
+                                !controller.isCreateAccountButtonActive.value,
                           ),
                         ],
                       ),

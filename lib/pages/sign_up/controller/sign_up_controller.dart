@@ -25,6 +25,24 @@ class SignupController extends GetxController {
   UserStateService userStateService = Get.find<UserStateService>();
   RxString chosenLanguage = ''.obs;
   RxString chosenCurrency = ''.obs;
+  RxBool isCreateAccountButtonActive = false.obs;
+  RxBool isEmailFieldEmpty = false.obs;
+  RxBool isPasswordFieldEmpty = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    password.addListener(() {
+      isPasswordFieldEmpty.value = password.text.isNotEmpty.obs.value;
+      isCreateAccountButtonActive.value =
+          isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
+    });
+    email.addListener(() {
+      isEmailFieldEmpty.value = email.text.isNotEmpty.obs.value;
+      isCreateAccountButtonActive.value =
+          isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
+    });
+  }
 
   void setShowPassword() {
     showPassword.value = !showPassword.value;
