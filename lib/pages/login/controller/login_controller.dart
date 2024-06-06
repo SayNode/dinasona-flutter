@@ -13,6 +13,24 @@ class LoginController extends GetxController {
   final TextEditingController email = TextEditingController();
   RxString error = ''.obs;
   RxBool loading = false.obs;
+  RxBool isSignInButtonActive = false.obs;
+  RxBool isEmailFieldEmpty = false.obs;
+  RxBool isPasswordFieldEmpty = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    password.addListener(() {
+      isPasswordFieldEmpty.value = password.text.isNotEmpty.obs.value;
+      isSignInButtonActive.value =
+          isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
+    });
+    email.addListener(() {
+      isEmailFieldEmpty.value = email.text.isNotEmpty.obs.value;
+      isSignInButtonActive.value =
+          isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
+    });
+  }
 
   void setShowPassword() {
     showPassword.value = !showPassword.value;
@@ -27,6 +45,8 @@ class LoginController extends GetxController {
             await authService.login(email.text, password.text);
         if (loginResult.success) {
           await Get.to<void>(() => const TempHomePage());
+        } else {
+          error.value = 'Unable to log in with provided credentials';
         }
       } else {
         error.value = 'Password is required';
