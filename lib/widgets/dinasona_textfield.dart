@@ -116,7 +116,7 @@ class DinasonaTextField extends StatelessWidget {
             color: LightColor.moonstone,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(getRelativeWidth(10)),
+                Radius.circular(getRelativeWidth(16)),
               ),
               side: const BorderSide(
                 color: LightColor.graphite,

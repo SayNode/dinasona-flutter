@@ -20,6 +20,7 @@ dependencies:
   google_fonts: ^6.2.1
   google_sign_in: ^6.2.1
   http: ^1.2.1
+  image_picker: ^1.1.2
   is_first_run: ^1.0.0
   local_auth: ^2.2.0
   package_info_plus: ^8.0.0
