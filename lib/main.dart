@@ -5,6 +5,7 @@
 //
 // https://saynode.ch
 import 'pages/who_you_are.dart';
+import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
 import 'dart:async';
 import 'pages/lost_connection/lost_connection_page.dart';
@@ -20,7 +21,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'service/localization_controller.dart';
 import 'model/message.dart';
 import './util/constants.dart';
-import 'service/storage_service.dart';
 import 'service/main_bindings.dart';
 
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ Future<void> handleError(
 
         if (getMaterialAppCalled) {
           // ignore: inference_failure_on_function_invocation
-          await Get.to(() => const ErrorPage());
+          await Get.to(() => ErrorPage(error: error));
         } else {
           // Try to exit app:
           // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
@@ -118,28 +118,26 @@ void main() async {
     final WidgetsBinding widgetsBinding =
         WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-    final StorageService storage = Get.put<StorageService>(StorageService());
-    await storage.init();
+    // Initialize services:
+    await initializeServices();
+
     Get.put<ThemeService>(ThemeService());
     final LocalizationController localizationController =
         Get.put(LocalizationController());
     await localizationController.init();
-    await Future<void>.delayed(const Duration(seconds: 2), () {});
     FlutterNativeSplash.remove();
-    runApp(const MyApp());
+
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
-
-    // ignore: unused_local_variable
-    // await GetStorage.init('theme');
-    //await networkService.init();
     await SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[DeviceOrientation.portraitUp],
     );
     isFirstRun = await IsFirstRun.isFirstRun();
+
+    runApp(const MyApp());
   }, (Object error, StackTrace stack) async {
     debugPrint('Error caught by main zone');
     debugPrint(error.toString());
@@ -147,6 +145,11 @@ void main() async {
 
     await handleError(error, stack, fatal: true);
   });
+}
+
+Future<void> initializeServices() async {
+  // Initialize services:
+  await Get.find<StorageService>().init();
 }
 
 class MyApp extends StatelessWidget {

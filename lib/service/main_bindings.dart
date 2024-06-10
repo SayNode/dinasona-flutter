@@ -8,6 +8,9 @@
 import 'package:get/get.dart';
 
 import 'logger_service.dart';
+import 'storage/secure_storage_service.dart';
+import 'storage/shared_storage_service.dart';
+import 'storage/storage_service.dart';
 
 class MainBindings extends Bindings {
   @override
@@ -20,7 +23,11 @@ class MainBindings extends Bindings {
   void _injectServices() {
     //Services injection
 
-    Get.lazyPut(LoggerService.new);
+    Get
+      ..lazyPut(LoggerService.new)
+      ..lazyPut(SecureStorageService.new)
+      ..lazyPut(SharedStorageService.new)
+      ..lazyPut(StorageService.new);
   }
 
   void _injectControllers() {

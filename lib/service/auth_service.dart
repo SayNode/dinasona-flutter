@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 
 import '../model/user.dart';
 import 'api_service.dart';
-import 'storage_service.dart';
+import 'storage/storage_service.dart';
 import 'user_state_service.dart';
 
 enum ProviderTypes {
@@ -65,19 +65,21 @@ class AuthService extends GetxService {
   // Check if the user is logged in already, and if so, perform a silent login and return true.
   Future<bool> silentLogin() async {
     try {
-      switch (ProviderTypes.values[storageService.getInt('provider')]) {
+      switch (ProviderTypes.values[storageService.shared.readInt('provider')]) {
         case ProviderTypes.email:
           return (await login(
-            storageService.getString('email'),
-            storageService.getString('password'),
+            storageService.shared.readString('email'),
+            await storageService.secure.readString('password'),
           ))
               .success;
         case ProviderTypes.google:
           return (await googleSignIn()).success;
         case ProviderTypes.apple:
           return (await appleSignIn(
-            authorizationCode: storageService.getString('authorizationCode'),
-            identityToken: storageService.getString('identityToken'),
+            authorizationCode:
+                await storageService.secure.readString('authorizationCode'),
+            identityToken:
+                await storageService.secure.readString('identityToken'),
           ))
               .success;
         case ProviderTypes.none:
@@ -122,9 +124,10 @@ class AuthService extends GetxService {
           // Disconnect other providers
           await _disconnectProviders();
 
-          await storageService.setString('email', email);
-          await storageService.setString('password', password);
-          await storageService.setInt('provider', ProviderTypes.email.index);
+          await storageService.shared.writeString('email', email);
+          await storageService.secure.writeString('password', password);
+          await storageService.shared
+              .writeInt('provider', ProviderTypes.email.index);
 
           return AuthResponse(
             <String, dynamic>{'success': 'Successfully logged in.'},
@@ -159,9 +162,10 @@ class AuthService extends GetxService {
         userStateService.clear();
         // Disconnect other providers
         await _disconnectProviders();
-        await storageService.setString('email', '');
-        await storageService.setString('password', '');
-        await storageService.setInt('provider', ProviderTypes.none.index);
+        await storageService.shared.writeString('email', '');
+        await storageService.secure.writeString('password', '');
+        await storageService.shared
+            .writeInt('provider', ProviderTypes.none.index);
         return AuthResponse(
           <String, dynamic>{'success': 'Successful logout.'},
           success: true,
@@ -214,9 +218,10 @@ class AuthService extends GetxService {
           // Disconnect other providers
           await _disconnectProviders();
 
-          await storageService.setString('email', email);
-          await storageService.setString('password', password);
-          await storageService.setInt('provider', ProviderTypes.email.index);
+          await storageService.shared.writeString('email', email);
+          await storageService.secure.writeString('password', password);
+          await storageService.shared
+              .writeInt('provider', ProviderTypes.email.index);
 
           return AuthResponse(
             <String, dynamic>{'success': 'Successfully signed up.'},
@@ -423,15 +428,15 @@ class AuthService extends GetxService {
               'AuthService - user logged in: ${userStateService.user.value.email}',
             );
 
-            await storageService.setString(
+            await storageService.shared.writeString(
               'email',
               userStateService.user.value.email,
             );
-            await storageService.setString(
+            await storageService.secure.writeString(
               'password',
               '',
             );
-            await storageService.setInt(
+            await storageService.shared.writeInt(
               'provider',
               ProviderTypes.google.index,
             );
@@ -532,23 +537,23 @@ class AuthService extends GetxService {
             'AuthService - user logged in: ${userStateService.user.value.email}',
           );
 
-          await storageService.setString(
+          await storageService.shared.writeString(
             'email',
             userStateService.user.value.email,
           );
-          await storageService.setString(
+          await storageService.secure.writeString(
             'password',
             '',
           );
-          await storageService.setInt(
+          await storageService.shared.writeInt(
             'provider',
             ProviderTypes.apple.index,
           );
-          await storageService.setString(
+          await storageService.secure.writeString(
             'authorizationCode',
             authorizationCode,
           );
-          await storageService.setString(
+          await storageService.secure.writeString(
             'identityToken',
             identityToken ?? '',
           );

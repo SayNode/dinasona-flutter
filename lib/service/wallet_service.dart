@@ -16,7 +16,8 @@ import 'package:thor_devkit_dart/crypto/secp256k1.dart';
 import 'package:thor_devkit_dart/utils.dart';
 
 import '../model/wallet_model.dart';
-import 'storage_service.dart';
+import 'storage/storage_exception.dart';
+import 'storage/storage_service.dart';
 
 class WalletService extends GetxService {
   late Wallet? _wallet;
@@ -27,7 +28,7 @@ class WalletService extends GetxService {
   @override
   void onInit() {
     try {
-      final String walletString = _storage.getString('wallet');
+      final String walletString = _storage.shared.readString('wallet');
       _wallet = Wallet.fromJson(
         json.decode(walletString) as Map<String, dynamic>,
       );
@@ -70,7 +71,7 @@ class WalletService extends GetxService {
 
     final Wallet wallet = Wallet(address, keystore);
     _wallet = wallet;
-    _storage.setString('wallet', json.encode(wallet.toJson()));
+    _storage.shared.writeString('wallet', json.encode(wallet.toJson()));
   }
 
   ///Create a new wallet from a given password and PrivateKey and store it locally.
@@ -85,7 +86,7 @@ class WalletService extends GetxService {
 
     final Wallet wallet = Wallet(address, keystore);
     _wallet = wallet;
-    _storage.setString('wallet', json.encode(wallet.toJson()));
+    _storage.shared.writeString('wallet', json.encode(wallet.toJson()));
   }
 
   String getPrivateKey(String password) {
@@ -98,7 +99,7 @@ class WalletService extends GetxService {
 
   void deleteWallet() {
     _wallet = null;
-    _storage.remove('wallet');
+    _storage.shared.delete('wallet');
   }
 
   bool validateMnemonic(List<String> words) {

@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../theme/theme.dart';
-import 'storage_service.dart';
+import 'storage/storage_exception.dart';
+import 'storage/storage_service.dart';
 
 class ThemeService extends GetxService {
   final StorageService _storage = Get.find<StorageService>();
@@ -42,7 +43,7 @@ class ThemeService extends GetxService {
   String _getSavedTheme() {
     String value;
     try {
-      value = _storage.getString('themeMode');
+      value = _storage.shared.readString('themeMode');
     } on StorageException catch (_) {
       setTheme('light');
       value = 'light';
@@ -52,7 +53,7 @@ class ThemeService extends GetxService {
   }
 
   Future<void> setTheme(String theme) async {
-    await _storage.setString('themeMode', theme);
+    await _storage.shared.writeString('themeMode', theme);
     Get.changeTheme(_getThemeData());
   }
 }
