@@ -7,6 +7,7 @@
 
 import 'package:get/get.dart';
 
+import '../pages/page_laoder/controllers/page_loader_controller.dart';
 import 'logger_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
@@ -32,5 +33,6 @@ class MainBindings extends Bindings {
 
   void _injectControllers() {
     //Controllers injection
+    Get.lazyPut(PageLoaderController.new, fenix: true);
   }
 }
