@@ -2,62 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-import '../pages/add/add_page.dart';
-import '../pages/home/beneficary_home_page.dart';
-import '../pages/profile/beneficiary_profile_page.dart';
-import '../pages/wallet/wallet_page.dart';
+import '../pages/donate/donate_page.dart';
+import '../pages/home/donor_home_page.dart';
+import '../pages/profile/donor_profile_page.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 
-enum BeneficaryItem {
+enum DonorItem {
   home,
-  add,
-  wallet,
+  donate,
   profile;
 
   String get name {
     switch (this) {
-      case BeneficaryItem.home:
+      case DonorItem.home:
         return 'Home';
-      case BeneficaryItem.add:
-        return 'Add';
-      case BeneficaryItem.wallet:
-        return 'Wallet';
-      case BeneficaryItem.profile:
+      case DonorItem.donate:
+        return 'Donate';
+      case DonorItem.profile:
         return 'Profile';
     }
   }
 
   IconData get icon {
     switch (this) {
-      case BeneficaryItem.home:
+      case DonorItem.home:
         return Symbols.home;
-      case BeneficaryItem.add:
-        return Symbols.add;
-      case BeneficaryItem.wallet:
-        return Symbols.wallet;
-      case BeneficaryItem.profile:
+      case DonorItem.donate:
+        return Symbols.volunteer_activism;
+      case DonorItem.profile:
         return Symbols.person;
     }
   }
 
   Widget get page {
     switch (this) {
-      case BeneficaryItem.home:
-        return const BeneficiaryHomePage();
-      case BeneficaryItem.add:
-        return const AddPage();
-      case BeneficaryItem.wallet:
-        return const WalletPage();
-      case BeneficaryItem.profile:
-        return const BeneficiaryProfilePage();
+      case DonorItem.home:
+        return const DonorHomePage();
+      case DonorItem.donate:
+        return const DonatePage();
+      case DonorItem.profile:
+        return const DonorProfilePage();
     }
   }
 }
 
-class BeneficiaryBottomNavigationBar extends StatelessWidget {
-  const BeneficiaryBottomNavigationBar({
+class DonorBottomNavigationBar extends StatelessWidget {
+  const DonorBottomNavigationBar({
     required this.changeTabIndex,
     required this.tabIndex,
     super.key,
@@ -69,7 +61,6 @@ class BeneficiaryBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-
     return DecoratedBox(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -98,7 +89,7 @@ class BeneficiaryBottomNavigationBar extends StatelessWidget {
           selectedLabelStyle:
               CustomTypography.fromColor(theme.ferngreen).k14Reg,
           items: <BottomNavigationBarItem>[
-            for (final BeneficaryItem item in BeneficaryItem.values)
+            for (final DonorItem item in DonorItem.values)
               BottomNavigationBarItem(
                 icon: Icon(
                   item.icon,

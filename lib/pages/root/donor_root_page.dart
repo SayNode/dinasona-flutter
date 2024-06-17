@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../widgets/custom_scaffold.dart';
-import '../../widgets/dinasona_navbar.dart';
-import 'controllers/page_loader_controller.dart';
+import '../../widgets/donor_bottom_navigation_bar.dart.dart';
+import 'controllers/donor_root_page_controller.dart';
 
-class PageLoader extends GetView<PageLoaderController> {
-  const PageLoader({super.key});
+class DonorRootPage extends GetView<DonorRootController> {
+  const DonorRootPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +14,9 @@ class PageLoader extends GetView<PageLoaderController> {
       body: Obx(
         () => controller.body[controller.tabIndex.value],
       ),
-      bottomNavigationBar: DinasonaNavbar(
+      bottomNavigationBar: DonorBottomNavigationBar(
         changeTabIndex: controller.changeTabIndex,
-        tabIndex: controller.tabIndex,
+        tabIndex: controller.tabIndex.value,
       ),
     );
   }

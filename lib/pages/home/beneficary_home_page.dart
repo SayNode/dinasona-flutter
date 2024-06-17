@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'controllers/beneficary_home_controller.dart';
+import 'controllers/beneficary_home_page_controller.dart';
 
-class BeneficiaryHomePage extends GetView<BeneficiaryHomeController> {
+class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
   const BeneficiaryHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(BeneficiaryHomeController());
+    Get.put(BeneficiaryHomePageController());
     return const Placeholder();
   }
 }

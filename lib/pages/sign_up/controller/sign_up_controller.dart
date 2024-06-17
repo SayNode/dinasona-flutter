@@ -8,7 +8,7 @@ import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
 import '../../../widgets/dinasona_popup.dart';
-import '../../temp_home_page.dart';
+import '../../home/beneficary_home_page.dart';
 
 class SignupController extends GetxController {
   RxBool showPassword = false.obs;
@@ -60,7 +60,7 @@ class SignupController extends GetxController {
         if (registrationResult.success) {
           await Get.to<void>(() {
             showPopup(isBeneficiary: isBeneficiary);
-            return const TempHomePage();
+            return const BeneficiaryHomePage();
           });
         } else {
           try {
