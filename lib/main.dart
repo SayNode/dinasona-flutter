@@ -4,27 +4,28 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get.dart';
+import 'package:is_first_run/is_first_run.dart';
+
+import './util/constants.dart';
+import 'firebase_options.dart';
+import 'model/message.dart';
+import 'pages/error/error_page.dart';
+import 'pages/lost_connection/lost_connection_page.dart';
 import 'pages/who_you_are.dart';
+import 'service/localization_controller.dart';
+import 'service/main_bindings.dart';
+import 'service/network_service.dart';
 import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
-import 'dart:async';
-import 'pages/lost_connection/lost_connection_page.dart';
-import 'firebase_options.dart';
-import 'service/network_service.dart';
-import 'package:is_first_run/is_first_run.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'pages/error/error_page.dart';
-import 'package:flutter/services.dart';
 import 'util/util.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'service/localization_controller.dart';
-import 'model/message.dart';
-import './util/constants.dart';
-import 'service/main_bindings.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 bool isFirstRun = false;
 Future<void> handleError(
@@ -37,7 +38,6 @@ Future<void> handleError(
   // Failed host lookup
   if (error.toString().contains('Failed host lookup')) {
     Get.put(NetworkService()).onInternetLostPage.value = true;
-    // ignore: inference_failure_on_function_invocation
     await Get.to(() => const LostConnectionPage());
     if (error.toString().contains('No host specified in URI file:///')) {
       return;
@@ -77,7 +77,6 @@ Future<void> handleError(
         );
 
         if (getMaterialAppCalled) {
-          // ignore: inference_failure_on_function_invocation
           await Get.to(() => ErrorPage(error: error));
         } else {
           // Try to exit app:
