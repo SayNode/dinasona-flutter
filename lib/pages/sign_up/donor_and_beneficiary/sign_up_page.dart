@@ -25,7 +25,7 @@ class SignupPage extends GetView<SignupController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SignupController());
+    Get.put(SignupController(isBeneficiary: isBeneficiary));
     if (isBeneficiary) {
       if (controller.chosenLanguage.isEmpty ||
           controller.chosenCurrency.isEmpty) {
