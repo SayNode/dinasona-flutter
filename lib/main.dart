@@ -19,7 +19,7 @@ import 'firebase_options.dart';
 import 'model/message.dart';
 import 'pages/error/error_page.dart';
 import 'pages/lost_connection/lost_connection_page.dart';
-import 'pages/who_you_are.dart';
+import 'pages/page_laoder/page_loader.dart';
 import 'service/localization_controller.dart';
 import 'service/main_bindings.dart';
 import 'service/network_service.dart';
@@ -170,7 +170,7 @@ class MyApp extends StatelessWidget {
           getPages: <GetPage<void>>[
             GetPage<void>(
               name: '/',
-              page: () => const ChosePathPage(),
+              page: () => const PageLoader(),
             ),
           ],
           theme: Get.put<ThemeService>(ThemeService()).themeData,
