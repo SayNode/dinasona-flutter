@@ -26,7 +26,10 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     return Scaffold(
-      body: body,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: body,
+      ),
       backgroundColor: dinasonaTheme.moonstone,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: FloatingActionButton(

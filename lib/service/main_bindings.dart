@@ -12,10 +12,12 @@ import 'logger_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
 import 'storage/storage_service.dart';
+import 'upgrader_service.dart';
 
 class MainBindings extends Bindings {
   @override
   Future<void> dependencies() async {
+    await Get.put(UpgraderService()).init();
     //inject services and controllers
     _injectServices();
     _injectControllers();
