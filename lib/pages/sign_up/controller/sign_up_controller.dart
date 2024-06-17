@@ -8,7 +8,8 @@ import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
 import '../../../widgets/dinasona_popup.dart';
-import '../../temp_home_page.dart';
+import '../../root/beneficiary_root_page.dart';
+import '../../root/donor_root_page.dart';
 
 class SignupController extends GetxController {
   RxBool showPassword = false.obs;
@@ -58,10 +59,7 @@ class SignupController extends GetxController {
           password.text,
         );
         if (registrationResult.success) {
-          await Get.to<void>(() {
-            showPopup(isBeneficiary: isBeneficiary);
-            return const TempHomePage();
-          });
+          await proceed(isBeneficiary);
         } else {
           try {
             registrationFormKey.value.currentState!.validate();
@@ -132,5 +130,18 @@ class SignupController extends GetxController {
     }
     loadingApple.value = false;
     return error.value;
+  }
+
+  Future<void> proceed(bool isBeneficiary) async {
+    await Get.to<void>(
+      () {
+        showPopup(isBeneficiary: isBeneficiary);
+        Get.to(
+          () => isBeneficiary
+              ? const BeneficiaryRootPage()
+              : const DonorRootPage(),
+        );
+      },
+    );
   }
 }
