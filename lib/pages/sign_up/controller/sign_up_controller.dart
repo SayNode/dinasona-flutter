@@ -8,12 +8,10 @@ import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
 import '../../../widgets/dinasona_popup.dart';
-import '../../home/beneficary_home_page.dart';
-import '../../home/donor_home_page.dart';
+import '../../root/beneficiary_root_page.dart';
+import '../../root/donor_root_page.dart';
 
 class SignupController extends GetxController {
-  SignupController({required this.isBeneficiary});
-
   RxBool showPassword = false.obs;
   final Password passwordStrength = Password();
   final TextEditingController password = TextEditingController();
@@ -31,7 +29,6 @@ class SignupController extends GetxController {
   RxBool isCreateAccountButtonActive = false.obs;
   RxBool isEmailFieldEmpty = false.obs;
   RxBool isPasswordFieldEmpty = false.obs;
-  late bool isBeneficiary;
 
   @override
   void onInit() {
@@ -62,7 +59,7 @@ class SignupController extends GetxController {
           password.text,
         );
         if (registrationResult.success) {
-          proceed();
+          await proceed(isBeneficiary);
         } else {
           try {
             registrationFormKey.value.currentState!.validate();
@@ -135,14 +132,14 @@ class SignupController extends GetxController {
     return error.value;
   }
 
-  Future<void> proceed() async {
+  Future<void> proceed(bool isBeneficiary) async {
     await Get.to<void>(
       () {
         showPopup(isBeneficiary: isBeneficiary);
         Get.to(
           () => isBeneficiary
-              ? const BeneficiaryHomePage()
-              : const DonorHomePage(),
+              ? const BeneficiaryRootPage()
+              : const DonorRootPage(),
         );
       },
     );

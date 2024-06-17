@@ -11,13 +11,13 @@ class BeneficiaryRootPage extends GetView<BeneficiaryRootController> {
   @override
   Widget build(BuildContext context) {
     Get.put(BeneficiaryRootController());
-    return CustomScaffold(
-      body: Obx(
-        () => controller.body[controller.tabIndex.value],
-      ),
-      bottomNavigationBar: DonorBottomNavigationBar(
-        changeTabIndex: controller.changeTabIndex,
-        tabIndex: controller.tabIndex.value,
+    return Obx(
+      () => CustomScaffold(
+        body: controller.body[controller.tabIndex.value],
+        bottomNavigationBar: DonorBottomNavigationBar(
+          changeTabIndex: controller.changeTabIndex,
+          tabIndex: controller.tabIndex.value,
+        ),
       ),
     );
   }

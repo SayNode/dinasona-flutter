@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../service/auth_service.dart';
 import '../../home/beneficary_home_page.dart';
+import '../../root/beneficiary_root_page.dart';
 
 class LoginController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
@@ -44,7 +45,7 @@ class LoginController extends GetxController {
         final AuthResponse loginResult =
             await authService.login(email.text, password.text);
         if (loginResult.success) {
-          await Get.to<void>(() => const BeneficiaryHomePage());
+          await Get.to<void>(() => const BeneficiaryRootPage());
         } else {
           error.value = 'Unable to log in with provided credentials';
         }
