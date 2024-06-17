@@ -29,7 +29,8 @@ dependencies:
   shared_preferences: ^2.2.3
   sign_in_with_apple: ^6.1.0
   thor_devkit_dart: ^1.1.0
-  url_launcher: ^6.2.6
+  url_launcher: ^6.2.6 
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
