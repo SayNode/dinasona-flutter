@@ -13,9 +13,14 @@ import '../service/theme_service.dart';
 import '../theme/theme.dart';
 
 class CustomScaffold extends StatelessWidget {
-  const CustomScaffold({required this.body, super.key});
+  const CustomScaffold({
+    required this.body,
+    super.key,
+    this.bottomNavigationBar,
+  });
 
   final Widget body;
+  final Widget? bottomNavigationBar;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +28,7 @@ class CustomScaffold extends StatelessWidget {
     return Scaffold(
       body: body,
       backgroundColor: dinasonaTheme.moonstone,
+      bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: FloatingActionButton(
         heroTag: null,
         onPressed: () {
