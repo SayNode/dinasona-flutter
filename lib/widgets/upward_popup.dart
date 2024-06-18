@@ -1,33 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
-class UpwardOverlay extends StatefulWidget {
-  const UpwardOverlay({
+import '../theme/color.dart';
+import '../theme/typography.dart';
+
+class UpwardPopup extends StatefulWidget {
+  const UpwardPopup({
     required this.title,
-    required this.child,
+    this.child,
     super.key,
     this.margin = EdgeInsets.zero,
     this.duration = const Duration(milliseconds: 500),
     this.height,
     this.color = Colors.white,
-    this.menu,
-    this.onMenu,
     this.headerColor = Colors.black,
+    this.onClose,
   });
   final String title;
-  final Widget child;
+  final Widget? child;
   final EdgeInsets margin;
   final Duration duration;
   final double? height;
   final Color color;
-  final Icon? menu;
   final Color headerColor;
-  final Function()? onMenu;
+  final void Function()? onClose;
 
   @override
-  State<UpwardOverlay> createState() => _UpwardOverlayState();
+  State<UpwardPopup> createState() => _UpwardPopupState();
 }
 
-class _UpwardOverlayState extends State<UpwardOverlay>
+class _UpwardPopupState extends State<UpwardPopup>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<Offset> slideAnimation;
@@ -40,7 +42,7 @@ class _UpwardOverlayState extends State<UpwardOverlay>
     controller = AnimationController(vsync: this, duration: widget.duration);
     slideAnimation = Tween<Offset>(
       begin: const Offset(0, 1),
-      end: const Offset(0, 0),
+      end: Offset.zero,
     ).animate(
       CurvedAnimation(
         parent: controller,
@@ -71,6 +73,7 @@ class _UpwardOverlayState extends State<UpwardOverlay>
                 topLeft: Radius.circular(32),
                 topRight: Radius.circular(32),
               ),
+              color: LightColor.moonstone,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -78,11 +81,10 @@ class _UpwardOverlayState extends State<UpwardOverlay>
                     UpwardOverlayHeader(
                       title: widget.title,
                       headerColor: widget.headerColor,
-                      onMenu: widget.onMenu,
-                      menu: widget.menu,
+                      onClose: widget.onClose,
                     ),
-                    const Divider(),
-                    widget.child,
+                    widget.child ?? Container(),
+                    const Gap(40),
                   ],
                 ),
               ),
@@ -98,56 +100,44 @@ class UpwardOverlayHeader extends StatelessWidget {
   const UpwardOverlayHeader({
     required this.title,
     required this.headerColor,
+    this.onClose,
     super.key,
-    this.menu,
-    this.onMenu,
   });
   final String title;
-  final Icon? menu;
   final Color headerColor;
-  final Function()? onMenu;
+  final void Function()? onClose;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      padding: const EdgeInsets.fromLTRB(8, 28, 8, 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: IconButton(
-              icon: Icon(
-                Icons.west,
-                size: 28,
-                color: headerColor,
+          const Spacer(),
+          Expanded(
+            flex: 6,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: CustomTypography.fromColor(
+                  LightColor.shadowed,
+                ).k20Bold,
               ),
-              onPressed: () => Navigator.pop(context),
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: headerColor,
-                ),
+            child: GestureDetector(
+              onTap: onClose,
+              child: const Icon(
+                Icons.close,
+                size: 24,
+                color: LightColor.shadowed,
               ),
             ),
           ),
-          if (onMenu != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: IconButton(
-                icon: menu ?? const Icon(Icons.menu, size: 32),
-                onPressed: onMenu,
-              ),
-            )
-          else
-            const SizedBox(height: 32, width: 56),
         ],
       ),
     );

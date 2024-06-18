@@ -9,46 +9,51 @@ import '../../../util/util.dart';
 class DonationFieldChip extends StatelessWidget {
   const DonationFieldChip({
     required this.donationField,
+    this.selected = false,
     super.key,
     this.onTap,
   });
 
   final DonationField donationField;
   final void Function()? onTap;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(128),
-        side: const BorderSide(
-          color: LightColor.shadowed,
-        ),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(128),
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: getRelativeWidth(16),
-            vertical: getRelativeHeight(8),
+    return SizedBox(
+      height: getRelativeHeight(40),
+      child: Material(
+        color: selected ? LightColor.ferngreen : Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(128),
+          side: BorderSide(
+            color: selected ? LightColor.ferngreen : LightColor.shadowed,
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Image.asset(
-                'assets/images/donation_fields/${donationField.name}.png',
-                width: getRelativeWidth(24),
-                height: getRelativeWidth(24),
-                fit: BoxFit.cover,
-              ),
-              Gap(getRelativeWidth(8)),
-              Text(
-                donationField.title,
-                style: CustomTypography.fromColor(LightColor.graphite).k14Reg,
-              ),
-            ],
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(128),
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: getRelativeWidth(16),
+              vertical: getRelativeHeight(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  donationField.asset,
+                  fit: BoxFit.fitHeight,
+                ),
+                Gap(getRelativeWidth(8)),
+                Text(
+                  donationField.title,
+                  style: CustomTypography.fromColor(
+                    selected ? LightColor.snowfall : LightColor.graphite,
+                  ).k14Reg,
+                ),
+              ],
+            ),
           ),
         ),
       ),
