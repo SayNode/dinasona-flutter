@@ -20,7 +20,6 @@ import 'logger_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
 import 'storage/storage_service.dart';
-import 'wallet_service.dart';
 
 class MainBindings extends Bindings {
   @override
