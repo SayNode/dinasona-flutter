@@ -16,9 +16,8 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeService service = Get.find<ThemeService>();
     Get.put(BeneficiaryHomePageController());
-    final CustomTheme theme = service.theme;
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     Get.put(BeneficiaryHomePageController());
     return CustomScaffold(
       padding: true,
