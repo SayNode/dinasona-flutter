@@ -12,7 +12,11 @@ class DonorRootPage extends GetView<DonorRootController> {
   Widget build(BuildContext context) {
     return Obx(
       () => CustomScaffold(
-        body: controller.body[controller.tabIndex.value],
+        body: Column(
+          children: <Widget>[
+            controller.body[controller.tabIndex.value],
+          ],
+        ),
         bottomNavigationBar: DonorBottomNavigationBar(
           changeTabIndex: controller.changeTabIndex,
           tabIndex: controller.tabIndex.value,

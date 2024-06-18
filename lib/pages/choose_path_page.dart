@@ -7,7 +7,7 @@ import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 import '../widgets/custom_scaffold.dart';
-import 'sign_up/donor_and_beneficiary/sign_up_page.dart';
+import 'login/donor_and_beneficiary/login_page.dart';
 
 class ChosePathPage extends StatelessWidget {
   const ChosePathPage({super.key});
@@ -29,7 +29,9 @@ class ChosePathPage extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Get.to<void>(
-                      () => const SignupPage(),
+                      () => const LoginPage(
+                        isBeneficiary: false,
+                      ),
                     );
                   },
                   child: Container(
@@ -72,9 +74,7 @@ class ChosePathPage extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Get.to<void>(
-                      () => const SignupPage(
-                        isBeneficiary: true,
-                      ),
+                      () => const LoginPage(),
                     );
                   },
                   child: Container(

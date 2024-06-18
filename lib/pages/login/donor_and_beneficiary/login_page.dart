@@ -9,7 +9,7 @@ import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
-import '../../../widgets/google_apple_sign_in.dart';
+import '../../../widgets/google_apple_sign_in/google_apple_sign_in.dart';
 import '../../sign_up/donor_and_beneficiary/sign_up_page.dart';
 import '../controller/login_controller.dart';
 
@@ -166,9 +166,10 @@ class LoginPage extends GetView<LoginController> {
                           ),
                           SizedBox(height: getRelativeHeight(20)),
                           DinasonaButton(
-                            text: !isBeneficiary ? 'Sign in'.tr : 'Continue'.tr,
+                            text: isBeneficiary ? 'Continue'.tr : 'Sign in'.tr,
                             loading: controller.loading.value,
-                            onPressed: () => controller.loginSubmit(),
+                            onPressed: () =>
+                                controller.loginSubmit(isBeneficiary),
                             color: dinasonaTheme.ferngreen,
                             locked: !controller.isSignInButtonActive.value,
                           ),
