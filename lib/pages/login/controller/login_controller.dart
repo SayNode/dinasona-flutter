@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/auth_service.dart';
-import '../../home/beneficary_home_page.dart';
 import '../../root/beneficiary_root_page.dart';
 
 class LoginController extends GetxController {
