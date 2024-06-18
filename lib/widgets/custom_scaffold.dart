@@ -11,32 +11,22 @@ import 'package:get/get.dart';
 import '../service/logger_service.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
-import '../util/util.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     required this.body,
     super.key,
-    this.padding = false,
     this.bottomNavigationBar,
   });
 
   final Widget body;
   final Widget? bottomNavigationBar;
-  final bool padding;
 
   @override
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     return Scaffold(
-      body: Expanded(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: padding ? getRelativeWidth(20) : 0,
-          ),
-          child: body,
-        ),
-      ),
+      body: body,
       backgroundColor: dinasonaTheme.moonstone,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: FloatingActionButton(
