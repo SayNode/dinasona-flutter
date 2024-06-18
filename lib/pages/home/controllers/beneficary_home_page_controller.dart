@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../widgets/popups/popup_manager.dart';
+
 enum NeedsTab { allNeeds, ongoing, past, draft }
 
 class BeneficiaryHomePageController extends GetxController {
@@ -19,6 +21,10 @@ class BeneficiaryHomePageController extends GetxController {
       case 3:
         currentTab.value = NeedsTab.draft;
     }
+  }
+
+  void openStoryPopup() {
+    PopupManager.openStoryPopup();
   }
 
   void selectTab(NeedsTab tab) {

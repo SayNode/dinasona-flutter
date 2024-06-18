@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
+import '../controllers/beneficary_home_page_controller.dart';
 
-class CreateNeedContainerWidget extends StatelessWidget {
+class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {
   const CreateNeedContainerWidget({super.key});
 
   @override
@@ -38,7 +39,7 @@ class CreateNeedContainerWidget extends StatelessWidget {
               ],
             ),
             InkWell(
-              onTap: () {},
+              onTap: controller.openStoryPopup,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: theme.silvershine,

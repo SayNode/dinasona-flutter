@@ -28,6 +28,7 @@ class TabHeaderWidget extends StatelessWidget {
         top: Radius.circular(10),
       ),
       child: InkWell(
+        onTap: onTap,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
