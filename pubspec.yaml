@@ -17,6 +17,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   flutter_svg: ^2.0.10+1
   font_awesome_flutter: ^10.7.0
+  gap: ^3.0.1
   get: ^4.6.6
   google_fonts: ^6.2.1
   google_sign_in: ^6.2.1
@@ -42,6 +43,7 @@ flutter:
     - assets/
     - assets/locale/
     - assets/images/
+    - assets/images/need_fields/
     - assets/images/logos/
 
   uses-material-design: true

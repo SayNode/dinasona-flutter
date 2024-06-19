@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../pages/sign_up/controller/sign_up_controller.dart';
-import '../service/theme_service.dart';
-import '../theme/color.dart';
-import '../theme/theme.dart';
-import '../theme/typography.dart';
-import '../util/util.dart';
+import '../../service/theme_service.dart';
+import '../../theme/color.dart';
+import '../../theme/theme.dart';
+import '../../theme/typography.dart';
+import '../../util/util.dart';
+import 'controllers/google_apple_sign_in_controller.dart';
 
-class GoogleAppleSignIn extends GetView<SignupController> {
+class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
   const GoogleAppleSignIn({
     super.key,
   });

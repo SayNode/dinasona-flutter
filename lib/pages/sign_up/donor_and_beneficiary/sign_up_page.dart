@@ -10,7 +10,7 @@ import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
-import '../../../widgets/google_apple_sign_in.dart';
+import '../../../widgets/google_apple_sign_in/google_apple_sign_in.dart';
 import '../../login/donor_and_beneficiary/login_page.dart';
 import '../controller/sign_up_controller.dart';
 import 'choose_language_page.dart';
@@ -25,7 +25,6 @@ class SignupPage extends GetView<SignupController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SignupController());
     if (isBeneficiary) {
       if (controller.chosenLanguage.isEmpty ||
           controller.chosenCurrency.isEmpty) {
