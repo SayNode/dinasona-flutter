@@ -57,6 +57,7 @@ class Need {
     required this.amount,
     required this.fields,
     required this.photoUrls,
+    required this.fulfilled,
   });
 
   factory Need.fromJson(Map<String, dynamic> json) {
@@ -73,6 +74,7 @@ class Need {
       photoUrls: (json['photoUrls'] as List<dynamic>)
           .map((dynamic e) => e as String)
           .toList(),
+      fulfilled: json['fulfilled'] as bool,
     );
   }
   final String title;
@@ -83,6 +85,7 @@ class Need {
   final double amount;
   final List<NeedField> fields;
   final List<String> photoUrls;
+  final bool fulfilled;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -94,6 +97,7 @@ class Need {
       'amount': amount,
       'fields': fields.map((NeedField e) => e.index).toList(),
       'photoUrls': photoUrls,
+      'fulfilled': fulfilled,
     };
   }
 }
