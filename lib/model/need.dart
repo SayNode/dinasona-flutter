@@ -1,4 +1,4 @@
-enum DonationField {
+enum NeedField {
   food,
   water,
   clothes,
@@ -15,60 +15,60 @@ enum DonationField {
 
   String get title {
     switch (this) {
-      case DonationField.food:
+      case NeedField.food:
         return 'Food';
-      case DonationField.water:
+      case NeedField.water:
         return 'Water';
-      case DonationField.clothes:
+      case NeedField.clothes:
         return 'Clothes';
-      case DonationField.firewood:
+      case NeedField.firewood:
         return 'Firewood';
-      case DonationField.babyhood:
+      case NeedField.babyhood:
         return 'Babyhood';
-      case DonationField.eggs:
+      case NeedField.eggs:
         return 'Eggs';
-      case DonationField.electricity:
+      case NeedField.electricity:
         return 'Electricity';
-      case DonationField.rice:
+      case NeedField.rice:
         return 'Rice';
-      case DonationField.corn:
+      case NeedField.corn:
         return 'Corn';
-      case DonationField.medicalSupplies:
+      case NeedField.medicalSupplies:
         return 'Medical Supplies';
-      case DonationField.schoolSupplies:
+      case NeedField.schoolSupplies:
         return 'School Supplies';
-      case DonationField.bread:
+      case NeedField.bread:
         return 'Bread';
-      case DonationField.milk:
+      case NeedField.milk:
         return 'Milk';
     }
   }
 
-  String get asset => 'assets/images/donation_fields/$name.png';
+  String get asset => 'assets/images/need_fields/$name.png';
 }
 
-class Donation {
-  Donation({
+class Need {
+  Need({
     required this.title,
     required this.description,
     required this.beneficiaryPhotoUrl,
     required this.beneficiaryName,
     required this.beneficiaryLocation,
     required this.amount,
-    required this.donationFields,
+    required this.fields,
     required this.photoUrls,
   });
 
-  factory Donation.fromJson(Map<String, dynamic> json) {
-    return Donation(
+  factory Need.fromJson(Map<String, dynamic> json) {
+    return Need(
       title: json['title'] as String,
       description: json['description'] as String,
       beneficiaryPhotoUrl: json['beneficiaryPhotoUrl'] as String,
       beneficiaryName: json['beneficiaryName'] as String,
       beneficiaryLocation: json['beneficiaryLocation'] as String,
       amount: json['amount'] as double,
-      donationFields: (json['donationFields'] as List<dynamic>)
-          .map((dynamic e) => DonationField.values[e as int])
+      fields: (json['fields'] as List<dynamic>)
+          .map((dynamic e) => NeedField.values[e as int])
           .toList(),
       photoUrls: (json['photoUrls'] as List<dynamic>)
           .map((dynamic e) => e as String)
@@ -81,7 +81,7 @@ class Donation {
   final String beneficiaryName;
   final String beneficiaryLocation;
   final double amount;
-  final List<DonationField> donationFields;
+  final List<NeedField> fields;
   final List<String> photoUrls;
 
   Map<String, dynamic> toJson() {
@@ -92,8 +92,7 @@ class Donation {
       'beneficiaryName': beneficiaryName,
       'beneficiaryLocation': beneficiaryLocation,
       'amount': amount,
-      'donationFields':
-          donationFields.map((DonationField e) => e.index).toList(),
+      'fields': fields.map((NeedField e) => e.index).toList(),
       'photoUrls': photoUrls,
     };
   }

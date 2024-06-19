@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../model/donation.dart';
+import '../../model/need.dart';
 import '../../theme/color.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
-import '../../widgets/donation_card.dart';
+import '../../widgets/need_card.dart';
 import 'controllers/donor_home_page_controller.dart';
-import 'widgets/donation_field_chip.dart';
-import 'widgets/select_donation_fields_popup.dart';
+import 'widgets/need_field_chip.dart';
+import 'widgets/select_need_fields_popup.dart';
 
 class DonorHomePage extends GetView<DonorHomePageController> {
   const DonorHomePage({super.key});
 
-  Widget generateDonationsInField(DonationField field) {
-    final List<Donation> donationsInField = controller.recommendedDonations
+  Widget generateDonationsInField(NeedField field) {
+    final List<Need> donationsInField = controller.recommendedDonations
         .where(
-          (Donation e) => e.donationFields.contains(field),
+          (Need e) => e.fields.contains(field),
         )
         .toList();
     return donationsInField.isEmpty
@@ -88,12 +88,12 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                   child: Row(
                     children: <Widget>[
                       Gap(getRelativeWidth(20)),
-                      for (final Donation donation in donationsInField)
+                      for (final Need donation in donationsInField)
                         Padding(
                           padding: EdgeInsets.only(right: getRelativeWidth(15)),
                           child: SizedBox(
                             width: getRelativeWidth(320),
-                            child: DonationCard(donation: donation),
+                            child: NeedCard(need: donation),
                           ),
                         ),
                       Gap(getRelativeWidth(5)),
@@ -135,9 +135,9 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                     spacing: getRelativeWidth(5),
                     runSpacing: getRelativeHeight(6),
                     children: <Widget>[
-                      for (final DonationField donationField
-                          in controller.selectedDonationFields)
-                        DonationFieldChip(donationField: donationField),
+                      for (final NeedField field
+                          in controller.selectedNeedFields)
+                        NeedFieldChip(field: field),
                       SizedBox(
                         height: getRelativeHeight(40),
                         child: Material(
@@ -151,9 +151,9 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(128),
                             onTap: () => controller.openExploreMore(
-                              child: SelectDonationFieldsPopup(
-                                initialSelectedDonationFields:
-                                    controller.selectedDonationFields,
+                              child: SelectNeedFieldsPopup(
+                                initialSelectedNeedFields:
+                                    controller.selectedNeedFields,
                               ),
                             ),
                             child: Padding(
@@ -236,13 +236,12 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               child: Row(
                 children: <Widget>[
                   Gap(getRelativeWidth(20)),
-                  for (final Donation donation
-                      in controller.recommendedDonations)
+                  for (final Need donation in controller.recommendedDonations)
                     Padding(
                       padding: EdgeInsets.only(right: getRelativeWidth(15)),
                       child: SizedBox(
                         width: getRelativeWidth(320),
-                        child: DonationCard(donation: donation),
+                        child: NeedCard(need: donation),
                       ),
                     ),
                   Gap(getRelativeWidth(5)),
@@ -251,7 +250,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
             ),
           ),
           Gap(getRelativeHeight(20)),
-          for (final DonationField field in DonationField.values)
+          for (final NeedField field in NeedField.values)
             generateDonationsInField(field),
         ],
       ),

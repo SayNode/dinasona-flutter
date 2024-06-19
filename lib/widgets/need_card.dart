@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../model/donation.dart';
+import '../model/need.dart';
 import '../theme/color.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 
-class DonationCard extends StatelessWidget {
-  const DonationCard({
-    required this.donation,
+class NeedCard extends StatelessWidget {
+  const NeedCard({
+    required this.need,
     super.key,
   });
 
-  final Donation donation;
+  final Need need;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class DonationCard extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(128),
                           child: Image.network(
-                            donation.beneficiaryPhotoUrl,
+                            need.beneficiaryPhotoUrl,
                             height: getRelativeHeight(52),
                             width: getRelativeHeight(52),
                             fit: BoxFit.cover,
@@ -58,7 +58,7 @@ class DonationCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              donation.beneficiaryName,
+                              need.beneficiaryName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(
@@ -66,7 +66,7 @@ class DonationCard extends StatelessWidget {
                               ).k16SemiBold,
                             ),
                             Text(
-                              donation.beneficiaryLocation,
+                              need.beneficiaryLocation,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(
@@ -90,7 +90,7 @@ class DonationCard extends StatelessWidget {
                       Gap(getRelativeWidth(16)),
                       Center(
                         child: Text(
-                          '${donation.amount}\$',
+                          '${need.amount}\$',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: CustomTypography.fromColor(
@@ -111,7 +111,7 @@ class DonationCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    donation.title,
+                    need.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: CustomTypography.fromColor(
@@ -125,7 +125,7 @@ class DonationCard extends StatelessWidget {
                   child: Text(
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    donation.description,
+                    need.description,
                     style: CustomTypography.fromColor(
                       LightColor.graphite,
                     ).k14Reg,
