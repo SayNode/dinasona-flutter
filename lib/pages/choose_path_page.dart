@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../service/theme_service.dart';
@@ -17,104 +18,109 @@ class ChosePathPage extends StatelessWidget {
     final ThemeService service = Get.find();
     final CustomTheme diasonaTheme = service.theme;
     return CustomScaffold(
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: getRelativeWidth(20),
-            vertical: getRelativeHeight(20),
-          ),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to<void>(
-                      () => const LoginPage(
-                        isBeneficiary: false,
+      padding: true,
+      body: Column(
+        children: <Widget>[
+          Gap(getRelativeHeight(20)),
+          Expanded(
+            child: Material(
+              color: diasonaTheme.amberglow,
+              borderRadius: BorderRadius.circular(24),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(24),
+                onTap: () {
+                  Get.to<void>(
+                    () => const LoginPage(
+                      isBeneficiary: false,
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: getRelativeWidth(20),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Gap(getRelativeHeight(20)),
+                      Text(
+                        'Donate now',
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k36Bold,
                       ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 30,
-                    ),
-                    decoration: BoxDecoration(
-                      color: diasonaTheme.amberglow,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(
-                          'Donate now',
-                          style:
-                              CustomTypography.fromColor(diasonaTheme.moonstone)
-                                  .k36Bold,
+                      Text(
+                        'Support those in need by contributing money to help improve their lives.',
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k16SemiBold,
+                        textAlign: TextAlign.center,
+                      ),
+                      Gap(getRelativeHeight(20)),
+                      Expanded(
+                        child: SizedBox.expand(
+                          child: SvgPicture.asset(
+                            'assets/images/give.svg',
+                          ),
                         ),
-                        Text(
-                          'Support those in need by contributing money to help improve their lives.',
-                          style:
-                              CustomTypography.fromColor(diasonaTheme.moonstone)
-                                  .k16SemiBold,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: getRelativeHeight(20)),
-                        SizedBox(
-                          width: getRelativeWidth(160),
-                          child: SvgPicture.asset('assets/images/give.svg'),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Gap(getRelativeHeight(20)),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: getRelativeHeight(20)),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to<void>(
-                      () => const LoginPage(),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 30,
-                    ),
-                    decoration: BoxDecoration(
-                      color: diasonaTheme.ferngreen,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Text(
-                          'Get help',
-                          style:
-                              CustomTypography.fromColor(diasonaTheme.moonstone)
-                                  .k36Bold,
-                        ),
-                        Text(
-                          'Receive financial assistance and support to overcome your challenges..',
-                          style:
-                              CustomTypography.fromColor(diasonaTheme.moonstone)
-                                  .k16SemiBold,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: getRelativeHeight(20)),
-                        SizedBox(
-                          width: getRelativeWidth(160),
-                          child: SvgPicture.asset('assets/images/receive.svg'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Gap(getRelativeHeight(20)),
+          Expanded(
+            child: Material(
+              color: diasonaTheme.ferngreen,
+              borderRadius: BorderRadius.circular(24),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(24),
+                onTap: () {
+                  Get.to<void>(
+                    () => const LoginPage(),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: getRelativeWidth(20),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Gap(getRelativeHeight(20)),
+                      Text(
+                        'Get help',
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k36Bold,
+                      ),
+                      Text(
+                        'Receive financial assistance and support to overcome your challenges..',
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k16SemiBold,
+                        textAlign: TextAlign.center,
+                      ),
+                      Gap(getRelativeHeight(20)),
+                      Expanded(
+                        child: SizedBox.expand(
+                          child: SvgPicture.asset(
+                            'assets/images/receive.svg',
+                          ),
+                        ),
+                      ),
+                      Gap(getRelativeHeight(20)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Gap(getRelativeHeight(20)),
+        ],
       ),
     );
   }
