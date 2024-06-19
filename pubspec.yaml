@@ -42,7 +42,7 @@ flutter:
     - assets/
     - assets/locale/
     - assets/images/
-    - assets/images/donation_fields/
+    - assets/images/need_fields/
     - assets/images/logos/
 
   uses-material-design: true

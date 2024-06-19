@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../model/donation.dart';
+import '../../../model/need.dart';
 import '../../../theme/color.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 
-class DonationFieldChip extends StatelessWidget {
-  const DonationFieldChip({
-    required this.donationField,
+class NeedFieldChip extends StatelessWidget {
+  const NeedFieldChip({
+    required this.field,
     this.selected = false,
     super.key,
     this.onTap,
   });
 
-  final DonationField donationField;
+  final NeedField field;
   final void Function()? onTap;
   final bool selected;
 
@@ -42,12 +42,12 @@ class DonationFieldChip extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image.asset(
-                  donationField.asset,
+                  field.asset,
                   fit: BoxFit.fitHeight,
                 ),
                 Gap(getRelativeWidth(8)),
                 Text(
-                  donationField.title,
+                  field.title,
                   style: CustomTypography.fromColor(
                     selected ? LightColor.snowfall : LightColor.graphite,
                   ).k14Reg,

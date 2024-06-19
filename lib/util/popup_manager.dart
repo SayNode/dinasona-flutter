@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../model/donation.dart';
-import '../pages/home/widgets/select_donation_fields_popup.dart';
+import '../model/need.dart';
+import '../pages/home/widgets/select_need_fields_popup.dart';
 import '../widgets/custom_popup.dart';
 import '../widgets/story_popup.dart';
 
@@ -12,12 +12,12 @@ class PopupManager {
     );
   }
 
-  static Future<List<DonationField>?> openSelectDonationFieldsPopup(
-    List<DonationField> initialSelectedDonationFields,
+  static Future<List<NeedField>?> openSelectNeedFieldsPopup(
+    List<NeedField> initialSelectedNeedFields,
   ) async {
-    return Get.dialog<List<DonationField>>(
-      SelectDonationFieldsPopup(
-        initialSelectedDonationFields: initialSelectedDonationFields,
+    return Get.dialog<List<NeedField>>(
+      SelectNeedFieldsPopup(
+        initialSelectedNeedFields: initialSelectedNeedFields,
       ),
     );
   }
