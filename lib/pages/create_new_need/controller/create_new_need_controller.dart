@@ -8,6 +8,7 @@ class CreateNewNeedController extends GetxController {
   Rx<NeedsTab> currentTab = NeedsTab.screen1.obs;
   PageController pageController = PageController();
   TextEditingController screen1 = TextEditingController();
+  final int descriptionMaxLenth = 300;
 
   void onTabChange(int value) {
     switch (value) {
@@ -19,6 +20,8 @@ class CreateNewNeedController extends GetxController {
         currentTab.value = NeedsTab.screen3;
       case 3:
         currentTab.value = NeedsTab.screen4;
+      case 4:
+        currentTab.value = NeedsTab.screen5;
     }
   }
 

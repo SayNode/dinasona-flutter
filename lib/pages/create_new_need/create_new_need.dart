@@ -10,6 +10,9 @@ import '../../widgets/custom_scaffold.dart';
 import 'controller/create_new_need_controller.dart';
 import 'need_screen1.dart';
 import 'need_screen2.dart';
+import 'need_screen3.dart';
+import 'need_screen4.dart';
+import 'need_screen5.dart';
 import 'widgets/progress_bar.dart';
 
 class CreateNewNeed extends GetView<CreateNewNeedController> {
@@ -50,9 +53,9 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
               children: const <Widget>[
                 NeedScreen1(),
                 NeedScreen2(),
-                NeedScreen1(),
-                NeedScreen1(),
-                NeedScreen1(),
+                NeedScreen3(),
+                NeedScreen4(),
+                NeedScreen5(),
               ],
             ),
           ),

@@ -9,8 +9,8 @@ import '../../util/util.dart';
 import '../../widgets/dinasona_button.dart';
 import 'controller/create_new_need_controller.dart';
 
-class NeedScreen2 extends GetView<CreateNewNeedController> {
-  const NeedScreen2({super.key});
+class NeedScreen5 extends GetView<CreateNewNeedController> {
+  const NeedScreen5({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class NeedScreen2 extends GetView<CreateNewNeedController> {
       children: <Widget>[
         Gap(getRelativeHeight(40)),
         Text(
-          'Choose a category for your need'.tr,
+          'Add photos'.tr,
           style: CustomTypography.fromColor(theme.shadowed).k16SemiBold,
         ),
         const Spacer(),
@@ -28,14 +28,14 @@ class NeedScreen2 extends GetView<CreateNewNeedController> {
           children: <Widget>[
             DinasonaButton(
               expand: false,
-              text: 'Back'.tr,
-              onPressed: () => controller.selectTab(NeedsTab.screen1),
+              text: 'Save as draft'.tr,
+              onPressed: () {},
             ),
             const Gap(10),
             Expanded(
               child: DinasonaButton(
-                text: 'Continue'.tr,
-                onPressed: () => controller.selectTab(NeedsTab.screen3),
+                text: 'Publish'.tr,
+                onPressed: () {},
               ),
             ),
           ],
