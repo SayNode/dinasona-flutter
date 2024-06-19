@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../service/auth_service.dart';
 import '../../root/beneficiary_root_page.dart';
+import '../../root/donor_root_page.dart';
 
 class LoginController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
@@ -36,7 +37,7 @@ class LoginController extends GetxController {
     showPassword.value = !showPassword.value;
   }
 
-  Future<void> loginSubmit() async {
+  Future<void> loginSubmit(bool isBeneficiary) async {
     loading.value = true;
     error.value = '';
     if (email.text.isEmail) {
@@ -44,7 +45,11 @@ class LoginController extends GetxController {
         final AuthResponse loginResult =
             await authService.login(email.text, password.text);
         if (loginResult.success) {
-          await Get.to<void>(() => const BeneficiaryRootPage());
+          await Get.to<void>(
+            () => isBeneficiary
+                ? const BeneficiaryRootPage()
+                : const DonorRootPage(),
+          );
         } else {
           error.value = 'Unable to log in with provided credentials';
         }
