@@ -1,0 +1,196 @@
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
+
+import '../../model/beneficiary.dart';
+import '../../model/need.dart';
+import '../../theme/color.dart';
+import '../../theme/typography.dart';
+import '../../util/util.dart';
+import '../../widgets/alternate_need_card.dart';
+import '../../widgets/custom_scaffold.dart';
+import 'controllers/beneficiary_page_controller.dart';
+import 'widgets/need_tab_chip.dart';
+
+class BeneficiaryPage extends GetView<BeneficiaryPageController> {
+  const BeneficiaryPage({required this.beneficiary, super.key});
+
+  final Beneficiary beneficiary;
+
+  @override
+  Widget build(BuildContext context) {
+    Get.put(BeneficiaryPageController(beneficiary: beneficiary));
+    return CustomScaffold(
+      padding: true,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Gap(getRelativeHeight(20)),
+            SizedBox(
+              width: double.infinity,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: getRelativeHeight(20)),
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(256),
+                        child: Image.network(
+                          beneficiary.photoUrl,
+                          height: getRelativeHeight(200),
+                          width: getRelativeHeight(200),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: LightColor.shadowed.withOpacity(0.2),
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: Get.back,
+                      child: Padding(
+                        padding: EdgeInsets.all(getRelativeHeight(16)),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 20,
+                          color: LightColor.moonstone,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Gap(getRelativeHeight(10)),
+            Text(
+              beneficiary.name,
+              style: CustomTypography.fromColor(LightColor.shadowed).k24Bold,
+            ),
+            Gap(getRelativeHeight(20)),
+            Row(
+              children: <Widget>[
+                const Icon(
+                  Symbols.location_on,
+                  color: LightColor.graphite,
+                ),
+                Gap(getRelativeWidth(6)),
+                Text(
+                  beneficiary.location,
+                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                ),
+              ],
+            ),
+            Gap(getRelativeHeight(10)),
+            Row(
+              children: <Widget>[
+                const Icon(
+                  Symbols.email,
+                  color: LightColor.graphite,
+                ),
+                Gap(getRelativeWidth(6)),
+                Text(
+                  beneficiary.email,
+                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                ),
+              ],
+            ),
+            Gap(getRelativeHeight(10)),
+            Row(
+              children: <Widget>[
+                const Icon(
+                  Symbols.transgender,
+                  color: LightColor.graphite,
+                ),
+                Gap(getRelativeWidth(6)),
+                Text(
+                  beneficiary.gender.title,
+                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                ),
+              ],
+            ),
+            Gap(getRelativeHeight(10)),
+            Row(
+              children: <Widget>[
+                const Icon(
+                  Symbols.calendar_month,
+                  color: LightColor.graphite,
+                ),
+                Gap(getRelativeWidth(6)),
+                Text(
+                  DateFormat('dd MMM yyyy').format(
+                    beneficiary.dateOfBirth,
+                  ),
+                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                ),
+              ],
+            ),
+            Gap(getRelativeHeight(20)),
+            Text(
+              beneficiary.bio,
+              style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+            ),
+            Gap(getRelativeHeight(40)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "@name's Requests".trParams(
+                  <String, String>{'name': beneficiary.name.split(' ')[0]},
+                ),
+                style: CustomTypography.fromColor(LightColor.shadowed)
+                    .kPoppins18Reg,
+              ),
+            ),
+            Gap(getRelativeHeight(10)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Obx(
+                () => Wrap(
+                  spacing: getRelativeWidth(5),
+                  children: <Widget>[
+                    for (final NeedTab tab in NeedTab.values)
+                      NeedTabChip(
+                        text: tab.title,
+                        onTap: () => controller.selectedTab.value = tab,
+                        selected: controller.selectedTab.value == tab,
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            Gap(getRelativeHeight(20)),
+            Obx(
+              () {
+                final List<Need> effectiveNeeds =
+                    controller.needs.where((Need need) {
+                  switch (controller.selectedTab.value) {
+                    case NeedTab.all:
+                      return true;
+                    case NeedTab.ongoing:
+                      return !need.fulfilled;
+                    case NeedTab.past:
+                      return need.fulfilled;
+                  }
+                }).toList();
+                return Column(
+                  children: <Widget>[
+                    for (final Need need in effectiveNeeds)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: getRelativeHeight(16),
+                        ),
+                        child: AlternateNeedCard(need: need),
+                      ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
