@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 import '../model/need.dart';
 import '../theme/color.dart';
 import '../theme/typography.dart';
 import '../util/popup_manager.dart';
 import '../util/util.dart';
-import 'dinasona_button.dart';
 
 class AlternateNeedCard extends StatelessWidget {
   const AlternateNeedCard({
