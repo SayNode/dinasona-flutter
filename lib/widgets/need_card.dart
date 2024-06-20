@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import '../model/need.dart';
+import '../pages/beneficiary/beneficiary_page.dart';
 import '../theme/color.dart';
 import '../theme/typography.dart';
+import '../util/popup_manager.dart';
 import '../util/util.dart';
 
 class NeedCard extends StatelessWidget {
@@ -28,7 +31,7 @@ class NeedCard extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: () {},
+          onTap: () => PopupManager.openNeedPopup(need),
           child: Padding(
             padding: EdgeInsets.symmetric(
               vertical: getRelativeHeight(16),
@@ -41,13 +44,19 @@ class NeedCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(128),
-                          child: Image.network(
-                            need.beneficiaryPhotoUrl,
-                            height: getRelativeHeight(52),
-                            width: getRelativeHeight(52),
-                            fit: BoxFit.cover,
+                        child: GestureDetector(
+                          onTap: () => Get.to<void>(
+                            () =>
+                                BeneficiaryPage(beneficiary: need.beneficiary),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(128),
+                            child: Image.network(
+                              need.beneficiary.photoUrl,
+                              height: getRelativeHeight(52),
+                              width: getRelativeHeight(52),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -58,7 +67,7 @@ class NeedCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              need.beneficiaryName,
+                              need.beneficiary.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(
@@ -66,7 +75,7 @@ class NeedCard extends StatelessWidget {
                               ).k16SemiBold,
                             ),
                             Text(
-                              need.beneficiaryLocation,
+                              need.beneficiary.location,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(

@@ -128,56 +128,51 @@ class DonorHomePage extends GetView<DonorHomePageController> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Obx(
-                () => AnimatedSize(
-                  duration: 1.seconds,
-                  alignment: Alignment.topCenter,
-                  child: Wrap(
-                    spacing: getRelativeWidth(5),
-                    runSpacing: getRelativeHeight(6),
-                    children: <Widget>[
-                      for (final NeedField field
-                          in controller.selectedNeedFields)
-                        NeedFieldChip(field: field),
-                      SizedBox(
-                        height: getRelativeHeight(40),
-                        child: Material(
-                          color: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(128),
-                            side: const BorderSide(
-                              color: LightColor.shadowed,
+                () => Wrap(
+                  spacing: getRelativeWidth(5),
+                  runSpacing: getRelativeHeight(6),
+                  children: <Widget>[
+                    for (final NeedField field in controller.favoriteFields)
+                      NeedFieldChip(field: field),
+                    SizedBox(
+                      height: getRelativeHeight(40),
+                      child: Material(
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(128),
+                          side: const BorderSide(
+                            color: LightColor.shadowed,
+                          ),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(128),
+                          onTap: () => controller.openExploreMore(
+                            child: SelectNeedFieldsPopup(
+                              initialSelectedNeedFields:
+                                  controller.favoriteFields,
                             ),
                           ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(128),
-                            onTap: () => controller.openExploreMore(
-                              child: SelectNeedFieldsPopup(
-                                initialSelectedNeedFields:
-                                    controller.selectedNeedFields,
-                              ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: getRelativeWidth(16),
+                              vertical: getRelativeHeight(8),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: getRelativeWidth(16),
-                                vertical: getRelativeHeight(8),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Explore more'.tr,
-                                    style: CustomTypography.fromColor(
-                                      LightColor.graphite,
-                                    ).k14Reg,
-                                  ),
-                                ],
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Explore more'.tr,
+                                  style: CustomTypography.fromColor(
+                                    LightColor.graphite,
+                                  ).k14Reg,
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -250,7 +245,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
             ),
           ),
           Gap(getRelativeHeight(20)),
-          for (final NeedField field in NeedField.values)
+          for (final NeedField field in controller.favoriteFields)
             generateDonationsInField(field),
         ],
       ),

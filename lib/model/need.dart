@@ -1,3 +1,5 @@
+import 'beneficiary.dart';
+
 enum NeedField {
   food,
   water,
@@ -51,9 +53,7 @@ class Need {
   Need({
     required this.title,
     required this.description,
-    required this.beneficiaryPhotoUrl,
-    required this.beneficiaryName,
-    required this.beneficiaryLocation,
+    required this.beneficiary,
     required this.amount,
     required this.fields,
     required this.photoUrls,
@@ -64,9 +64,8 @@ class Need {
     return Need(
       title: json['title'] as String,
       description: json['description'] as String,
-      beneficiaryPhotoUrl: json['beneficiaryPhotoUrl'] as String,
-      beneficiaryName: json['beneficiaryName'] as String,
-      beneficiaryLocation: json['beneficiaryLocation'] as String,
+      beneficiary:
+          Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
       amount: json['amount'] as double,
       fields: (json['fields'] as List<dynamic>)
           .map((dynamic e) => NeedField.values[e as int])
@@ -79,9 +78,7 @@ class Need {
   }
   final String title;
   final String description;
-  final String beneficiaryPhotoUrl;
-  final String beneficiaryName;
-  final String beneficiaryLocation;
+  final Beneficiary beneficiary;
   final double amount;
   final List<NeedField> fields;
   final List<String> photoUrls;
@@ -91,9 +88,7 @@ class Need {
     return <String, dynamic>{
       'title': title,
       'description': description,
-      'beneficiaryPhotoUrl': beneficiaryPhotoUrl,
-      'beneficiaryName': beneficiaryName,
-      'beneficiaryLocation': beneficiaryLocation,
+      'beneficiary': beneficiary.toJson(),
       'amount': amount,
       'fields': fields.map((NeedField e) => e.index).toList(),
       'photoUrls': photoUrls,
