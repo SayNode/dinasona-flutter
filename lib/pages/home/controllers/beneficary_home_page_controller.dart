@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../widgets/popups/popup_manager.dart';
+import '../../../util/popup_manager.dart';
 
 enum NeedsTab { allNeeds, ongoing, past, draft }
 

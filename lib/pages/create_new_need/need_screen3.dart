@@ -27,7 +27,7 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
         ),
         DinasonaTextField(
           hintText: 'Enter amount',
-          controller: controller.screen1,
+          controller: controller.screen3,
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(
@@ -42,7 +42,7 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             InkWell(
-              onTap: () {},
+              onTap: () => controller.openCurrency(),
               child: Text(
                 'Change currency',
                 style: CustomTypography.fromColor(theme.graphite).k16SemiBold,
@@ -53,22 +53,28 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           ],
         ),
         const Spacer(),
-        Row(
-          children: <Widget>[
-            DinasonaButton(
-              expand: false,
-              text: 'Back'.tr,
-              onPressed: () => controller.selectTab(NeedsTab.screen2),
-            ),
-            const Gap(10),
-            Expanded(
-              child: DinasonaButton(
-                text: 'Continue'.tr,
-                onPressed: () => controller.selectTab(NeedsTab.screen4),
+        Obx(
+          () => Row(
+            children: <Widget>[
+              DinasonaButton(
+                expand: false,
+                showBackIcon: true,
+                text: 'Back'.tr,
+                onPressed: () => controller.selectTab(NeedsTab.screen2),
+                locked: !controller.isScreen3ButtonActive.value,
               ),
-            ),
-          ],
+              const Gap(10),
+              Expanded(
+                child: DinasonaButton(
+                  text: 'Continue'.tr,
+                  onPressed: () => controller.selectTab(NeedsTab.screen4),
+                  locked: !controller.isScreen3ButtonActive.value,
+                ),
+              ),
+            ],
+          ),
         ),
+        Gap(getRelativeHeight(20)),
       ],
     );
   }

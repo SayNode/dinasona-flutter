@@ -11,6 +11,7 @@ class MockData {
       beneficiaryName: 'Fatima Ahmed',
       beneficiaryLocation: 'Nairobi, Kenya',
       amount: 5,
+      fulfilled: false,
       fields: <NeedField>[NeedField.food],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
@@ -25,6 +26,7 @@ class MockData {
       beneficiaryName: 'Rajesh Patel',
       beneficiaryLocation: 'Mumbai, India',
       amount: 10,
+      fulfilled: false,
       fields: <NeedField>[NeedField.electricity],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',

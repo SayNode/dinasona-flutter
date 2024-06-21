@@ -25,26 +25,26 @@ class NeedScreen4 extends GetView<CreateNewNeedController> {
         ),
         Gap(getRelativeHeight(20)),
         Expanded(
-          child: Container(
-            height: getRelativeHeight(500),
-            padding: const EdgeInsets.all(10),
+          flex: 3,
+          child: DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: theme.graphite),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: theme.shadowed.withOpacity(0.5),
+              ),
             ),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: controller.screen1,
-                  maxLength: controller.descriptionMaxLenth,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    hintText: 'Tell your story: describe your need',
-                  ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: controller.screen1,
+                minLines: 20,
+                maxLines: 20,
+                maxLength: controller.descriptionMaxLenth,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Tell your story: describe your need',
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -65,6 +65,7 @@ class NeedScreen4 extends GetView<CreateNewNeedController> {
             ),
           ],
         ),
+        Gap(getRelativeHeight(20)),
       ],
     );
   }

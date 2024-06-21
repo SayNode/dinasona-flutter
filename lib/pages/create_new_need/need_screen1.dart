@@ -29,10 +29,14 @@ class NeedScreen1 extends GetView<CreateNewNeedController> {
           controller: controller.screen1,
         ),
         const Spacer(),
-        DinasonaButton(
-          text: 'Continue'.tr,
-          onPressed: () => controller.selectTab(NeedsTab.screen2),
+        Obx(
+          () => DinasonaButton(
+            text: 'Continue'.tr,
+            onPressed: () => controller.selectTab(NeedsTab.screen2),
+            locked: !controller.isScreen1ButtonActive.value,
+          ),
         ),
+        Gap(getRelativeHeight(20)),
       ],
     );
   }

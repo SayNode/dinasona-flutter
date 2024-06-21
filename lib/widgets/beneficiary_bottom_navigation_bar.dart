@@ -106,7 +106,7 @@ class BeneficiaryBottomNavigationBar extends StatelessWidget {
                   size: 36,
                 ),
                 label: item.name,
-                backgroundColor: const Color.fromRGBO(36, 54, 101, 1),
+                backgroundColor: theme.moonstone,
               ),
           ],
         ),

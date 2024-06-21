@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../theme/color.dart';
 import '../theme/typography.dart';
@@ -12,6 +13,7 @@ class DinasonaButton extends StatelessWidget {
     this.color = LightColor.ferngreen,
     this.expand = true,
     this.showForwardIcon = false,
+    this.showBackIcon = false,
     this.trailingWidget,
     this.fontSize,
     this.loading = false,
@@ -26,6 +28,7 @@ class DinasonaButton extends StatelessWidget {
   final bool expand;
   final Color textColor;
   final bool showForwardIcon;
+  final bool showBackIcon;
   final Widget? trailingWidget;
   final double? fontSize;
   final bool loading;
@@ -54,10 +57,18 @@ class DinasonaButton extends StatelessWidget {
               },
         child: Row(
           mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             SizedBox(width: screenSize.height * 0.02),
             if (showForwardIcon) SizedBox(width: (fontSize ?? 14) * 2),
+            if (showBackIcon) ...<Widget>[
+              Icon(
+                Icons.arrow_back_ios_rounded,
+                color: locked ? LightColor.graphite : textColor,
+                size: fontSize ?? 20,
+              ),
+              Gap(getRelativeWidth(5)),
+            ],
             if (expand)
               Expanded(
                 child: Text(

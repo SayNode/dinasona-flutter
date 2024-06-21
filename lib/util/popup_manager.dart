@@ -1,14 +1,29 @@
 import 'package:get/get.dart';
 
 import '../model/need.dart';
+import '../pages/home/widgets/currency_popup.dart';
 import '../pages/home/widgets/select_need_fields_popup.dart';
 import '../widgets/custom_popup.dart';
-import '../widgets/story_popup.dart';
+import '../widgets/popups/draft_popup.dart';
+import '../widgets/popups/publish_popup.dart';
+import '../widgets/popups/story_popup.dart';
 
 class PopupManager {
   static Future<void> openStoryPopup() async {
     await openCustomPopup<void>(
       const StoryPopup(),
+    );
+  }
+
+  static Future<void> openDraftPopup() async {
+    await openCustomPopup<void>(
+      const DraftPopup(),
+    );
+  }
+
+  static Future<void> openPublishPopup() async {
+    await openCustomPopup<void>(
+      const PublishPopup(),
     );
   }
 
@@ -19,6 +34,14 @@ class PopupManager {
       SelectNeedFieldsPopup(
         initialSelectedNeedFields: initialSelectedNeedFields,
       ),
+    );
+  }
+
+  static Future<List<NeedField>?> openCurrencyPopup(
+    List<NeedField> initialSelectedNeedFields,
+  ) async {
+    return Get.dialog<List<NeedField>>(
+      const CurrencyPopup(),
     );
   }
 }
