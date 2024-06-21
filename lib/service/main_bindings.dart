@@ -7,14 +7,30 @@
 
 import 'package:get/get.dart';
 
+import '../pages/add/controllers/add_page_controller.dart';
+import '../pages/donate/controllers/donate_page_controller.dart';
 import '../pages/donor_settings_page/controllers/donor_settings_page_controller.dart';
-import '../pages/page_laoder/controllers/page_loader_controller.dart';
+import '../pages/home/controllers/beneficary_home_page_controller.dart';
+import '../pages/home/controllers/donor_home_page_controller.dart';
+import '../pages/login/controller/login_controller.dart';
+import '../pages/profile/controllers/beneficiary_profile_page_controller.dart';
+import '../pages/profile/controllers/donor_profile_page_controller.dart';
+import '../pages/root/controllers/beneficiary_root_controller.dart';
+import '../pages/root/controllers/donor_root_page_controller.dart';
+import '../pages/sign_up/controller/sign_up_controller.dart';
+import '../pages/wallet/controllers/wallet_page_controller.dart';
+import '../widgets/google_apple_sign_in/controllers/google_apple_sign_in_controller.dart';
+import 'api_service.dart';
+import 'auth_service.dart';
+import 'localization_controller.dart';
 import 'logger_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
 import 'storage/storage_service.dart';
+import 'theme_service.dart';
 import 'upgrader_service.dart';
 import 'user_state_service.dart';
+import 'wallet_service.dart';
 
 class MainBindings extends Bindings {
   @override
@@ -29,17 +45,35 @@ class MainBindings extends Bindings {
     //Services injection
 
     Get
+      ..lazyPut(APIService.new)
+      ..lazyPut(AuthService.new)
+      ..lazyPut(UserStateService.new)
       ..lazyPut(LoggerService.new)
       ..lazyPut(SecureStorageService.new)
       ..lazyPut(SharedStorageService.new)
       ..lazyPut(UserStateService.new)
-      ..lazyPut(StorageService.new);
+      ..lazyPut(StorageService.new)
+      ..lazyPut(StorageService.new)
+      ..lazyPut(WalletService.new)
+      ..lazyPut(ThemeService.new)
+      ..lazyPut(LocalizationController.new);
   }
 
   void _injectControllers() {
     //Controllers injection
     Get
       ..lazyPut(DonorSettingsPageController.new, fenix: true)
-      ..lazyPut(PageLoaderController.new, fenix: true);
+      ..lazyPut(GoogleAppleSignInController.new, fenix: true)
+      ..lazyPut(SignupController.new, fenix: true)
+      ..lazyPut(LoginController.new, fenix: true)
+      ..lazyPut(DonorRootController.new, fenix: true)
+      ..lazyPut(BeneficiaryRootController.new, fenix: true)
+      ..lazyPut(DonorHomePageController.new, fenix: true)
+      ..lazyPut(BeneficiaryHomePageController.new, fenix: true)
+      ..lazyPut(DonorProfilePageController.new, fenix: true)
+      ..lazyPut(BeneficiaryProfilePageController.new, fenix: true)
+      ..lazyPut(WalletPageController.new, fenix: true)
+      ..lazyPut(AddPageController.new, fenix: true)
+      ..lazyPut(DonatePageController.new, fenix: true);
   }
 }

@@ -10,25 +10,68 @@ import 'package:get/get.dart';
 
 import '../service/logger_service.dart';
 import '../service/theme_service.dart';
+import '../theme/color.dart';
 import '../theme/theme.dart';
+import '../theme/typography.dart';
+import '../util/util.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     required this.body,
     super.key,
+    this.padding = false,
     this.bottomNavigationBar,
+    this.resizeToAvoidBottomInset = false,
+    this.showBackButtonInAppBar = true,
+    this.appBarTitle,
   });
 
   final Widget body;
   final Widget? bottomNavigationBar;
+  final bool resizeToAvoidBottomInset;
+  final bool padding;
+  final bool showBackButtonInAppBar;
+  final String? appBarTitle;
+
+  AppBar _appBar() => AppBar(
+        backgroundColor: LightColor.snowfall,
+        automaticallyImplyLeading: showBackButtonInAppBar,
+        centerTitle: false,
+        title: Text(
+          appBarTitle!,
+          style: CustomTypography.fromColor(
+            LightColor.snowfall,
+          ).k16SemiBold,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: body,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      appBar: appBarTitle != null ? _appBar() : null,
+      body: Column(
+        children: <Widget>[
+          Container(
+            color: dinasonaTheme.moonstone,
+            height: MediaQuery.of(Get.context!).viewPadding.top,
+            width: double.infinity,
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: padding ? getRelativeWidth(20) : 0,
+              ),
+              child: body,
+            ),
+          ),
+          Container(
+            color: dinasonaTheme.moonstone,
+            height: MediaQuery.of(Get.context!).viewPadding.bottom,
+            width: double.infinity,
+          ),
+        ],
       ),
       backgroundColor: dinasonaTheme.moonstone,
       bottomNavigationBar: bottomNavigationBar,

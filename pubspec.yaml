@@ -24,6 +24,7 @@ dependencies:
   html: ^0.15.4
   http: ^1.2.1
   image_picker: ^1.1.2
+  intl: ^0.19.0
   is_first_run: ^1.0.0
   local_auth: ^2.2.0
   material_symbols_icons: ^4.2762.0
@@ -44,6 +45,7 @@ flutter:
     - assets/
     - assets/locale/
     - assets/images/
+    - assets/images/need_fields/
     - assets/images/logos/
 
   uses-material-design: true

@@ -45,4 +45,14 @@ class CustomTypography {
         color: color,
         fontWeight: FontWeight.w400,
       );
+  TextStyle get kInter20Bold => GoogleFonts.inter(
+        fontSize: 20,
+        color: color,
+        fontWeight: FontWeight.w800,
+      );
+  TextStyle get kPoppins18Reg => GoogleFonts.poppins(
+        fontSize: 18,
+        color: color,
+        fontWeight: FontWeight.w500,
+      );
 }
