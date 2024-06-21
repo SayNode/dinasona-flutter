@@ -2,32 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../service/theme_service.dart';
+import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import 'controller/avatar_widget_controller.dart';
 
 class AvatarWidget extends GetView<AvatarWidgetController> {
-  const AvatarWidget({required this.imageUrl, super.key});
-  final String imageUrl;
+  const AvatarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
+    final UserStateService userStateService = Get.find<UserStateService>();
     return InkWell(
       onTap: controller.selectImage,
       child: Stack(
         children: <Widget>[
-          Container(
-            child: (imageUrl.isNotEmpty)
-                ? Image.network(
-                    imageUrl,
-                    height: 100,
-                    width: 100,
-                  )
-                : Image.asset(
-                    'assets/images/profile_picture_placeholder.png',
-                    width: 100,
-                    height: 100,
-                  ),
+          Obx(
+            () {
+              return Container(
+                child: (userStateService.user.value.avatar.isNotEmpty)
+                    ? Image.network(
+                        userStateService.user.value.avatar,
+                        height: 100,
+                        width: 100,
+                      )
+                    : Image.asset(
+                        'assets/images/profile_picture_placeholder.png',
+                        width: 100,
+                        height: 100,
+                      ),
+              );
+            },
           ),
           Positioned(
             bottom: 0,

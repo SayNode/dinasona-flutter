@@ -5,14 +5,134 @@
 //
 // https://saynode.ch
 
+import 'dart:async';
+import 'dart:io';
+
+import 'package:dio/dio.dart' as dio_import;
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../model/user.dart';
+import '../util/constants.dart';
+import 'api_service.dart';
+import 'logger_service.dart';
 
 class UserStateService extends GetxService {
+  final APIService apiService = Get.find<APIService>();
+  final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
+
+  Future<void> init() async {
+    await fetchUserInfo();
+  }
 
   void clear() {
     user.value = User();
+  }
+
+  Future<void> fetchUserInfo() async {
+    final String url =
+        Uri.https(DinasonaConstants.apiDomain, '/user-info/').toString();
+    try {
+      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
+        url,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        user.value = User.fromJson(
+          ((response.data as Map<String, dynamic>)['result']
+              as Map<String, dynamic>)['user'] as Map<String, dynamic>,
+        );
+      } else {
+        logger.log(
+          'Failed to fetch user info: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while fetching user info: $e');
+    }
+  }
+
+  Future<void> updateUserInfo(User updatedUser) async {
+    final String url =
+        Uri.https(DinasonaConstants.apiDomain, '/user-info/update/').toString();
+    try {
+      final dio_import.Response<dynamic> response =
+          await dio_import.Dio().patch(
+        url,
+        data: updatedUser.toJson(),
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        user.value = User.fromJson(
+          ((response.data as Map<String, dynamic>)['result']
+              as Map<String, dynamic>)['user'] as Map<String, dynamic>,
+        );
+      } else {
+        logger.log(
+          'Failed to update user info: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while updating user info: $e');
+    }
+  }
+
+  Future<bool> updateAvatar({
+    required File file,
+  }) async {
+    final String url =
+        Uri.https(DinasonaConstants.apiDomain, '/user-info/update/').toString();
+    try {
+      final dio_import.MultipartFile multipartFile =
+          await dio_import.MultipartFile.fromFile(
+        file.path,
+        contentType: MediaType('image', 'jpg'),
+      );
+      final dio_import.FormData formData =
+          dio_import.FormData.fromMap(<String, dynamic>{
+        'avatar': multipartFile,
+      });
+      final dio_import.Response<dynamic> response = await dio_import.Dio(
+        dio_import.BaseOptions(
+          validateStatus: (int? code) {
+            return true;
+          },
+        ),
+      ).put(
+        url,
+        data: formData,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        await fetchUserInfo();
+        logger.log('Avatar updated');
+        return true;
+      } else {
+        logger.log(
+          'Failed to update avatar: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+        return false;
+      }
+    } catch (e) {
+      logger.log('Error while updating avatar: $e');
+      return false;
+    }
   }
 }

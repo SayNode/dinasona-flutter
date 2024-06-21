@@ -9,12 +9,10 @@ import '../../../widgets/avatar_widget/avatar_widget.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({
-    required this.imageUrl,
     required this.name,
     required this.location,
     super.key,
   });
-  final String imageUrl;
   final String name;
   final String location;
 
@@ -24,7 +22,7 @@ class ProfileWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        AvatarWidget(imageUrl: imageUrl),
+        const AvatarWidget(),
         const Gap(28),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

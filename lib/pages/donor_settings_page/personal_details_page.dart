@@ -19,7 +19,7 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
       padding: true,
       body: Column(
         children: <Widget>[
-          AvatarWidget(imageUrl: controller.imageUrl),
+          const AvatarWidget(),
           Gap(getRelativeHeight(42)),
           DinasonaTextField(
             hintText: 'First Name'.tr,

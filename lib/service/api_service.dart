@@ -17,6 +17,7 @@ import 'auth_service.dart';
 
 class APIService extends GetxService {
   AuthService get authService => Get.put(AuthService());
+  String get authenticationToken => authService.authenticationToken;
 
   /// Patch request to Dinasona backend.
   /// [path] the path to the endpoint.
