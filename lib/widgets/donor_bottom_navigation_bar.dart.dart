@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '../pages/donate/donate_page.dart';
+import '../pages/donor_settings_page/donor_settings_page.dart';
 import '../pages/home/donor_home_page.dart';
-import '../pages/profile/donor_profile_page.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
@@ -43,7 +43,7 @@ enum DonorItem {
       case DonorItem.donate:
         return const DonatePage();
       case DonorItem.profile:
-        return const DonorProfilePage();
+        return const DonorSettingsPage();
     }
   }
 }

@@ -9,16 +9,17 @@ import 'package:get/get.dart';
 
 import '../pages/add/controllers/add_page_controller.dart';
 import '../pages/donate/controllers/donate_page_controller.dart';
+import '../pages/donor_settings_page/controllers/donor_personal_details_controller.dart';
 import '../pages/donor_settings_page/controllers/donor_settings_page_controller.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';
 import '../pages/home/controllers/donor_home_page_controller.dart';
 import '../pages/login/controller/login_controller.dart';
 import '../pages/profile/controllers/beneficiary_profile_page_controller.dart';
-import '../pages/profile/controllers/donor_profile_page_controller.dart';
 import '../pages/root/controllers/beneficiary_root_controller.dart';
 import '../pages/root/controllers/donor_root_page_controller.dart';
 import '../pages/sign_up/controller/sign_up_controller.dart';
 import '../pages/wallet/controllers/wallet_page_controller.dart';
+import '../widgets/avatar_widget/controller/avatar_widget_controller.dart';
 import '../widgets/google_apple_sign_in/controllers/google_apple_sign_in_controller.dart';
 import 'api_service.dart';
 import 'auth_service.dart';
@@ -70,10 +71,11 @@ class MainBindings extends Bindings {
       ..lazyPut(BeneficiaryRootController.new, fenix: true)
       ..lazyPut(DonorHomePageController.new, fenix: true)
       ..lazyPut(BeneficiaryHomePageController.new, fenix: true)
-      ..lazyPut(DonorProfilePageController.new, fenix: true)
       ..lazyPut(BeneficiaryProfilePageController.new, fenix: true)
       ..lazyPut(WalletPageController.new, fenix: true)
       ..lazyPut(AddPageController.new, fenix: true)
+      ..lazyPut(DonorPersonalDetailsController.new, fenix: true)
+      ..lazyPut(AvatarWidgetController.new, fenix: true)
       ..lazyPut(DonatePageController.new, fenix: true);
   }
 }

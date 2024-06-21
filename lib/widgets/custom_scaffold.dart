@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 
 import '../service/logger_service.dart';
 import '../service/theme_service.dart';
-import '../theme/color.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
@@ -34,13 +33,13 @@ class CustomScaffold extends StatelessWidget {
   final String? appBarTitle;
 
   AppBar _appBar() => AppBar(
-        backgroundColor: LightColor.snowfall,
+        backgroundColor: Get.find<ThemeService>().theme.moonstone,
         automaticallyImplyLeading: showBackButtonInAppBar,
         centerTitle: false,
         title: Text(
           appBarTitle!,
           style: CustomTypography.fromColor(
-            LightColor.snowfall,
+            Get.find<ThemeService>().theme.shadowed,
           ).k16SemiBold,
         ),
       );

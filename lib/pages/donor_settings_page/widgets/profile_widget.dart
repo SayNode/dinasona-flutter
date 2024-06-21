@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
+import '../../../widgets/avatar_widget/avatar_widget.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({
@@ -23,18 +24,7 @@ class ProfileWidget extends StatelessWidget {
 
     return Row(
       children: <Widget>[
-        if (imageUrl.isNotEmpty)
-          Image.network(
-            imageUrl,
-            height: 100,
-            width: 100,
-          )
-        else
-          Image.asset(
-            'assets/images/profile_picture_placeholder.png',
-            width: 100,
-            height: 100,
-          ),
+        AvatarWidget(imageUrl: imageUrl),
         const Gap(28),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
