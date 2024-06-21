@@ -36,7 +36,15 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
             controller: controller.loactionController,
           ),
           const Spacer(),
-          DinasonaButton(text: 'Save'.tr, onPressed: controller.save),
+          Obx(
+            () {
+              return DinasonaButton(
+                text: 'Save'.tr,
+                onPressed: controller.save,
+                loading: controller.loading.value,
+              );
+            },
+          ),
           Gap(getRelativeHeight(80)),
         ],
       ),

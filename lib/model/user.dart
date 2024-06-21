@@ -36,4 +36,25 @@ class User {
         'firstLogin': firstLogin,
         'about_me': aboutMe,
       };
+
+  User copyWith({
+    int? id,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? avatar,
+    String? username,
+    bool? firstLogin,
+    String? aboutMe,
+  }) {
+    return User()
+      ..id = id ?? this.id
+      ..email = email ?? this.email
+      ..firstName = firstName ?? this.firstName
+      ..lastName = lastName ?? this.lastName
+      ..avatar = avatar ?? this.avatar
+      ..username = username ?? this.username
+      ..firstLogin = firstLogin ?? this.firstLogin
+      ..aboutMe = aboutMe ?? this.aboutMe;
+  }
 }

@@ -6,12 +6,15 @@
 // https://saynode.ch
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio_import;
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../model/donor_statistics.dart';
 import '../model/user.dart';
 import '../util/constants.dart';
 import 'api_service.dart';
@@ -21,6 +24,11 @@ class UserStateService extends GetxService {
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
+  Rx<DonorStatistics> donorStatistics = DonorStatistics(
+    totalAmountDonated: -1,
+    totalCountriesDonatedTo: -1,
+    totalBeneficiariesDonatedTo: -1,
+  ).obs;
 
   Future<void> init() async {
     await fetchUserInfo();
@@ -29,6 +37,8 @@ class UserStateService extends GetxService {
   void clear() {
     user.value = User();
   }
+
+//TODO: Implement the fetchDonorStatistics method
 
   Future<void> fetchUserInfo() async {
     final String url =
@@ -58,29 +68,31 @@ class UserStateService extends GetxService {
     }
   }
 
-  Future<void> updateUserInfo(User updatedUser) async {
+  Future<void> updateUserInfo(Map<String, dynamic> updatedUser) async {
     final String url =
         Uri.https(DinasonaConstants.apiDomain, '/user-info/update/').toString();
+
     try {
-      final dio_import.Response<dynamic> response =
-          await dio_import.Dio().patch(
-        url,
-        data: updatedUser.toJson(),
-        options: dio_import.Options(
-          headers: <String, dynamic>{
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
-          },
-        ),
+      final http.Response response = await http.patch(
+        Uri.parse(url),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              'Bearer ${apiService.authenticationToken}',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(updatedUser),
       );
+
       if (response.statusCode == 200) {
         user.value = User.fromJson(
-          ((response.data as Map<String, dynamic>)['result']
-              as Map<String, dynamic>)['user'] as Map<String, dynamic>,
+          (((jsonDecode(response.body) as Map<String, dynamic>)['result']
+              as Map<String, dynamic>)['user']) as Map<String, dynamic>,
         );
+        logger.log('User info updated');
+        logger.log(response.body);
       } else {
         logger.log(
-          'Failed to update user info: StatusCode: ${response.statusCode}, ${response.data}',
+          'Failed to update user info: StatusCode: ${response.statusCode}, ${response.body}',
         );
       }
     } catch (e) {
