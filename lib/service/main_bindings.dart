@@ -7,12 +7,14 @@
 
 import 'package:get/get.dart';
 
+import '../pages/donor_settings_page/controllers/donor_settings_page_controller.dart';
 import '../pages/page_laoder/controllers/page_loader_controller.dart';
 import 'logger_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
 import 'storage/storage_service.dart';
 import 'upgrader_service.dart';
+import 'user_state_service.dart';
 
 class MainBindings extends Bindings {
   @override
@@ -30,11 +32,14 @@ class MainBindings extends Bindings {
       ..lazyPut(LoggerService.new)
       ..lazyPut(SecureStorageService.new)
       ..lazyPut(SharedStorageService.new)
+      ..lazyPut(UserStateService.new)
       ..lazyPut(StorageService.new);
   }
 
   void _injectControllers() {
     //Controllers injection
-    Get.lazyPut(PageLoaderController.new, fenix: true);
+    Get
+      ..lazyPut(DonorSettingsPageController.new, fenix: true)
+      ..lazyPut(PageLoaderController.new, fenix: true);
   }
 }

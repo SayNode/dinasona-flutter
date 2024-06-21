@@ -3,12 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import 'controllers/donor_settings_page_controller.dart';
 import 'widgets/footer_widget.dart';
 import 'widgets/people_helped_widget.dart';
 import 'widgets/profile_widget.dart';
 import 'widgets/settings_bar.dart';
 
-class DonorSettingsPage extends StatelessWidget {
+class DonorSettingsPage extends GetView<DonorSettingsPageController> {
   const DonorSettingsPage({super.key});
 
   @override
@@ -18,9 +19,9 @@ class DonorSettingsPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             const Gap(48),
-            const ProfileWidget(
+            ProfileWidget(
               imageUrl: '',
-              name: 'Name Placeholder',
+              name: '${controller.user.firstName} ${controller.user.lastName}',
               location: 'Location Placeholder',
             ),
             const Gap(12),
