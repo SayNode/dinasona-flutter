@@ -9,6 +9,7 @@ import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
+import '../home/controllers/currency_controller.dart';
 import 'controller/create_new_need_controller.dart';
 
 class NeedScreen3 extends GetView<CreateNewNeedController> {
@@ -17,6 +18,7 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    final CurrencyController currencyController = Get.put(CurrencyController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -30,10 +32,12 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           controller: controller.screen3,
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text(
-              'KES',
-              textAlign: TextAlign.center,
-              style: CustomTypography.fromColor(theme.shadowed).k14Reg,
+            child: Obx(
+              () => Text(
+                currencyController.chosenCurrency.value.code,
+                textAlign: TextAlign.center,
+                style: CustomTypography.fromColor(theme.shadowed).k14Reg,
+              ),
             ),
           ),
         ),

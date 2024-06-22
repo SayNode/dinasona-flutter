@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
+import '../../../widgets/dinasona_textfield.dart';
 import '../../../widgets/upward_popup.dart';
 import '../controllers/currency_controller.dart';
+import 'currency_tile_widget.dart';
 
 class CurrencyPopup extends GetView<CurrencyController> {
   const CurrencyPopup({super.key});
@@ -19,65 +22,81 @@ class CurrencyPopup extends GetView<CurrencyController> {
       title: 'Choose currency'.tr,
       onClose: Get.back,
       height: getRelativeHeight(400),
-      child: Material(
-        child: Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: controller.currency.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(vertical: 7),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Material(
+          color: theme.moonstone,
+          child: Expanded(
+            child: Column(
+              children: <Widget>[
+                DinasonaTextField(
+                  prefix: Icon(
+                    Icons.search,
+                    color: theme.graphite,
+                    size: getRelativeHeight(24),
+                  ),
+                  hintText: 'Type a currency',
+                  controller: controller.searchController,
+                  backgroundColor: theme.silvershine,
+                  borderColor: theme.silvershine,
                 ),
-                child: Material(
-                  color: theme.snowfall,
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      controller.chosenCurrency.value =
-                          controller.currency[index]['code']!;
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 10,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 24,
-                            backgroundImage: AssetImage(
-                              controller.currency[index]['image']!,
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                controller.currency[index]['name']!,
-                                style: CustomTypography.fromColor(
-                                  theme.shadowed,
-                                ).k16Reg,
-                              ),
-                              Text(
-                                controller.currency[index]['code']!,
-                                style: CustomTypography.fromColor(
-                                  theme.shadowed,
-                                ).k16Reg,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                Gap(getRelativeHeight(20)),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Your recent currencies'.tr,
+                      style: CustomTypography.fromColor(
+                        theme.shadowed,
+                      ).k14Reg,
                     ),
                   ),
                 ),
-              );
-            },
+                CurrencyTileWidget(
+                  imageUrl: controller.chosenCurrency.value.imageUrl,
+                  code: controller.chosenCurrency.value.code,
+                  name: controller.chosenCurrency.value.name,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'All currencies'.tr,
+                      style: CustomTypography.fromColor(
+                        theme.shadowed,
+                      ).k14Reg,
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.currency.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(vertical: 7),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: CurrencyTileWidget(
+                        imageUrl: controller.currency[index].imageUrl,
+                        code: controller.currency[index].code,
+                        name: controller.currency[index].name,
+                        onTap: () {
+                          controller.chosenCurrency.value =
+                              controller.currency[index];
+                          Get.back();
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

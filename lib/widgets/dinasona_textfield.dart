@@ -18,6 +18,8 @@ class DinasonaTextField extends StatelessWidget {
     this.errorText,
     this.errorColor = LightColor.inferno,
     this.hintColor = LightColor.graphite,
+    this.backgroundColor = LightColor.moonstone,
+    this.borderColor = LightColor.graphite,
     this.labelText,
     this.labelColor = LightColor.shadowed,
     this.textColor = LightColor.shadowed,
@@ -46,6 +48,10 @@ class DinasonaTextField extends StatelessWidget {
 
   /// Color of error text. Default is [LightColor.amberglow].
   final Color hintColor;
+
+  final Color backgroundColor;
+
+  final Color borderColor;
 
   /// Label text to display above the TextField.
   final String? labelText;
@@ -113,13 +119,13 @@ class DinasonaTextField extends StatelessWidget {
           Card(
             shadowColor: Colors.transparent,
             margin: EdgeInsets.zero,
-            color: LightColor.moonstone,
+            color: backgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(getRelativeWidth(16)),
               ),
-              side: const BorderSide(
-                color: LightColor.graphite,
+              side: BorderSide(
+                color: borderColor,
               ),
             ),
             child: Center(
