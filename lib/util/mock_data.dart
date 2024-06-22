@@ -1,3 +1,4 @@
+import '../model/currency_model.dart';
 import '../model/need.dart';
 
 class MockData {
@@ -31,6 +32,29 @@ class MockData {
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
+    ),
+  ];
+
+  static List<CurrencyModel> currency = <CurrencyModel>[
+    CurrencyModel(
+      imageUrl: 'assets/images/switzerland.png',
+      name: 'Swiss Frank',
+      code: 'CHF',
+    ),
+    CurrencyModel(
+      imageUrl: 'assets/images/australia.png',
+      name: 'Australian Dollar',
+      code: 'AUD',
+    ),
+    CurrencyModel(
+      imageUrl: 'assets/images/great_britain.png',
+      name: 'British Pound',
+      code: 'GBP',
+    ),
+    CurrencyModel(
+      imageUrl: 'assets/images/canada.png',
+      name: 'Canadian Dollar',
+      code: 'CAD',
     ),
   ];
 }

@@ -6,10 +6,11 @@ import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../widgets/custom_scaffold.dart';
-import 'beneficiary_widgets/all_needs_widget.dart';
-import 'beneficiary_widgets/create_need_container_widget.dart';
-import 'beneficiary_widgets/tab_header_widget.dart';
 import 'controllers/beneficary_home_page_controller.dart';
+import 'widgets/all_needs_widget.dart';
+import 'widgets/create_need_container_widget.dart';
+import 'widgets/past_needs_widget.dart';
+import 'widgets/tab_header_widget.dart';
 
 class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
   const BeneficiaryHomePage({super.key});
@@ -61,14 +62,14 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
               children: <Widget>[
                 Expanded(
                   child: TabHeaderWidget(
-                    text: 'All (0)'.tr,
+                    text: 'All (${controller.needs.length})'.tr,
                     selected: controller.currentTab.value == NeedsTab.allNeeds,
                     onTap: () => controller.selectTab(NeedsTab.allNeeds),
                   ),
                 ),
                 Expanded(
                   child: TabHeaderWidget(
-                    text: 'Ongoing (0)'.tr,
+                    text: 'Ongoing (${controller.needs.length})'.tr,
                     selected: controller.currentTab.value == NeedsTab.ongoing,
                     onTap: () => controller.selectTab(NeedsTab.ongoing),
                   ),
@@ -97,8 +98,8 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
               children: const <Widget>[
                 AllNeedsWidget(),
                 AllNeedsWidget(),
-                AllNeedsWidget(),
-                AllNeedsWidget(),
+                PastNeedsWidget(),
+                PastNeedsWidget(),
               ],
             ),
           ),
