@@ -3,7 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../model/need.dart';
-import '../../theme/color.dart';
+import '../../service/theme_service.dart';
+import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/need_card.dart';
@@ -14,7 +15,7 @@ import 'widgets/select_need_fields_popup.dart';
 class DonorHomePage extends GetView<DonorHomePageController> {
   const DonorHomePage({super.key});
 
-  Widget generateDonationsInField(NeedField field) {
+  Widget generateDonationsInField(NeedField field, CustomTheme theme) {
     final List<Need> donationsInField = controller.recommendedDonations
         .where(
           (Need e) => e.fields.contains(field),
@@ -35,8 +36,8 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                     children: <Widget>[
                       Text(
                         field.title,
-                        style: CustomTypography.fromColor(LightColor.shadowed)
-                            .k20Bold,
+                        style:
+                            CustomTypography.fromColor(theme.shadowed).k20Bold,
                       ),
                       const Gap(6),
                       Image.asset(
@@ -62,13 +63,13 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                                 Text(
                                   'See all'.tr,
                                   style: CustomTypography.fromColor(
-                                    LightColor.shadowed,
+                                    theme.shadowed,
                                   ).k14Reg,
                                 ),
                                 const Gap(2),
-                                const Icon(
+                                Icon(
                                   Icons.chevron_right,
-                                  color: LightColor.shadowed,
+                                  color: theme.shadowed,
                                   size: 16,
                                 ),
                               ],
@@ -108,6 +109,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -118,7 +120,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Hey, let's make a difference!".tr,
-                style: CustomTypography.fromColor(LightColor.shadowed).k24Bold,
+                style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               ),
             ),
           ),
@@ -140,8 +142,8 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                         color: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(128),
-                          side: const BorderSide(
-                            color: LightColor.shadowed,
+                          side: BorderSide(
+                            color: theme.shadowed,
                           ),
                         ),
                         child: InkWell(
@@ -163,7 +165,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                                 Text(
                                   'Explore more'.tr,
                                   style: CustomTypography.fromColor(
-                                    LightColor.graphite,
+                                    theme.graphite,
                                   ).k14Reg,
                                 ),
                               ],
@@ -184,8 +186,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               children: <Widget>[
                 Text(
                   'Recommended for you ❤️'.tr,
-                  style:
-                      CustomTypography.fromColor(LightColor.shadowed).k20Bold,
+                  style: CustomTypography.fromColor(theme.shadowed).k20Bold,
                 ),
                 const Spacer(),
                 Material(
@@ -206,13 +207,13 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                           Text(
                             'See all'.tr,
                             style: CustomTypography.fromColor(
-                              LightColor.shadowed,
+                              theme.shadowed,
                             ).k14Reg,
                           ),
                           const Gap(2),
-                          const Icon(
+                          Icon(
                             Icons.chevron_right,
-                            color: LightColor.shadowed,
+                            color: theme.shadowed,
                             size: 16,
                           ),
                         ],
@@ -246,7 +247,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
           ),
           Gap(getRelativeHeight(20)),
           for (final NeedField field in controller.favoriteFields)
-            generateDonationsInField(field),
+            generateDonationsInField(field, theme),
         ],
       ),
     );

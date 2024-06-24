@@ -23,7 +23,7 @@ class MockData {
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
-      fulfilled: false,
+      status: NeedStatus.ongoing,
     ),
     Need(
       title: 'Funding for house construction',
@@ -44,7 +44,7 @@ class MockData {
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
-      fulfilled: false,
+      status: NeedStatus.ongoing,
     ),
     Need(
       title: 'Test Data Title',
@@ -64,7 +64,7 @@ class MockData {
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
-      fulfilled: true,
+      status: NeedStatus.past,
     ),
   ];
 }

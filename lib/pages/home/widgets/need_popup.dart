@@ -3,7 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
-import '../../../theme/color.dart';
+import '../../../service/theme_service.dart';
+import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
@@ -20,6 +21,7 @@ class NeedPopup extends GetView<NeedPopupController> {
   @override
   Widget build(BuildContext context) {
     Get.put(NeedPopupController(need: need));
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return UpwardPopup(
       title: 'Donate'.tr,
       onClose: Get.back,
@@ -65,7 +67,7 @@ class NeedPopup extends GetView<NeedPopupController> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: CustomTypography.fromColor(
-                            LightColor.shadowed,
+                            theme.shadowed,
                           ).k16SemiBold,
                         ),
                         Text(
@@ -73,7 +75,7 @@ class NeedPopup extends GetView<NeedPopupController> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: CustomTypography.fromColor(
-                            LightColor.graphite,
+                            theme.graphite,
                           ).k14Reg,
                         ),
                       ],
@@ -84,10 +86,10 @@ class NeedPopup extends GetView<NeedPopupController> {
                     padding: EdgeInsets.symmetric(
                       vertical: getRelativeHeight(8),
                     ),
-                    child: const VerticalDivider(
+                    child: VerticalDivider(
                       width: 1,
                       thickness: 1,
-                      color: LightColor.graphite,
+                      color: theme.graphite,
                     ),
                   ),
                   Gap(getRelativeWidth(16)),
@@ -97,7 +99,7 @@ class NeedPopup extends GetView<NeedPopupController> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: CustomTypography.fromColor(
-                        LightColor.shadowed,
+                        theme.shadowed,
                       ).kInter20Bold,
                     ),
                   ),
@@ -110,10 +112,10 @@ class NeedPopup extends GetView<NeedPopupController> {
             padding: EdgeInsets.symmetric(
               horizontal: getRelativeWidth(20),
             ),
-            child: const Divider(
+            child: Divider(
               height: 1,
               thickness: 1,
-              color: LightColor.graphite,
+              color: theme.graphite,
             ),
           ),
           Gap(getRelativeHeight(24)),
@@ -128,7 +130,7 @@ class NeedPopup extends GetView<NeedPopupController> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: CustomTypography.fromColor(
-                  LightColor.ferngreen,
+                  theme.ferngreen,
                 ).k16SemiBold,
               ),
             ),
@@ -187,7 +189,7 @@ class NeedPopup extends GetView<NeedPopupController> {
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: CustomTypography.fromColor(
-                  LightColor.graphite,
+                  theme.graphite,
                 ).k16Reg,
               ),
             ),

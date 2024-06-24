@@ -6,7 +6,8 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '../../model/beneficiary.dart';
 import '../../model/need.dart';
-import '../../theme/color.dart';
+import '../../service/theme_service.dart';
+import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/alternate_need_card.dart';
@@ -22,6 +23,7 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
   @override
   Widget build(BuildContext context) {
     Get.put(BeneficiaryPageController(beneficiary: beneficiary));
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return CustomScaffold(
       padding: true,
       body: SingleChildScrollView(
@@ -47,17 +49,17 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                     ),
                   ),
                   Material(
-                    color: LightColor.shadowed.withOpacity(0.2),
+                    color: theme.shadowed.withOpacity(0.2),
                     shape: const CircleBorder(),
                     child: InkWell(
                       customBorder: const CircleBorder(),
                       onTap: Get.back,
                       child: Padding(
                         padding: EdgeInsets.all(getRelativeHeight(16)),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back,
                           size: 20,
-                          color: LightColor.moonstone,
+                          color: theme.moonstone,
                         ),
                       ),
                     ),
@@ -68,70 +70,70 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
             Gap(getRelativeHeight(10)),
             Text(
               beneficiary.name,
-              style: CustomTypography.fromColor(LightColor.shadowed).k24Bold,
+              style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
             Gap(getRelativeHeight(20)),
             Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Symbols.location_on,
-                  color: LightColor.graphite,
+                  color: theme.graphite,
                 ),
                 Gap(getRelativeWidth(6)),
                 Text(
                   beneficiary.location,
-                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                  style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ],
             ),
             Gap(getRelativeHeight(10)),
             Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Symbols.email,
-                  color: LightColor.graphite,
+                  color: theme.graphite,
                 ),
                 Gap(getRelativeWidth(6)),
                 Text(
                   beneficiary.email,
-                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                  style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ],
             ),
             Gap(getRelativeHeight(10)),
             Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Symbols.transgender,
-                  color: LightColor.graphite,
+                  color: theme.graphite,
                 ),
                 Gap(getRelativeWidth(6)),
                 Text(
                   beneficiary.gender.title,
-                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                  style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ],
             ),
             Gap(getRelativeHeight(10)),
             Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Symbols.calendar_month,
-                  color: LightColor.graphite,
+                  color: theme.graphite,
                 ),
                 Gap(getRelativeWidth(6)),
                 Text(
                   DateFormat('dd MMM yyyy').format(
                     beneficiary.dateOfBirth,
                   ),
-                  style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+                  style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ],
             ),
             Gap(getRelativeHeight(20)),
             Text(
               beneficiary.bio,
-              style: CustomTypography.fromColor(LightColor.graphite).k16Reg,
+              style: CustomTypography.fromColor(theme.graphite).k16Reg,
             ),
             Gap(getRelativeHeight(40)),
             Align(
@@ -140,8 +142,7 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                 "@name's Requests".trParams(
                   <String, String>{'name': beneficiary.name.split(' ')[0]},
                 ),
-                style: CustomTypography.fromColor(LightColor.shadowed)
-                    .kPoppins18Reg,
+                style: CustomTypography.fromColor(theme.shadowed).kPoppins18Reg,
               ),
             ),
             Gap(getRelativeHeight(10)),
@@ -170,9 +171,9 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                     case NeedTab.all:
                       return true;
                     case NeedTab.ongoing:
-                      return !need.fulfilled;
+                      return need.status == NeedStatus.ongoing;
                     case NeedTab.past:
-                      return need.fulfilled;
+                      return need.status == NeedStatus.past;
                   }
                 }).toList();
                 return Column(
