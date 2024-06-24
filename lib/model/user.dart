@@ -58,3 +58,21 @@ class User {
       ..aboutMe = aboutMe ?? this.aboutMe;
   }
 }
+
+
+// I/flutter (27951): id
+// I/flutter (27951): verified
+// I/flutter (27951): email
+// I/flutter (27951): beneficiary
+// I/flutter (27951): is_donor
+// I/flutter (27951): country
+// I/flutter (27951): name
+// I/flutter (27951): about_me
+// I/flutter (27951): date_of_birth
+// I/flutter (27951): avatar
+// I/flutter (27951): is_first_login
+// I/flutter (27951): reset_psw_code
+// I/flutter (27951): created_at
+// I/flutter (27951): updated_at
+// I/flutter (27951): user
+// I/flutter (27951): area_of_interest

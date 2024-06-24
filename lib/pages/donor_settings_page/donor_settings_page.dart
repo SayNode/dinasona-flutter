@@ -59,17 +59,13 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               SettingsBar(
                 icon: Symbols.logout,
                 title: 'Log out'.tr,
-                onTap: () {
-                  //TODO: Implement personal logout
-                },
+                onTap: controller.logout,
               ),
               const Gap(6),
               SettingsBar(
                 icon: Symbols.delete,
                 title: 'Delete account'.tr,
-                onTap: () {
-                  //TODO: Implement personal delete account
-                },
+                onTap: controller.deleteAccount,
               ),
               const FooterWidget(),
             ],

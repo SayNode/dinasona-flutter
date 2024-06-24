@@ -4,15 +4,15 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../model/user.dart';
 import 'api_service.dart';
@@ -109,9 +109,10 @@ class AuthService extends GetxService {
         try {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
-          userStateService.user.value =
-              // ignore: avoid_dynamic_calls
-              User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
+
+          // userStateService.user.value =
+          //     // ignore: avoid_dynamic_calls
+          //     User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
 
           /// save the token
           // ignore: avoid_dynamic_calls
@@ -128,6 +129,8 @@ class AuthService extends GetxService {
           await storageService.secure.writeString('password', password);
           await storageService.shared
               .writeInt('provider', ProviderTypes.email.index);
+
+          await userStateService.fetchUserInfo();
 
           return AuthResponse(
             <String, dynamic>{'success': 'Successfully logged in.'},
@@ -172,6 +175,39 @@ class AuthService extends GetxService {
         );
       } else {
         // Unexpected status code:
+        throw Exception(
+          'AuthService - error while logging out the user ${unexpectedError(response)}',
+        );
+      }
+    } catch (e) {
+      // Endpoint failed:
+      throw Exception('AuthService logout endpoint failed - $e');
+    }
+  }
+
+  // Log the user out. This function is not responsible for any navigation.
+  Future<AuthResponse> deleteUser() async {
+    try {
+      final http.Response response = await apiService.delete(
+        '/users/delete/',
+        contentType: 'application/json',
+      );
+      if (response.statusCode == 200) {
+        authenticationToken = '';
+        userStateService.clear();
+        // Disconnect other providers
+        await _disconnectProviders();
+        await storageService.shared.writeString('email', '');
+        await storageService.secure.writeString('password', '');
+        await storageService.shared
+            .writeInt('provider', ProviderTypes.none.index);
+        return AuthResponse(
+          <String, dynamic>{'success': 'Successful logout.'},
+          success: true,
+        );
+      } else {
+        // Unexpected status code:
+        // await Get.to<void>(() => HtmlDebug(res: response.body));
         throw Exception(
           'AuthService - error while logging out the user ${unexpectedError(response)}',
         );

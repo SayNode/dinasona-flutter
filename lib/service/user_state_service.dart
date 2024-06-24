@@ -88,7 +88,6 @@ class UserStateService extends GetxService {
           (((jsonDecode(response.body) as Map<String, dynamic>)['result']
               as Map<String, dynamic>)['user']) as Map<String, dynamic>,
         );
-        logger.log('User info updated');
         logger.log(response.body);
       } else {
         logger.log(
