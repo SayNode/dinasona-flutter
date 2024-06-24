@@ -48,6 +48,14 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               ),
               const Gap(6),
               SettingsBar(
+                icon: Symbols.contact_support,
+                title: 'Contact us'.tr,
+                onTap: () {
+                  //TODO: Implement personal details page
+                },
+              ),
+              const Gap(6),
+              SettingsBar(
                 icon: Symbols.globe_asia,
                 title: 'About Dinasona'.tr,
                 onTap: () {
