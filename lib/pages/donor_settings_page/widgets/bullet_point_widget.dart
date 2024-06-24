@@ -7,8 +7,9 @@ import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 
 class BulletPointWidget extends StatelessWidget {
-  const BulletPointWidget({required this.text, super.key});
+  const BulletPointWidget({required this.text, super.key, this.symbol = '•'});
   final String text;
+  final String symbol;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class BulletPointWidget extends StatelessWidget {
       children: <Widget>[
         const SizedBox(width: 8),
         Text(
-          '•',
+          symbol,
           style: CustomTypography.fromColor(theme.graphite).k16Reg,
         ),
         const SizedBox(width: 8),

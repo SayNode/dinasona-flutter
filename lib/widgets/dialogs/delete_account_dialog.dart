@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../pages/choose_path_page.dart';
-import '../../service/auth_service.dart';
+import '../../pages/donor_settings_page/widgets/delete_account_bottom_sheet.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
@@ -37,11 +36,9 @@ class DeleteAccountDialog extends StatelessWidget {
           color: theme.silvershine,
           text: 'Yes, I am'.tr,
           textColor: theme.graphite,
-          onPressed: () async {
-            await Get.find<AuthService>().deleteUser();
-            await Get.offAll<void>(
-              () => const ChosePathPage(),
-              transition: Transition.upToDown,
+          onPressed: () {
+            Get.bottomSheet(
+              const DeleteAccountBottomSheet(),
             );
           },
           padding: EdgeInsets.all(getRelativeWidth(14)),
