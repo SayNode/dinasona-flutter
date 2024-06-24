@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../theme/color.dart';
+import '../../../service/theme_service.dart';
+import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 
@@ -18,14 +20,15 @@ class NeedTabChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return SizedBox(
       height: getRelativeHeight(40),
       child: Material(
-        color: selected ? LightColor.ferngreen : Colors.transparent,
+        color: selected ? theme.ferngreen : Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: selected ? LightColor.ferngreen : LightColor.shadowed,
+            color: selected ? theme.ferngreen : theme.shadowed,
           ),
         ),
         child: InkWell(
@@ -42,7 +45,7 @@ class NeedTabChip extends StatelessWidget {
                 Text(
                   text,
                   style: CustomTypography.fromColor(
-                    selected ? LightColor.snowfall : LightColor.graphite,
+                    selected ? theme.snowfall : theme.graphite,
                   ).k14Reg,
                 ),
               ],

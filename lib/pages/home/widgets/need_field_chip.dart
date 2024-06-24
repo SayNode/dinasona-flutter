@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import '../../../model/need.dart';
-import '../../../theme/color.dart';
+import '../../../service/theme_service.dart';
+import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 
@@ -20,14 +22,15 @@ class NeedFieldChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return SizedBox(
       height: getRelativeHeight(40),
       child: Material(
-        color: selected ? LightColor.ferngreen : Colors.transparent,
+        color: selected ? theme.ferngreen : Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(128),
           side: BorderSide(
-            color: selected ? LightColor.ferngreen : LightColor.shadowed,
+            color: selected ? theme.ferngreen : theme.shadowed,
           ),
         ),
         child: InkWell(
@@ -49,7 +52,7 @@ class NeedFieldChip extends StatelessWidget {
                 Text(
                   field.title,
                   style: CustomTypography.fromColor(
-                    selected ? LightColor.snowfall : LightColor.graphite,
+                    selected ? theme.snowfall : theme.graphite,
                   ).k14Reg,
                 ),
               ],

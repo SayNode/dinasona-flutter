@@ -49,6 +49,12 @@ enum NeedField {
   String get asset => 'assets/images/need_fields/$name.png';
 }
 
+enum NeedStatus {
+  draft,
+  ongoing,
+  past,
+}
+
 class Need {
   Need({
     required this.title,
@@ -57,7 +63,7 @@ class Need {
     required this.amount,
     required this.fields,
     required this.photoUrls,
-    required this.fulfilled,
+    required this.status,
   });
 
   factory Need.fromJson(Map<String, dynamic> json) {
@@ -73,7 +79,7 @@ class Need {
       photoUrls: (json['photoUrls'] as List<dynamic>)
           .map((dynamic e) => e as String)
           .toList(),
-      fulfilled: json['fulfilled'] as bool,
+      status: NeedStatus.values[json['status'] as int],
     );
   }
   final String title;
@@ -82,7 +88,7 @@ class Need {
   final double amount;
   final List<NeedField> fields;
   final List<String> photoUrls;
-  final bool fulfilled;
+  final NeedStatus status;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -92,7 +98,7 @@ class Need {
       'amount': amount,
       'fields': fields.map((NeedField e) => e.index).toList(),
       'photoUrls': photoUrls,
-      'fulfilled': fulfilled,
+      'status': status.index,
     };
   }
 }
