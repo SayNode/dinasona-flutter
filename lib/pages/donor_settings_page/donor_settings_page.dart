@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import 'about_page.dart';
 import 'controllers/donor_settings_page_controller.dart';
 import 'personal_details_page.dart';
 import 'widgets/footer_widget.dart';
@@ -58,9 +59,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               SettingsBar(
                 icon: Symbols.globe_asia,
                 title: 'About Dinasona'.tr,
-                onTap: () {
-                  //TODO: Implement personal about page
-                },
+                onTap: () => Get.to(() => const AboutPage()),
               ),
               const Gap(6),
               SettingsBar(
