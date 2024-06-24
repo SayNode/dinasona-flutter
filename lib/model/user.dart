@@ -10,8 +10,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int? ?? json['pk'] as int? ?? -1,
-        firstName = json['first_name'] as String? ?? '',
-        lastName = json['last_name'] as String? ?? '',
+        name = json['name'] as String? ?? '',
         email = json['email'] as String? ?? '',
         avatar = json['avatar'] as String? ?? '',
         username = json['username'] as String? ?? '',
@@ -19,8 +18,8 @@ class User {
         aboutMe = json['about_me'] as String? ?? '';
   int id = -1;
   String email = '';
-  String firstName = '';
-  String lastName = '';
+  String name = '';
+
   String avatar = '';
   String username = '';
   bool firstLogin = true;
@@ -29,8 +28,7 @@ class User {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'email': email,
-        'first_name': firstName,
-        'last_name': lastName,
+        'name': name,
         'avatar': avatar,
         'username': username,
         'firstLogin': firstLogin,
@@ -40,7 +38,7 @@ class User {
   User copyWith({
     int? id,
     String? email,
-    String? firstName,
+    String? name,
     String? lastName,
     String? avatar,
     String? username,
@@ -50,8 +48,7 @@ class User {
     return User()
       ..id = id ?? this.id
       ..email = email ?? this.email
-      ..firstName = firstName ?? this.firstName
-      ..lastName = lastName ?? this.lastName
+      ..name = name ?? this.name
       ..avatar = avatar ?? this.avatar
       ..username = username ?? this.username
       ..firstLogin = firstLogin ?? this.firstLogin

@@ -23,8 +23,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
             children: <Widget>[
               const Gap(48),
               ProfileWidget(
-                name:
-                    '${controller.user.firstName} ${controller.user.lastName}',
+                name: controller.user.name,
                 location: 'Location Placeholder',
               ),
               const Gap(12),

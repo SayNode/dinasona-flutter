@@ -22,13 +22,8 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
           const AvatarWidget(),
           Gap(getRelativeHeight(42)),
           DinasonaTextField(
-            hintText: 'First Name'.tr,
-            controller: controller.firstNameController,
-          ),
-          const Gap(6),
-          DinasonaTextField(
-            hintText: 'Last Name'.tr,
-            controller: controller.lastNameController,
+            hintText: 'Name'.tr,
+            controller: controller.nameController,
           ),
           const Gap(6),
           DinasonaTextField(
