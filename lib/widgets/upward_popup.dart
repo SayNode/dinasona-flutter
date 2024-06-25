@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
-import '../theme/color.dart';
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
 import '../theme/typography.dart';
 
 class UpwardPopup extends StatefulWidget {
@@ -60,6 +62,7 @@ class _UpwardPopupState extends State<UpwardPopup>
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return Padding(
       padding: widget.margin,
       child: Align(
@@ -73,7 +76,7 @@ class _UpwardPopupState extends State<UpwardPopup>
                 topLeft: Radius.circular(32),
                 topRight: Radius.circular(32),
               ),
-              color: LightColor.moonstone,
+              color: theme.moonstone,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -109,6 +112,8 @@ class UpwardOverlayHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 28, 8, 16),
       child: Row(
@@ -123,7 +128,7 @@ class UpwardOverlayHeader extends StatelessWidget {
                 title,
                 textAlign: TextAlign.center,
                 style: CustomTypography.fromColor(
-                  LightColor.shadowed,
+                  theme.shadowed,
                 ).k20Bold,
               ),
             ),
@@ -131,10 +136,10 @@ class UpwardOverlayHeader extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: onClose,
-              child: const Icon(
+              child: Icon(
                 Icons.close,
                 size: 24,
-                color: LightColor.shadowed,
+                color: theme.shadowed,
               ),
             ),
           ),

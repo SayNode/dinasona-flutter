@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
+import '../service/theme_service.dart';
 import '../theme/color.dart';
+import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 
@@ -38,14 +41,14 @@ class DinasonaButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return SizedBox(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           padding: padding,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          backgroundColor: locked ? LightColor.silvershine : color,
-          disabledBackgroundColor: locked ? LightColor.silvershine : color,
+          backgroundColor: locked ? theme.silvershine : color,
+          disabledBackgroundColor: locked ? theme.silvershine : color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(getRelativeHeight(16)),
           ),
@@ -76,7 +79,7 @@ class DinasonaButton extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: CustomTypography.fromColor(
-                    locked ? LightColor.graphite : textColor,
+                    locked ? theme.graphite : textColor,
                   ).k16SemiBold,
                   maxLines: 1,
                 ),
@@ -87,19 +90,19 @@ class DinasonaButton extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: CustomTypography.fromColor(
-                  locked ? LightColor.graphite : textColor,
+                  locked ? theme.graphite : textColor,
                 ).k16SemiBold,
                 maxLines: 1,
               ),
             if (showForwardIcon) ...<Widget>[
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: locked ? LightColor.graphite : textColor,
+                color: locked ? theme.graphite : textColor,
                 size: fontSize ?? 14,
               ),
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: locked ? LightColor.graphite : textColor,
+                color: locked ? theme.graphite : textColor,
                 size: fontSize ?? 14,
               ),
             ],

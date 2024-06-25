@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../model/need.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 
-class NeedFieldChip extends StatelessWidget {
-  const NeedFieldChip({
-    required this.field,
+class NeedTabChip extends StatelessWidget {
+  const NeedTabChip({
+    required this.text,
     this.selected = false,
     super.key,
     this.onTap,
   });
 
-  final NeedField field;
+  final String text;
   final void Function()? onTap;
   final bool selected;
 
@@ -28,29 +26,24 @@ class NeedFieldChip extends StatelessWidget {
       child: Material(
         color: selected ? theme.ferngreen : Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(128),
+          borderRadius: BorderRadius.circular(16),
           side: BorderSide(
             color: selected ? theme.ferngreen : theme.shadowed,
           ),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(128),
+          borderRadius: BorderRadius.circular(16),
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: getRelativeWidth(16),
               vertical: getRelativeHeight(8),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                  field.asset,
-                  fit: BoxFit.fitHeight,
-                ),
-                Gap(getRelativeWidth(8)),
                 Text(
-                  field.title,
+                  text,
                   style: CustomTypography.fromColor(
                     selected ? theme.snowfall : theme.graphite,
                   ).k14Reg,

@@ -3,7 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../model/need.dart';
-import '../../theme/color.dart';
+import '../../service/theme_service.dart';
+import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/need_card.dart';
@@ -14,6 +15,7 @@ class DonatePage extends GetView<DonatePageController> {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     Get.put(DonatePageController());
     return SingleChildScrollView(
       child: Padding(
@@ -25,7 +27,7 @@ class DonatePage extends GetView<DonatePageController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Donation history'.tr,
-                style: CustomTypography.fromColor(LightColor.shadowed).k24Bold,
+                style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               ),
             ),
             Gap(getRelativeHeight(16)),
