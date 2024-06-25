@@ -30,6 +30,7 @@ class DinasonaTextField extends StatelessWidget {
     this.keyboardType,
     this.maxLength,
     this.onEnter,
+    this.maxLines = 1,
   });
 
   /// Error text to display beneath the TextField.
@@ -85,6 +86,8 @@ class DinasonaTextField extends StatelessWidget {
 
   final int? maxLength;
 
+  final int maxLines;
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -129,6 +132,7 @@ class DinasonaTextField extends StatelessWidget {
                   horizontal: screenSize.width * 0.03,
                 ),
                 child: TextFormField(
+                  maxLines: obscureText ? 1 : maxLines,
                   obscureText: obscureText,
                   textAlignVertical: TextAlignVertical.center,
                   controller: controller,

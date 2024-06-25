@@ -5,6 +5,7 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import 'about_page.dart';
 import 'change_password_page.dart';
+import 'contact_us_page.dart';
 import 'controllers/donor_settings_page_controller.dart';
 import 'personal_details_page.dart';
 import 'widgets/footer_widget.dart';
@@ -29,6 +30,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
                 location: 'Location Placeholder',
               ),
               const Gap(12),
+              //TODO: Implement the actual values
               const PeopleHelpedWidget(
                 peopleHelped: -1,
                 amountDonated: -1,
@@ -50,9 +52,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               SettingsBar(
                 icon: Symbols.contact_support,
                 title: 'Contact us'.tr,
-                onTap: () {
-                  //TODO: Implement personal details page
-                },
+                onTap: () => Get.to(() => const ContactUsPage()),
               ),
               const Gap(6),
               SettingsBar(

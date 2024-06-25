@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
+import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
@@ -71,6 +72,7 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
               );
             },
           ),
+          Gap(getRelativeHeight(80)),
         ],
       ),
     );
