@@ -280,10 +280,11 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<AuthResponse> changePassword(
-      {required String currentPassword,
-      required String newPassword,
-      required String confirmNewPassword}) async {
+  Future<AuthResponse> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) async {
     try {
       final http.Response response = await apiService.post(
         '/auth/password/change/',
