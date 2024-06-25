@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../service/theme_service.dart';
-import '../../theme/color.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -16,17 +15,17 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return Column(
       children: <Widget>[
         ElevatedButton(
           onPressed: controller.googleSignInPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: LightColor.moonstone,
+            backgroundColor: theme.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(getRelativeHeight(20)),
-              side: const BorderSide(color: LightColor.shadowed),
+              side: BorderSide(color: theme.shadowed),
             ),
           ),
           child: Row(
@@ -36,17 +35,16 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
               SizedBox(width: getRelativeWidth(20)),
               Text(
                 'Continue with Google'.tr,
-                style:
-                    CustomTypography.fromColor(dinasonaTheme.shadowed).k16Reg,
+                style: CustomTypography.fromColor(theme.shadowed).k16Reg,
               ),
               if (controller.loadingGoogle.value)
                 Container(
                   margin: EdgeInsets.only(left: getRelativeWidth(20)),
                   width: 20,
                   height: 20,
-                  child: const CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: LightColor.graphite,
+                    color: theme.graphite,
                   ),
                 ),
             ],
@@ -56,11 +54,11 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
         ElevatedButton(
           onPressed: controller.appleSignInPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: LightColor.moonstone,
+            backgroundColor: theme.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(getRelativeHeight(20)),
-              side: const BorderSide(color: LightColor.shadowed),
+              side: BorderSide(color: theme.shadowed),
             ),
           ),
           child: Row(
@@ -70,17 +68,16 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
               SizedBox(width: getRelativeWidth(20)),
               Text(
                 'Continue with Apple'.tr,
-                style:
-                    CustomTypography.fromColor(dinasonaTheme.shadowed).k16Reg,
+                style: CustomTypography.fromColor(theme.shadowed).k16Reg,
               ),
               if (controller.loadingApple.value)
                 Container(
                   margin: EdgeInsets.only(left: getRelativeWidth(20)),
                   width: 20,
                   height: 20,
-                  child: const CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: LightColor.graphite,
+                    color: theme.graphite,
                   ),
                 ),
             ],

@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 
 import '../model/need.dart';
 import '../pages/beneficiary/beneficiary_page.dart';
-import '../theme/color.dart';
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/popup_manager.dart';
 import '../util/util.dart';
@@ -19,14 +20,15 @@ class NeedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return SizedBox(
       height: getRelativeHeight(225),
       child: Material(
         color: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(
-            color: LightColor.snowfall,
+          side: BorderSide(
+            color: theme.snowfall,
           ),
         ),
         child: InkWell(
@@ -71,7 +73,7 @@ class NeedCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(
-                                LightColor.shadowed,
+                                theme.shadowed,
                               ).k16SemiBold,
                             ),
                             Text(
@@ -79,7 +81,7 @@ class NeedCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(
-                                LightColor.graphite,
+                                theme.graphite,
                               ).k14Reg,
                             ),
                           ],
@@ -90,10 +92,10 @@ class NeedCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                           vertical: getRelativeHeight(8),
                         ),
-                        child: const VerticalDivider(
+                        child: VerticalDivider(
                           width: 1,
                           thickness: 1,
-                          color: LightColor.graphite,
+                          color: theme.graphite,
                         ),
                       ),
                       Gap(getRelativeWidth(16)),
@@ -103,7 +105,7 @@ class NeedCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: CustomTypography.fromColor(
-                            LightColor.shadowed,
+                            theme.shadowed,
                           ).kInter20Bold,
                         ),
                       ),
@@ -111,10 +113,10 @@ class NeedCard extends StatelessWidget {
                   ),
                 ),
                 Gap(getRelativeHeight(8)),
-                const Divider(
+                Divider(
                   height: 1,
                   thickness: 1,
-                  color: LightColor.graphite,
+                  color: theme.graphite,
                 ),
                 Gap(getRelativeHeight(14)),
                 Align(
@@ -124,7 +126,7 @@ class NeedCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: CustomTypography.fromColor(
-                      LightColor.ferngreen,
+                      theme.ferngreen,
                     ).k16SemiBold,
                   ),
                 ),
@@ -136,7 +138,7 @@ class NeedCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     need.description,
                     style: CustomTypography.fromColor(
-                      LightColor.graphite,
+                      theme.graphite,
                     ).k14Reg,
                   ),
                 ),

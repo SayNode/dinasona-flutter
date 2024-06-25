@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import '../model/need.dart';
-import '../theme/color.dart';
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/popup_manager.dart';
 import '../util/util.dart';
@@ -17,14 +19,15 @@ class AlternateNeedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return SizedBox(
       height: getRelativeHeight(200),
       child: Material(
         color: Colors.transparent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(
-            color: LightColor.snowfall,
+          side: BorderSide(
+            color: theme.snowfall,
           ),
         ),
         child: Padding(
@@ -41,7 +44,7 @@ class AlternateNeedCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
-                    LightColor.ferngreen,
+                    theme.ferngreen,
                   ).k16SemiBold,
                 ),
               ),
@@ -53,15 +56,15 @@ class AlternateNeedCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   need.description,
                   style: CustomTypography.fromColor(
-                    LightColor.graphite,
+                    theme.graphite,
                   ).k14Reg,
                 ),
               ),
               Gap(getRelativeHeight(8)),
-              const Divider(
+              Divider(
                 height: 1,
                 thickness: 1,
-                color: LightColor.graphite,
+                color: theme.graphite,
               ),
               Gap(getRelativeHeight(14)),
               IntrinsicHeight(
@@ -74,20 +77,20 @@ class AlternateNeedCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: CustomTypography.fromColor(
-                          LightColor.shadowed,
+                          theme.shadowed,
                         ).kInter20Bold,
                       ),
                     ),
                     Gap(getRelativeWidth(16)),
-                    const VerticalDivider(
+                    VerticalDivider(
                       width: 1,
                       thickness: 1,
-                      color: LightColor.graphite,
+                      color: theme.graphite,
                     ),
                     Gap(getRelativeWidth(16)),
                     Expanded(
                       child: Material(
-                        color: LightColor.ferngreen,
+                        color: theme.ferngreen,
                         borderRadius: BorderRadius.circular(18),
                         child: InkWell(
                           onTap: () {
@@ -105,7 +108,7 @@ class AlternateNeedCard extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: CustomTypography.fromColor(
-                                  LightColor.snowfall,
+                                  theme.snowfall,
                                 ).k16SemiBold,
                               ),
                             ),

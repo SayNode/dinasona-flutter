@@ -91,7 +91,7 @@ class DinasonaTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: hasVerticalMargin ? getRelativeHeight(10) : 0,
@@ -109,20 +109,19 @@ class DinasonaTextField extends StatelessWidget {
               ),
               child: Text(
                 labelText!,
-                style:
-                    CustomTypography.fromColor(dinasonaTheme.amberglow).k24Bold,
+                style: CustomTypography.fromColor(theme.amberglow).k24Bold,
               ),
             ),
           Card(
             shadowColor: Colors.transparent,
             margin: EdgeInsets.zero,
-            color: LightColor.moonstone,
+            color: theme.moonstone,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(getRelativeWidth(16)),
               ),
-              side: const BorderSide(
-                color: LightColor.graphite,
+              side: BorderSide(
+                color: theme.graphite,
               ),
             ),
             child: Center(
@@ -137,7 +136,7 @@ class DinasonaTextField extends StatelessWidget {
                   textAlignVertical: TextAlignVertical.center,
                   controller: controller,
                   style: TextStyle(color: textColor),
-                  cursorColor: LightColor.graphite,
+                  cursorColor: theme.graphite,
                   validator: validator,
                   autovalidateMode: autovalidateMode,
                   onChanged: onChanged,
@@ -145,8 +144,8 @@ class DinasonaTextField extends StatelessWidget {
                   maxLength: maxLength,
                   onFieldSubmitted: onEnter,
                   decoration: InputDecoration(
-                    counterStyle: const TextStyle(
-                      color: LightColor.shadowed,
+                    counterStyle: TextStyle(
+                      color: theme.shadowed,
                     ),
                     isDense: true,
                     hintText: hintText,

@@ -32,31 +32,33 @@ class CustomScaffold extends StatelessWidget {
   final bool showBackButtonInAppBar;
   final String? appBarTitle;
 
-  AppBar _appBar() => AppBar(
-        backgroundColor: Get.find<ThemeService>().theme.moonstone,
+  AppBar _appBar(CustomTheme theme) => AppBar(
+        backgroundColor: theme.moonstone,
         automaticallyImplyLeading: showBackButtonInAppBar,
         centerTitle: false,
+        elevation: 0,
         title: Text(
           appBarTitle!,
           style: CustomTypography.fromColor(
-            Get.find<ThemeService>().theme.shadowed,
+            theme.shadowed,
           ).k16SemiBold,
         ),
       );
 
   @override
   Widget build(BuildContext context) {
-    final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return Scaffold(
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: appBarTitle != null ? _appBar() : null,
+      appBar: appBarTitle != null ? _appBar(theme) : null,
       body: Column(
         children: <Widget>[
-          Container(
-            color: dinasonaTheme.moonstone,
-            height: MediaQuery.of(Get.context!).viewPadding.top,
-            width: double.infinity,
-          ),
+          if (appBarTitle == null)
+            Container(
+              color: theme.moonstone,
+              height: MediaQuery.of(Get.context!).viewPadding.top,
+              width: double.infinity,
+            ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -66,13 +68,13 @@ class CustomScaffold extends StatelessWidget {
             ),
           ),
           Container(
-            color: dinasonaTheme.moonstone,
+            color: theme.moonstone,
             height: MediaQuery.of(Get.context!).viewPadding.bottom,
             width: double.infinity,
           ),
         ],
       ),
-      backgroundColor: dinasonaTheme.moonstone,
+      backgroundColor: theme.moonstone,
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: FloatingActionButton(
         heroTag: null,
