@@ -9,7 +9,6 @@ import '../../widgets/custom_scaffold.dart';
 import 'controllers/beneficary_home_page_controller.dart';
 import 'widgets/all_needs_widget.dart';
 import 'widgets/create_need_container_widget.dart';
-import 'widgets/past_needs_widget.dart';
 import 'widgets/tab_header_widget.dart';
 
 class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
@@ -69,21 +68,21 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
                 ),
                 Expanded(
                   child: TabHeaderWidget(
-                    text: 'Ongoing (${controller.needs.length})'.tr,
+                    text: 'Ongoing (${controller.onGoingNeeds.length})'.tr,
                     selected: controller.currentTab.value == NeedsTab.ongoing,
                     onTap: () => controller.selectTab(NeedsTab.ongoing),
                   ),
                 ),
                 Expanded(
                   child: TabHeaderWidget(
-                    text: 'Past (0)'.tr,
+                    text: 'Past (${controller.pastNeeds.length})'.tr,
                     selected: controller.currentTab.value == NeedsTab.past,
                     onTap: () => controller.selectTab(NeedsTab.past),
                   ),
                 ),
                 Expanded(
                   child: TabHeaderWidget(
-                    text: 'Draft (0)'.tr,
+                    text: 'Draft (${controller.draftNeeds.length})'.tr,
                     selected: controller.currentTab.value == NeedsTab.draft,
                     onTap: () => controller.selectTab(NeedsTab.draft),
                   ),
@@ -95,11 +94,15 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
             child: PageView(
               controller: controller.pageController,
               onPageChanged: controller.onTabChange,
-              children: const <Widget>[
-                AllNeedsWidget(),
-                AllNeedsWidget(),
-                PastNeedsWidget(),
-                PastNeedsWidget(),
+              children: <Widget>[
+                TabNeedWidget(needs: controller.needs),
+                TabNeedWidget(needs: controller.onGoingNeeds),
+                TabNeedWidget(
+                  needs: controller.pastNeeds,
+                ),
+                TabNeedWidget(
+                  needs: controller.draftNeeds,
+                ),
               ],
             ),
           ),

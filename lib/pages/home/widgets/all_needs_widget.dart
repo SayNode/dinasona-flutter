@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
+import '../../../model/need.dart';
+import '../../../util/popup_manager.dart';
 import '../../../widgets/need_card.dart';
-import '../controllers/beneficary_home_page_controller.dart';
 
-class AllNeedsWidget extends GetView<BeneficiaryHomePageController> {
-  const AllNeedsWidget({super.key});
-
+class TabNeedWidget extends StatelessWidget {
+  const TabNeedWidget({
+    required this.needs,
+    super.key,
+  });
+  final List<Need> needs;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          if (controller.needs.isEmpty)
+          if (needs.isEmpty)
             const Center(
               child: Padding(
                 padding: EdgeInsets.all(20),
@@ -25,10 +28,14 @@ class AllNeedsWidget extends GetView<BeneficiaryHomePageController> {
           else
             ListView.builder(
               shrinkWrap: true,
-              itemCount: controller.needs.length,
+              itemCount: needs.length,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return Obx(() => NeedCard(need: controller.needs[index]));
+                return NeedCard(
+                  need: needs[index],
+                  onCardClicked: () =>
+                      PopupManager.openMyNeedPopup(needs[index]),
+                );
               },
             ),
         ],

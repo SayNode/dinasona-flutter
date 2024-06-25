@@ -10,11 +10,15 @@ enum NeedsTab { allNeeds, ongoing, past, draft }
 class BeneficiaryHomePageController extends GetxController {
   PageController pageController = PageController();
   RxList<Need> needs = <Need>[].obs;
+  RxList<Need> onGoingNeeds = <Need>[].obs;
+  RxList<Need> draftNeeds = <Need>[].obs;
+  RxList<Need> pastNeeds = <Need>[].obs;
   Rx<NeedsTab> currentTab = NeedsTab.allNeeds.obs;
 
   @override
   void onInit() {
     needs.addAll(MockData.needs);
+    filterList();
     super.onInit();
   }
 
@@ -28,6 +32,21 @@ class BeneficiaryHomePageController extends GetxController {
         currentTab.value = NeedsTab.past;
       case 3:
         currentTab.value = NeedsTab.draft;
+    }
+  }
+
+  void filterList() {
+    onGoingNeeds.clear();
+    draftNeeds.clear();
+    pastNeeds.clear();
+    for (final Need need in needs) {
+      if (need.status == NeedStatus.ongoing) {
+        onGoingNeeds.add(need);
+      } else if (need.status == NeedStatus.draft) {
+        draftNeeds.add(need);
+      } else if (need.status == NeedStatus.past) {
+        pastNeeds.add(need);
+      }
     }
   }
 

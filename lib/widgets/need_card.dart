@@ -14,9 +14,11 @@ class NeedCard extends StatelessWidget {
   const NeedCard({
     required this.need,
     super.key,
+    this.onCardClicked,
   });
 
   final Need need;
+  final void Function()? onCardClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class NeedCard extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: () => PopupManager.openNeedPopup(need),
+          onTap: onCardClicked ?? () => PopupManager.openNeedPopup(need),
           child: Padding(
             padding: EdgeInsets.symmetric(
               vertical: getRelativeHeight(16),
@@ -53,11 +55,15 @@ class NeedCard extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(128),
-                            child: Image.network(
-                              need.beneficiary.photoUrl,
-                              height: getRelativeHeight(52),
-                              width: getRelativeHeight(52),
-                              fit: BoxFit.cover,
+                            child: Stack(
+                              children: <Widget>[
+                                Image.network(
+                                  need.beneficiary.photoUrl,
+                                  height: getRelativeHeight(52),
+                                  width: getRelativeHeight(52),
+                                  fit: BoxFit.cover,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -73,7 +79,9 @@ class NeedCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(
-                                theme.shadowed,
+                                need.status == NeedStatus.past
+                                    ? theme.graphite
+                                    : theme.shadowed,
                               ).k16SemiBold,
                             ),
                             Text(
@@ -99,16 +107,42 @@ class NeedCard extends StatelessWidget {
                         ),
                       ),
                       Gap(getRelativeWidth(16)),
-                      Center(
-                        child: Text(
-                          '${need.amount}\$',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: CustomTypography.fromColor(
-                            theme.shadowed,
-                          ).kInter20Bold,
+                      if (need.status == NeedStatus.draft)
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: theme.graphite,
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Draft',
+                                style: CustomTypography.fromColor(
+                                  theme.shadowed,
+                                ).k14Reg,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        Center(
+                          child: Text(
+                            '${need.amount}\$',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: CustomTypography.fromColor(
+                              need.status == NeedStatus.past
+                                  ? theme.graphite
+                                  : theme.shadowed,
+                            ).kInter20Bold,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -126,7 +160,9 @@ class NeedCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: CustomTypography.fromColor(
-                      theme.ferngreen,
+                      need.status == NeedStatus.past
+                          ? theme.graphite
+                          : theme.ferngreen,
                     ).k16SemiBold,
                   ),
                 ),
