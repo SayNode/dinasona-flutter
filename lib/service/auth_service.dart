@@ -280,6 +280,39 @@ class AuthService extends GetxService {
     }
   }
 
+  Future<AuthResponse> changePassword(
+      {required String currentPassword,
+      required String newPassword,
+      required String confirmNewPassword}) async {
+    try {
+      final http.Response response = await apiService.post(
+        '/auth/password/change/',
+        contentType: 'application/json',
+        body: <String, dynamic>{
+          'old_password': currentPassword,
+          'new_password1': newPassword,
+          'new_password2': confirmNewPassword,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return AuthResponse(
+          <String, dynamic>{'success': 'Password changed.'},
+          success: true,
+        );
+      } else {
+        // Unexpected status code:
+        debugPrint(
+          'AuthService - ${unexpectedError(response)}',
+        );
+        return AuthResponse(parseErrorMap(response), success: false);
+      }
+    } catch (e) {
+      // Endpoint failed:
+      throw Exception('AuthService change password endpoint failed - $e');
+    }
+  }
+
   // Initiate change password process. Send code to user.
   Future<AuthResponse> resetPassword(String email) async {
     try {

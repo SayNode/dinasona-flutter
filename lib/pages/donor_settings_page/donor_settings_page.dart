@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import 'about_page.dart';
+import 'change_password_page.dart';
 import 'controllers/donor_settings_page_controller.dart';
 import 'personal_details_page.dart';
 import 'widgets/footer_widget.dart';
@@ -43,9 +44,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               SettingsBar(
                 icon: Symbols.password,
                 title: 'Change password'.tr,
-                onTap: () {
-                  //TODO: Implement personal details page
-                },
+                onTap: () => Get.to(() => const ChangePasswordPage()),
               ),
               const Gap(6),
               SettingsBar(
