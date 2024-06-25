@@ -56,7 +56,6 @@ class User {
   }
 }
 
-
 // I/flutter (27951): id
 // I/flutter (27951): verified
 // I/flutter (27951): email
