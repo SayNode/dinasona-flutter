@@ -6,7 +6,14 @@
 // https://saynode.ch
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import '../../service/theme_service.dart';
+import '../../theme/theme.dart';
+import '../../theme/typography.dart';
+import '../../util/util.dart';
+import '../../widgets/custom_scaffold.dart';
 import 'controller/error_controller.dart';
 
 class ErrorPage extends GetView<ErrorController> {
@@ -17,11 +24,34 @@ class ErrorPage extends GetView<ErrorController> {
   @override
   Widget build(BuildContext context) {
     Get.put(ErrorController());
+    final CustomTheme theme = Get.put(ThemeService()).theme;
 
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'This is the Error Page. You can customize it in error_page.dart.\n$error',
+    return CustomScaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: getRelativeHeight(70),
+          horizontal: getRelativeWidth(20),
+        ),
+        child: Column(
+          children: <Widget>[
+            Image.asset(
+              'assets/images/logos/dinasona_logo.png',
+              scale: 2.5,
+            ),
+            Gap(
+              getRelativeHeight(80),
+            ),
+            Text(
+              'Ohh, no'.tr,
+              style: CustomTypography.fromColor(theme.shadowed).k36Bold,
+            ),
+            Gap(getRelativeHeight(10)),
+            Text(
+              "Oops! It looks like we've hit a bump in the road. Don't worry though, Dinasona team is on it and we'll have things up and running smoothly again in no time. Thanks for your patience 💚 !",
+              style: CustomTypography.fromColor(theme.graphite).k16Reg,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
