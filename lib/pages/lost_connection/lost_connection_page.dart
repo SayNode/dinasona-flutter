@@ -6,68 +6,59 @@
 // https://saynode.ch
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../service/network_service.dart';
+import '../../service/theme_service.dart';
+import '../../theme/theme.dart';
+import '../../theme/typography.dart';
 import '../../util/util.dart';
+import '../../widgets/custom_scaffold.dart';
+import '../../widgets/dinasona_button.dart';
 
 class LostConnectionPage extends StatelessWidget {
   const LostConnectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final CustomTheme theme = Get.put(ThemeService()).theme;
     return PopScope(
       canPop: false,
-      child: Scaffold(
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(71)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset('assets/icons/lost_connection_icon.svg'),
-                SizedBox(height: getRelativeHeight(47)),
-                Text(
-                  'No internet connection'.tr,
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ), //TODO Add theme color for text,
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  'Check your internet connection and reload the page'.tr,
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ), //TODO Add theme color for text,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: getRelativeHeight(57)),
-                ElevatedButton(
-                  child: Text(
-                    'Reload'.tr,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ), //TODO Add theme color for text,
-                  ),
-                  onPressed: () async {
-                    // await Get.put(NetworkService()).checkInternetStatus();
-                  },
-                ),
-                SizedBox(height: getRelativeHeight(37)),
-                GestureDetector(
-                  onTap: () async {
-                    final Uri url = Uri.parse('mailto: [email]');
-                    if (!await launchUrl(url)) {}
-                  },
-                  child: Text(
-                    'HELP & SUPPORT'.tr,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ), //TODO Add theme color for text,
-                  ),
-                ),
-              ],
-            ),
+      child: CustomScaffold(
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: getRelativeWidth(20),
+            vertical: getRelativeHeight(70),
+          ),
+          child: Column(
+            children: <Widget>[
+              Image.asset(
+                'assets/images/logos/dinasona_logo.png',
+                scale: 2.5,
+              ),
+              SizedBox(height: getRelativeHeight(150)),
+              Text(
+                'Connection lost'.tr,
+                style: CustomTypography.fromColor(theme.shadowed).k36Bold,
+              ),
+              Gap(getRelativeHeight(10)),
+              Text(
+                "Uh-oh! It seems like you're not connected to the internet. Please check your connection and try again"
+                    .tr,
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: getRelativeHeight(57)),
+              DinasonaButton(
+                text: 'Retry connection',
+                onPressed: () async {
+                  await Get.put(NetworkService()).checkInternetStatus();
+                },
+                color: theme.amberglow,
+              ),
+              SizedBox(height: getRelativeHeight(37)),
+            ],
           ),
         ),
       ),
