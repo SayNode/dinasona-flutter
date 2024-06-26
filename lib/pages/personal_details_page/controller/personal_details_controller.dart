@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../service/theme_service.dart';
+import '../../create_new_need/create_new_need.dart';
 
 enum Gender {
   male('Male', Icons.male),
@@ -68,6 +69,7 @@ class PersonalDetailsController extends GetxController {
 
   void submit() {
     // TODO implement submit
+    Get.to<void>(() => const CreateNewNeed());
     log('Image: ${selectedImage.value?.path}');
     log('Full Name: ${fullNameController.text}');
     log('Email: ${emailController.text}');

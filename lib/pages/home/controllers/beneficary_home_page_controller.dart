@@ -1,3 +1,63 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class BeneficiaryHomePageController extends GetxController {}
+import '../../../model/need.dart';
+import '../../../util/mock_data.dart';
+import '../../../util/popup_manager.dart';
+
+enum NeedsTab { allNeeds, ongoing, past, draft }
+
+class BeneficiaryHomePageController extends GetxController {
+  PageController pageController = PageController();
+  RxList<Need> needs = <Need>[].obs;
+  RxList<Need> onGoingNeeds = <Need>[].obs;
+  RxList<Need> draftNeeds = <Need>[].obs;
+  RxList<Need> pastNeeds = <Need>[].obs;
+  Rx<NeedsTab> currentTab = NeedsTab.allNeeds.obs;
+
+  @override
+  void onInit() {
+    needs.addAll(MockData.needs);
+    filterList();
+    super.onInit();
+  }
+
+  void onTabChange(int value) {
+    switch (value) {
+      case 0:
+        currentTab.value = NeedsTab.allNeeds;
+      case 1:
+        currentTab.value = NeedsTab.ongoing;
+      case 2:
+        currentTab.value = NeedsTab.past;
+      case 3:
+        currentTab.value = NeedsTab.draft;
+    }
+  }
+
+  void filterList() {
+    onGoingNeeds.clear();
+    draftNeeds.clear();
+    pastNeeds.clear();
+    for (final Need need in needs) {
+      if (need.status == NeedStatus.ongoing) {
+        onGoingNeeds.add(need);
+      } else if (need.status == NeedStatus.draft) {
+        draftNeeds.add(need);
+      } else if (need.status == NeedStatus.past) {
+        pastNeeds.add(need);
+      }
+    }
+  }
+
+  void openStoryPopup() {
+    PopupManager.openStoryPopup();
+  }
+
+  void selectTab(NeedsTab tab) {
+    pageController.jumpToPage(
+      tab.index,
+    );
+    currentTab.value = tab;
+  }
+}
