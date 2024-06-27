@@ -23,6 +23,7 @@ class CustomScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = false,
     this.showBackButtonInAppBar = true,
     this.appBarTitle,
+    this.actions,
   });
 
   final Widget body;
@@ -31,6 +32,7 @@ class CustomScaffold extends StatelessWidget {
   final bool padding;
   final bool showBackButtonInAppBar;
   final String? appBarTitle;
+  final List<Widget>? actions;
 
   AppBar _appBar(CustomTheme theme) => AppBar(
         backgroundColor: theme.moonstone,
@@ -43,6 +45,7 @@ class CustomScaffold extends StatelessWidget {
             theme.shadowed,
           ).k16SemiBold,
         ),
+        actions: actions,
       );
 
   @override

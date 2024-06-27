@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import '../../../../service/theme_service.dart';
+import '../../../../theme/theme.dart';
+import '../../../../theme/typography.dart';
+import '../../../../util/util.dart';
+import '../../../../widgets/avatar_widget/avatar_widget.dart';
+import '../../../../widgets/custom_scaffold.dart';
+import '../../../../widgets/dinasona_button.dart';
+import '../../../../widgets/dinasona_textfield.dart';
+import '../controllers/beneficiary_personal_details_controller.dart';
+
+class EditBeneficiaryPage
+    extends GetView<BeneficiaryPersonalDetailsController> {
+  const EditBeneficiaryPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final CustomTheme theme = Get.find<ThemeService>().theme;
+    return CustomScaffold(
+      padding: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Personal details'.tr,
+                style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+              ),
+              const Gap(12),
+              Text(
+                'Share key details to personalize your experience. Your information helps us connect you with the right support.'
+                    .tr,
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
+              ),
+              Gap(getRelativeHeight(42)),
+              const Center(child: AvatarWidget()),
+              Gap(getRelativeHeight(42)),
+              DinasonaTextField(
+                hintText: 'Full name'.tr,
+                controller: controller.nameController,
+              ),
+              const Gap(6),
+              DinasonaTextField(
+                hintText: 'Email'.tr,
+                controller: controller.emailController,
+              ),
+              const Gap(6),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Card(
+                      shadowColor: Colors.transparent,
+                      margin: EdgeInsets.zero,
+                      color: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(getRelativeWidth(16)),
+                        ),
+                        side: BorderSide(
+                          color: theme.graphite,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            hintText: 'Gender'.tr,
+                            hintStyle:
+                                CustomTypography.fromColor(theme.graphite)
+                                    .k16Reg,
+                            border: InputBorder.none,
+                          ),
+                          items: <String>['Male', 'Female', 'Other']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style:
+                                    CustomTypography.fromColor(theme.graphite)
+                                        .k16Reg,
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            // Update the gender value
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Card(
+                      shadowColor: Colors.transparent,
+                      margin: EdgeInsets.zero,
+                      color: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(getRelativeWidth(16)),
+                        ),
+                        side: BorderSide(
+                          color: theme.graphite,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: TextFormField(
+                          style:
+                              CustomTypography.fromColor(theme.graphite).k16Reg,
+                          controller: controller
+                              .birthdayController, // Assume you have a controller for birthday
+                          decoration: InputDecoration(
+                            hintText: 'Birthday'.tr,
+
+                            hintStyle:
+                                CustomTypography.fromColor(theme.graphite)
+                                    .k16Reg,
+                            border: InputBorder.none,
+                            // Match the styling with DinasonaTextFields
+                          ),
+                          readOnly: true, // To prevent manual editing
+                          onTap: () async {
+                            final DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1990),
+                              lastDate: DateTime.now(),
+                            );
+                            if (pickedDate != null) {
+                              // Format and set the date in controller
+                              controller.birthdayController.text =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(6),
+              DinasonaTextField(
+                hintText: 'Location'.tr,
+                controller: controller.loactionController,
+              ),
+              const Gap(6),
+              DinasonaTextField(
+                hintText: 'Description'.tr,
+                controller: controller.emailController,
+                maxLines: 5,
+              ),
+              const Gap(25),
+              Obx(
+                () {
+                  return DinasonaButton(
+                    text: 'Save'.tr,
+                    onPressed: controller.save,
+                    loading: controller.loading.value,
+                  );
+                },
+              ),
+              Gap(getRelativeHeight(80)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

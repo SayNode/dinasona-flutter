@@ -8,7 +8,10 @@ class BeneficiaryPersonalDetailsController extends GetxController {
 
   final UserStateService userStateService = Get.find<UserStateService>();
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController loactionController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   void onInit() {
