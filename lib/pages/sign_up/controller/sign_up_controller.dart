@@ -95,15 +95,9 @@ class SignupController extends GetxController {
   }
 
   Future<void> proceed(bool isBeneficiary) async {
-    await Get.to<void>(
-      () {
-        showPopup(isBeneficiary: isBeneficiary);
-        Get.to(
-          () => isBeneficiary
-              ? const BeneficiaryRootPage()
-              : const DonorRootPage(),
-        );
-      },
+    showPopup(isBeneficiary: isBeneficiary);
+    await Get.to(
+      () => isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
     );
   }
 }

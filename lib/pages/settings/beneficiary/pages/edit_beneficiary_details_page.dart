@@ -72,11 +72,12 @@ class EditBeneficiaryPage
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            hintText: 'Gender'.tr,
-                            hintStyle:
-                                CustomTypography.fromColor(theme.graphite)
-                                    .k16Reg,
+                          hint: Text(
+                            'Gender',
+                            style: CustomTypography.fromColor(theme.graphite)
+                                .k16Reg,
+                          ),
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
                           items: <String>['Male', 'Female', 'Other']
@@ -121,7 +122,6 @@ class EditBeneficiaryPage
                               .birthdayController, // Assume you have a controller for birthday
                           decoration: InputDecoration(
                             hintText: 'Birthday'.tr,
-
                             hintStyle:
                                 CustomTypography.fromColor(theme.graphite)
                                     .k16Reg,
