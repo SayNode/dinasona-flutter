@@ -152,7 +152,7 @@ class EditBeneficiaryPage
               const Gap(6),
               DinasonaTextField(
                 hintText: 'Description'.tr,
-                controller: controller.emailController,
+                controller: controller.descriptionController,
                 maxLines: 5,
               ),
               const Gap(25),
