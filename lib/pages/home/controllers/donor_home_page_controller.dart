@@ -17,6 +17,7 @@ class DonorHomePageController extends GetxController {
     // TODO - Get favorite fields from backend
     favoriteFields.addAll(NeedField.values.take(2));
     // TODO - Get needs from backend
+
     recommendedDonations.addAll(MockData.needs);
     super.onInit();
   }
