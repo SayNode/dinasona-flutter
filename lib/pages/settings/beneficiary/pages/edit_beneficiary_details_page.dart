@@ -43,11 +43,15 @@ class EditBeneficiaryPage
               DinasonaTextField(
                 hintText: 'Full name'.tr,
                 controller: controller.nameController,
+                textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
               const Gap(6),
               DinasonaTextField(
                 hintText: 'Email'.tr,
                 controller: controller.emailController,
+                textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
               const Gap(6),
               Row(
@@ -82,7 +86,7 @@ class EditBeneficiaryPage
                               child: Text(
                                 value,
                                 style:
-                                    CustomTypography.fromColor(theme.graphite)
+                                    CustomTypography.fromColor(theme.shadowed)
                                         .k16Reg,
                               ),
                             );
@@ -112,7 +116,7 @@ class EditBeneficiaryPage
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: TextFormField(
                           style:
-                              CustomTypography.fromColor(theme.graphite).k16Reg,
+                              CustomTypography.fromColor(theme.shadowed).k16Reg,
                           controller: controller
                               .birthdayController, // Assume you have a controller for birthday
                           decoration: InputDecoration(
@@ -148,11 +152,15 @@ class EditBeneficiaryPage
               DinasonaTextField(
                 hintText: 'Location'.tr,
                 controller: controller.loactionController,
+                textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
               const Gap(6),
               DinasonaTextField(
                 hintText: 'Description'.tr,
                 controller: controller.descriptionController,
+                textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
                 maxLines: 5,
               ),
               const Gap(25),
