@@ -10,8 +10,7 @@ class User {
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int? ?? json['pk'] as int? ?? -1,
-        firstName = json['first_name'] as String? ?? '',
-        lastName = json['last_name'] as String? ?? '',
+        name = json['name'] as String? ?? '',
         email = json['email'] as String? ?? '',
         avatar = json['avatar'] as String? ?? '',
         username = json['username'] as String? ?? '',
@@ -19,8 +18,8 @@ class User {
         aboutMe = json['about_me'] as String? ?? '';
   int id = -1;
   String email = '';
-  String firstName = '';
-  String lastName = '';
+  String name = '';
+
   String avatar = '';
   String username = '';
   bool firstLogin = true;
@@ -29,11 +28,47 @@ class User {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'email': email,
-        'first_name': firstName,
-        'last_name': lastName,
+        'name': name,
         'avatar': avatar,
         'username': username,
         'firstLogin': firstLogin,
         'about_me': aboutMe,
       };
+
+  User copyWith({
+    int? id,
+    String? email,
+    String? name,
+    String? lastName,
+    String? avatar,
+    String? username,
+    bool? firstLogin,
+    String? aboutMe,
+  }) {
+    return User()
+      ..id = id ?? this.id
+      ..email = email ?? this.email
+      ..name = name ?? this.name
+      ..avatar = avatar ?? this.avatar
+      ..username = username ?? this.username
+      ..firstLogin = firstLogin ?? this.firstLogin
+      ..aboutMe = aboutMe ?? this.aboutMe;
+  }
 }
+
+// I/flutter (27951): id
+// I/flutter (27951): verified
+// I/flutter (27951): email
+// I/flutter (27951): beneficiary
+// I/flutter (27951): is_donor
+// I/flutter (27951): country
+// I/flutter (27951): name
+// I/flutter (27951): about_me
+// I/flutter (27951): date_of_birth
+// I/flutter (27951): avatar
+// I/flutter (27951): is_first_login
+// I/flutter (27951): reset_psw_code
+// I/flutter (27951): created_at
+// I/flutter (27951): updated_at
+// I/flutter (27951): user
+// I/flutter (27951): area_of_interest
