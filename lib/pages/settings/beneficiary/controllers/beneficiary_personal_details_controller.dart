@@ -13,6 +13,8 @@ class BeneficiaryPersonalDetailsController extends GetxController {
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
+  String gender = '';
+
   @override
   void onInit() {
     super.onInit();
