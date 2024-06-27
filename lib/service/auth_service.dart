@@ -131,6 +131,7 @@ class AuthService extends GetxService {
               .writeInt('provider', ProviderTypes.email.index);
 
           await userStateService.fetchUserInfo();
+          await userStateService.fetchDonorStatistics();
 
           return AuthResponse(
             <String, dynamic>{'success': 'Successfully logged in.'},

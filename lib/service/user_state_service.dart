@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../model/beneficiary_statistics.dart';
 import '../model/donor_statistics.dart';
 import '../model/user.dart';
 import '../util/constants.dart';
@@ -30,6 +31,12 @@ class UserStateService extends GetxService {
     totalBeneficiariesDonatedTo: -1,
   ).obs;
 
+  Rx<BenbeficiaryStatistics> beneficiaryStatistics = BenbeficiaryStatistics(
+    totalAmountDonated: -1,
+    totalNeedsClosed: -1,
+    totalPeopleDonated: -1,
+  ).obs;
+
   Future<void> init() async {
     await fetchUserInfo();
   }
@@ -38,7 +45,36 @@ class UserStateService extends GetxService {
     user.value = User();
   }
 
-//TODO: Implement the fetchDonorStatistics method
+  Future<void> fetchDonorStatistics() async {
+    final String url =
+        Uri.https(DinasonaConstants.apiDomain, '/donation/donor/stats/')
+            .toString();
+    try {
+      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
+        url,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        donorStatistics.value = DonorStatistics.fromJson(
+          jsonEncode(
+            (response.data as Map<String, dynamic>)['result']
+                as Map<String, dynamic>,
+          ),
+        );
+      } else {
+        logger.log(
+          'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while fetching donor statistics: $e');
+    }
+  }
 
   Future<void> fetchUserInfo() async {
     final String url =
