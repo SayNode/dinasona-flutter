@@ -25,8 +25,7 @@ workflows:
         script: |
           git fetch --all --tags
           prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
-          notes+=$(git log --pretty=format:"
- %s" "$prev_tag"..HEAD)
+          notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up local.properties
         script: |
@@ -93,8 +92,7 @@ workflows:
         script: | 
           git fetch --all --tags
           prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
-          notes+=$(git log --pretty=format:"
- %s" "$prev_tag"..HEAD)
+          notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up code signing settings on Xcode project
         script: |
@@ -174,8 +172,7 @@ workflows:
         script: |
           git fetch --all --tags
           prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
-          notes+=$(git log --pretty=format:"
- %s" "$prev_tag"..HEAD)
+          notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up local.properties
         script: |
@@ -241,8 +238,7 @@ workflows:
         script: |
           git fetch --all --tags
           prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
-          notes+=$(git log --pretty=format:"
- %s" "$prev_tag"..HEAD)
+          notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up code signing settings on Xcode project
         script: |
