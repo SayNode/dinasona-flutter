@@ -36,10 +36,10 @@ workflows:
         ignore_failure: true
       - name: Build AAB with Flutter
         script: |
-          BUILD_NUMBER=$PROJECT_BUILD_NUMBER + 1
+          BUILD_NUMBER=$(($PROJECT_BUILD_NUMBER + 1))
           flutter build appbundle --release \
             --no-tree-shake-icons \
-            --build-name=1.3.$PROJECT_BUILD_NUMBER + 1 \
+            --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$BUILD_NUMBER \
             --dart-define=API_URL=$API_URL_DEV \
     artifacts:
@@ -109,8 +109,8 @@ workflows:
           appversion = $PROJECT_BUILD_NUMBER
           echo "version from store ${appversion}"
           flutter build ipa --release \
-            --build-name=1.1.$PROJECT_BUILD_NUMBER + 1 \
-            --build-number=$PROJECT_BUILD_NUMBER + 1 \
+            --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
+            --build-number=$(($PROJECT_BUILD_NUMBER + 1)) \
             --dart-define=API_URL=$API_URL_DEV \
             --export-options-plist=/Users/builder/export_options.plist
     artifacts:
@@ -183,9 +183,9 @@ workflows:
         ignore_failure: true
       - name: Build AAB with Flutter
         script: |
-          BUILD_NUMBER=$PROJECT_BUILD_NUMBER + 1
+          BUILD_NUMBER=$(($PROJECT_BUILD_NUMBER + 1))
           flutter build appbundle --release \
-            --build-name=1.3.$PROJECT_BUILD_NUMBER + 1 \
+            --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$BUILD_NUMBER \
             --dart-define=API_URL=$API_URL_PROD \
     artifacts:
@@ -253,8 +253,8 @@ workflows:
           pod repo update
           pod update
           flutter build ipa --release \
-            --build-name=1.1.$PROJECT_BUILD_NUMBER + 1 \
-            --build-number=$PROJECT_BUILD_NUMBER + 1 \
+            --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
+            --build-number=$(($PROJECT_BUILD_NUMBER + 1)) \
             --dart-define=API_URL=$API_URL_PROD \
             --export-options-plist=/Users/builder/export_options.plist
     artifacts:
