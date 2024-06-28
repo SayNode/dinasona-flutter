@@ -5,12 +5,12 @@ workflows:
     max_build_duration: 60
     environment:
       android_signing:
-        - welshare_android_keystore # <- modify this to your keystore reference
+        - dinasona_android_keystore # <- modify this to your keystore reference
       groups:
         - backend_keys 
         - google_credentials # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
       vars:
-        PACKAGE_NAME: "health.welshare.app" # <-- Put your package name here
+        PACKAGE_NAME: "org.dinasona.dinasona" # <-- Put your package name here
         GOOGLE_PLAY_TRACK: "internal"
         CM_CLONE_DEPTH: 5
       flutter: stable
@@ -55,8 +55,6 @@ workflows:
           - yann@saynode.ch
           - manuel@saynode.ch
           - ruthu@saynode.ch
-          - gabriela@saynode.ch
-          - julian@saynode.ch
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
@@ -72,15 +70,15 @@ workflows:
     instance_type: mac_mini_m1
     max_build_duration: 60
     integrations:
-      app_store_connect: Welshare CI/CD # <- put here the team label key (can find this in codemagic)
+      app_store_connect: SayNode CI/CD # <- put here the team label key (can find this in codemagic)
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: health.welshare.app # <- put bundle identifier here // io.codemagic.flutteryaml
+        bundle_identifier: org.dinasona.dinasona # <- put bundle identifier here // io.codemagic.flutteryaml
       groups:
         - backend_keys 
       vars:
-        APP_ID: 6478221862 # <-- Put your APP ID here
+        APP_ID: xxxxxxxx # <-- Put your APP ID here
         CM_CLONE_DEPTH: 5
       flutter: stable
       xcode: latest # <-- set to specific version e.g. 14.3, 15.0 to avoid unexpected updates.
@@ -129,8 +127,6 @@ workflows:
           - yann@saynode.ch
           - manuel@saynode.ch
           - ruthu@saynode.ch
-          - gabriela@saynode.ch
-          - julian@saynode.ch
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
@@ -158,12 +154,12 @@ workflows:
     max_build_duration: 60
     environment:
       android_signing:
-        - welshare_android_keystore # <- modify this to your keystore reference
+        - dinasona_android_keystore # <- modify this to your keystore reference
       groups:
         - google_credentials # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
         - backend_keys
       vars:
-        PACKAGE_NAME: "health.welshare.app" # <-- Put your package name here
+        PACKAGE_NAME: "org.dinasona.dinasona" # <-- Put your package name here
         GOOGLE_PLAY_TRACK: "internal"
         CM_CLONE_DEPTH: 5
       flutter: stable
@@ -207,8 +203,6 @@ workflows:
           - yann@saynode.ch
           - manuel@saynode.ch
           - ruthu@saynode.ch
-          - gabriela@saynode.ch
-          - julian@saynode.ch
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
@@ -224,15 +218,15 @@ workflows:
     instance_type: mac_mini_m1
     max_build_duration: 60
     integrations:
-      app_store_connect: Welshare CI/CD
+      app_store_connect: SayNode CI/CD  # <- check this
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: health.welshare.app # <- put bundle identifier here // io.codemagic.flutteryaml
+        bundle_identifier: org.dinasona.dinasona # <- put bundle identifier here // io.codemagic.flutteryaml
       groups:
         - backend_keys
       vars:
-        APP_ID: 6478221862 # <-- Put your APP ID here
+        APP_ID: xxxxxxx # <-- Put your APP ID here
         CM_CLONE_DEPTH: 5
       flutter: stable
       xcode: latest # <-- set to specific version e.g. 14.3, 15.0 to avoid unexpected updates.
@@ -279,8 +273,6 @@ workflows:
           - yann@saynode.ch
           - manuel@saynode.ch
           - ruthu@saynode.ch
-          - gabriela@saynode.ch
-          - julian@saynode.ch
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
