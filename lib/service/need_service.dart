@@ -24,13 +24,57 @@ class NeedService extends GetxService {
           jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>,
         );
         Get.find<LoggerService>().log(
-            'NeedService.getPublishedNeeds() - got ${needList.length} needs');
+          'NeedService.getPublishedNeeds() - got ${needList.length} needs',
+        );
         return needList.map(Need.fromJson).toList();
       } else {
-        throw Exception('Failed to load quiz');
+        throw Exception(
+          'Failed to load needs - got status code ${response.statusCode}',
+        );
       }
     } catch (e) {
-      throw Exception('Failed to load quiz');
+      throw Exception('Failed to load needs - an exception occurred: $e');
+    }
+  }
+
+  String _getAreasOfInterestStringArray(List<AreaOfInterest> areas) {
+    return areas
+        .map((AreaOfInterest area) => (area.index + 1).toString())
+        .join(',');
+  }
+
+  Future<List<Need>> getPublishedNeedsMatchingAreasOfInterest(
+    List<AreaOfInterest> areas,
+  ) async {
+    try {
+      Get.find<LoggerService>().log(
+        'NeedService.getPublishedNeedsMatchingAreasOfInterest() called...',
+      );
+
+      const String url = 'need/filter/';
+
+      final http.Response response = await apiService.get(
+        url,
+        queryParameters: <String, dynamic>{
+          'areas_of_interest': _getAreasOfInterestStringArray(areas),
+        },
+      );
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> needList =
+            List<Map<String, dynamic>>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>,
+        );
+        Get.find<LoggerService>().log(
+          'NeedService.getPublishedNeedsMatchingAreasOfInterest() - got ${needList.length} needs',
+        );
+        return needList.map(Need.fromJson).toList();
+      } else {
+        throw Exception(
+          'Failed to load needs - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to load needs - an exception occurred: $e');
     }
   }
 }

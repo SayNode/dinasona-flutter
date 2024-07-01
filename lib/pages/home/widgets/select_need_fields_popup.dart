@@ -9,17 +9,18 @@ import '../../../widgets/upward_popup.dart';
 import '../controllers/select_need_fields_controller.dart';
 import 'need_field_chip.dart';
 
-class SelectNeedFieldsPopup extends GetView<SelectNeedFieldsController> {
-  const SelectNeedFieldsPopup({
-    required this.initialSelectedNeedFields,
+class SelectAreasOfInterestPopup
+    extends GetView<SelectAreasOfInterestController> {
+  const SelectAreasOfInterestPopup({
+    required this.initialSelectedAreasOfInterest,
     super.key,
   });
 
-  final List<NeedField> initialSelectedNeedFields;
+  final List<AreaOfInterest> initialSelectedAreasOfInterest;
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SelectNeedFieldsController(initialSelectedNeedFields));
+    Get.put(SelectAreasOfInterestController(initialSelectedAreasOfInterest));
     return UpwardPopup(
       title: 'Categories'.tr,
       onClose: Get.back,
@@ -36,14 +37,15 @@ class SelectNeedFieldsPopup extends GetView<SelectNeedFieldsController> {
                   spacing: getRelativeWidth(5),
                   runSpacing: getRelativeHeight(6),
                   children: <Widget>[
-                    for (final NeedField field in NeedField.values)
-                      NeedFieldChip(
+                    for (final AreaOfInterest field in AreaOfInterest.values)
+                      AreaOfInterestChip(
                         field: field,
-                        selected: controller.selectedNeedFields.contains(field),
-                        onTap: () =>
-                            controller.selectedNeedFields.contains(field)
-                                ? controller.selectedNeedFields.remove(field)
-                                : controller.selectedNeedFields.add(field),
+                        selected:
+                            controller.selectedAreasOfInterest.contains(field),
+                        onTap: () => controller.selectedAreasOfInterest
+                                .contains(field)
+                            ? controller.selectedAreasOfInterest.remove(field)
+                            : controller.selectedAreasOfInterest.add(field),
                       ),
                   ],
                 ),

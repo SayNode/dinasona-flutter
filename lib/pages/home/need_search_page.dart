@@ -12,7 +12,7 @@ import 'widgets/need_field_chip.dart';
 class NeedSearchPage extends GetView<NeedSearchPageController> {
   const NeedSearchPage({required this.fields, super.key});
 
-  final List<NeedField> fields;
+  final List<AreaOfInterest> fields;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,8 @@ class NeedSearchPage extends GetView<NeedSearchPageController> {
                       onPressed: Get.back,
                       icon: const Icon(Icons.arrow_back),
                     ),
-                    for (final NeedField field in fields)
-                      NeedFieldChip(field: field),
+                    for (final AreaOfInterest field in fields)
+                      AreaOfInterestChip(field: field),
                   ],
                 ),
               ),

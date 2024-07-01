@@ -20,7 +20,7 @@ class MockData {
             "I'm Fatima, a dedicated single mother from Nairobi, Kenya. Striving to provide my three young children with nutritious meals and a loving home, I embrace resilience and determination. Your support can make a lasting impact, helping us build a brighter future together.",
       ),
       amount: 5,
-      fields: <NeedField>[NeedField.food],
+      areasOfInterest: <AreaOfInterest>[AreaOfInterest.food],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
@@ -42,7 +42,7 @@ class MockData {
             "I'm Fatima, a dedicated single mother from Nairobi, Kenya. Striving to provide my three young children with nutritious meals and a loving home, I embrace resilience and determination. Your support can make a lasting impact, helping us build a brighter future together.",
       ),
       amount: 5,
-      fields: <NeedField>[NeedField.food],
+      areasOfInterest: <AreaOfInterest>[AreaOfInterest.food],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
@@ -64,7 +64,7 @@ class MockData {
             "I'm Fatima, a dedicated single mother from Nairobi, Kenya. Striving to provide my three young children with nutritious meals and a loving home, I embrace resilience and determination. Your support can make a lasting impact, helping us build a brighter future together.",
       ),
       amount: 5,
-      fields: <NeedField>[NeedField.food],
+      areasOfInterest: <AreaOfInterest>[AreaOfInterest.food],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
@@ -85,7 +85,7 @@ class MockData {
         bio: '...',
       ),
       amount: 10,
-      fields: <NeedField>[NeedField.electricity],
+      areasOfInterest: <AreaOfInterest>[AreaOfInterest.electricity],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
@@ -106,7 +106,7 @@ class MockData {
         bio: '...',
       ),
       amount: 10,
-      fields: <NeedField>[NeedField.electricity],
+      areasOfInterest: <AreaOfInterest>[AreaOfInterest.electricity],
       photoUrls: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],

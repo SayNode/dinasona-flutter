@@ -27,6 +27,7 @@ import 'api_service.dart';
 import 'auth_service.dart';
 import 'localization_controller.dart';
 import 'logger_service.dart';
+import 'need_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
 import 'storage/storage_service.dart';
@@ -59,7 +60,8 @@ class MainBindings extends Bindings {
       ..lazyPut(StorageService.new)
       ..lazyPut(WalletService.new)
       ..lazyPut(ThemeService.new)
-      ..lazyPut(LocalizationController.new);
+      ..lazyPut(LocalizationController.new)
+      ..lazyPut(NeedService.new);
   }
 
   void _injectControllers() {

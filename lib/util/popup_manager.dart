@@ -29,40 +29,40 @@ class PopupManager {
     );
   }
 
-  static Future<List<NeedField>?> openSelectNeedFieldsPopup(
-    List<NeedField> initialSelectedNeedFields,
+  static Future<List<AreaOfInterest>?> openSelectAreasOfInterestPopup(
+    List<AreaOfInterest> initialSelectedAreasOfInterest,
   ) async {
-    return Get.dialog<List<NeedField>>(
-      SelectNeedFieldsPopup(
-        initialSelectedNeedFields: initialSelectedNeedFields,
+    return Get.dialog<List<AreaOfInterest>>(
+      SelectAreasOfInterestPopup(
+        initialSelectedAreasOfInterest: initialSelectedAreasOfInterest,
       ),
     );
   }
 
-  static Future<List<NeedField>?> openNeedPopup(
+  static Future<List<AreaOfInterest>?> openNeedPopup(
     Need need,
   ) async {
-    return Get.dialog<List<NeedField>>(
+    return Get.dialog<List<AreaOfInterest>>(
       NeedPopup(
         need: need,
       ),
     );
   }
 
-  static Future<List<NeedField>?> openMyNeedPopup(
+  static Future<List<AreaOfInterest>?> openMyNeedPopup(
     Need need,
   ) async {
-    return Get.dialog<List<NeedField>>(
+    return Get.dialog<List<AreaOfInterest>>(
       MyNeedPopup(
         need: need,
       ),
     );
   }
 
-  static Future<List<NeedField>?> openCurrencyPopup(
-    List<NeedField> initialSelectedNeedFields,
+  static Future<List<AreaOfInterest>?> openCurrencyPopup(
+    List<AreaOfInterest> initialSelectedAreasOfInterest,
   ) async {
-    return Get.dialog<List<NeedField>>(
+    return Get.dialog<List<AreaOfInterest>>(
       const CurrencyPopup(),
     );
   }

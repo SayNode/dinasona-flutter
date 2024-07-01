@@ -26,7 +26,8 @@ class NeedCard extends StatelessWidget {
     return SizedBox(
       height: getRelativeHeight(225),
       child: Material(
-        color: Colors.transparent,
+        color: theme.snowfall,
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
