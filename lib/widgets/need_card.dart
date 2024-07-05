@@ -53,7 +53,8 @@ class NeedCard extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () => Get.to<void>(
                               () => BeneficiaryPage(
-                                  beneficiary: need.beneficiary),
+                                beneficiary: need.beneficiary,
+                              ),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(128),
