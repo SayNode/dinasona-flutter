@@ -23,7 +23,7 @@ class CurrencyPopup extends GetView<CurrencyController> {
       onClose: Get.back,
       height: getRelativeHeight(400),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Material(
           color: theme.moonstone,
           child: Expanded(
