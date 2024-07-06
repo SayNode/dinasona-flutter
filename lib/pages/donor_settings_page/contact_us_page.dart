@@ -23,7 +23,8 @@ class ContactUsPage extends GetView<ContactUsController> {
       body: Column(
         children: <Widget>[
           Text(
-            "We're here to help! Please share your questions, feedback, or concerns with us.",
+            "We're here to help! Please share your questions, feedback, or concerns with us."
+                .tr,
             style: CustomTypography.fromColor(theme.graphite).k16Reg,
           ),
           const Gap(42),
@@ -33,7 +34,13 @@ class ContactUsPage extends GetView<ContactUsController> {
             maxLines: 18,
           ),
           const Spacer(),
-          DinasonaButton(text: 'Send'.tr, onPressed: controller.send),
+          Obx(
+            () => DinasonaButton(
+              text: 'Send'.tr,
+              onPressed: controller.send,
+              locked: !controller.isButtonActive.value,
+            ),
+          ),
           Gap(getRelativeHeight(80)),
         ],
       ),
