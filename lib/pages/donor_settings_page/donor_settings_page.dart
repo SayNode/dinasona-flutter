@@ -27,7 +27,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               const Gap(48),
               ProfileWidget(
                 name: controller.user.name,
-                location: 'Location Placeholder',
+                location: controller.user.country,
               ),
               const Gap(12),
               //TODO: Implement the actual values
