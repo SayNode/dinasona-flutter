@@ -6,6 +6,8 @@ import '../pages/home/widgets/my_need_popup.dart';
 import '../pages/home/widgets/need_popup.dart';
 import '../pages/home/widgets/select_need_fields_popup.dart';
 import '../widgets/custom_popup.dart';
+import '../widgets/dialogs/delete_account_dialog.dart';
+import '../widgets/dialogs/logout_dialog.dart';
 import '../widgets/popups/draft_popup.dart';
 import '../widgets/popups/publish_popup.dart';
 import '../widgets/popups/story_popup.dart';
@@ -26,6 +28,18 @@ class PopupManager {
   static Future<void> openPublishPopup() async {
     await openCustomPopup<void>(
       const PublishPopup(),
+    );
+  }
+
+  static Future<void> openLogoutPopup() async {
+    await openCustomPopup<void>(
+      const LogoutDialog(),
+    );
+  }
+
+  static Future<void> openDeleteAccountPopup() async {
+    await openCustomPopup<void>(
+      const DeleteAccountDialog(),
     );
   }
 
