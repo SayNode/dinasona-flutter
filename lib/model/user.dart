@@ -15,7 +15,8 @@ class User {
         avatar = json['avatar'] as String? ?? '',
         username = json['username'] as String? ?? '',
         firstLogin = json['is_first_login'] as bool? ?? true,
-        aboutMe = json['about_me'] as String? ?? '';
+        aboutMe = json['about_me'] as String? ?? '',
+        isDonor = json['is_donor'] as bool? ?? false;
   int id = -1;
   String email = '';
   String name = '';
@@ -24,6 +25,7 @@ class User {
   String username = '';
   bool firstLogin = true;
   String aboutMe = '';
+  bool isDonor = false;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
@@ -33,6 +35,7 @@ class User {
         'username': username,
         'firstLogin': firstLogin,
         'about_me': aboutMe,
+        'is_donor': isDonor,
       };
 
   User copyWith({
@@ -44,6 +47,7 @@ class User {
     String? username,
     bool? firstLogin,
     String? aboutMe,
+    bool? isDonor,
   }) {
     return User()
       ..id = id ?? this.id
@@ -52,7 +56,8 @@ class User {
       ..avatar = avatar ?? this.avatar
       ..username = username ?? this.username
       ..firstLogin = firstLogin ?? this.firstLogin
-      ..aboutMe = aboutMe ?? this.aboutMe;
+      ..aboutMe = aboutMe ?? this.aboutMe
+      ..isDonor = isDonor ?? this.isDonor;
   }
 }
 

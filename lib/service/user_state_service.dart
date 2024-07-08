@@ -25,20 +25,61 @@ class UserStateService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
   Rx<DonorStatistics> donorStatistics = DonorStatistics(
-    totalAmountDonated: -1,
-    totalCountriesDonatedTo: -1,
-    totalBeneficiariesDonatedTo: -1,
+    totalAmountDonated: 0,
+    totalCountriesDonatedTo: 0,
+    totalBeneficiariesDonatedTo: 0,
   ).obs;
 
   Future<void> init() async {
     await fetchUserInfo();
+    await fetchDonorStatistics();
   }
 
   void clear() {
     user.value = User();
   }
 
-//TODO: Implement the fetchDonorStatistics method
+  Future<void> fetchDonorStatistics() async {
+    if (!user.value.isDonor) {
+      return;
+    }
+    final String url =
+        Uri.https(DinasonaConstants.apiDomain, '/donation/donor/stats/')
+            .toString();
+    try {
+      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
+        url,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final dynamic responseData =
+            (response.data as Map<String, dynamic>)['result'];
+
+        donorStatistics.value = DonorStatistics(
+          totalAmountDonated:
+              // ignore: avoid_dynamic_calls
+              (responseData['total_amount_donated'] ?? 0).toDouble() as double,
+          totalCountriesDonatedTo:
+              // ignore: avoid_dynamic_calls
+              (responseData['total_countries_donated_to'] ?? 0) as int,
+          totalBeneficiariesDonatedTo:
+              // ignore: avoid_dynamic_calls
+              (responseData['total_beneficiaries_donated_to'] ?? 0) as int,
+        );
+      } else {
+        logger.log(
+          'Failed to fetch user info: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while fetching user info: $e');
+    }
+  }
 
   Future<void> fetchUserInfo() async {
     final String url =
