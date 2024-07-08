@@ -32,13 +32,19 @@ class ProfileWidget extends StatelessWidget {
           children: <Widget>[
             Obx(
               () => Text(
-                userStateService.user.value.name,
+                userStateService.user.value.name.isEmpty
+                    ? 'Unknown'.tr
+                    : userStateService.user.value.name,
                 style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               ),
             ),
-            Text(
-              location,
-              style: CustomTypography.fromColor(theme.graphite).k16Reg,
+            Obx(
+              () => Text(
+                userStateService.user.value.country.isEmpty
+                    ? 'Unknown'.tr
+                    : userStateService.user.value.country,
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
+              ),
             ),
           ],
         ),

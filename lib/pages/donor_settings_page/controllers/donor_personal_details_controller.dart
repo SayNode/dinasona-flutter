@@ -11,6 +11,8 @@ class DonorPersonalDetailsController extends GetxController {
   final TextEditingController secondNameController = TextEditingController();
   final TextEditingController loactionController = TextEditingController();
 
+  RxString location = ''.tr.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -24,7 +26,9 @@ class DonorPersonalDetailsController extends GetxController {
     loading.value = true;
 
     await userStateService.updateUserInfo(<String, dynamic>{
-      'name': '${fistNameController.text} ${secondNameController.text}',
+      'name':
+          '${fistNameController.text.trim()} ${secondNameController.text.trim()}',
+      'country': location.value.toLowerCase(),
     });
     loading.value = false;
   }
