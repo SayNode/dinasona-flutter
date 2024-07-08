@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../widgets/avatar_widget/avatar_widget.dart';
@@ -19,6 +20,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
+    final UserStateService userStateService = Get.find<UserStateService>();
 
     return Row(
       children: <Widget>[
@@ -28,9 +30,11 @@ class ProfileWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              name,
-              style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+            Obx(
+              () => Text(
+                userStateService.user.value.name,
+                style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+              ),
             ),
             Text(
               location,

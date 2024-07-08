@@ -27,7 +27,7 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
           ),
           const Gap(6),
           DinasonaTextField(
-            hintText: 'Second name'.tr,
+            hintText: 'Last name'.tr,
             controller: controller.secondNameController,
           ),
           const Gap(6),

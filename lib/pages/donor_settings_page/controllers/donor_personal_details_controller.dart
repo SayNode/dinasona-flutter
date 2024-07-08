@@ -14,14 +14,17 @@ class DonorPersonalDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fistNameController.text = userStateService.user.value.name;
+    final List<String> nameParts = userStateService.user.value.name.split(' ');
+    fistNameController.text = nameParts[0];
+    secondNameController.text = nameParts.length > 1 ? nameParts[1] : '';
   }
 
   Future<void> save() async {
     //TODO: fix the backend call
     loading.value = true;
+
     await userStateService.updateUserInfo(<String, dynamic>{
-      'name': fistNameController.text,
+      'name': '${fistNameController.text} ${secondNameController.text}',
     });
     loading.value = false;
   }
