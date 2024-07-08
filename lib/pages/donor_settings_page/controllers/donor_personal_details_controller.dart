@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/user_state_service.dart';
+import '../../../util/constants.dart';
 
 class DonorPersonalDetailsController extends GetxController {
   RxBool loading = false.obs;
@@ -23,13 +26,18 @@ class DonorPersonalDetailsController extends GetxController {
 
   Future<void> save() async {
     //TODO: fix the backend call
-    loading.value = true;
-
-    await userStateService.updateUserInfo(<String, dynamic>{
-      'name':
-          '${fistNameController.text.trim()} ${secondNameController.text.trim()}',
-      'country': location.value.toLowerCase(),
-    });
-    loading.value = false;
+    try {
+      loading.value = true;
+      await userStateService.updateUserInfo(<String, dynamic>{
+        'name':
+            '${fistNameController.text.trim()} ${secondNameController.text.trim()}',
+        'country': location.value.toLowerCase(),
+      });
+      loading.value = false;
+      Get.back();
+    } catch (e) {
+      loading.value = false;
+      log(e.toString(), name: 'DonorPersonalDetailsController');
+    }
   }
 }
