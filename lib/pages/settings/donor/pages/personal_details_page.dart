@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../service/theme_service.dart';
-import '../../theme/theme.dart';
-import '../../theme/typography.dart';
-import '../../util/util.dart';
-import '../../widgets/avatar_widget/avatar_widget.dart';
-import '../../widgets/custom_scaffold.dart';
-import '../../widgets/dinasona_button.dart';
-import '../../widgets/dinasona_textfield.dart';
-import 'controllers/donor_personal_details_controller.dart';
+import '../../../../service/theme_service.dart';
+import '../../../../theme/theme.dart';
+import '../../../../theme/typography.dart';
+import '../../../../util/util.dart';
+import '../../../../widgets/avatar_widget/avatar_widget.dart';
+import '../../../../widgets/custom_scaffold.dart';
+import '../../../../widgets/dinasona_button.dart';
+import '../../../../widgets/dinasona_textfield.dart';
+import '../controllers/donor_personal_details_controller.dart';
 
 class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
   DonorPersonalDetailsPage({super.key});

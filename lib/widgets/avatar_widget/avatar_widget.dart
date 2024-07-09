@@ -25,6 +25,17 @@ class AvatarWidget extends GetView<AvatarWidgetController> {
                         userStateService.user.value.avatar,
                         height: 100,
                         width: 100,
+                        errorBuilder: (
+                          BuildContext context,
+                          Object error,
+                          StackTrace? stackTrace,
+                        ) {
+                          return Image.asset(
+                            'assets/images/profile_picture_placeholder.png',
+                            width: 100,
+                            height: 100,
+                          );
+                        },
                       )
                     : Image.asset(
                         'assets/images/profile_picture_placeholder.png',

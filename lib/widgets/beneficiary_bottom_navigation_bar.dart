@@ -4,7 +4,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '../pages/add/add_page.dart';
 import '../pages/home/beneficary_home_page.dart';
-import '../pages/profile/beneficiary_profile_page.dart';
+import '../pages/settings/beneficiary/pages/beneficiary_settings_page.dart';
 import '../pages/wallet/wallet_page.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
@@ -51,7 +51,7 @@ enum BeneficaryItem {
       case BeneficaryItem.wallet:
         return const WalletPage();
       case BeneficaryItem.profile:
-        return const BeneficiaryProfilePage();
+        return const BeneficiarySettingsPage();
     }
   }
 }

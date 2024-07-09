@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../model/beneficiary_statistics.dart';
 import '../model/donor_statistics.dart';
 import '../model/user.dart';
 import '../util/constants.dart';
@@ -30,6 +31,12 @@ class UserStateService extends GetxService {
     totalBeneficiariesDonatedTo: 0,
   ).obs;
 
+  Rx<BenbeficiaryStatistics> beneficiaryStatistics = BenbeficiaryStatistics(
+    totalAmountDonated: -1,
+    totalNeedsClosed: -1,
+    totalPeopleDonated: -1,
+  ).obs;
+
   Future<void> init() async {
     await fetchUserInfo();
     await fetchDonorStatistics();
@@ -40,9 +47,6 @@ class UserStateService extends GetxService {
   }
 
   Future<void> fetchDonorStatistics() async {
-    if (!user.value.isDonor) {
-      return;
-    }
     final String url =
         Uri.https(DinasonaConstants.apiDomain, '/donation/donor/stats/')
             .toString();
@@ -57,27 +61,19 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        final dynamic responseData =
-            (response.data as Map<String, dynamic>)['result'];
-
-        donorStatistics.value = DonorStatistics(
-          totalAmountDonated:
-              // ignore: avoid_dynamic_calls
-              (responseData['total_amount_donated'] ?? 0).toDouble() as double,
-          totalCountriesDonatedTo:
-              // ignore: avoid_dynamic_calls
-              (responseData['total_countries_donated_to'] ?? 0) as int,
-          totalBeneficiariesDonatedTo:
-              // ignore: avoid_dynamic_calls
-              (responseData['total_beneficiaries_donated_to'] ?? 0) as int,
+        donorStatistics.value = DonorStatistics.fromJson(
+          jsonEncode(
+            (response.data as Map<String, dynamic>)['result']
+                as Map<String, dynamic>,
+          ),
         );
       } else {
         logger.log(
-          'Failed to fetch user info: StatusCode: ${response.statusCode}, ${response.data}',
+          'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',
         );
       }
     } catch (e) {
-      logger.log('Error while fetching user info: $e');
+      logger.log('Error while fetching donor statistics: $e');
     }
   }
 
