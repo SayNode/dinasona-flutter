@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/user_state_service.dart';
-import '../../../util/constants.dart';
 
 class DonorPersonalDetailsController extends GetxController {
   RxBool loading = false.obs;
