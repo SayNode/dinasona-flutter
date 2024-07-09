@@ -26,9 +26,9 @@ class UserStateService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
   Rx<DonorStatistics> donorStatistics = DonorStatistics(
-    totalAmountDonated: -1,
-    totalCountriesDonatedTo: -1,
-    totalBeneficiariesDonatedTo: -1,
+    totalAmountDonated: 0,
+    totalCountriesDonatedTo: 0,
+    totalBeneficiariesDonatedTo: 0,
   ).obs;
 
   Rx<BenbeficiaryStatistics> beneficiaryStatistics = BenbeficiaryStatistics(
@@ -39,6 +39,7 @@ class UserStateService extends GetxService {
 
   Future<void> init() async {
     await fetchUserInfo();
+    await fetchDonorStatistics();
   }
 
   void clear() {
