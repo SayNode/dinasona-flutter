@@ -54,8 +54,6 @@ class MainBindings extends Bindings {
       ..lazyPut(LoggerService.new)
       ..lazyPut(SecureStorageService.new)
       ..lazyPut(SharedStorageService.new)
-      ..lazyPut(UserStateService.new)
-      ..lazyPut(StorageService.new)
       ..lazyPut(StorageService.new)
       ..lazyPut(WalletService.new)
       ..lazyPut(ThemeService.new)

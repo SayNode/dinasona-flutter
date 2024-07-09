@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class DonorStatistics {
-  int totalAmountDonated;
+  double totalAmountDonated;
   int totalCountriesDonatedTo;
   int totalBeneficiariesDonatedTo;
   DonorStatistics({
@@ -12,7 +12,7 @@ class DonorStatistics {
   });
 
   DonorStatistics copyWith({
-    int? totalAmountDonated,
+    double? totalAmountDonated,
     int? totalCountriesDonatedTo,
     int? totalBeneficiariesDonatedTo,
   }) {
@@ -35,7 +35,7 @@ class DonorStatistics {
 
   factory DonorStatistics.fromMap(Map<String, dynamic> map) {
     return DonorStatistics(
-      totalAmountDonated: map['total_amount_donated'] as int,
+      totalAmountDonated: map['total_amount_donated'] as double,
       totalCountriesDonatedTo: map['total_beneficiaries_donated_to'] as int,
       totalBeneficiariesDonatedTo: map['total_countries_donated_to'] as int,
     );
