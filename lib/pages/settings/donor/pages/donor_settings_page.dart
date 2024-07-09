@@ -33,8 +33,7 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               PeopleHelpedWidget(
                 peopleHelped:
                     controller.donorStatistics.totalBeneficiariesDonatedTo,
-                amountDonated:
-                    controller.donorStatistics.totalAmountDonated.toDouble(),
+                amountDonated: controller.donorStatistics.totalAmountDonated,
                 countries: controller.donorStatistics.totalCountriesDonatedTo,
               ),
               const Gap(16),

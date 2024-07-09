@@ -44,7 +44,8 @@ class BenbeficiaryStatistics {
 
   factory BenbeficiaryStatistics.fromJson(String source) =>
       BenbeficiaryStatistics.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+        json.decode(source) as Map<String, dynamic>,
+      );
 
   @override
   String toString() =>
