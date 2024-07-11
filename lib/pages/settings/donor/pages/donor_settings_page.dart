@@ -3,15 +3,15 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-import 'about_page.dart';
-import 'change_password_page.dart';
-import 'contact_us_page.dart';
-import 'controllers/donor_settings_page_controller.dart';
+import '../../about_page.dart';
+import '../../change_password_page.dart';
+import '../../contact_us_page.dart';
+import '../../widget/footer_widget.dart';
+import '../../widget/profile_widget.dart';
+import '../../widget/settings_bar.dart';
+import '../controllers/donor_settings_page_controller.dart';
+import '../widgets/people_helped_widget.dart';
 import 'personal_details_page.dart';
-import 'widgets/footer_widget.dart';
-import 'widgets/people_helped_widget.dart';
-import 'widgets/profile_widget.dart';
-import 'widgets/settings_bar.dart';
 
 class DonorSettingsPage extends GetView<DonorSettingsPageController> {
   const DonorSettingsPage({super.key});
@@ -30,11 +30,11 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
                 location: 'Location Placeholder',
               ),
               const Gap(12),
-              //TODO: Implement the actual values
-              const PeopleHelpedWidget(
-                peopleHelped: -1,
-                amountDonated: -1,
-                countries: -1,
+              PeopleHelpedWidget(
+                peopleHelped:
+                    controller.donorStatistics.totalBeneficiariesDonatedTo,
+                amountDonated: controller.donorStatistics.totalAmountDonated,
+                countries: controller.donorStatistics.totalCountriesDonatedTo,
               ),
               const Gap(16),
               SettingsBar(

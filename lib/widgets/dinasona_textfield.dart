@@ -33,6 +33,8 @@ class DinasonaTextField extends StatelessWidget {
     this.maxLength,
     this.onEnter,
     this.maxLines = 1,
+    this.textStyle,
+    this.hintStyle,
   });
 
   /// Error text to display beneath the TextField.
@@ -94,6 +96,10 @@ class DinasonaTextField extends StatelessWidget {
 
   final int maxLines;
 
+  final TextStyle? textStyle;
+
+  final TextStyle? hintStyle;
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -141,7 +147,9 @@ class DinasonaTextField extends StatelessWidget {
                   obscureText: obscureText,
                   textAlignVertical: TextAlignVertical.center,
                   controller: controller,
-                  style: TextStyle(color: textColor),
+                  style: textStyle == null
+                      ? TextStyle(color: textColor)
+                      : textStyle!.copyWith(color: textColor),
                   cursorColor: theme.graphite,
                   validator: validator,
                   autovalidateMode: autovalidateMode,
@@ -155,7 +163,9 @@ class DinasonaTextField extends StatelessWidget {
                     ),
                     isDense: true,
                     hintText: hintText,
-                    hintStyle: TextStyle(color: hintColor),
+                    hintStyle: hintStyle == null
+                        ? TextStyle(color: hintColor)
+                        : textStyle!.copyWith(color: hintColor),
                     border: InputBorder.none,
                     suffixIcon: suffixIcon,
                     prefixIcon: prefix,

@@ -9,16 +9,18 @@ import 'package:get/get.dart';
 
 import '../pages/add/controllers/add_page_controller.dart';
 import '../pages/donate/controllers/donate_page_controller.dart';
-import '../pages/donor_settings_page/controllers/change_password_controller.dart';
-import '../pages/donor_settings_page/controllers/contact_us_controller.dart';
-import '../pages/donor_settings_page/controllers/donor_personal_details_controller.dart';
-import '../pages/donor_settings_page/controllers/donor_settings_page_controller.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';
 import '../pages/home/controllers/donor_home_page_controller.dart';
 import '../pages/login/controller/login_controller.dart';
 import '../pages/profile/controllers/beneficiary_profile_page_controller.dart';
 import '../pages/root/controllers/beneficiary_root_controller.dart';
 import '../pages/root/controllers/donor_root_page_controller.dart';
+import '../pages/settings/beneficiary/controllers/beneficiary_personal_details_controller.dart';
+import '../pages/settings/beneficiary/controllers/beneficiary_settings_page_controller.dart';
+import '../pages/settings/controllers/change_password_controller.dart';
+import '../pages/settings/controllers/contact_us_controller.dart';
+import '../pages/settings/donor/controllers/donor_personal_details_controller.dart';
+import '../pages/settings/donor/controllers/donor_settings_page_controller.dart';
 import '../pages/sign_up/controller/sign_up_controller.dart';
 import '../pages/wallet/controllers/wallet_page_controller.dart';
 import '../widgets/avatar_widget/controller/avatar_widget_controller.dart';
@@ -55,8 +57,6 @@ class MainBindings extends Bindings {
       ..lazyPut(LoggerService.new)
       ..lazyPut(SecureStorageService.new)
       ..lazyPut(SharedStorageService.new)
-      ..lazyPut(UserStateService.new)
-      ..lazyPut(StorageService.new)
       ..lazyPut(StorageService.new)
       ..lazyPut(WalletService.new)
       ..lazyPut(ThemeService.new)
@@ -82,6 +82,8 @@ class MainBindings extends Bindings {
       ..lazyPut(AvatarWidgetController.new, fenix: true)
       ..lazyPut(ChangePasswordController.new, fenix: true)
       ..lazyPut(ContactUsController.new, fenix: true)
+      ..lazyPut(BeneficiarySettingsPageController.new, fenix: true)
+      ..lazyPut(BeneficiaryPersonalDetailsController.new, fenix: true)
       ..lazyPut(DonatePageController.new, fenix: true);
   }
 }

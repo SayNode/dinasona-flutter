@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
@@ -10,7 +11,6 @@ import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
 import 'controller/personal_details_controller.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PersonalDetailsPage extends GetView<PersonalDetailsController> {
   const PersonalDetailsPage({super.key});
@@ -34,14 +34,15 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Personal details',
+                  'Personal details'.tr,
                   style:
                       CustomTypography.fromColor(diasonaTheme.shadowed).k24Bold,
                 ),
               ),
               SizedBox(height: gap),
               Text(
-                'Share key details to personalize your experience. Your information helps us connect you with the right support.',
+                'Share key details to personalize your experience. Your information helps us connect you with the right support.'
+                    .tr,
                 style: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
               ),
               SizedBox(height: gap),
@@ -212,7 +213,11 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                 ),
               ),
               SizedBox(height: gap),
-              DinasonaButton(text: 'Continue', onPressed: controller.submit),
+              DinasonaButton(
+                text: 'Continue',
+                onPressed: controller.submit,
+                color: diasonaTheme.amberglow,
+              ),
               SizedBox(height: gap),
               TextButton(
                 onPressed: () => Get.back<void>(),
