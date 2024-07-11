@@ -31,31 +31,6 @@ abstract class AuthServiceBase extends GetxService {
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
-  // Login with Google.
-  Future<AuthResponse> googleSignIn() async {
-    return AuthResponse(
-      result: <String, dynamic>{},
-      accessToken: 'Not Implemented',
-      message: 'Not Implemented',
-      status: -1,
-      success: false,
-    );
-  }
-
-  // Login with Apple.
-  Future<AuthResponse> appleSignIn({
-    String? authorizationCode,
-    String? identityToken,
-  }) async {
-    return AuthResponse(
-      result: <String, dynamic>{},
-      accessToken: 'Not Implemented',
-      message: 'Not Implemented',
-      status: -1,
-      success: false,
-    );
-  }
-
   // Check if the user is logged in already.
   Future<AuthResponse> silentLogin() async {
     //load auth token from storage

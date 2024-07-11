@@ -5,5 +5,31 @@
 //
 // https://saynode.ch
 import '../base/auth_service_base.dart';
+import '../model/auth_result.dart';
 
-class AuthService extends AuthServiceBase {}
+class AuthService extends AuthServiceBase {
+  // Login with Google.
+  Future<AuthResponse> googleSignIn() async {
+    return AuthResponse(
+      result: <String, dynamic>{},
+      accessToken: 'Not Implemented',
+      message: 'Not Implemented',
+      status: -1,
+      success: false,
+    );
+  }
+
+  // Login with Apple.
+  Future<AuthResponse> appleSignIn({
+    String? authorizationCode,
+    String? identityToken,
+  }) async {
+    return AuthResponse(
+      result: <String, dynamic>{},
+      accessToken: 'Not Implemented',
+      message: 'Not Implemented',
+      status: -1,
+      success: false,
+    );
+  }
+}

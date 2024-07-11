@@ -10,7 +10,8 @@ class AuthResponse {
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
       accessToken:
-          (json['result'] as Map<String, dynamic>)['access_token'] as String,
+          (json['result'] as Map<String, dynamic>)['access_token'] as String? ??
+              '',
       result: json['result'] as Map<String, dynamic>? ?? <String, dynamic>{},
       message: json['message'] as String,
       status: json['status'] as int,
