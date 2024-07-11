@@ -123,9 +123,11 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                 ),
                 Gap(getRelativeWidth(6)),
                 Text(
-                  DateFormat('dd MMM yyyy').format(
-                    beneficiary.dateOfBirth,
-                  ),
+                  beneficiary.dateOfBirth == null
+                      ? '-- -- ----'
+                      : DateFormat('dd MMM yyyy').format(
+                          beneficiary.dateOfBirth!,
+                        ),
                   style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ],

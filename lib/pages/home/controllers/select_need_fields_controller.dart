@@ -2,19 +2,19 @@ import 'package:get/get.dart';
 
 import '../../../model/need.dart';
 
-class SelectNeedFieldsController extends GetxController {
-  SelectNeedFieldsController(this.initialSelectedDonationFields);
+class SelectAreasOfInterestController extends GetxController {
+  SelectAreasOfInterestController(this.initialSelectedDonationFields);
 
-  late List<NeedField> initialSelectedDonationFields;
-  RxList<NeedField> selectedNeedFields = <NeedField>[].obs;
+  late List<AreaOfInterest> initialSelectedDonationFields;
+  RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
 
   @override
   void onInit() {
-    selectedNeedFields.addAll(initialSelectedDonationFields);
+    selectedAreasOfInterest.addAll(initialSelectedDonationFields);
     super.onInit();
   }
 
   void close() {
-    Get.back(result: selectedNeedFields.toList());
+    Get.back(result: selectedAreasOfInterest.toList());
   }
 }

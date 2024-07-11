@@ -8,15 +8,15 @@ import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 
-class NeedFieldChip extends StatelessWidget {
-  const NeedFieldChip({
+class AreaOfInterestChip extends StatelessWidget {
+  const AreaOfInterestChip({
     required this.field,
     this.selected = false,
     super.key,
     this.onTap,
   });
 
-  final NeedField field;
+  final AreaOfInterest field;
   final void Function()? onTap;
   final bool selected;
 
