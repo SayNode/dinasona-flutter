@@ -6,7 +6,7 @@ import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../widgets/custom_scaffold.dart';
-import 'widgets/bullet_point_widget.dart';
+import 'widget/bullet_point_widget.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});

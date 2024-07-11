@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../service/theme_service.dart';
-import '../../../theme/theme.dart';
-import '../../../theme/typography.dart';
+import '../../../../service/theme_service.dart';
+import '../../../../theme/theme.dart';
+import '../../../../theme/typography.dart';
 
-class PeopleHelpedWidget extends StatelessWidget {
-  const PeopleHelpedWidget({
+class HelpedRecievedWidget extends StatelessWidget {
+  const HelpedRecievedWidget({
     required this.peopleHelped,
     required this.amountDonated,
-    required this.countries,
+    required this.needsClosed,
     super.key,
   });
   final int peopleHelped;
   final double amountDonated;
-  final int countries;
+  final int needsClosed;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class PeopleHelpedWidget extends StatelessWidget {
                 style: CustomTypography.fromColor(theme.moonstone).k36Bold,
               ),
               Text(
-                'Your generosity fuels positive change',
+                'wallet balance',
                 style: CustomTypography.fromColor(theme.moonstone).k14Reg,
                 textAlign: TextAlign.center,
               ),
@@ -72,7 +72,7 @@ class PeopleHelpedWidget extends StatelessWidget {
                             CustomTypography.fromColor(theme.moonstone).k24Bold,
                       ),
                       Text(
-                        "You've touched numerous lives with your kindness",
+                        'supported you',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k14Reg,
                         textAlign: TextAlign.center,
@@ -96,12 +96,12 @@ class PeopleHelpedWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
-                        '$countries countries',
+                        '$needsClosed needs',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k24Bold,
                       ),
                       Text(
-                        'Your generosity knows no borders',
+                        'successfully closed',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k14Reg,
                         textAlign: TextAlign.center,
