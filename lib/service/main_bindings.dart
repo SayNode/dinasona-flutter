@@ -7,6 +7,10 @@
 
 import 'package:get/get.dart';
 
+import 'auth_service.dart';
+
+import 'api_service.dart';
+
 import '../pages/add/controllers/add_page_controller.dart';
 import '../pages/donate/controllers/donate_page_controller.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';
@@ -25,8 +29,6 @@ import '../pages/sign_up/controller/sign_up_controller.dart';
 import '../pages/wallet/controllers/wallet_page_controller.dart';
 import '../widgets/avatar_widget/controller/avatar_widget_controller.dart';
 import '../widgets/google_apple_sign_in/controllers/google_apple_sign_in_controller.dart';
-import 'api_service.dart';
-import 'auth_service.dart';
 import 'localization_controller.dart';
 import 'logger_service.dart';
 import 'storage/secure_storage_service.dart';
@@ -48,6 +50,10 @@ class MainBindings extends Bindings {
 
   void _injectServices() {
     //Services injection
+
+    Get.lazyPut(AuthService.new);
+
+    Get.lazyPut(APIService.new);
 
     Get
       ..lazyPut(APIService.new)

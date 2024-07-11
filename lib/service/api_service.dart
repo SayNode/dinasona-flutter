@@ -5,6 +5,6 @@
 //
 // https://saynode.ch
 
-import '../base/api_service_base.dart';
+import '../base/api_service_interface.dart';
 
-class APIService extends ApiServiceBase {}
+class APIService extends ApiServiceInterface {}

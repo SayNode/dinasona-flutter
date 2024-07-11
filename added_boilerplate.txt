@@ -1,5 +1,4 @@
 shared_storage
-api
 localization
 signin-google
 signin-apple
@@ -8,3 +7,4 @@ secure_storage
 wallet
 crashalytics
 theme-lighttypography
+api
