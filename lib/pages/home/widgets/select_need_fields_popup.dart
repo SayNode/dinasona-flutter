@@ -52,9 +52,12 @@ class SelectAreasOfInterestPopup
               ),
             ),
             Gap(getRelativeHeight(32)),
-            DinasonaButton(
-              text: 'Explore'.tr,
-              onPressed: controller.close,
+            Obx(
+              () => DinasonaButton(
+                text: 'Explore'.tr,
+                onPressed: controller.close,
+                locked: controller.selectedAreasOfInterest.isEmpty,
+              ),
             ),
           ],
         ),
