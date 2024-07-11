@@ -70,12 +70,15 @@ class Need {
     return Need(
       title: json['title'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      beneficiary:
-          Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
+      beneficiary: json['beneficiary'] != null
+          ? Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>)
+          : Beneficiary.anonymous(),
       amount: double.parse(json['amount'] as String? ?? '0.0'),
-      areasOfInterest: (json['area_of_interest'] as List<dynamic>)
-          .map((dynamic e) => AreaOfInterest.values[(e as int) - 1])
-          .toList(),
+      areasOfInterest: json['area_of_interest'] != null
+          ? (json['area_of_interest'] as List<dynamic>)
+              .map((dynamic e) => AreaOfInterest.values[(e as int) - 1])
+              .toList()
+          : <AreaOfInterest>[],
       photoUrls: <String>[],
       /*(json['image'] as List<dynamic>)
           .where(

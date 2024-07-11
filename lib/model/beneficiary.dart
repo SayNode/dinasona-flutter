@@ -46,6 +46,17 @@ class Beneficiary {
       bio: json['bio'] as String? ?? 'Empty bio',
     );
   }
+  factory Beneficiary.anonymous() {
+    return Beneficiary(
+      name: 'Anonymous',
+      location: 'Location hidden',
+      email: 'Email hidden',
+      photoUrl: '',
+      dateOfBirth: null,
+      gender: Gender.preferNotToSay,
+      bio: 'Empty bio',
+    );
+  }
 
   static DateFormat format = DateFormat('yyyy-MM-dd');
   final String name;

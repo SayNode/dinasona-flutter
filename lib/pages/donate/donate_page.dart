@@ -31,16 +31,26 @@ class DonatePage extends GetView<DonatePageController> {
               ),
             ),
             Gap(getRelativeHeight(16)),
-            Column(
-              children: <Widget>[
-                for (final Need need in controller.needsFulfilled)
-                  Padding(
-                    padding: EdgeInsets.only(
-                      bottom: getRelativeHeight(16),
+            Obx(
+              () => controller.needsFulfilled.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No donations made yet'.tr,
+                        style:
+                            CustomTypography.fromColor(theme.shadowed).k16Reg,
+                      ),
+                    )
+                  : Column(
+                      children: <Widget>[
+                        for (final Need need in controller.needsFulfilled)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: getRelativeHeight(16),
+                            ),
+                            child: NeedCard(need: need),
+                          ),
+                      ],
                     ),
-                    child: NeedCard(need: need),
-                  ),
-              ],
             ),
           ],
         ),
