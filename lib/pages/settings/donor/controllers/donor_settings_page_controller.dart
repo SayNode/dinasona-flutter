@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import '../../../../model/donor_statistics.dart';
 import '../../../../model/user.dart';
 import '../../../../service/user_state_service.dart';
-import '../../../../widgets/dialogs/delete_account_dialog.dart';
-import '../../../../widgets/dialogs/logout_dialog.dart';
+import '../../../../util/popup_manager.dart';
 
 class DonorSettingsPageController extends GetxController {
   final UserStateService _userStateService = Get.find();
@@ -14,10 +13,10 @@ class DonorSettingsPageController extends GetxController {
       _userStateService.donorStatistics.value;
 
   void logout() {
-    Get.dialog(const LogoutDialog());
+    PopupManager.openLogoutPopup();
   }
 
   void deleteAccount() {
-    Get.dialog(const DeleteAccountDialog());
+    PopupManager.openDeleteAccountPopup();
   }
 }
