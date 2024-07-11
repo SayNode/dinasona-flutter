@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../pages/donor_settings_page/widgets/delete_account_bottom_sheet.dart';
+import '../../pages/settings/widget/delete_account_bottom_sheet.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../service/user_state_service.dart';
+import '../../../../service/user_state_service.dart';
 
-class DonorPersonalDetailsController extends GetxController {
+class BeneficiaryPersonalDetailsController extends GetxController {
   RxBool loading = false.obs;
 
   final UserStateService userStateService = Get.find<UserStateService>();
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController loactionController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
+  String gender = '';
 
   @override
   void onInit() {

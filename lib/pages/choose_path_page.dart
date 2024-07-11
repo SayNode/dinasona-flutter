@@ -8,7 +8,8 @@ import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 import '../widgets/custom_scaffold.dart';
-import 'login/donor_and_beneficiary/login_page.dart';
+import 'sign_up/donor_and_beneficiary/choose_language_page.dart';
+import 'sign_up/donor_and_beneficiary/sign_up_page.dart';
 
 class ChosePathPage extends StatelessWidget {
   const ChosePathPage({super.key});
@@ -30,9 +31,7 @@ class ChosePathPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 onTap: () {
                   Get.to<void>(
-                    () => const LoginPage(
-                      isBeneficiary: false,
-                    ),
+                    () => const SignupPage(),
                   );
                 },
                 child: Padding(
@@ -80,7 +79,7 @@ class ChosePathPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 onTap: () {
                   Get.to<void>(
-                    () => const LoginPage(),
+                    () => const ChooseLanguagePage(),
                   );
                 },
                 child: Padding(
