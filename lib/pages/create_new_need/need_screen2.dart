@@ -31,13 +31,14 @@ class NeedScreen2 extends GetView<CreateNewNeedController> {
             spacing: getRelativeWidth(5),
             runSpacing: getRelativeHeight(6),
             children: <Widget>[
-              for (final NeedField field in NeedField.values)
-                NeedFieldChip(
+              for (final AreaOfInterest field in AreaOfInterest.values)
+                AreaOfInterestChip(
                   field: field,
-                  selected: controller.selectedNeedFields.contains(field),
-                  onTap: () => controller.selectedNeedFields.contains(field)
-                      ? controller.selectedNeedFields.remove(field)
-                      : controller.selectedNeedFields.add(field),
+                  selected: controller.selectedAreasOfInterest.contains(field),
+                  onTap: () =>
+                      controller.selectedAreasOfInterest.contains(field)
+                          ? controller.selectedAreasOfInterest.remove(field)
+                          : controller.selectedAreasOfInterest.add(field),
                 ),
             ],
           ),
@@ -49,14 +50,14 @@ class NeedScreen2 extends GetView<CreateNewNeedController> {
                 showBackIcon: true,
                 text: 'Back'.tr,
                 onPressed: () => controller.selectTab(NeedsTab.screen1),
-                locked: controller.selectedNeedFields.isEmpty,
+                locked: controller.selectedAreasOfInterest.isEmpty,
               ),
               const Gap(10),
               Expanded(
                 child: DinasonaButton(
                   text: 'Continue'.tr,
                   onPressed: () => controller.selectTab(NeedsTab.screen3),
-                  locked: controller.selectedNeedFields.isEmpty,
+                  locked: controller.selectedAreasOfInterest.isEmpty,
                 ),
               ),
             ],

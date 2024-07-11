@@ -17,7 +17,7 @@ class CreateNewNeedController extends GetxController {
   TextEditingController screen3 = TextEditingController();
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
-  RxList<NeedField> selectedNeedFields = <NeedField>[].obs;
+  RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
   final int descriptionMaxLenth = 300;
 
   final Rx<File?> selectedImage = Rx<File?>(null);
@@ -52,11 +52,11 @@ class CreateNewNeedController extends GetxController {
   }
 
   Future<void> openCurrency({Widget? child}) async {
-    final List<NeedField>? temp = await PopupManager.openCurrencyPopup(
-      selectedNeedFields,
+    final List<AreaOfInterest>? temp = await PopupManager.openCurrencyPopup(
+      selectedAreasOfInterest,
     );
     if (temp != null) {
-      selectedNeedFields.value = temp;
+      selectedAreasOfInterest.value = temp;
     }
   }
 

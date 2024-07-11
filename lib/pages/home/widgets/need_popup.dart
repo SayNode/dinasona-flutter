@@ -146,8 +146,8 @@ class NeedPopup extends GetView<NeedPopupController> {
                 spacing: getRelativeWidth(5),
                 runSpacing: getRelativeHeight(6),
                 children: <Widget>[
-                  for (final NeedField field in need.fields)
-                    NeedFieldChip(field: field),
+                  for (final AreaOfInterest field in need.areasOfInterest)
+                    AreaOfInterestChip(field: field),
                 ],
               ),
             ),
