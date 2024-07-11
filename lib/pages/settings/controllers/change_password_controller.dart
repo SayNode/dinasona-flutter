@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../model/auth_result.dart';
 import '../../../service/auth_service.dart';
 
 class ChangePasswordController extends GetxController {
@@ -37,8 +38,8 @@ class ChangePasswordController extends GetxController {
       if (response.success) {
         Get.back();
       } else {
-        final Map<String, dynamic> message = (response.info['result']
-            as Map<String, dynamic>)['error'] as Map<String, dynamic>;
+        final Map<String, dynamic> message =
+            response.result['error'] as Map<String, dynamic>;
         if (message['old_password'] != null) {
           final List<String> errorList =
               (message['old_password'] as List<dynamic>)

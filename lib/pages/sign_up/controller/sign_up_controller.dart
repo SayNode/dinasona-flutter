@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../model/auth_result.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
@@ -55,28 +55,26 @@ class SignupController extends GetxController {
         final AuthResponse registrationResult = await authService.registration(
           email.text,
           password.text,
+          '',
+          biometrics: false,
         );
         if (registrationResult.success) {
           await proceed(isBeneficiary);
         } else {
           try {
             registrationFormKey.value.currentState!.validate();
-            if (registrationResult.info.isNotEmpty) {
-              if ((json.decode(registrationResult.info.toString())
-                      as Map<String, dynamic>)
-                  .containsKey('email')) {
+            final Map<String, dynamic> errorMap =
+                registrationResult.result['error'] as Map<String, dynamic>;
+            if (errorMap.isNotEmpty) {
+              if (errorMap.containsKey('email')) {
                 error.value =
                     // ignore: avoid_dynamic_calls
-                    jsonDecode(registrationResult.info.toString())['email'][0]
-                        as String;
+                    errorMap['email'][0] as String;
               }
-              if ((json.decode(registrationResult.info.toString())
-                      as Map<String, dynamic>)
-                  .containsKey('password')) {
+              if (errorMap.containsKey('password')) {
                 error.value =
                     // ignore: avoid_dynamic_calls
-                    jsonDecode(registrationResult.info.toString())['password']
-                        [0] as String;
+                    errorMap['password'][0] as String;
               }
             }
           } catch (e) {

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../pages/choose_path_page.dart';
 import '../../service/auth_service.dart';
 import '../../service/theme_service.dart';
+import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../dinasona_button.dart';
@@ -14,6 +15,7 @@ class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
+    final UserStateService userStateService = Get.find<UserStateService>();
     return AlertDialog(
       icon: Image.asset(
         'assets/images/logout.png',
@@ -37,6 +39,7 @@ class LogoutDialog extends StatelessWidget {
           textColor: theme.graphite,
           onPressed: () async {
             await Get.find<AuthService>().logout();
+            userStateService.clear();
             await Get.offAll<void>(
               () => const ChosePathPage(),
               transition: Transition.upToDown,

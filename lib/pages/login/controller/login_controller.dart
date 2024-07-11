@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../model/auth_result.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../root/beneficiary_root_page.dart';
@@ -46,7 +47,7 @@ class LoginController extends GetxController {
         final AuthResponse loginResult =
             await authService.login(email.text, password.text);
         if (loginResult.success) {
-          unawaited(Get.find<UserStateService>().init());
+          await Get.find<UserStateService>().init();
           await Get.to<void>(
             () => isBeneficiary
                 ? const BeneficiaryRootPage()

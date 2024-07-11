@@ -164,7 +164,7 @@ class MyApp extends StatelessWidget {
           locale: localizationController.locale,
           translations:
               Messages(languages: localizationController.translations),
-          debugShowCheckedModeBanner: DinasonaConstants.devMode,
+          debugShowCheckedModeBanner: Constants.devMode,
           title: 'dinasona',
           initialRoute: '/',
           getPages: <GetPage<void>>[
