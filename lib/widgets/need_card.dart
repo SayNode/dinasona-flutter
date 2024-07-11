@@ -62,6 +62,14 @@ class NeedCard extends StatelessWidget {
                                   need.beneficiary.photoUrl,
                                   height: getRelativeHeight(52),
                                   width: getRelativeHeight(52),
+                                  errorBuilder: (BuildContext context,
+                                          Object error,
+                                          StackTrace? stackTrace) =>
+                                      Icon(
+                                    Icons.person,
+                                    size: getRelativeHeight(52),
+                                    color: theme.graphite,
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ],

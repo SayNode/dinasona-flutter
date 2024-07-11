@@ -60,6 +60,7 @@ class NeedService extends GetxService {
         },
       );
       if (response.statusCode == 200) {
+        print(response.body);
         final List<Map<String, dynamic>> needList =
             List<Map<String, dynamic>>.from(
           jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>,

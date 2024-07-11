@@ -68,18 +68,24 @@ class Need {
 
   factory Need.fromJson(Map<String, dynamic> json) {
     return Need(
-      title: json['title'] as String,
-      description: json['description'] as String,
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
       beneficiary:
           Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
-      amount: json['amount'] as double,
+      amount: double.parse(json['amount'] as String? ?? '0.0'),
       areasOfInterest: (json['area_of_interest'] as List<dynamic>)
           .map((dynamic e) => AreaOfInterest.values[(e as int) - 1])
           .toList(),
-      photoUrls: (json['images'] as List<dynamic>)
+      photoUrls: <String>[],
+      /*(json['image'] as List<dynamic>)
+          .where(
+            (dynamic e) => e != null,
+          )
           .map((dynamic e) => e as String)
-          .toList(),
-      status: _statusFromString(json['status'] as String),
+          .toList(),*/
+      status: json['status'] == null
+          ? NeedStatus.draft
+          : _statusFromString(json['status'] as String),
     );
   }
 
@@ -87,9 +93,9 @@ class Need {
     switch (status) {
       case 'draft':
         return NeedStatus.draft;
-      case 'ongoing':
+      case 'published':
         return NeedStatus.ongoing;
-      case 'past':
+      case 'closed':
         return NeedStatus.past;
       default:
         return NeedStatus.draft;
@@ -103,17 +109,4 @@ class Need {
   final List<AreaOfInterest> areasOfInterest;
   final List<String> photoUrls;
   final NeedStatus status;
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'title': title,
-      'description': description,
-      'beneficiary': beneficiary.toJson(),
-      'amount': amount,
-      'area_of_interest':
-          areasOfInterest.map((AreaOfInterest e) => e.index + 1).toList(),
-      'images': photoUrls,
-      'status': status.index,
-    };
-  }
 }

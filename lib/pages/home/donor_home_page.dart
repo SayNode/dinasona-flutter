@@ -15,8 +15,12 @@ import 'widgets/select_need_fields_popup.dart';
 class DonorHomePage extends GetView<DonorHomePageController> {
   const DonorHomePage({super.key});
 
-  Widget generateDonationsInField(AreaOfInterest field, CustomTheme theme) {
-    final List<Need> donationsInField = controller.needs
+  Widget generateDonationsInField(
+    List<Need> allNeeds,
+    AreaOfInterest field,
+    CustomTheme theme,
+  ) {
+    final List<Need> donationsInField = allNeeds
         .where(
           (Need e) => e.areasOfInterest.contains(field),
         )
@@ -183,8 +187,15 @@ class DonorHomePage extends GetView<DonorHomePageController> {
             ),
           ),
           Gap(getRelativeHeight(20)),
-          for (final AreaOfInterest field in controller.defaultAreasOfInterest)
-            generateDonationsInField(field, theme),
+          Obx(
+            () => Column(
+              children: <Widget>[
+                for (final AreaOfInterest field
+                    in controller.defaultAreasOfInterest)
+                  generateDonationsInField(controller.needs, field, theme),
+              ],
+            ),
+          ),
         ],
       ),
     );
