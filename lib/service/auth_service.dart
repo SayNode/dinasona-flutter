@@ -4,14 +4,16 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
-import '../model/auth_response.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 import '../base/auth_service_base.dart';
+import '../model/auth_response.dart';
 
 class AuthService extends AuthServiceBase {
   // Add your custom code here
@@ -196,6 +198,6 @@ class AuthService extends AuthServiceBase {
     }
     // Disconnect from Apple.
 
-    super.disconnectProviders();
+    await super.disconnectProviders();
   }
 }
