@@ -22,7 +22,7 @@ class SecureStorageService extends GetxService
   }
 
   @override
-  Future<String> readString(String key) {
+  Future<String?> readString(String key) {
     return read(key);
   }
 
@@ -32,8 +32,11 @@ class SecureStorageService extends GetxService
   }
 
   @override
-  Future<int> readInt(String key) async {
-    final String value = await read(key);
+  Future<int?> readInt(String key) async {
+    final String? value = await read(key);
+    if (value == null) {
+      return null;
+    }
     return int.parse(value);
   }
 
@@ -43,8 +46,11 @@ class SecureStorageService extends GetxService
   }
 
   @override
-  Future<double> readDouble(String key) async {
-    final String value = await read(key);
+  Future<double?> readDouble(String key) async {
+    final String? value = await read(key);
+    if (value == null) {
+      return null;
+    }
     return double.parse(value);
   }
 
@@ -54,8 +60,11 @@ class SecureStorageService extends GetxService
   }
 
   @override
-  Future<bool> readBool(String key) async {
-    final String value = await read(key);
+  Future<bool?> readBool(String key) async {
+    final String? value = await read(key);
+    if (value == null) {
+      return null;
+    }
     return value == 'true';
   }
 
@@ -65,8 +74,11 @@ class SecureStorageService extends GetxService
   }
 
   @override
-  Future<List<String>> readStringList(String key) async {
-    final String value = await read(key);
+  Future<List<String>?> readStringList(String key) async {
+    final String? value = await read(key);
+    if (value == null) {
+      return null;
+    }
     return value.split(stringListSeparator);
   }
 
@@ -75,7 +87,7 @@ class SecureStorageService extends GetxService
     return write(key, value.join(stringListSeparator));
   }
 
-  Future<String> read(String key) async {
+  Future<String?> read(String key) async {
     final bool keyExists = await storage.containsKey(key: key);
     if (keyExists) {
       final String? storedValue = await storage.read(key: key);
@@ -85,7 +97,7 @@ class SecureStorageService extends GetxService
         throw StorageException('Key $key is null in Secure Storage');
       }
     } else {
-      throw StorageException('Key $key not found in Secure Storage');
+      return null;
     }
   }
 
