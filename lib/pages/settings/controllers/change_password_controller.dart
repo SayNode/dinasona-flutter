@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../model/auth_result.dart';
+import '../../../model/auth_response.dart';
 import '../../../service/auth_service.dart';
 
 class ChangePasswordController extends GetxController {

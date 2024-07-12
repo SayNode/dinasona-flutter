@@ -1,10 +1,10 @@
 shared_storage
 localization
-signin-google
-signin-apple
 splash
 secure_storage
 wallet
 crashalytics
 theme-lighttypography
 api
+signin-apple
+signin-google

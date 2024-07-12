@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../model/auth_result.dart';
+import '../model/auth_response.dart';
 import '../service/auth_service.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
