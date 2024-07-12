@@ -47,13 +47,6 @@ class LogoutDialog extends StatelessWidget {
           },
           padding: const EdgeInsets.all(16),
         ),
-        DinasonaButton(
-          expand: false,
-          color: theme.amberglow,
-          text: 'Cancel'.tr,
-          onPressed: Get.back,
-          padding: const EdgeInsets.all(16),
-        ),
       ],
     );
   }

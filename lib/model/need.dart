@@ -1,6 +1,6 @@
 import 'beneficiary.dart';
 
-enum NeedField {
+enum AreaOfInterest {
   food,
   water,
   clothes,
@@ -17,31 +17,31 @@ enum NeedField {
 
   String get title {
     switch (this) {
-      case NeedField.food:
+      case AreaOfInterest.food:
         return 'Food';
-      case NeedField.water:
+      case AreaOfInterest.water:
         return 'Water';
-      case NeedField.clothes:
+      case AreaOfInterest.clothes:
         return 'Clothes';
-      case NeedField.firewood:
+      case AreaOfInterest.firewood:
         return 'Firewood';
-      case NeedField.babyhood:
+      case AreaOfInterest.babyhood:
         return 'Babyhood';
-      case NeedField.eggs:
+      case AreaOfInterest.eggs:
         return 'Eggs';
-      case NeedField.electricity:
+      case AreaOfInterest.electricity:
         return 'Electricity';
-      case NeedField.rice:
+      case AreaOfInterest.rice:
         return 'Rice';
-      case NeedField.corn:
+      case AreaOfInterest.corn:
         return 'Corn';
-      case NeedField.medicalSupplies:
+      case AreaOfInterest.medicalSupplies:
         return 'Medical Supplies';
-      case NeedField.schoolSupplies:
+      case AreaOfInterest.schoolSupplies:
         return 'School Supplies';
-      case NeedField.bread:
+      case AreaOfInterest.bread:
         return 'Bread';
-      case NeedField.milk:
+      case AreaOfInterest.milk:
         return 'Milk';
     }
   }
@@ -61,44 +61,55 @@ class Need {
     required this.description,
     required this.beneficiary,
     required this.amount,
-    required this.fields,
+    required this.areasOfInterest,
     required this.photoUrls,
     required this.status,
   });
 
   factory Need.fromJson(Map<String, dynamic> json) {
     return Need(
-      title: json['title'] as String,
-      description: json['description'] as String,
-      beneficiary:
-          Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
-      amount: json['amount'] as double,
-      fields: (json['fields'] as List<dynamic>)
-          .map((dynamic e) => NeedField.values[e as int])
-          .toList(),
-      photoUrls: (json['photoUrls'] as List<dynamic>)
+      title: json['title'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      beneficiary: json['beneficiary'] != null
+          ? Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>)
+          : Beneficiary.anonymous(),
+      amount: double.parse(json['amount'] as String? ?? '0.0'),
+      areasOfInterest: json['area_of_interest'] != null
+          ? (json['area_of_interest'] as List<dynamic>)
+              .map((dynamic e) => AreaOfInterest.values[(e as int) - 1])
+              .toList()
+          : <AreaOfInterest>[],
+      photoUrls: <String>[],
+      /*(json['image'] as List<dynamic>)
+          .where(
+            (dynamic e) => e != null,
+          )
           .map((dynamic e) => e as String)
-          .toList(),
-      status: NeedStatus.values[json['status'] as int],
+          .toList(),*/
+      status: json['status'] == null
+          ? NeedStatus.draft
+          : _statusFromString(json['status'] as String),
     );
   }
+
+  static NeedStatus _statusFromString(String status) {
+    switch (status) {
+      case 'draft':
+        return NeedStatus.draft;
+      case 'published':
+        return NeedStatus.ongoing;
+      case 'closed':
+        return NeedStatus.past;
+      default:
+        return NeedStatus.draft;
+    }
+  }
+
   final String title;
   final String description;
   final Beneficiary beneficiary;
   final double amount;
-  final List<NeedField> fields;
+  final List<AreaOfInterest> areasOfInterest;
   final List<String> photoUrls;
   final NeedStatus status;
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'title': title,
-      'description': description,
-      'beneficiary': beneficiary.toJson(),
-      'amount': amount,
-      'fields': fields.map((NeedField e) => e.index).toList(),
-      'photoUrls': photoUrls,
-      'status': status.index,
-    };
-  }
 }

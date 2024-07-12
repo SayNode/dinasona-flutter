@@ -15,10 +15,14 @@ import 'widgets/select_need_fields_popup.dart';
 class DonorHomePage extends GetView<DonorHomePageController> {
   const DonorHomePage({super.key});
 
-  Widget generateDonationsInField(NeedField field, CustomTheme theme) {
-    final List<Need> donationsInField = controller.recommendedDonations
+  Widget generateDonationsInField(
+    List<Need> allNeeds,
+    AreaOfInterest field,
+    CustomTheme theme,
+  ) {
+    final List<Need> donationsInField = allNeeds
         .where(
-          (Need e) => e.fields.contains(field),
+          (Need e) => e.areasOfInterest.contains(field),
         )
         .toList();
     return donationsInField.isEmpty
@@ -81,7 +85,6 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                   ),
                 ),
               ),
-              Gap(getRelativeHeight(6)),
               Align(
                 alignment: Alignment.centerLeft,
                 child: SingleChildScrollView(
@@ -91,7 +94,11 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                       Gap(getRelativeWidth(20)),
                       for (final Need donation in donationsInField)
                         Padding(
-                          padding: EdgeInsets.only(right: getRelativeWidth(15)),
+                          padding: EdgeInsets.only(
+                            right: getRelativeWidth(15),
+                            top: getRelativeHeight(6),
+                            bottom: getRelativeHeight(10),
+                          ),
                           child: SizedBox(
                             width: getRelativeWidth(320),
                             child: NeedCard(need: donation),
@@ -102,7 +109,6 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                   ),
                 ),
               ),
-              Gap(getRelativeHeight(20)),
             ],
           );
   }
@@ -134,8 +140,9 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                   spacing: getRelativeWidth(5),
                   runSpacing: getRelativeHeight(6),
                   children: <Widget>[
-                    for (final NeedField field in controller.favoriteFields)
-                      NeedFieldChip(field: field),
+                    for (final AreaOfInterest field
+                        in controller.defaultAreasOfInterest)
+                      AreaOfInterestChip(field: field),
                     SizedBox(
                       height: getRelativeHeight(40),
                       child: Material(
@@ -149,9 +156,9 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(128),
                           onTap: () => controller.openExploreMore(
-                            child: SelectNeedFieldsPopup(
-                              initialSelectedNeedFields:
-                                  controller.favoriteFields,
+                            child: SelectAreasOfInterestPopup(
+                              initialSelectedAreasOfInterest:
+                                  controller.defaultAreasOfInterest,
                             ),
                           ),
                           child: Padding(
@@ -179,75 +186,16 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               ),
             ),
           ),
-          Gap(getRelativeHeight(16)),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(20)),
-            child: Row(
+          Gap(getRelativeHeight(20)),
+          Obx(
+            () => Column(
               children: <Widget>[
-                Text(
-                  'Recommended for you ❤️'.tr,
-                  style: CustomTypography.fromColor(theme.shadowed).k20Bold,
-                ),
-                const Spacer(),
-                Material(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () => controller.seeAll(null),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        getRelativeWidth(8),
-                        getRelativeHeight(5),
-                        getRelativeWidth(4),
-                        getRelativeHeight(4),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'See all'.tr,
-                            style: CustomTypography.fromColor(
-                              theme.shadowed,
-                            ).k14Reg,
-                          ),
-                          const Gap(2),
-                          Icon(
-                            Icons.chevron_right,
-                            color: theme.shadowed,
-                            size: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                for (final AreaOfInterest field
+                    in controller.defaultAreasOfInterest)
+                  generateDonationsInField(controller.needs, field, theme),
               ],
             ),
           ),
-          Gap(getRelativeHeight(6)),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  Gap(getRelativeWidth(20)),
-                  for (final Need donation in controller.recommendedDonations)
-                    Padding(
-                      padding: EdgeInsets.only(right: getRelativeWidth(15)),
-                      child: SizedBox(
-                        width: getRelativeWidth(320),
-                        child: NeedCard(need: donation),
-                      ),
-                    ),
-                  Gap(getRelativeWidth(5)),
-                ],
-              ),
-            ),
-          ),
-          Gap(getRelativeHeight(20)),
-          for (final NeedField field in controller.favoriteFields)
-            generateDonationsInField(field, theme),
         ],
       ),
     );
