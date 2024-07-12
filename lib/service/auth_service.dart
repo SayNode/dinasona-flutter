@@ -4,449 +4,27 @@
 // Flutter Architect was created at SayNode Operations AG by Yann Marti, Francesco Romeo and Pedro Gonçalves.
 //
 // https://saynode.ch
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../model/user.dart';
-import 'api_service.dart';
-import 'storage/storage_service.dart';
-import 'user_state_service.dart';
+import '../base/auth_service_base.dart';
+import '../model/auth_response.dart';
 
-enum ProviderTypes {
-  none,
-  email,
-  google,
-  apple,
-}
-
-class AuthResponse {
-  AuthResponse(this.info, {required this.success});
-
-  final Map<String, dynamic> info;
-  final bool success;
-}
-
-class AuthService extends GetxService {
-  String authenticationToken = '';
-  StorageService storageService = Get.put(StorageService());
-  UserStateService userStateService = Get.put(UserStateService());
-  APIService apiService = Get.put(APIService());
+class AuthService extends AuthServiceBase {
+  // Add your custom code here
   late GoogleSignIn _googleSignIn;
 
-  String verificationToken = '';
-  String verificationUid = '';
-
-  @override
-  void onInit() {
+  void init() {
     _googleSignIn = GoogleSignIn(
       scopes: <String>[
         'email',
       ],
     );
-    debugPrint('AuthService - initializing...');
-    super.onInit();
-  }
-
-  String unexpectedError(http.Response response) {
-    return '[Status Code : ${response.statusCode}] ${response.body}';
-  }
-
-  Map<String, dynamic> parseErrorMap(http.Response response) {
-    return jsonDecode(response.body) as Map<String, dynamic>;
-  }
-
-  // Check if the user is logged in already, and if so, perform a silent login and return true.
-  Future<bool> silentLogin() async {
-    try {
-      switch (ProviderTypes.values[storageService.shared.readInt('provider')]) {
-        case ProviderTypes.email:
-          return (await login(
-            storageService.shared.readString('email'),
-            await storageService.secure.readString('password'),
-          ))
-              .success;
-        case ProviderTypes.google:
-          return (await googleSignIn()).success;
-        case ProviderTypes.apple:
-          return (await appleSignIn(
-            authorizationCode:
-                await storageService.secure.readString('authorizationCode'),
-            identityToken:
-                await storageService.secure.readString('identityToken'),
-          ))
-              .success;
-        case ProviderTypes.none:
-          return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // Log the user in. This function is not responsible for any navigation.
-  Future<AuthResponse> login(
-    String email,
-    String password,
-  ) async {
-    try {
-      final http.Response response = await apiService.post(
-        'auth/login/',
-        body: <String, dynamic>{
-          'email': email,
-          'password': password,
-        },
-        omitBearerToken: true,
-      );
-
-      if (response.statusCode == 200) {
-        try {
-          final Map<String, dynamic> userMap =
-              jsonDecode(response.body) as Map<String, dynamic>;
-
-          // userStateService.user.value =
-          //     // ignore: avoid_dynamic_calls
-          //     User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
-
-          /// save the token
-          // ignore: avoid_dynamic_calls
-          authenticationToken = userMap['result']['access_token'] as String;
-          debugPrint('AuthService - authenticationToken: $authenticationToken');
-          debugPrint(
-            'AuthService - user logged in: ${userStateService.user.value.email}',
-          );
-
-          // Disconnect other providers
-          await _disconnectProviders();
-
-          await storageService.shared.writeString('email', email);
-          await storageService.secure.writeString('password', password);
-          await storageService.shared
-              .writeInt('provider', ProviderTypes.email.index);
-
-          await userStateService.fetchUserInfo();
-          await userStateService.fetchDonorStatistics();
-
-          return AuthResponse(
-            <String, dynamic>{'success': 'Successfully logged in.'},
-            success: true,
-          );
-        } catch (error) {
-          // Request parsing went wrong:
-          throw Exception('AuthService - error while parsing the user: $error');
-        }
-      } else {
-        // Unexpected status code:
-        debugPrint(
-          'AuthService - ${response.statusCode} ${response.body}',
-        );
-        return AuthResponse(parseErrorMap(response), success: false);
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService login endpoint failed - $e');
-    }
-  }
-
-  // Log the user out. This function is not responsible for any navigation.
-  Future<AuthResponse> logout() async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/logout/',
-        contentType: 'application/json',
-      );
-      if (response.statusCode == 200) {
-        authenticationToken = '';
-        userStateService.clear();
-        // Disconnect other providers
-        await _disconnectProviders();
-        await storageService.shared.writeString('email', '');
-        await storageService.secure.writeString('password', '');
-        await storageService.shared
-            .writeInt('provider', ProviderTypes.none.index);
-        return AuthResponse(
-          <String, dynamic>{'success': 'Successful logout.'},
-          success: true,
-        );
-      } else {
-        // Unexpected status code:
-        throw Exception(
-          'AuthService - error while logging out the user ${unexpectedError(response)}',
-        );
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService logout endpoint failed - $e');
-    }
-  }
-
-  // Log the user out. This function is not responsible for any navigation.
-  Future<AuthResponse> deleteUser() async {
-    try {
-      final http.Response response = await apiService.delete(
-        '/users/delete/',
-        contentType: 'application/json',
-      );
-      if (response.statusCode == 200) {
-        authenticationToken = '';
-        userStateService.clear();
-        // Disconnect other providers
-        await _disconnectProviders();
-        await storageService.shared.writeString('email', '');
-        await storageService.secure.writeString('password', '');
-        await storageService.shared
-            .writeInt('provider', ProviderTypes.none.index);
-        return AuthResponse(
-          <String, dynamic>{'success': 'Successful logout.'},
-          success: true,
-        );
-      } else {
-        // Unexpected status code:
-        // await Get.to<void>(() => HtmlDebug(res: response.body));
-        throw Exception(
-          'AuthService - error while logging out the user ${unexpectedError(response)}',
-        );
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService logout endpoint failed - $e');
-    }
-  }
-
-  // Register a new user.
-  Future<AuthResponse> registration(
-    String email,
-    String password,
-  ) async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/registration/',
-        omitBearerToken: true,
-        contentType: 'application/json',
-        body: <String, dynamic>{
-          'email': email,
-          'password1': password,
-          'password2': password,
-        },
-      );
-
-      if (response.statusCode == 201) {
-        try {
-          final Map<String, dynamic> userMap =
-              jsonDecode(response.body) as Map<String, dynamic>;
-          userStateService.user.value =
-              // ignore: avoid_dynamic_calls
-              User.fromJson(userMap['result']['user'] as Map<String, dynamic>);
-
-          /// save the token
-          // ignore: avoid_dynamic_calls
-          authenticationToken = userMap['result']['access_token'] as String;
-          debugPrint('AuthService - authenticationToken: $authenticationToken');
-          debugPrint(
-            'AuthService - user registered in: ${userStateService.user.value.email}',
-          );
-
-          // Disconnect other providers
-          await _disconnectProviders();
-
-          await storageService.shared.writeString('email', email);
-          await storageService.secure.writeString('password', password);
-          await storageService.shared
-              .writeInt('provider', ProviderTypes.email.index);
-
-          return AuthResponse(
-            <String, dynamic>{'success': 'Successfully signed up.'},
-            success: true,
-          );
-        } catch (error) {
-          // Request parsing went wrong:
-          throw Exception('AuthService - error while parsing the user: $error');
-        }
-      } else {
-        // Unexpected status code:
-        debugPrint(
-          'AuthService - ${unexpectedError(response)}',
-        );
-        return AuthResponse(parseErrorMap(response), success: false);
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService registration endpoint failed - $e');
-    }
-  }
-
-  Future<AuthResponse> changePassword({
-    required String currentPassword,
-    required String newPassword,
-    required String confirmNewPassword,
-  }) async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/password/change/',
-        contentType: 'application/json',
-        body: <String, dynamic>{
-          'old_password': currentPassword,
-          'new_password1': newPassword,
-          'new_password2': confirmNewPassword,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return AuthResponse(
-          <String, dynamic>{'success': 'Password changed.'},
-          success: true,
-        );
-      } else {
-        // Unexpected status code:
-        debugPrint(
-          'AuthService - ${unexpectedError(response)}',
-        );
-        return AuthResponse(parseErrorMap(response), success: false);
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService change password endpoint failed - $e');
-    }
-  }
-
-  // Initiate change password process. Send code to user.
-  Future<AuthResponse> resetPassword(String email) async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/password/reset/',
-        contentType: 'application/json',
-        omitBearerToken: true,
-        body: <String, dynamic>{
-          'email': email,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        debugPrint('AuthService - Reset Code Sent');
-        return AuthResponse(
-          <String, dynamic>{'success': 'Reset code sent.'},
-          success: true,
-        );
-      } else {
-        // Unexpected status code:
-        debugPrint(
-          'AuthService - ${unexpectedError(response)}',
-        );
-        return AuthResponse(parseErrorMap(response), success: false);
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService reset password endpoint failed - $e');
-    }
-  }
-
-  // Send code for verification.
-  Future<AuthResponse> verifyCode(String code) async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/password/reset/code/validate/',
-        contentType: 'application/json',
-        omitBearerToken: true,
-        body: <String, dynamic>{
-          'code': code,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        try {
-          final Map<String, dynamic> userMap =
-              jsonDecode(response.body) as Map<String, dynamic>;
-
-          /// save the verication token and uid
-          verificationToken = userMap['token'] as String;
-          verificationUid = userMap['code'] as String;
-          debugPrint(
-            'AuthService - verification Token and UID: $verificationUid $verificationToken',
-          );
-          return AuthResponse(
-            <String, dynamic>{'success': 'Verification code is valid.'},
-            success: true,
-          );
-        } catch (error) {
-          return AuthResponse(
-            <String, dynamic>{'error': error.toString()},
-            success: false,
-          );
-        }
-      } else {
-        // Unexpected status code:
-        debugPrint(
-          'AuthService - ${unexpectedError(response)}',
-        );
-        return AuthResponse(parseErrorMap(response), success: false);
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception('AuthService validate code endpoint failed - $e');
-    }
-  }
-
-  // Once the code is validated, call this function to set the new password.
-  Future<AuthResponse> changePasswordAfterReset(
-    String password1,
-    String password2,
-  ) async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/password/reset/confirm/',
-        contentType: 'application/json',
-        omitBearerToken: true,
-        body: <String, dynamic>{
-          'new_password1': password1,
-          'new_password2': password2,
-          'uid': verificationUid,
-          'token': verificationToken,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return AuthResponse(
-          <String, dynamic>{'success': 'Password changed.'},
-          success: true,
-        );
-      } else {
-        // Unexpected status code:
-        debugPrint(
-          'AuthService - ${unexpectedError(response)}',
-        );
-        return AuthResponse(parseErrorMap(response), success: false);
-      }
-    } catch (e) {
-      // Endpoint failed:
-      throw Exception(
-        'AuthService change password after reset endpoint failed - $e',
-      );
-    }
-  }
-
-  // Send email to user, to verify their email.
-  Future<bool> sendVerificationEmail() async {
-    try {
-      final http.Response response = await apiService.post(
-        '/auth/registration/resend-email/',
-        contentType: 'application/json',
-        body: <String, dynamic>{
-          'email': userStateService.user.value.email,
-        },
-      );
-
-      return response.statusCode == 200;
-    } catch (e) {
-      throw Exception(
-        'AuthService send verification email endpoint failed - $e',
-      );
-    }
   }
 
   // Login with Google.
@@ -460,17 +38,8 @@ class AuthService extends GetxService {
           await _googleSignIn.signInSilently() ?? await _googleSignIn.signIn();
 
       if (result != null) {
-        debugPrint('Google Sign In result - $result');
-
         final GoogleSignInAuthentication googleKey =
             await result.authentication;
-
-        debugPrint('- token -');
-        debugPrint(googleKey.accessToken);
-        debugPrint('- idToken -');
-        debugPrint(googleKey.idToken);
-        debugPrint('- displayName -');
-        debugPrint(_googleSignIn.currentUser?.displayName);
 
         // Login in backend
         final http.Response response = await apiService.post(
@@ -483,60 +52,40 @@ class AuthService extends GetxService {
           contentType: 'application/json',
         );
 
+        final AuthResponse authResult = AuthResponse.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>,
+        );
+
         if (response.statusCode == 200) {
           try {
-            final Map<String, dynamic> userMap =
-                jsonDecode(response.body) as Map<String, dynamic>;
-            userStateService.user.value =
-                User.fromJson(userMap['user'] as Map<String, dynamic>);
-
-            /// save the token
-            authenticationToken = userMap['access_token'] as String;
-            debugPrint(
-              'AuthService - authenticationToken: $authenticationToken',
-            );
-            debugPrint(
-              'AuthService - user logged in: ${userStateService.user.value.email}',
+            /// Save the token
+            apiService.authenticationToken = authResult.accessToken;
+            await storageService.writeString(
+              'token',
+              authResult.accessToken,
             );
 
-            await storageService.shared.writeString(
-              'email',
-              userStateService.user.value.email,
-            );
-            await storageService.secure.writeString(
-              'password',
-              '',
-            );
-            await storageService.shared.writeInt(
-              'provider',
-              ProviderTypes.google.index,
-            );
-
-            return AuthResponse(
-              <String, dynamic>{
-                'success': 'Successfully signed in with Google.',
-              },
-              success: true,
-            );
+            return authResult;
           } catch (error) {
-            await _disconnectProviders();
+            await disconnectProviders();
             throw Exception(
               'AuthService - error while parsing the user: $error',
             );
           }
         } else if (response.statusCode == 400) {
-          await _disconnectProviders();
-          return AuthResponse(parseErrorMap(response), success: false);
+          await disconnectProviders();
+          return authResult;
         } else {
-          await _disconnectProviders();
-          throw Exception('AuthService - ${unexpectedError(response)}');
+          await disconnectProviders();
+          throw Exception('AuthService - ${authResult.message}');
         }
       }
       return AuthResponse(
-        <String, dynamic>{
-          'error':
-              "Google auth isn't working at the moment. Please try again later.",
-        },
+        result: <String, dynamic>{},
+        accessToken: '',
+        message:
+            "Google auth isn't working at the moment. Please try again later.",
+        status: 0,
         success: false,
       );
     } catch (e) {
@@ -555,8 +104,6 @@ class AuthService extends GetxService {
           identityToken != null &&
           authorizationCode.isNotEmpty &&
           identityToken.isNotEmpty) {
-        debugPrint('Signing in with Apple silently');
-      } else {
         final AuthorizationCredentialAppleID credential =
             await SignInWithApple.getAppleIDCredential(
           scopes: <AppleIDAuthorizationScopes>[
@@ -564,18 +111,13 @@ class AuthService extends GetxService {
             AppleIDAuthorizationScopes.fullName,
           ],
           webAuthenticationOptions: WebAuthenticationOptions(
-            clientId:
-                '', // TODO add Bundle ID within App information from Apple Developer
+            clientId: '', // TODO
             redirectUri:
                 // For web your redirect URI needs to be the host of the "current page",
                 // while for Android you will be using the API server that redirects back into your app via a deep link
                 kIsWeb
-                    ? Uri.parse(
-                        '',
-                      ) // TODO add Bundle ID within App information from Apple Developer
-                    : Uri.parse(
-                        '',
-                      ), // TODO add Bundle ID within App information from Apple Developer
+                    ? Uri.parse('') // TODO
+                    : Uri.parse(''), // TODO
           ),
         );
         authorizationCode = credential.authorizationCode;
@@ -594,61 +136,34 @@ class AuthService extends GetxService {
         },
       );
 
+      final AuthResponse authResult = AuthResponse.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>,
+      );
+
       if (response.statusCode == 200) {
         try {
-          final Map<String, dynamic> userMap =
-              jsonDecode(response.body) as Map<String, dynamic>;
-          userStateService.user.value =
-              User.fromJson(userMap['user'] as Map<String, dynamic>);
+          /// Save the token
+          apiService.authenticationToken = authResult.accessToken;
+          await storageService.writeString('token', authResult.accessToken);
 
-          /// save the token
-          authenticationToken = userMap['access_token'] as String;
-          debugPrint('AuthService - authenticationToken: $authenticationToken');
-          debugPrint(
-            'AuthService - user logged in: ${userStateService.user.value.email}',
-          );
-
-          await storageService.shared.writeString(
-            'email',
-            userStateService.user.value.email,
-          );
-          await storageService.secure.writeString(
-            'password',
-            '',
-          );
-          await storageService.shared.writeInt(
-            'provider',
-            ProviderTypes.apple.index,
-          );
-          await storageService.secure.writeString(
-            'authorizationCode',
-            authorizationCode,
-          );
-          await storageService.secure.writeString(
-            'identityToken',
-            identityToken ?? '',
-          );
-
-          return AuthResponse(
-            <String, dynamic>{
-              'success': 'Successfully signed in with Apple.',
-            },
-            success: true,
-          );
+          return authResult;
         } catch (error) {
-          await _disconnectProviders();
+          await disconnectProviders();
           throw Exception('AuthService - error while parsing the user: $error');
         }
       } else {
-        await _disconnectProviders();
-        return AuthResponse(parseErrorMap(response), success: false);
+        await disconnectProviders();
+        return authResult;
       }
     } //handles the error if user cancels apple signin and stops app crashing
     on PlatformException catch (e) {
       if (e.code == 'cancelled') {
         // User canceled the sign in
         return AuthResponse(
-          <String, dynamic>{'error': 'Sign in cancelled'},
+          result: <String, dynamic>{},
+          accessToken: '',
+          message: 'Sign in cancelled',
+          status: 0,
           success: false,
         );
       } else {
@@ -658,7 +173,10 @@ class AuthService extends GetxService {
     } on SignInWithAppleAuthorizationException catch (e) {
       // Other error occurred
       return AuthResponse(
-        <String, dynamic>{'error': e.message},
+        result: <String, dynamic>{},
+        accessToken: '',
+        message: e.message,
+        status: 0,
         success: false,
       );
     } catch (e) {
@@ -667,14 +185,19 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<void> _disconnectProviders() async {
-    // TODO: Disconnect from apple
-
+  @override
+  Future<void> disconnectProviders() async {
+    // Disconnect providers
+    // Disconnect from Google.
     try {
       await _googleSignIn.disconnect();
     } catch (e) {
-      debugPrint('AuthService - error while logging out from google: $e');
+      throw Exception(
+        'AuthService - error while disconnecting from google: $e',
+      );
     }
-    debugPrint('AuthService - disconnecting providers');
+    // Disconnect from Apple.
+
+    await super.disconnectProviders();
   }
 }

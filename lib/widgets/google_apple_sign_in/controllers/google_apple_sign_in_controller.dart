@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../model/auth_response.dart';
 import '../../../service/auth_service.dart';
 
 class GoogleAppleSignInController {
@@ -18,7 +19,7 @@ class GoogleAppleSignInController {
       // Google sign in should be working fine in the frontend - backend is not ready at the moment of writing this
       // The google sign in is only working in dev mode because the release signature hasn't been created yet
     } else {
-      error.value = loginResult.info.toString();
+      //TODO: Handle error
     }
     loadingGoogle.value = false;
     return error.value;
@@ -39,7 +40,7 @@ class GoogleAppleSignInController {
       // Apple sign in needs the client ID from the Appstore to work -> The app is not yet initialized in the store
       // The backend is not ready at the time of writing this
     } else {
-      error.value = loginResult.info.toString();
+      //TODO: Handle error
     }
     loadingApple.value = false;
     return error.value;

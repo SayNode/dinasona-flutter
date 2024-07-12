@@ -14,7 +14,7 @@ import '../util/constants.dart';
 
 class LoggerService extends GetxService {
   final RxList<Widget> _logs = <Widget>[].obs;
-  final bool devMode = DinasonaConstants.devMode;
+  final bool devMode = Constants.devMode;
 
   void log(String? message, {StackTrace? stackTrace, dynamic error}) {
     if (devMode) {

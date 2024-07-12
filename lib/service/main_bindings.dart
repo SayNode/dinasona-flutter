@@ -5,6 +5,8 @@
 //
 // https://saynode.ch
 
+// ignore_for_file: cascade_invocations
+
 import 'package:get/get.dart';
 
 import '../pages/add/controllers/add_page_controller.dart';
@@ -49,6 +51,10 @@ class MainBindings extends Bindings {
 
   void _injectServices() {
     //Services injection
+
+    Get.lazyPut(AuthService.new);
+
+    Get.lazyPut(APIService.new);
 
     Get
       ..lazyPut(APIService.new)

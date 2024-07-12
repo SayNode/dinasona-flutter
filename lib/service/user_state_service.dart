@@ -48,8 +48,7 @@ class UserStateService extends GetxService {
 
   Future<void> fetchDonorStatistics() async {
     final String url =
-        Uri.https(DinasonaConstants.apiDomain, '/donation/donor/stats/')
-            .toString();
+        Uri.https(Constants.apiDomain, '/donation/donor/stats/').toString();
     try {
       final dio_import.Response<dynamic> response = await dio_import.Dio().get(
         url,
@@ -78,8 +77,7 @@ class UserStateService extends GetxService {
   }
 
   Future<void> fetchUserInfo() async {
-    final String url =
-        Uri.https(DinasonaConstants.apiDomain, '/user-info/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/user-info/').toString();
     try {
       final dio_import.Response<dynamic> response = await dio_import.Dio().get(
         url,
@@ -107,7 +105,7 @@ class UserStateService extends GetxService {
 
   Future<void> updateUserInfo(Map<String, dynamic> updatedUser) async {
     final String url =
-        Uri.https(DinasonaConstants.apiDomain, '/user-info/update/').toString();
+        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
 
     try {
       final http.Response response = await http.patch(
@@ -140,7 +138,7 @@ class UserStateService extends GetxService {
     required File file,
   }) async {
     final String url =
-        Uri.https(DinasonaConstants.apiDomain, '/user-info/update/').toString();
+        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
     try {
       final dio_import.MultipartFile multipartFile =
           await dio_import.MultipartFile.fromFile(
