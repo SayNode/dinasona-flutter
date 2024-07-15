@@ -20,6 +20,7 @@ import 'model/message.dart';
 import 'pages/choose_path_page.dart';
 import 'pages/error/error_page.dart';
 import 'pages/lost_connection/lost_connection_page.dart';
+import 'service/auth_service.dart';
 import 'service/localization_controller.dart';
 import 'service/main_bindings.dart';
 import 'service/network_service.dart';
@@ -149,6 +150,7 @@ void main() async {
 Future<void> initializeServices() async {
   // Initialize services:
   await Get.find<StorageService>().init();
+  Get.find<AuthService>().init();
 }
 
 class MyApp extends StatelessWidget {
