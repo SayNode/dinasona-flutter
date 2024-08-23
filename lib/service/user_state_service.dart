@@ -31,7 +31,7 @@ class UserStateService extends GetxService {
     totalBeneficiariesDonatedTo: 0,
   ).obs;
 
-  Rx<BenbeficiaryStatistics> beneficiaryStatistics = BenbeficiaryStatistics(
+  Rx<BeneficiaryStatistics> beneficiaryStatistics = BeneficiaryStatistics(
     totalAmountDonated: -1,
     totalNeedsClosed: -1,
     totalPeopleDonated: -1,
@@ -61,6 +61,36 @@ class UserStateService extends GetxService {
       );
       if (response.statusCode == 200) {
         donorStatistics.value = DonorStatistics.fromJson(
+          jsonEncode(
+            (response.data as Map<String, dynamic>)['result']
+                as Map<String, dynamic>,
+          ),
+        );
+      } else {
+        logger.log(
+          'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while fetching donor statistics: $e');
+    }
+  }
+
+  Future<void> fetchBeneficiaryStatistics() async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/beneficiary/').toString();
+    try {
+      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
+        url,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        beneficiaryStatistics.value = BeneficiaryStatistics.fromJson(
           jsonEncode(
             (response.data as Map<String, dynamic>)['result']
                 as Map<String, dynamic>,
