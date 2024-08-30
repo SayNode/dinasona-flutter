@@ -1,4 +1,7 @@
 plugins {
+//breez imports start
+id 'kotlinx-serialization'
+//breez imports end
     id "com.android.application"
     // START: FlutterFire Configuration
     id 'com.google.gms.google-services'
@@ -89,5 +92,9 @@ flutter {
 }
 
 dependencies {
+//breez imports start
+implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20"
+implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+//breez imports end
     implementation 'androidx.multidex:multidex:2.0.1'
 }
