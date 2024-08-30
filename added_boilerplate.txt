@@ -8,3 +8,4 @@ theme-lighttypography
 api
 signin-apple
 signin-google
+breez
