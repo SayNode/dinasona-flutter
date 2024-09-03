@@ -39,11 +39,10 @@ class CustomScaffold extends StatelessWidget {
         automaticallyImplyLeading: showBackButtonInAppBar,
         centerTitle: false,
         elevation: 0,
+        toolbarHeight: getRelativeHeight(20),
         title: Text(
           appBarTitle!,
-          style: CustomTypography.fromColor(
-            theme.shadowed,
-          ).k16SemiBold,
+          style: CustomTypography.fromColor(theme.shadowed).k24Bold,
         ),
         actions: actions,
       );
@@ -65,7 +64,7 @@ class CustomScaffold extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: padding ? getRelativeWidth(20) : 0,
+                horizontal: padding ? getRelativeWidth(15) : 0,
               ),
               child: body,
             ),

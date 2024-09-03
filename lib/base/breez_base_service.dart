@@ -160,11 +160,11 @@ abstract class BreezBaseService extends GetxService {
 
   Future<GreenlightCredentials> _loadGreenlightCredentials() async {
     final Uint8List greenlightDeveloperKey =
-        (await rootBundle.load('asset/greenlight/client-key.pem'))
+        (await rootBundle.load('assets/greenlight/client-key.pem'))
             .buffer
             .asUint8List();
     final Uint8List greenlightCertificate =
-        (await rootBundle.load('asset/greenlight/client.crt'))
+        (await rootBundle.load('assets/greenlight/client.crt'))
             .buffer
             .asUint8List();
 
