@@ -17,7 +17,8 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
     return Column(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.all(getRelativeWidth(20)),
+          margin: EdgeInsets.only(top: getRelativeWidth(30)),
+          padding: EdgeInsets.all(getRelativeWidth(15)),
           decoration: BoxDecoration(
             color: theme.silvershine,
             borderRadius: BorderRadius.circular(getRelativeWidth(15)),
@@ -29,16 +30,15 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
                 width: getRelativeWidth(50),
                 height: getRelativeWidth(50),
               ),
-              Column(
-                children: <Widget>[
-                  const Text('No wallet connected'),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.isWalletConnected.value = true;
-                    },
-                    child: const Text('Connect wallet'),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    AutosizeText(
+                      'No wallet connected',
+                      style: theme.textTheme.headline1,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
