@@ -24,6 +24,7 @@ class CustomScaffold extends StatelessWidget {
     this.showBackButtonInAppBar = true,
     this.appBarTitle,
     this.actions,
+    this.boldTitle = true,
   });
 
   final Widget body;
@@ -33,16 +34,18 @@ class CustomScaffold extends StatelessWidget {
   final bool showBackButtonInAppBar;
   final String? appBarTitle;
   final List<Widget>? actions;
+  final bool boldTitle;
 
   AppBar _appBar(CustomTheme theme) => AppBar(
         backgroundColor: theme.moonstone,
         automaticallyImplyLeading: showBackButtonInAppBar,
         centerTitle: false,
         elevation: 0,
-        toolbarHeight: getRelativeHeight(20),
         title: Text(
           appBarTitle!,
-          style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+          style: boldTitle
+              ? CustomTypography.fromColor(theme.shadowed).k24Bold
+              : CustomTypography.fromColor(theme.shadowed).k16SemiBold,
         ),
         actions: actions,
       );

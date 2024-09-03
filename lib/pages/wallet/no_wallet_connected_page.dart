@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
+import '../../theme/typography.dart';
 import '../../util/util.dart';
+import '../../widgets/dinasona_button.dart';
 import 'controllers/wallet_page_controller.dart';
 
 class NoWalletConnectedPage extends GetView<WalletPageController> {
@@ -12,7 +16,6 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    Get.put(WalletPageController());
 
     return Column(
       children: <Widget>[
@@ -30,19 +33,45 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
                 width: getRelativeWidth(50),
                 height: getRelativeWidth(50),
               ),
+              Gap(getRelativeWidth(15)),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    AutosizeText(
-                      'No wallet connected',
-                      style: theme.textTheme.headline1,
+                    Text(
+                      'Bitcoin'.tr,
+                      style: CustomTypography.fromColor(theme.shadowed)
+                          .k16SemiBold,
+                    ),
+                    Text(
+                      'Set up a new  Bitcoin wallet to securely manage your digital assets.'
+                          .tr,
+                      style: CustomTypography.fromColor(theme.shadowed).k16Reg,
                     ),
                   ],
                 ),
               ),
             ],
           ),
-        )
+        ),
+        Gap(getRelativeWidth(30)),
+        DinasonaButton(
+          text: 'Create wallet'.tr,
+          onPressed: () {
+            controller.seedPhraseConfirmation();
+          },
+          color: theme.amberglow,
+        ),
+        Gap(getRelativeWidth(5)),
+        DinasonaButton(
+          text: 'Import wallet'.tr,
+          onPressed: () {
+            controller.importWallet('');
+          },
+          color: theme.moonstone,
+          textColor: theme.shadowed,
+          customElevation: 0,
+        ),
       ],
     );
   }

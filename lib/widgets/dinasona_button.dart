@@ -23,6 +23,7 @@ class DinasonaButton extends StatelessWidget {
     this.locked = false,
     this.textColor = LightColor.snowfall,
     this.padding = const EdgeInsets.all(20),
+    this.customElevation,
   });
 
   final String text;
@@ -37,6 +38,7 @@ class DinasonaButton extends StatelessWidget {
   final bool loading;
   final bool locked;
   final EdgeInsets padding;
+  final double? customElevation;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class DinasonaButton extends StatelessWidget {
     return SizedBox(
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          elevation: customElevation ?? 1,
           padding: padding,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           backgroundColor: locked ? theme.silvershine : color,
