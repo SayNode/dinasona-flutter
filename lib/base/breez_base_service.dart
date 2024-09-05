@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 abstract class BreezBaseService extends GetxService {
+  static const EnvironmentType environmentType = EnvironmentType.Production;
   final BreezSDK breezSDK = BreezSDK();
   final RxBool isConnected = false.obs;
   final Rx<NodeState> nodeState = const NodeState(
@@ -63,7 +64,7 @@ abstract class BreezBaseService extends GetxService {
       ),
     );
     Config config = await breezSDK.defaultConfig(
-      envType: EnvironmentType.Production,
+      envType: environmentType,
       apiKey: brrezApiKey,
       nodeConfig: nodeConfig,
     );
@@ -109,6 +110,11 @@ abstract class BreezBaseService extends GetxService {
     } catch (e) {
       throw Exception('BreezService -- Error sending payment: $e');
     }
+  }
+
+  Future<void> getBalance() async {
+    final NodeState? nodeInfo = await breezSDK.nodeInfo();
+    print('test: ${nodeInfo!.channelsBalanceMsat} ${nodeInfo.maxPayableMsat}');
   }
 
   Future<List<Payment>> getPaymentHistory() async {

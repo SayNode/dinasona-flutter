@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
@@ -9,6 +8,7 @@ import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/dinasona_button.dart';
 import 'controllers/wallet_page_controller.dart';
+import 'import_wallet_page.dart';
 
 class NoWalletConnectedPage extends GetView<WalletPageController> {
   const NoWalletConnectedPage({super.key});
@@ -58,7 +58,7 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
         DinasonaButton(
           text: 'Create wallet'.tr,
           onPressed: () {
-            controller.seedPhraseConfirmation();
+            controller.goToSeedPhraseConfirmation();
           },
           color: theme.amberglow,
         ),
@@ -66,7 +66,7 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
         DinasonaButton(
           text: 'Import wallet'.tr,
           onPressed: () {
-            controller.importWallet('');
+            Get.to<void>(() => const ImportWalletPage());
           },
           color: theme.moonstone,
           textColor: theme.shadowed,

@@ -3,10 +3,10 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../util/util.dart';
-import '../../widgets/custom_scaffold.dart';
 import '../../theme/typography.dart';
 import 'controllers/wallet_page_controller.dart';
 import 'no_wallet_connected_page.dart';
+import 'wallet_connected_page.dart';
 
 class WalletPage extends GetView<WalletPageController> {
   const WalletPage({super.key});
@@ -27,7 +27,7 @@ class WalletPage extends GetView<WalletPageController> {
           ),
           Obx(
             () => controller.isWalletConnected.isTrue
-                ? const Placeholder()
+                ? const WalletConnectedPage()
                 : const NoWalletConnectedPage(),
           ),
         ],

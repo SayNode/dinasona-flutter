@@ -92,7 +92,6 @@ class MainBindings extends Bindings {
       ..lazyPut(ContactUsController.new, fenix: true)
       ..lazyPut(BeneficiarySettingsPageController.new, fenix: true)
       ..lazyPut(BeneficiaryPersonalDetailsController.new, fenix: true)
-      ..lazyPut(DonatePageController.new, fenix: true)
-      ..lazyPut(WalletPageController.new, fenix: true);
+      ..lazyPut(DonatePageController.new, fenix: true);
   }
 }
