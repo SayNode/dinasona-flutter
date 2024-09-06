@@ -71,6 +71,7 @@ class ImportWalletPage extends GetView<WalletPageController> {
                 .tr,
             style: CustomTypography.fromColor(theme.shadowed).k16Reg,
           ),
+          Gap(getRelativeHeight(20)),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

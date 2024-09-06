@@ -21,6 +21,7 @@ class DinasonaButton extends StatelessWidget {
     this.fontSize,
     this.loading = false,
     this.locked = false,
+    this.borderColor = Colors.transparent,
     this.textColor = LightColor.snowfall,
     this.padding = const EdgeInsets.all(20),
     this.customElevation,
@@ -37,6 +38,7 @@ class DinasonaButton extends StatelessWidget {
   final double? fontSize;
   final bool loading;
   final bool locked;
+  final Color borderColor;
   final EdgeInsets padding;
   final double? customElevation;
 
@@ -55,6 +57,12 @@ class DinasonaButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(getRelativeHeight(16)),
           ),
+          side: borderColor != Colors.transparent
+              ? BorderSide(
+                  color: locked ? theme.graphite : borderColor,
+                  width: 3,
+                )
+              : null,
         ),
         onPressed: loading || locked
             ? null

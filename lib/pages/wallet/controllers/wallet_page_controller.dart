@@ -1,17 +1,31 @@
+import 'dart:math';
+
+import 'package:breez_sdk/bridge_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/breez_service.dart';
+import '../../../service/currency_conversion_service.dart';
 import '../../../service/logger_service.dart';
 import '../../../util/popup_manager.dart';
+import '../../../util/util.dart';
+import '../../root/donor_root_page.dart';
 import '../show_seed_phrase_page.dart';
-import '../wallet_page.dart';
 
 class WalletPageController extends GetxController {
   BreezService breezService = Get.find<BreezService>();
   LoggerService loggerService = Get.find<LoggerService>();
+  CurrencyConversionService currencyConversionService =
+      Get.find<CurrencyConversionService>();
 
-  RxBool isWalletConnected = true.obs;
+  RxString testInvoice = ''.obs;
+  RxDouble balanceInUSD = 0.0.obs;
+  RxBool showWalletOptions = false.obs;
+  RxList<Payment> transactions = <Payment>[].obs;
+  RxList<double> transactionAmounts = <double>[].obs;
+  RxString timeSinceLastTransaction = ''.obs;
+
+  RxBool isWalletConnected = false.obs;
   RxString seedPhrase = ''.obs;
 
   final TextEditingController seedConfirmationInput1 = TextEditingController();
@@ -19,6 +33,39 @@ class WalletPageController extends GetxController {
   final TextEditingController seedConfirmationInput3 = TextEditingController();
   List<TextEditingController> importSeedInputs =
       List<TextEditingController>.generate(12, (_) => TextEditingController());
+
+  void toggleShowWalletOptions() =>
+      showWalletOptions.value = !showWalletOptions.value;
+
+  Future<void> getTransactions() async {
+    // ignore: no_leading_underscores_for_local_identifiers
+    final List<Payment> _transactions = await breezService.getPaymentHistory();
+    // ignore: no_leading_underscores_for_local_identifiers
+    final List<double> _transactionAmounts = <double>[];
+    int lastTransactionTime = 0;
+    transactions.clear();
+    transactionAmounts.clear();
+
+    for (final Payment transaction in _transactions) {
+      if (lastTransactionTime < transaction.paymentTime) {
+        lastTransactionTime = transaction.paymentTime;
+      }
+      _transactionAmounts.add(
+        await currencyConversionService.convertSatoshisToUSD(
+          (transaction.amountMsat / 1000).round(),
+        ),
+      );
+    }
+
+    transactions.value = _transactions;
+    transactionAmounts.value = _transactionAmounts;
+
+    timeSinceLastTransaction.value = getTimePassedString(
+      DateTime.fromMillisecondsSinceEpoch(
+        lastTransactionTime * 1000,
+      ),
+    );
+  }
 
   void resetWalletConnectionInputs() {
     seedConfirmationInput1.clear();
@@ -36,7 +83,22 @@ class WalletPageController extends GetxController {
     Get.to<void>(() => const ShowSeedPhrasePage());
   }
 
-  void getBalance() => breezService.getBalance();
+  Future<void> createInvoice() async {
+    testInvoice.value = await breezService.createInvoice(
+      description: 'Shady tech support',
+      amountInSatoshi: 2501,
+    );
+  }
+
+  Future<void> getBalanceInUSD() async {
+    final int balanceInSatoshis =
+        (await breezService.getBalanceInSatoshis() / 1000).round();
+
+    // ignore: no_leading_underscores_for_local_identifiers
+    final double _balanceInUSD =
+        await currencyConversionService.convertSatoshisToUSD(balanceInSatoshis);
+    balanceInUSD.value = _balanceInUSD;
+  }
 
   void validateSeedPhrase(List<String> expectedValues) {
     if (expectedValues[0].toLowerCase() !=
@@ -85,7 +147,7 @@ class WalletPageController extends GetxController {
       );
     });
 
-    await Get.offAll(() => const WalletPage());
+    await Get.to(() => const DonorRootPage());
   }
 
   Future<void> importWallet(
@@ -111,7 +173,7 @@ class WalletPageController extends GetxController {
               .tr,
         );
       });
-      await Get.offAll(() => const WalletPage());
+      await Get.to(() => const DonorRootPage());
     } catch (e) {
       Future<void>.delayed(const Duration(milliseconds: 1000), () {
         PopupManager.openWalletInfoPopup(
@@ -120,7 +182,7 @@ class WalletPageController extends GetxController {
               .tr,
         );
       });
-      await Get.offAll(() => const WalletPage());
+      await Get.to(() => const DonorRootPage());
     }
   }
 }

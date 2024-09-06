@@ -112,9 +112,9 @@ abstract class BreezBaseService extends GetxService {
     }
   }
 
-  Future<void> getBalance() async {
+  Future<int> getBalanceInSatoshis() async {
     final NodeState? nodeInfo = await breezSDK.nodeInfo();
-    print('test: ${nodeInfo!.channelsBalanceMsat} ${nodeInfo.maxPayableMsat}');
+    return nodeInfo!.maxPayableMsat;
   }
 
   Future<List<Payment>> getPaymentHistory() async {
