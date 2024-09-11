@@ -45,6 +45,9 @@ dependencies:
   bip39: ^1.0.6
   dotted_border: ^2.1.0
   qr_flutter: ^4.1.0
+  auto_size_text_field: ^2.2.4
+  share_plus: ^10.0.0
+  mobile_scanner: ^5.2.3
 
 dev_dependencies:
   flutter_test:

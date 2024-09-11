@@ -8,6 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
+
 bool getMaterialAppCalled = false;
 
 double getRelativeWidth(double width) {
@@ -34,4 +37,29 @@ String getTimePassedString(DateTime dateTime) {
   } else {
     return 'Just now';
   }
+}
+
+void showLoadingDialog(BuildContext context) {
+  final CustomTheme theme = Get.put(ThemeService()).theme;
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: theme.amberglow,
+            ),
+          ),
+        );
+      },
+    );
+  });
+}
+
+void hideLoadingDialog(BuildContext context) {
+  Navigator.pop(context);
 }

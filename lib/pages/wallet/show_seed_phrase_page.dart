@@ -10,16 +10,17 @@ import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import 'confirm_seed_phrase_page.dart';
-import 'controllers/wallet_page_controller.dart';
+import 'controllers/create_wallet_controller.dart';
 
-class ShowSeedPhrasePage extends GetView<WalletPageController> {
+class ShowSeedPhrasePage extends GetView<CreateWalletController> {
   const ShowSeedPhrasePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    final CreateWalletController controller = Get.put(CreateWalletController());
     final List<String> seedPhrase = controller.seedPhrase.split(' ');
-    print('test: $seedPhrase');
+
     return CustomScaffold(
       padding: true,
       showBackButtonInAppBar: false,

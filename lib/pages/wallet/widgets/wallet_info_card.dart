@@ -130,7 +130,9 @@ class WalletInfoCard extends GetView<WalletPageController> {
                                 ),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.deleteUserWallet();
+                              },
                               child: Text(
                                 'Delete'.tr,
                                 style: CustomTypography.fromColor(

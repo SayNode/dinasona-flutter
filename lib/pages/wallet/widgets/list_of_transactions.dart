@@ -42,15 +42,24 @@ class ListOfTransactions extends GetView<WalletPageController> {
                       ),
                       child: Obx(
                         () => Transform.rotate(
-                          angle: controller.transactionAmounts[index] > 0
-                              ? 0.8
-                              : 3.9,
-                          child: Icon(
-                            Icons.arrow_upward,
-                            color: controller.transactionAmounts[index] > 0
-                                ? theme.ferngreen
-                                : theme.inferno,
-                          ),
+                          angle: controller.transactions[index].status ==
+                                  PaymentStatus.Pending
+                              ? 0
+                              : controller.transactions[index].paymentType ==
+                                      PaymentType.Received
+                                  ? 0.8
+                                  : 3.9,
+                          child: controller.transactions[index].status ==
+                                  PaymentStatus.Pending
+                              ? Icon(Icons.more_horiz, color: theme.shadowed)
+                              : Icon(
+                                  Icons.arrow_upward,
+                                  color: controller.transactions[index]
+                                              .paymentType ==
+                                          PaymentType.Received
+                                      ? theme.ferngreen
+                                      : theme.inferno,
+                                ),
                         ),
                       ),
                     ),
@@ -98,12 +107,14 @@ class ListOfTransactions extends GetView<WalletPageController> {
                           );
                         } else {
                           return Text(
-                            '${controller.transactionAmounts[index] > 0 ? '+' : '-'} ${controller.transactionAmounts[index].toStringAsFixed(3)}',
+                            '${controller.transactions[index].paymentType == PaymentType.Received ? '+' : '-'} ${controller.transactionAmounts[index].toStringAsFixed(3)}',
                             style: CustomTypography.fromColor(
                               controller.transactions[index].status ==
                                       PaymentStatus.Pending
                                   ? theme.shadowed
-                                  : controller.transactionAmounts[index] > 0
+                                  : controller.transactions[index]
+                                              .paymentType ==
+                                          PaymentType.Received
                                       ? theme.ferngreen
                                       : theme.inferno,
                             ).k16SemiBold,
