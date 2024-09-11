@@ -57,6 +57,9 @@ class ImportWalletInput extends GetView<ImportWalletController> {
                               )
                               .toList();
                     },
+                    style: const TextStyle(
+                      height: 1,
+                    ),
                   ),
                 ),
               ],

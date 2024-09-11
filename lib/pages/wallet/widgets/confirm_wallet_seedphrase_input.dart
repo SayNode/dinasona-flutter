@@ -53,6 +53,9 @@ class ConfirmWalletSeedphraseInput extends GetView<CreateWalletController> {
                     onChanged: (String value) {
                       controller.updateUserInputs();
                     },
+                    style: const TextStyle(
+                      height: 1,
+                    ),
                   ),
                 ),
               ],
