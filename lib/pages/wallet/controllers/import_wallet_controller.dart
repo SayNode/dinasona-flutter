@@ -65,7 +65,7 @@ class ImportWalletController extends GetxController {
       Future<void>.delayed(const Duration(milliseconds: 1000), () {
         PopupManager.openWalletInfoPopup(
           'Wallet successfully imported!'.tr,
-          'Your wallet has been successfully imported. You can now access your account and manage your assets securely. '
+          'Your wallet has been successfully imported. You can now access your account and manage your assets securely.'
               .tr,
         );
       });

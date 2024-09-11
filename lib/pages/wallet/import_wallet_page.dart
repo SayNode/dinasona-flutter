@@ -87,11 +87,6 @@ class ImportWalletPage extends GetView<ImportWalletController> {
 
                   if (importSeedBuffer.toString().isNotEmpty) {
                     controller.importWallet(importSeedBuffer.toString());
-                  } else {
-                    // TODO For testing purposes Julien's wallet - in case I forget to remove this
-                    controller.importWallet(
-                      'solve mixture maid peanut stable monitor pulp check special plunge then business',
-                    );
                   }
                 },
                 color: theme.amberglow,
