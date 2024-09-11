@@ -36,7 +36,7 @@ enum BeneficaryItem {
       case BeneficaryItem.add:
         return Symbols.add;
       case BeneficaryItem.wallet:
-        return Symbols.wallet;
+        return Symbols.account_balance_wallet;
       case BeneficaryItem.profile:
         return Symbols.person;
     }
