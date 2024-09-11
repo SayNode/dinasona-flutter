@@ -12,7 +12,7 @@ class ImportWalletController extends GetxController {
   final WalletPageController controller = Get.find<WalletPageController>();
   final LoggerService loggerService = Get.find<LoggerService>();
   final RxString seedImportErrorMessage = ''.obs;
-  final RxList<String> reactiveImportSeedInputs = <String>[].obs;
+  final RxList<String> reactiveImportSeedInputs = <String>[''].obs;
   List<TextEditingController> importSeedInputs =
       List<TextEditingController>.generate(12, (_) => TextEditingController());
 

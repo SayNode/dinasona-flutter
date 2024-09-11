@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
 import '../../../service/logger_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../util/util.dart';
 import '../show_seed_phrase_page.dart';
 import 'create_wallet_controller.dart';
@@ -70,6 +71,7 @@ class WalletPageController extends GetxController {
 
   void deleteUserWallet() {
     clearWalletEnvironment();
+    Get.find<WalletService>().deleteWallet();
   }
 
   void goToSeedPhraseConfirmation() {
