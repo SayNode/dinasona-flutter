@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 
+import '../../../service/user_state_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../../util/util.dart';
+import '../../root/beneficiary_root_page.dart';
 import '../../root/donor_root_page.dart';
 import 'wallet_page_controller.dart';
 
@@ -39,7 +41,11 @@ class CreateWalletController extends GetxController {
       );
     });
 
-    await Get.to(() => const DonorRootPage());
+    await Get.to(
+      () => Get.find<UserStateService>().user.value.isDonor
+          ? const DonorRootPage()
+          : const BeneficiaryRootPage(),
+    );
   }
 
   void validateSeedPhrase(List<String> expectedValues) {

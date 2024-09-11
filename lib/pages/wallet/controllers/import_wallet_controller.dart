@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/logger_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../../util/util.dart';
+import '../../root/beneficiary_root_page.dart';
 import '../../root/donor_root_page.dart';
 import 'wallet_page_controller.dart';
 
@@ -69,7 +71,11 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to(() => const DonorRootPage());
+      await Get.to(
+        () => Get.find<UserStateService>().user.value.isDonor
+            ? const DonorRootPage()
+            : const BeneficiaryRootPage(),
+      );
     } catch (e) {
       Future<void>.delayed(const Duration(milliseconds: 1000), () {
         PopupManager.openWalletInfoPopup(
@@ -78,7 +84,11 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to(() => const DonorRootPage());
+      await Get.to(
+        () => Get.find<UserStateService>().user.value.isDonor
+            ? const DonorRootPage()
+            : const BeneficiaryRootPage(),
+      );
     }
   }
 }
