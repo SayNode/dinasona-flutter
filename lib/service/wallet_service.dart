@@ -22,6 +22,7 @@ import 'storage/storage_service.dart';
 class WalletService extends GetxService {
   late Wallet? _wallet;
   String get walletAddress => _getWalletAddress();
+  //get walletSeedPhrase => Mnemonic.deriveSeed();
   Map<String, dynamic> get keystore => _getWalletKeystore();
   final StorageService _storage = Get.find<StorageService>();
 

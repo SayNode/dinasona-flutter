@@ -5,6 +5,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import '../pages/donate/donate_page.dart';
 import '../pages/home/donor_home_page.dart';
 import '../pages/settings/donor/pages/donor_settings_page.dart';
+import '../pages/wallet/wallet_page.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
@@ -12,6 +13,7 @@ import '../theme/typography.dart';
 enum DonorItem {
   home,
   donate,
+  wallet,
   profile;
 
   String get name {
@@ -20,6 +22,8 @@ enum DonorItem {
         return 'Home';
       case DonorItem.donate:
         return 'Donate';
+      case DonorItem.wallet:
+        return 'Wallet';
       case DonorItem.profile:
         return 'Profile';
     }
@@ -31,6 +35,8 @@ enum DonorItem {
         return Symbols.home;
       case DonorItem.donate:
         return Symbols.volunteer_activism;
+      case DonorItem.wallet:
+        return Symbols.account_balance_wallet;
       case DonorItem.profile:
         return Symbols.person;
     }
@@ -42,6 +48,8 @@ enum DonorItem {
         return const DonorHomePage();
       case DonorItem.donate:
         return const DonatePage();
+      case DonorItem.wallet:
+        return const WalletPage();
       case DonorItem.profile:
         return const DonorSettingsPage();
     }
@@ -97,7 +105,7 @@ class DonorBottomNavigationBar extends StatelessWidget {
                   size: 36,
                 ),
                 label: item.name,
-                backgroundColor: const Color.fromRGBO(36, 54, 101, 1),
+                backgroundColor: theme.moonstone,
               ),
           ],
         ),

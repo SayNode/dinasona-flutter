@@ -5,6 +5,12 @@
 //
 // https://saynode.ch
 
+import 'package:bip39/bip39.dart' as bip39;
+
 import '../base/breez_base_service.dart';
 
-class BreezService extends BreezBaseService {}
+class BreezService extends BreezBaseService {
+  String generateSeedPhrase() {
+    return bip39.generateMnemonic();
+  }
+}
