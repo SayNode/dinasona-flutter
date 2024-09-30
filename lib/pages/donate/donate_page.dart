@@ -33,12 +33,30 @@ class DonatePage extends GetView<DonatePageController> {
             Gap(getRelativeHeight(16)),
             Obx(
               () => controller.needsFulfilled.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No donations made yet'.tr,
-                        style:
-                            CustomTypography.fromColor(theme.shadowed).k16Reg,
-                      ),
+                  ? Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Divider(
+                            color: theme.shadowed,
+                            thickness: 1,
+                            height: 2,
+                          ),
+                        ),
+                        const Gap(16),
+                        Text(
+                          'No donations made yet'.tr,
+                          style:
+                              CustomTypography.fromColor(theme.shadowed).k16Reg,
+                        ),
+                        const Gap(16),
+                        Expanded(
+                          child: Divider(
+                            color: theme.shadowed,
+                            thickness: 1,
+                            height: 2,
+                          ),
+                        ),
+                      ],
                     )
                   : Column(
                       children: <Widget>[

@@ -30,6 +30,7 @@ import '../widgets/google_apple_sign_in/controllers/google_apple_sign_in_control
 import 'api_service.dart';
 import 'auth_service.dart';
 import 'breez_service.dart';
+import 'currency_conversion_service.dart';
 import 'localization_controller.dart';
 import 'logger_service.dart';
 import 'need_service.dart';
@@ -69,7 +70,8 @@ class MainBindings extends Bindings {
       ..lazyPut(ThemeService.new)
       ..lazyPut(LocalizationController.new)
       ..lazyPut(BreezService.new)
-      ..lazyPut(NeedService.new);
+      ..lazyPut(NeedService.new)
+      ..lazyPut(CurrencyConversionService.new);
   }
 
   void _injectControllers() {

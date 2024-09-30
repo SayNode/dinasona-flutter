@@ -57,6 +57,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      sha256: "3f5261cd3fb5f2a9ab4e2fc3fba84fd9fcaac8821f20a1d4e71f557521b22599"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  auto_size_text_field:
+    dependency: "direct main"
+    description:
+      name: auto_size_text_field
+      sha256: "41c90b2270e38edc6ce5c02e5a17737a863e65e246bdfc94565a38f3ec399144"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.4"
   base_x:
     dependency: transitive
     description:
@@ -74,7 +90,7 @@ packages:
     source: hosted
     version: "2.0.0"
   bip39:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: bip39
       sha256: de1ee27ebe7d96b84bb3a04a4132a0a3007dcdd5ad27dd14aa87a29d97c45edc
@@ -250,6 +266,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.3+1"
+  dotted_border:
+    dependency: "direct main"
+    description:
+      name: dotted_border
+      sha256: "108837e11848ca776c53b30bc870086f84b62ed6e01c503ed976e8f8c7df9c04"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   eip1559:
     dependency: transitive
     description:
@@ -845,10 +869,10 @@ packages:
     dependency: "direct main"
     description:
       name: material_symbols_icons
-      sha256: a2c78726048c755f0f90fd2b7c8799cd94338e2e9b7ab6498ae56503262c14bc
+      sha256: "8f4abdb6bc714526ccf66e825b7391d7ca65239484ad92be71980fe73a57521c"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2762.0"
+    version: "4.2780.0"
   meta:
     dependency: transitive
     description:
@@ -865,6 +889,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  mobile_scanner:
+    dependency: "direct main"
+    description:
+      name: mobile_scanner
+      sha256: d234581c090526676fd8fab4ada92f35c6746e3fb4f05a399665d75a399fb760
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.3"
   nm:
     dependency: transitive
     description:
@@ -913,6 +945,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   path_parsing:
     dependency: transitive
     description:
@@ -1033,6 +1073,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.13.0"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "5a1d2586170e172b8a8c8470bbbffd5eb0cd38a66c0d77155ea138d3af3a4445"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      sha256: "5095f0fc6e3f71d08adef8feccc8cea4f12eec18a2e31c2e8d82cb6019f4b097"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   rlp:
     dependency: transitive
     description:
@@ -1057,6 +1113,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  share_plus:
+    dependency: "direct main"
+    description:
+      name: share_plus
+      sha256: "59dfd53f497340a0c3a81909b220cfdb9b8973a91055c4e5ab9b9b9ad7c513c0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.0.0"
+  share_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: share_plus_platform_interface
+      sha256: "6ababf341050edff57da8b6990f11f4e99eaba837865e2e6defe16d039619db5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   shared_preferences:
     dependency: "direct main"
     description:

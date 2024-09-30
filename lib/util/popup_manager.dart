@@ -12,6 +12,7 @@ import '../widgets/popups/contact_us_popup.dart';
 import '../widgets/popups/draft_popup.dart';
 import '../widgets/popups/publish_popup.dart';
 import '../widgets/popups/story_popup.dart';
+import '../widgets/popups/wallet_info_popup.dart';
 
 class PopupManager {
   static Future<void> openStoryPopup() async {
@@ -79,6 +80,15 @@ class PopupManager {
   ) async {
     return Get.dialog<List<AreaOfInterest>>(
       const CurrencyPopup(),
+    );
+  }
+  
+  static Future<List<AreaOfInterest>?> openWalletInfoPopup(
+    String title,
+    String description,
+  ) async {
+    return Get.dialog(
+      Walletinfopopup(title: title, description: description),
     );
   }
 

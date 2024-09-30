@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 abstract class BreezBaseService extends GetxService {
+  static const EnvironmentType environmentType = EnvironmentType.Production;
   final BreezSDK breezSDK = BreezSDK();
   final RxBool isConnected = false.obs;
   final Rx<NodeState> nodeState = const NodeState(
@@ -47,36 +48,40 @@ abstract class BreezBaseService extends GetxService {
     breezSDK.logStream.listen(onLogEntry);
   }
 
-  Future<void> connectToNode(String seedPhrase) async {
-    // Load the Greenlight credentials
-    final GreenlightCredentials greenlightCredentials =
-        await _loadGreenlightCredentials();
-    // Create the default config
-    final Uint8List seed = await breezSDK.mnemonicToSeed(
-      seedPhrase,
-    );
+  Future<dynamic> connectToNode(String seedPhrase) async {
+    try {
+      // Load the Greenlight credentials
+      final GreenlightCredentials greenlightCredentials =
+          await _loadGreenlightCredentials();
+      // Create the default config
+      final Uint8List seed = await breezSDK.mnemonicToSeed(
+        seedPhrase,
+      );
 
-    const String brrezApiKey = String.fromEnvironment('BREEZ_API_KEY');
-    final NodeConfig nodeConfig = NodeConfig.greenlight(
-      config: GreenlightNodeConfig(
-        partnerCredentials: greenlightCredentials,
-      ),
-    );
-    Config config = await breezSDK.defaultConfig(
-      envType: EnvironmentType.Production,
-      apiKey: brrezApiKey,
-      nodeConfig: nodeConfig,
-    );
+      const String brrezApiKey = String.fromEnvironment('BREEZ_API_KEY');
+      final NodeConfig nodeConfig = NodeConfig.greenlight(
+        config: GreenlightNodeConfig(
+          partnerCredentials: greenlightCredentials,
+        ),
+      );
+      Config config = await breezSDK.defaultConfig(
+        envType: environmentType,
+        apiKey: brrezApiKey,
+        nodeConfig: nodeConfig,
+      );
 
-    final Directory directory = await getApplicationDocumentsDirectory();
-    config = config.copyWith(workingDir: directory.path);
+      final Directory directory = await getApplicationDocumentsDirectory();
+      config = config.copyWith(workingDir: directory.path);
 
 // Connect to the Breez SDK make it ready for use
-    final ConnectRequest connectRequest =
-        ConnectRequest(config: config, seed: seed);
-    final dynamic res = await breezSDK.connect(req: connectRequest);
-    isConnected.value = true;
-    return res;
+      final ConnectRequest connectRequest =
+          ConnectRequest(config: config, seed: seed);
+      final dynamic res = await breezSDK.connect(req: connectRequest);
+      isConnected.value = true;
+      return res;
+    } catch (e) {
+      return e.toString().replaceAll(RegExp(r'FrbAnyhowException\(|\)'), '');
+    }
   }
 
   ///Function to create an invoice. It takes in a [description] and an [amountInSatoshi] and returns a String of the invoice.
@@ -100,15 +105,24 @@ abstract class BreezBaseService extends GetxService {
     }
   }
 
-  Future<SendPaymentResponse> sendPayment({required String bolt11}) async {
+  Future<dynamic> sendPayment({required String bolt11}) async {
     try {
       final SendPaymentRequest req = SendPaymentRequest(bolt11: bolt11);
       final SendPaymentResponse sendPaymentResponse =
           await breezSDK.sendPayment(req: req);
       return sendPaymentResponse;
     } catch (e) {
+      if (e.toString().replaceAll(RegExp(r'FrbAnyhowException\(|\)'), '') ==
+          'Invoice already paid') {
+        return 'Invoice already paid';
+      }
       throw Exception('BreezService -- Error sending payment: $e');
     }
+  }
+
+  Future<int> getBalanceInSatoshis() async {
+    final NodeState? nodeInfo = await breezSDK.nodeInfo();
+    return nodeInfo!.maxPayableMsat;
   }
 
   Future<List<Payment>> getPaymentHistory() async {
@@ -160,11 +174,11 @@ abstract class BreezBaseService extends GetxService {
 
   Future<GreenlightCredentials> _loadGreenlightCredentials() async {
     final Uint8List greenlightDeveloperKey =
-        (await rootBundle.load('asset/greenlight/client-key.pem'))
+        (await rootBundle.load('assets/greenlight/client-key.pem'))
             .buffer
             .asUint8List();
     final Uint8List greenlightCertificate =
-        (await rootBundle.load('asset/greenlight/client.crt'))
+        (await rootBundle.load('assets/greenlight/client.crt'))
             .buffer
             .asUint8List();
 
