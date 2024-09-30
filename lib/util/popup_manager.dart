@@ -82,7 +82,7 @@ class PopupManager {
       const CurrencyPopup(),
     );
   }
-  
+
   static Future<List<AreaOfInterest>?> openWalletInfoPopup(
     String title,
     String description,
