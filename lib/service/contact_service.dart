@@ -10,7 +10,7 @@ class ContactService extends GetxService {
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
 
-  Future<String> submitMessage(String message) async {
+  Future<bool> submitMessage(String message) async {
     final String url =
         Uri.https(Constants.apiDomain, '/contact_support/new/').toString();
 
@@ -28,16 +28,16 @@ class ContactService extends GetxService {
 
       if (response.statusCode == 201) {
         logger.log('Contact us message sent successfully');
-        return 'Success';
+        return true;
       } else {
         logger.log(
           'Failed to send contact us message with StatusCode: ${response.statusCode}, ${response.body}',
         );
-        return 'failed';
+        return false;
       }
     } catch (e) {
       logger.log('Error while sending contact us message: $e');
-      return 'failed';
+      return false;
     }
   }
 }
