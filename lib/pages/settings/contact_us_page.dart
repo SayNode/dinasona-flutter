@@ -17,32 +17,38 @@ class ContactUsPage extends GetView<ContactUsController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
-    return CustomScaffold(
-      appBarTitle: 'Contact Us'.tr,
-      padding: true,
-      body: Column(
-        children: <Widget>[
-          Text(
-            "We're here to help! Please share your questions, feedback, or concerns with us."
-                .tr,
-            style: CustomTypography.fromColor(theme.graphite).k16Reg,
-          ),
-          const Gap(42),
-          DinasonaTextField(
-            hintText: 'Type your message here...'.tr,
-            controller: controller.formController,
-            maxLines: 18,
-          ),
-          const Spacer(),
-          Obx(
-            () => DinasonaButton(
-              text: 'Send'.tr,
-              onPressed: controller.send,
-              locked: !controller.isButtonActive.value,
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: CustomScaffold(
+        appBarTitle: 'Contact Us'.tr,
+        padding: true,
+        body: Column(
+          children: <Widget>[
+            Text(
+              "We're here to help! Please share your questions, feedback, or concerns with us."
+                  .tr,
+              style: CustomTypography.fromColor(theme.graphite).k16Reg,
             ),
-          ),
-          Gap(getRelativeHeight(80)),
-        ],
+            const Gap(42),
+            DinasonaTextField(
+              hintText: 'Type your message here...'.tr,
+              controller: controller.formController,
+              maxLines: 18,
+            ),
+            const Spacer(),
+            Obx(
+              () => DinasonaButton(
+                text: 'Send'.tr,
+                onPressed: controller.send,
+                locked: !controller.isButtonActive.value,
+              ),
+            ),
+            Gap(getRelativeHeight(80)),
+          ],
+        ),
       ),
     );
   }
