@@ -67,6 +67,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                 ),
                         ),
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(300),
                           onTap: () {
                             controller.pickImage(ImageSource.gallery);
                           },
