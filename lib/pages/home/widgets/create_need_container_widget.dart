@@ -22,7 +22,10 @@ class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        padding: EdgeInsets.symmetric(
+          horizontal: getRelativeWidth(15),
+          vertical: getRelativeHeight(25),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -40,7 +43,7 @@ class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {
                           CustomTypography.fromColor(theme.moonstone).k24Bold,
                     ),
                     AutoSizeText(
-                      'Create your need and share your story dsd'.tr,
+                      'Create your need and share your story'.tr,
                       maxLines: 2,
                       style: CustomTypography.fromColor(theme.moonstone).k14Reg,
                     ),
