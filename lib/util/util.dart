@@ -8,6 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../service/theme_service.dart';
+import '../theme/theme.dart';
+
 bool getMaterialAppCalled = false;
 
 double getRelativeWidth(double width) {
@@ -18,4 +21,45 @@ double getRelativeWidth(double width) {
 double getRelativeHeight(double height) {
   final Size screenSize = MediaQuery.of(Get.context!).size;
   return screenSize.height * (height / 852);
+}
+
+String getTimePassedString(DateTime dateTime) {
+  final DateTime transactionTime = dateTime;
+  final DateTime now = DateTime.now();
+  final Duration difference = now.difference(transactionTime);
+
+  if (difference.inDays > 0) {
+    return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+  } else if (difference.inHours > 0) {
+    return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+  } else if (difference.inMinutes > 0) {
+    return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+  } else {
+    return 'Just now';
+  }
+}
+
+void showLoadingDialog(BuildContext context) {
+  final CustomTheme theme = Get.put(ThemeService()).theme;
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: theme.amberglow,
+            ),
+          ),
+        );
+      },
+    );
+  });
+}
+
+void hideLoadingDialog(BuildContext context) {
+  Navigator.pop(context);
 }

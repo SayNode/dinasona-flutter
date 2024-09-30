@@ -1,4 +1,7 @@
 plugins {
+//breez imports start
+id 'kotlinx-serialization'
+//breez imports end
     id "com.android.application"
     // START: FlutterFire Configuration
     id 'com.google.gms.google-services'
@@ -69,7 +72,7 @@ android {
         applicationId = "org.dinasona.dinasona"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
+        minSdkVersion 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -89,5 +92,9 @@ flutter {
 }
 
 dependencies {
+//breez imports start
+implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20"
+implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+//breez imports end
     implementation 'androidx.multidex:multidex:2.0.1'
 }
