@@ -1,23 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class BenbeficiaryStatistics {
+class BeneficiaryStatistics {
   //TODO: chek if the fields are correct or if some need to be double instead of int
   int totalAmountDonated;
   int totalNeedsClosed;
   int totalPeopleDonated;
-  BenbeficiaryStatistics({
+  BeneficiaryStatistics({
     required this.totalAmountDonated,
     required this.totalNeedsClosed,
     required this.totalPeopleDonated,
   });
 
-  BenbeficiaryStatistics copyWith({
+  BeneficiaryStatistics copyWith({
     int? totalAmountDonated,
     int? totalNeedsClosed,
     int? totalPeopleDonated,
   }) {
-    return BenbeficiaryStatistics(
+    return BeneficiaryStatistics(
       totalAmountDonated: totalAmountDonated ?? this.totalAmountDonated,
       totalNeedsClosed: totalNeedsClosed ?? this.totalNeedsClosed,
       totalPeopleDonated: totalPeopleDonated ?? this.totalPeopleDonated,
@@ -32,8 +32,8 @@ class BenbeficiaryStatistics {
     };
   }
 
-  factory BenbeficiaryStatistics.fromMap(Map<String, dynamic> map) {
-    return BenbeficiaryStatistics(
+  factory BeneficiaryStatistics.fromMap(Map<String, dynamic> map) {
+    return BeneficiaryStatistics(
       totalAmountDonated: map['total_amount_donated'] as int? ?? -1,
       totalNeedsClosed: map['total_beneficiaries_donated_to'] as int? ?? -1,
       totalPeopleDonated: map['total_countries_donated_to'] as int? ?? -1,
@@ -42,8 +42,8 @@ class BenbeficiaryStatistics {
 
   String toJson() => json.encode(toMap());
 
-  factory BenbeficiaryStatistics.fromJson(String source) =>
-      BenbeficiaryStatistics.fromMap(
+  factory BeneficiaryStatistics.fromJson(String source) =>
+      BeneficiaryStatistics.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
 

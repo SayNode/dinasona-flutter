@@ -9,7 +9,7 @@ import '../../../../widgets/dialogs/logout_dialog.dart';
 class BeneficiarySettingsPageController extends GetxController {
   final UserStateService _userStateService = Get.find<UserStateService>();
 
-  BenbeficiaryStatistics get beneficiaryStatistics =>
+  BeneficiaryStatistics get beneficiaryStatistics =>
       _userStateService.beneficiaryStatistics.value;
 
   User get user => _userStateService.user.value;
