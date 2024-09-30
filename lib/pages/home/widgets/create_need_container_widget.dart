@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
+import '../../../util/util.dart';
 import '../controllers/beneficary_home_page_controller.dart';
 
 class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {
@@ -20,23 +22,31 @@ class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Create a need'.tr,
-                  style: CustomTypography.fromColor(theme.moonstone).k24Bold,
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(right: getRelativeWidth(10)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'Create a need'.tr,
+                      style:
+                          CustomTypography.fromColor(theme.moonstone).k24Bold,
+                    ),
+                    AutoSizeText(
+                      'Create your need and share your story dsd'.tr,
+                      maxLines: 2,
+                      style: CustomTypography.fromColor(theme.moonstone).k14Reg,
+                    ),
+                  ],
                 ),
-                Text(
-                  'Create your need and share your story'.tr,
-                  style: CustomTypography.fromColor(theme.moonstone).k14Reg,
-                ),
-                const Gap(20),
-              ],
+              ),
             ),
             InkWell(
               onTap: controller.openStoryPopup,

@@ -25,7 +25,9 @@ class NeedCard extends StatelessWidget {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     return Container(
       margin: EdgeInsets.only(bottom: getRelativeHeight(10)),
-      height: getRelativeHeight(225),
+      constraints: BoxConstraints(
+        minHeight: getRelativeHeight(225),
+      ),
       child: Material(
         color: theme.snowfall,
         elevation: 4,
