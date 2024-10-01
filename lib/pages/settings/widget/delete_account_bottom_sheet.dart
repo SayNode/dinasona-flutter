@@ -79,12 +79,7 @@ class DeleteAccountBottomSheet extends StatelessWidget {
                   ),
                 ],
               ),
-            ), /* Text(
-              textAlign: TextAlign.center,
-              'Your account associated with ${userStateService.user.value.email} will be deleted from Dinasona.'
-                  .tr,
-              style: CustomTypography.fromColor(theme.shadowed).k16Reg,
-            ), */
+            ),
           ),
           Gap(getRelativeHeight(15)),
           Text(
