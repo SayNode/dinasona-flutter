@@ -55,37 +55,37 @@ class DeleteAccountBottomSheet extends StatelessWidget {
           ),
           const Gap(10),
           Container(
-              padding: EdgeInsets.all(getRelativeWidth(15)),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(getRelativeWidth(4)),
-                border: Border.all(
-                  color: theme.inferno,
-                ),
+            padding: EdgeInsets.all(getRelativeWidth(15)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(getRelativeWidth(4)),
+              border: Border.all(
+                color: theme.inferno,
               ),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'Your account associated with',
-                  style: CustomTypography.fromColor(theme.graphite).k16Reg,
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: ' ${userStateService.user.value.email} ',
-                      style: CustomTypography.fromColor(theme.graphite)
-                          .k16SemiBold,
-                    ),
-                    TextSpan(
-                      text: 'will be deleted from Dinasona.'.tr,
-                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
-                    ),
-                  ],
-                ),
-              ), /* Text(
+            ),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'Your account associated with',
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: ' ${userStateService.user.value.email} ',
+                    style:
+                        CustomTypography.fromColor(theme.graphite).k16SemiBold,
+                  ),
+                  TextSpan(
+                    text: 'will be deleted from Dinasona.'.tr,
+                    style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                  ),
+                ],
+              ),
+            ), /* Text(
               textAlign: TextAlign.center,
               'Your account associated with ${userStateService.user.value.email} will be deleted from Dinasona.'
                   .tr,
               style: CustomTypography.fromColor(theme.shadowed).k16Reg,
             ), */
-              ),
+          ),
           Gap(getRelativeHeight(15)),
           Text(
             'By submitting a request for Dinasona to delete your account, you understand and acknowledge that:'
