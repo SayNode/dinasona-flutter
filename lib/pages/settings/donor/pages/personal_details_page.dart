@@ -111,6 +111,9 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                     ),
                   );
                 }).toList(),
+                value: controller.location.value.isEmpty
+                    ? null
+                    : controller.location.value.capitalizeFirst,
                 onChanged: (String? value) {
                   controller.location.value = value!;
                 },
