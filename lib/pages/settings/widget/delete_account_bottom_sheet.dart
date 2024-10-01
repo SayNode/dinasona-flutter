@@ -55,7 +55,7 @@ class DeleteAccountBottomSheet extends StatelessWidget {
           ),
           const Gap(10),
           Container(
-              padding: EdgeInsets.all(getRelativeWidth(10)),
+              padding: EdgeInsets.all(getRelativeWidth(15)),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: theme.inferno,
@@ -95,21 +95,25 @@ class DeleteAccountBottomSheet extends StatelessWidget {
           const BulletPointWidget(
             symbol: '1.',
             text: 'You will no longer be able to access your account',
+            isBold: true,
           ),
           const BulletPointWidget(
             symbol: '2.',
             text:
                 'Account deletion requests will typically be completed within 30 days.',
+            isBold: true,
           ),
           const BulletPointWidget(
             symbol: '3.',
             text:
                 'You will be logged out of the app after submitting your request.',
+            isBold: true,
           ),
           const BulletPointWidget(
             symbol: '4.',
             text:
                 'A request to delete your account may also remove your personal data associated with your account from our system.',
+            isBold: true,
           ),
           const Gap(10),
           DinasonaButton(
