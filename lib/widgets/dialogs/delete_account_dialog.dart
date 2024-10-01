@@ -48,6 +48,7 @@ class DeleteAccountDialog extends StatelessWidget {
                   textColor: theme.graphite,
                   onPressed: () {
                     Get.bottomSheet(
+                      isScrollControlled: true,
                       const DeleteAccountBottomSheet(),
                     );
                   },

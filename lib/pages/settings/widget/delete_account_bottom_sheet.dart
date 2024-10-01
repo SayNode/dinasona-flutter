@@ -39,7 +39,7 @@ class DeleteAccountBottomSheet extends StatelessWidget {
               const SizedBox(),
               Text(
                 textAlign: TextAlign.center,
-                'Delet account'.tr,
+                'Delete account'.tr,
                 style: CustomTypography.fromColor(theme.graphite).k16SemiBold,
               ),
               IconButton(
@@ -54,13 +54,44 @@ class DeleteAccountBottomSheet extends StatelessWidget {
             style: CustomTypography.fromColor(theme.shadowed).k24Bold,
           ),
           const Gap(10),
+          Container(
+              padding: EdgeInsets.all(getRelativeWidth(10)),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: theme.inferno,
+                ),
+              ),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Your account associated with',
+                  style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: ' ${userStateService.user.value.email} ',
+                      style: CustomTypography.fromColor(theme.graphite)
+                          .k16SemiBold,
+                    ),
+                    TextSpan(
+                      text: 'will be deleted from Dinasona.'.tr,
+                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                    ),
+                  ],
+                ),
+              ) /* Text(
+              textAlign: TextAlign.center,
+              'Your account associated with ${userStateService.user.value.email} will be deleted from Dinasona.'
+                  .tr,
+              style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+            ), */
+              ),
+          Gap(getRelativeHeight(15)),
           Text(
-            textAlign: TextAlign.center,
-            'Your account associated with email address here will be deleted from Dinasona.'
+            'By submitting a request for Dinasona to delete your account, you understand and acknowledge that:'
                 .tr,
-            style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+            style: CustomTypography.fromColor(theme.graphite).k16Reg,
           ),
-          Gap(getRelativeHeight(24)),
+          Gap(getRelativeHeight(15)),
           const BulletPointWidget(
             symbol: '1.',
             text: 'You will no longer be able to access your account',
