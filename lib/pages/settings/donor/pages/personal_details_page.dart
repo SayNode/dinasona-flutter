@@ -51,6 +51,14 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
               icon: const Icon(Icons.keyboard_arrow_down_sharp),
               dropdownColor: diasonaTheme.moonstone,
               borderRadius: BorderRadius.circular(16),
+              hint: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Location'.tr,
+                  style:
+                      CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                ),
+              ),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -58,8 +66,8 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                 ),
                 hintStyle:
                     CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
-                hintText: 'Location'.tr,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: getRelativeWidth(12)),
               ),
               items: <String>['Switzerland', 'Other']
                   .map<DropdownMenuItem<String>>((String country) {
@@ -77,24 +85,13 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
               },
             ),
           ),
-          // DropdownButton<String>(
-          //   onChanged: (String? newValue) {
-          //     controller.location.value = newValue!;
-          //   },
-          //   items: <String>['Switzerland', 'Other']
-          //       .map<DropdownMenuItem<String>>((String value) {
-          //     return DropdownMenuItem<String>(
-          //       value: value,
-          //       child: Text(value),
-          //     );
-          //   }).toList(),
-          // ),
           const Spacer(),
           Obx(
             () {
               return DinasonaButton(
                 text: 'Save'.tr,
                 onPressed: controller.save,
+                locked: true,
                 loading: controller.loading.value,
               );
             },
