@@ -57,6 +57,7 @@ class DeleteAccountBottomSheet extends StatelessWidget {
           Container(
               padding: EdgeInsets.all(getRelativeWidth(15)),
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(getRelativeWidth(4)),
                 border: Border.all(
                   color: theme.inferno,
                 ),
