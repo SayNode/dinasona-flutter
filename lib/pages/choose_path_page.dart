@@ -16,6 +16,7 @@ import 'root/beneficiary_root_page.dart';
 import 'root/donor_root_page.dart';
 import 'sign_up/donor_and_beneficiary/choose_language_page.dart';
 import 'sign_up/donor_and_beneficiary/sign_up_page.dart';
+import 'wallet/controllers/wallet_page_controller.dart';
 
 class ChosePathPage extends StatelessWidget {
   const ChosePathPage({super.key});
@@ -39,6 +40,9 @@ class ChosePathPage extends StatelessWidget {
                 onTap: () async {
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
+                    await Get.find<WalletPageController>()
+                        .connectToWalletAfterSignIn();
+
                     unawaited(
                       Get.to<void>(
                         () => const DonorRootPage(),
@@ -98,6 +102,9 @@ class ChosePathPage extends StatelessWidget {
                 onTap: () async {
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
+                    await Get.find<WalletPageController>()
+                        .connectToWalletAfterSignIn();
+
                     unawaited(
                       Get.to<void>(
                         () => const BeneficiaryRootPage(),

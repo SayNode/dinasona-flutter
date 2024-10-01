@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../../util/util.dart';
@@ -8,6 +9,8 @@ import '../../root/donor_root_page.dart';
 import 'wallet_page_controller.dart';
 
 class CreateWalletController extends GetxController {
+  final SecureStorageService secureStorageService =
+      Get.find<SecureStorageService>();
   final WalletPageController controller = Get.find<WalletPageController>();
   RxString seedPhrase = ''.obs;
   RxBool userHasEnteredSeedPhrase = false.obs;
@@ -24,8 +27,11 @@ class CreateWalletController extends GetxController {
       showLoadingDialog(Get.context!);
     }
     await controller.clearWalletEnvironment();
-
     await controller.breezService.connectToNode(seedPhrase.value);
+    await secureStorageService.writeString(
+      'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
+      seedPhrase.value,
+    );
 
     if (Get.context != null) {
       hideLoadingDialog(Get.context!);
