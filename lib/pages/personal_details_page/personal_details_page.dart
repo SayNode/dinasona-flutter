@@ -54,8 +54,8 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                     Obx(
                       () => Container(
                         margin: const EdgeInsets.all(20),
-                        width: getRelativeWidth(100),
-                        height: getRelativeHeight(100),
+                        width: getRelativeWidth(106),
+                        height: getRelativeWidth(106),
                         decoration: BoxDecoration(
                           border: Border.all(color: diasonaTheme.graphite),
                           shape: BoxShape.circle,
@@ -69,7 +69,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                 ),
                         ),
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(300),
+                          borderRadius: BorderRadius.circular(1000),
                           onTap: () {
                             controller.pickImage(ImageSource.gallery);
                           },
