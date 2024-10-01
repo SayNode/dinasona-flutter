@@ -48,10 +48,14 @@ class LoginController extends GetxController {
             await authService.login(email.text, password.text);
         if (loginResult.success) {
           await Get.find<UserStateService>().init();
-          await Get.to<void>(
-            () => isBeneficiary
-                ? const BeneficiaryRootPage()
-                : const DonorRootPage(),
+          password.clear();
+          email.clear();
+          unawaited(
+            Get.to<void>(
+              () => isBeneficiary
+                  ? const BeneficiaryRootPage()
+                  : const DonorRootPage(),
+            ),
           );
         } else {
           error.value = 'Unable to log in with provided credentials';

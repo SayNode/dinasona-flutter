@@ -4,8 +4,6 @@ import '../../../../model/beneficiary_statistics.dart';
 import '../../../../model/user.dart';
 import '../../../../service/user_state_service.dart';
 import '../../../../util/popup_manager.dart';
-import '../../../../widgets/dialogs/delete_account_dialog.dart';
-import '../../../../widgets/dialogs/logout_dialog.dart';
 
 class BeneficiarySettingsPageController extends GetxController {
   final UserStateService _userStateService = Get.find<UserStateService>();
