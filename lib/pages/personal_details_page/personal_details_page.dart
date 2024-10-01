@@ -12,6 +12,7 @@ import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
+import '../create_new_need/create_new_need.dart';
 import 'controller/personal_details_controller.dart';
 
 class PersonalDetailsPage extends GetView<PersonalDetailsController> {
@@ -229,7 +230,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
               ),
               SizedBox(height: gap),
               TextButton(
-                onPressed: () => Get.back<void>(),
+                onPressed: () => Get.to<void>(() => const CreateNewNeed()),
                 child: Text(
                   'Skip',
                   style:
