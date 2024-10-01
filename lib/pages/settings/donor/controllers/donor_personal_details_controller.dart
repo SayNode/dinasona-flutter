@@ -12,6 +12,8 @@ class DonorPersonalDetailsController extends GetxController {
   final TextEditingController fistNameController = TextEditingController();
   final TextEditingController secondNameController = TextEditingController();
   final TextEditingController loactionController = TextEditingController();
+  final RxString firstName = ''.obs;
+  final RxString lastName = ''.obs;
 
   RxString location = ''.tr.obs;
 

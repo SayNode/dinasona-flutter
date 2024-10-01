@@ -31,6 +31,8 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
             hintStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
             textStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
             controller: controller.fistNameController,
+            onChanged: (String firstName) =>
+                controller.firstName.value = firstName,
           ),
           const Gap(6),
           DinasonaTextField(
@@ -39,6 +41,8 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
             hintStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
             textStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
             controller: controller.secondNameController,
+            onChanged: (String lastName) =>
+                controller.lastName.value = lastName,
           ),
           const Gap(6),
           DecoratedBox(
@@ -91,7 +95,8 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
               return DinasonaButton(
                 text: 'Save'.tr,
                 onPressed: controller.save,
-                locked: true,
+                locked: controller.firstName.value.isEmpty ||
+                    controller.lastName.value.isEmpty,
                 loading: controller.loading.value,
               );
             },
