@@ -27,11 +27,17 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
           Gap(getRelativeHeight(42)),
           DinasonaTextField(
             hintText: 'First name'.tr,
+            hintColor: diasonaTheme.graphite,
+            hintStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+            textStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
             controller: controller.fistNameController,
           ),
           const Gap(6),
           DinasonaTextField(
             hintText: 'Last name'.tr,
+            hintColor: diasonaTheme.graphite,
+            hintStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+            textStyle: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
             controller: controller.secondNameController,
           ),
           const Gap(6),
@@ -50,6 +56,8 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide.none,
                 ),
+                hintStyle:
+                    CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
                 hintText: 'Location'.tr,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
               ),
@@ -59,7 +67,7 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                   value: country,
                   child: Text(
                     country,
-                    style: CustomTypography.fromColor(diasonaTheme.shadowed)
+                    style: CustomTypography.fromColor(diasonaTheme.graphite)
                         .k16Reg,
                   ),
                 );
