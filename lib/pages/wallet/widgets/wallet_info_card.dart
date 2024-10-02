@@ -39,7 +39,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
                       .copyWith(fontWeight: FontWeight.w800),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'balance',
+                      text: 'balance'.tr,
                       style: CustomTypography.fromColor(theme.moonstone)
                           .k20Bold
                           .copyWith(fontWeight: FontWeight.w100),
@@ -110,7 +110,9 @@ class WalletInfoCard extends GetView<WalletPageController> {
                                 ),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.saveSeedPhraseToClipboard(context);
+                              },
                               child: Text(
                                 'Export/Backup'.tr,
                                 style: CustomTypography.fromColor(

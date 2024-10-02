@@ -5,11 +5,15 @@ import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
 import '../../../service/auth_service.dart';
+import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../root/beneficiary_root_page.dart';
 import '../../root/donor_root_page.dart';
+import '../../wallet/controllers/wallet_page_controller.dart';
 
 class LoginController extends GetxController {
+  final SecureStorageService secureStorageService =
+      Get.find<SecureStorageService>();
   final AuthService authService = Get.find<AuthService>();
   RxBool showPassword = false.obs;
   final TextEditingController password = TextEditingController();
@@ -48,6 +52,8 @@ class LoginController extends GetxController {
             await authService.login(email.text, password.text);
         if (loginResult.success) {
           await Get.find<UserStateService>().init();
+          await Get.find<WalletPageController>().connectToWalletAfterSignIn();
+
           await Get.to<void>(
             () => isBeneficiary
                 ? const BeneficiaryRootPage()
