@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './util/constants.dart';
 import 'firebase_options.dart';
@@ -136,6 +137,8 @@ void main() async {
       <DeviceOrientation>[DeviceOrientation.portraitUp],
     );
     isFirstRun = await IsFirstRun.isFirstRun();
+
+    await dotenv.load();
 
     runApp(const MyApp());
   }, (Object error, StackTrace stack) async {

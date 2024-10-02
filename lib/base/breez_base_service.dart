@@ -5,6 +5,7 @@
 //
 // https://saynode.ch
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:breez_sdk/breez_sdk.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class BreezBaseService extends GetxService {
   static const EnvironmentType environmentType = EnvironmentType.Production;
@@ -53,12 +55,13 @@ abstract class BreezBaseService extends GetxService {
       // Load the Greenlight credentials
       final GreenlightCredentials greenlightCredentials =
           await _loadGreenlightCredentials();
+
       // Create the default config
       final Uint8List seed = await breezSDK.mnemonicToSeed(
         seedPhrase,
       );
 
-      const String brrezApiKey = String.fromEnvironment('BREEZ_API_KEY');
+      final String brrezApiKey = dotenv.env['BREEZ_API_KEY'] ?? '';
       final NodeConfig nodeConfig = NodeConfig.greenlight(
         config: GreenlightNodeConfig(
           partnerCredentials: greenlightCredentials,
@@ -173,14 +176,12 @@ abstract class BreezBaseService extends GetxService {
   }
 
   Future<GreenlightCredentials> _loadGreenlightCredentials() async {
-    final Uint8List greenlightDeveloperKey =
-        (await rootBundle.load('assets/greenlight/client-key.pem'))
-            .buffer
-            .asUint8List();
-    final Uint8List greenlightCertificate =
-        (await rootBundle.load('assets/greenlight/client.crt'))
-            .buffer
-            .asUint8List();
+    final String developerKey = dotenv.env['GREENLIGHT_CLIENT_KEY'] ?? '';
+    final Uint8List greenlightDeveloperKey = base64.decode(developerKey);
+
+    final String developerCertificate =
+        dotenv.env['GREENLIGHT_CLIENT_CERTIFICATE'] ?? '';
+    final Uint8List greenlightCertificate = base64.decode(developerCertificate);
 
     final GreenlightCredentials partnerCredentials = GreenlightCredentials(
       developerKey: greenlightDeveloperKey,
