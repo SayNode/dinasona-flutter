@@ -63,6 +63,5 @@ flutter:
     - assets/images/
     - assets/images/need_fields/
     - assets/images/logos/
-    - assets/greenlight/
 
   uses-material-design: true
