@@ -16,6 +16,7 @@ import '../service/api_service.dart';
 import '../service/logger_service.dart';
 import '../service/storage/secure_storage_service.dart';
 import '../service/storage/storage_service.dart';
+import '../service/user_state_service.dart';
 
 enum ProviderTypes {
   none,
@@ -64,6 +65,10 @@ abstract class AuthServiceBase extends GetxService {
         log: true,
       );
 
+      await Get.find<UserStateService>().fetchUserInfo();
+      await Get.find<UserStateService>().fetchDonorStatistics();
+      await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+
       final AuthResponse authResult = AuthResponse.fromJson(
         jsonDecode(response.body) as Map<String, dynamic>,
       );
@@ -98,6 +103,9 @@ abstract class AuthServiceBase extends GetxService {
           'token',
           authResult.accessToken,
         );
+        await Get.find<UserStateService>().fetchUserInfo();
+        await Get.find<UserStateService>().fetchDonorStatistics();
+        await Get.find<UserStateService>().fetchBeneficiaryStatistics();
 
         // Disconnect other providers
         await disconnectProviders();
@@ -197,6 +205,9 @@ abstract class AuthServiceBase extends GetxService {
           'token',
           authResult.accessToken,
         );
+        await Get.find<UserStateService>().fetchUserInfo();
+        await Get.find<UserStateService>().fetchDonorStatistics();
+        await Get.find<UserStateService>().fetchBeneficiaryStatistics();
 
         // Disconnect other providers
         await disconnectProviders();

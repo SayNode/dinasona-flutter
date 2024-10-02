@@ -8,7 +8,7 @@
                 "--dart-define",
                 "API_URL=dev.devdinasona.ch",
                 "--dart-define",
-                "BREEZ_API_KEY=83a0ddb66d168eb31a3cc577dad61683f6f2a45847048b13d3391cc2ca7a6972"
+                "BREEZ_API_KEY="
             ]
         },
     ]

@@ -11,6 +11,7 @@ import 'wallet_page_controller.dart';
 class CreateWalletController extends GetxController {
   final SecureStorageService secureStorageService =
       Get.find<SecureStorageService>();
+
   final WalletPageController controller = Get.find<WalletPageController>();
   RxString seedPhrase = ''.obs;
   RxBool userHasEnteredSeedPhrase = false.obs;

@@ -18,13 +18,11 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
   Widget build(BuildContext context) {
     Get.put(BeneficiaryHomePageController());
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    Get.put(BeneficiaryHomePageController());
     return CustomScaffold(
       padding: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Gap(30),
           Text(
             'Good morning, Fatima'.tr,
             style: CustomTypography.fromColor(theme.shadowed).k24Bold,
