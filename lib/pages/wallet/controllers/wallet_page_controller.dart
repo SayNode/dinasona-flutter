@@ -115,6 +115,7 @@ class WalletPageController extends GetxController {
   }
 
   Future<void> connectToWalletAfterSignIn() async {
+    await Get.find<UserStateService>().fetchUserInfo();
     final String seedPhrase = await secureStorageService.readString(
           'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
         ) ??
@@ -125,6 +126,7 @@ class WalletPageController extends GetxController {
         await breezService.connectToNode(
           seedPhrase,
         );
+        await getTransactions();
         isWalletConnected.value = true;
       } catch (e) {
         Get.find<LoggerService>().log('Error connecting to node: $e');
@@ -132,6 +134,7 @@ class WalletPageController extends GetxController {
     }
   }
 
+  // TODO: Chose a more secure and reliable way to export the seed phrase
   Future<void> saveSeedPhraseToClipboard(BuildContext context) async {
     final String? seedPhrase = await secureStorageService.readString(
       'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',

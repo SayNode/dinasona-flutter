@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/auth_response.dart';
+import '../pages/wallet/controllers/wallet_page_controller.dart';
 import '../service/api_service.dart';
 import '../service/logger_service.dart';
 import '../service/storage/secure_storage_service.dart';
@@ -153,6 +154,7 @@ abstract class AuthServiceBase extends GetxService {
         await storageService.delete('token');
         // Disconnect other providers
         await disconnectProviders();
+        await Get.find<WalletPageController>().deleteUserWallet();
       } else {
         // Unexpected status code:
         // await Get.to<void>(() => HtmlDebug(res: response.body));

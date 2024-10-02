@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
 import '../../../service/auth_service.dart';
-import '../../../service/breez_service.dart';
-import '../../../service/logger_service.dart';
 import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../root/beneficiary_root_page.dart';

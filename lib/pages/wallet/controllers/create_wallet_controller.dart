@@ -28,6 +28,7 @@ class CreateWalletController extends GetxController {
     }
     await controller.clearWalletEnvironment();
     await controller.breezService.connectToNode(seedPhrase.value);
+    await Get.find<UserStateService>().fetchUserInfo();
     await secureStorageService.writeString(
       'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
       seedPhrase.value,

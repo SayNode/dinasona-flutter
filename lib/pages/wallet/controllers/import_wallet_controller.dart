@@ -60,10 +60,12 @@ class ImportWalletController extends GetxController {
         seedPhrase.split(' '),
       );
 
+      await Get.find<UserStateService>().fetchUserInfo();
       await secureStorageService.writeString(
         'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
         seedPhrase,
       );
+      await WalletPageController().getTransactions();
 
       if (Get.context != null) {
         hideLoadingDialog(Get.context!);
