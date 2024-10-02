@@ -7,7 +7,6 @@
             "toolArgs": [
                 "--dart-define",
                 "API_URL=dev.devdinasona.ch",
-                "--dart-define",
             ]
         },
     ]
