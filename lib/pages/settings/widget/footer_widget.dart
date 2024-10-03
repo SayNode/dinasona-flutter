@@ -25,7 +25,7 @@ class FooterWidget extends StatelessWidget {
           ),
           const Gap(12),
           Text(
-            ' Made with 💚 by Donosora for a better future',
+            ' Made with 💚 by Dinasona for a better future',
             style: CustomTypography.fromColor(theme.ferngreen).k14Reg,
           ),
         ],

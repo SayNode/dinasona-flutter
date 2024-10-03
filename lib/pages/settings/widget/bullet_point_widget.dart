@@ -7,9 +7,15 @@ import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 
 class BulletPointWidget extends StatelessWidget {
-  const BulletPointWidget({required this.text, super.key, this.symbol = '•'});
+  const BulletPointWidget({
+    required this.text,
+    super.key,
+    this.symbol = '•',
+    this.isBold = false,
+  });
   final String text;
   final String symbol;
+  final bool isBold;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,9 @@ class BulletPointWidget extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: CustomTypography.fromColor(theme.graphite).k16Reg,
+            style: CustomTypography.fromColor(theme.graphite).k16Reg.copyWith(
+                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+                ),
           ),
         ),
       ],
