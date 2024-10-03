@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/logger_service.dart';
+import '../../../service/storage/secure_storage_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../../util/util.dart';
+import '../../root/beneficiary_root_page.dart';
 import '../../root/donor_root_page.dart';
 import 'wallet_page_controller.dart';
 
 class ImportWalletController extends GetxController {
+  final SecureStorageService secureStorageService =
+      Get.find<SecureStorageService>();
   final WalletPageController controller = Get.find<WalletPageController>();
   final LoggerService loggerService = Get.find<LoggerService>();
   final RxString seedImportErrorMessage = ''.obs;
@@ -55,6 +60,13 @@ class ImportWalletController extends GetxController {
         seedPhrase.split(' '),
       );
 
+      await Get.find<UserStateService>().fetchUserInfo();
+      await secureStorageService.writeString(
+        'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
+        seedPhrase,
+      );
+      await WalletPageController().getTransactions();
+
       if (Get.context != null) {
         hideLoadingDialog(Get.context!);
       }
@@ -69,7 +81,11 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to(() => const DonorRootPage());
+      await Get.to(
+        () => Get.find<UserStateService>().user.value.isDonor
+            ? const DonorRootPage()
+            : const BeneficiaryRootPage(),
+      );
     } catch (e) {
       Future<void>.delayed(const Duration(milliseconds: 1000), () {
         PopupManager.openWalletInfoPopup(
@@ -78,7 +94,11 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to(() => const DonorRootPage());
+      await Get.to(
+        () => Get.find<UserStateService>().user.value.isDonor
+            ? const DonorRootPage()
+            : const BeneficiaryRootPage(),
+      );
     }
   }
 }

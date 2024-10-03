@@ -23,8 +23,8 @@ class NeedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    return SizedBox(
-      height: getRelativeHeight(225),
+    return Container(
+      margin: EdgeInsets.only(bottom: getRelativeHeight(10)),
       child: Material(
         color: theme.snowfall,
         elevation: 4,

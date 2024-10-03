@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
+import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import 'controllers/beneficary_home_page_controller.dart';
 import 'widgets/all_needs_widget.dart';
@@ -37,12 +39,15 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
                 Icon(
                   Icons.file_download_outlined,
                   color: theme.shadowed,
-                  size: 14,
+                  size: getRelativeWidth(18),
                 ),
                 const Gap(10),
-                Text(
-                  'Download our PDF guide and explore using the app'.tr,
-                  style: CustomTypography.fromColor(theme.shadowed).k14Reg,
+                Flexible(
+                  child: AutoSizeText(
+                    'Download our PDF guide and explore using the app'.tr,
+                    maxLines: 2,
+                    style: CustomTypography.fromColor(theme.shadowed).k14Reg,
+                  ),
                 ),
               ],
             ),

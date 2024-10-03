@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,11 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
         DinasonaTextField(
           hintText: 'Enter amount',
           controller: controller.screen3,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Obx(
