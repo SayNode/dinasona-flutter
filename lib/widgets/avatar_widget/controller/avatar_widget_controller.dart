@@ -11,7 +11,17 @@ import '../../../util/image_loader.dart';
 class AvatarWidgetController extends GetxController {
   Future<void> selectImage() async {
     final UserStateService userStateService = Get.find<UserStateService>();
-    final File file = await ImageLoader.pickImage(ImageSource.gallery);
+    File file;
+
+    try {
+      file = await ImageLoader.pickImage(ImageSource.gallery);
+      await userStateService.updateAvatar(file: file);
+    } catch (e) {
+      if (e == 'No image selected') {
+        return;
+      }
+    }
+
     unawaited(
       Get.dialog(
         barrierDismissible: false,
@@ -20,7 +30,7 @@ class AvatarWidgetController extends GetxController {
         ),
       ),
     );
-    await userStateService.updateAvatar(file: file);
+
     Get.back();
   }
 }

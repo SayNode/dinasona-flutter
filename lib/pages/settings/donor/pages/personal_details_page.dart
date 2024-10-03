@@ -18,81 +18,124 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBarTitle: 'Personal details'.tr,
-      padding: true,
-      body: Column(
-        children: <Widget>[
-          const AvatarWidget(),
-          Gap(getRelativeHeight(42)),
-          DinasonaTextField(
-            hintText: 'First name'.tr,
-            controller: controller.fistNameController,
-          ),
-          const Gap(6),
-          DinasonaTextField(
-            hintText: 'Last name'.tr,
-            controller: controller.secondNameController,
-          ),
-          const Gap(6),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(color: diasonaTheme.graphite),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: DropdownButtonFormField<String>(
-              // isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down_sharp),
-              dropdownColor: diasonaTheme.moonstone,
-              borderRadius: BorderRadius.circular(16),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-                hintText: 'Location'.tr,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+    final RegExp invalidCharacters = RegExp(r"[^a-zA-Z\s\-\'\.]");
+
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: CustomScaffold(
+        appBarTitle: 'Personal details'.tr,
+        padding: true,
+        body: Column(
+          children: <Widget>[
+            const AvatarWidget(),
+            Gap(getRelativeHeight(42)),
+            Obx(
+              () => DinasonaTextField(
+                hintText: 'First name'.tr,
+                borderColor: controller.firstName.value.isEmpty
+                    ? diasonaTheme.graphite
+                    : invalidCharacters.hasMatch(controller.firstName.value)
+                        ? diasonaTheme.inferno
+                        : diasonaTheme.ferngreen,
+                hintColor: diasonaTheme.graphite,
+                hintStyle:
+                    CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                textStyle:
+                    CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                controller: controller.fistNameController,
+                onChanged: (String firstName) =>
+                    controller.firstName.value = firstName,
               ),
-              items: <String>['Switzerland', 'Other']
-                  .map<DropdownMenuItem<String>>((String country) {
-                return DropdownMenuItem<String>(
-                  value: country,
+            ),
+            const Gap(6),
+            Obx(
+              () => DinasonaTextField(
+                hintText: 'Last name'.tr,
+                borderColor: controller.lastName.value.isEmpty
+                    ? diasonaTheme.graphite
+                    : invalidCharacters.hasMatch(controller.lastName.value)
+                        ? diasonaTheme.inferno
+                        : diasonaTheme.ferngreen,
+                hintColor: diasonaTheme.graphite,
+                hintStyle:
+                    CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                textStyle:
+                    CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                controller: controller.secondNameController,
+                onChanged: (String lastName) =>
+                    controller.lastName.value = lastName,
+              ),
+            ),
+            const Gap(6),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: diasonaTheme.graphite),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: DropdownButtonFormField<String>(
+                // isExpanded: true,
+                icon: const Icon(Icons.keyboard_arrow_down_sharp),
+                dropdownColor: diasonaTheme.moonstone,
+                borderRadius: BorderRadius.circular(16),
+                hint: Align(
+                  alignment: Alignment.centerLeft,
                   child: Text(
-                    country,
-                    style: CustomTypography.fromColor(diasonaTheme.shadowed)
+                    'Location'.tr,
+                    style: CustomTypography.fromColor(diasonaTheme.graphite)
                         .k16Reg,
                   ),
+                ),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintStyle:
+                      CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: getRelativeWidth(12)),
+                ),
+                items: <String>['Switzerland', 'Other']
+                    .map<DropdownMenuItem<String>>((String country) {
+                  return DropdownMenuItem<String>(
+                    value: country,
+                    child: Text(
+                      country,
+                      style: CustomTypography.fromColor(diasonaTheme.graphite)
+                          .k16Reg,
+                    ),
+                  );
+                }).toList(),
+                value: controller.location.value.isEmpty
+                    ? null
+                    : controller.location.value.capitalizeFirst,
+                onChanged: (String? value) {
+                  controller.location.value = value!;
+                },
+              ),
+            ),
+            const Spacer(),
+            Obx(
+              () {
+                return DinasonaButton(
+                  text: 'Save'.tr,
+                  onPressed: controller.save,
+                  locked: controller.firstName.value.isEmpty ||
+                      controller.lastName.value.isEmpty ||
+                      invalidCharacters.hasMatch(controller.firstName.value) ||
+                      invalidCharacters.hasMatch(controller.lastName.value),
+                  loading: controller.loading.value,
                 );
-              }).toList(),
-              onChanged: (String? value) {
-                controller.location.value = value!;
               },
             ),
-          ),
-          // DropdownButton<String>(
-          //   onChanged: (String? newValue) {
-          //     controller.location.value = newValue!;
-          //   },
-          //   items: <String>['Switzerland', 'Other']
-          //       .map<DropdownMenuItem<String>>((String value) {
-          //     return DropdownMenuItem<String>(
-          //       value: value,
-          //       child: Text(value),
-          //     );
-          //   }).toList(),
-          // ),
-          const Spacer(),
-          Obx(
-            () {
-              return DinasonaButton(
-                text: 'Save'.tr,
-                onPressed: controller.save,
-                loading: controller.loading.value,
-              );
-            },
-          ),
-          Gap(getRelativeHeight(80)),
-        ],
+            Gap(getRelativeHeight(80)),
+          ],
+        ),
       ),
     );
   }

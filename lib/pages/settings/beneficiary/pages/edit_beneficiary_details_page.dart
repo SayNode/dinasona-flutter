@@ -151,7 +151,7 @@ class EditBeneficiaryPage
               const Gap(6),
               DinasonaTextField(
                 hintText: 'Location'.tr,
-                controller: controller.loactionController,
+                controller: controller.locationController,
                 textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
                 hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),

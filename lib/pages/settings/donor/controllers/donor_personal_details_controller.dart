@@ -11,8 +11,8 @@ class DonorPersonalDetailsController extends GetxController {
   final UserStateService userStateService = Get.find<UserStateService>();
   final TextEditingController fistNameController = TextEditingController();
   final TextEditingController secondNameController = TextEditingController();
-  final TextEditingController loactionController = TextEditingController();
-
+  final RxString firstName = ''.obs;
+  final RxString lastName = ''.obs;
   RxString location = ''.tr.obs;
 
   @override
@@ -20,11 +20,13 @@ class DonorPersonalDetailsController extends GetxController {
     super.onInit();
     final List<String> nameParts = userStateService.user.value.name.split(' ');
     fistNameController.text = nameParts[0];
+    firstName.value = nameParts[0];
     secondNameController.text = nameParts.length > 1 ? nameParts[1] : '';
+    lastName.value = nameParts.length > 1 ? nameParts[1] : '';
+    location.value = userStateService.user.value.country;
   }
 
   Future<void> save() async {
-    //TODO: fix the backend call
     try {
       loading.value = true;
       await userStateService.updateUserInfo(<String, dynamic>{
