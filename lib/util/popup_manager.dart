@@ -8,6 +8,7 @@ import '../pages/home/widgets/select_need_fields_popup.dart';
 import '../widgets/custom_popup.dart';
 import '../widgets/dialogs/delete_account_dialog.dart';
 import '../widgets/dialogs/logout_dialog.dart';
+import '../widgets/popups/contact_us_popup.dart';
 import '../widgets/popups/draft_popup.dart';
 import '../widgets/popups/publish_popup.dart';
 import '../widgets/popups/story_popup.dart';
@@ -88,6 +89,14 @@ class PopupManager {
   ) async {
     return Get.dialog(
       Walletinfopopup(title: title, description: description),
+    );
+  }
+
+  static Future<void> openContactUsPopup(
+    bool sendingMessageSuccess,
+  ) async {
+    await openCustomPopup<void>(
+      ContactUsPopup(sendingMessageSuccess),
     );
   }
 }
