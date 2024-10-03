@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class BreezBaseService extends GetxService {
   static const EnvironmentType environmentType = EnvironmentType.Production;
@@ -61,7 +60,7 @@ abstract class BreezBaseService extends GetxService {
         seedPhrase,
       );
 
-      final String brrezApiKey = dotenv.env['BREEZ_API_KEY'] ?? '';
+      const String brrezApiKey = String.fromEnvironment('BREEZ_API_KEY');
       final NodeConfig nodeConfig = NodeConfig.greenlight(
         config: GreenlightNodeConfig(
           partnerCredentials: greenlightCredentials,
@@ -176,11 +175,11 @@ abstract class BreezBaseService extends GetxService {
   }
 
   Future<GreenlightCredentials> _loadGreenlightCredentials() async {
-    final String developerKey = dotenv.env['GREENLIGHT_CLIENT_KEY'] ?? '';
+    const String developerKey = String.fromEnvironment('GREENLIGHT_CLIENT_KEY');
     final Uint8List greenlightDeveloperKey = base64.decode(developerKey);
 
-    final String developerCertificate =
-        dotenv.env['GREENLIGHT_CLIENT_CERTIFICATE'] ?? '';
+    const String developerCertificate =
+        String.fromEnvironment('GREENLIGHT_CLIENT_CERTIFICATE');
     final Uint8List greenlightCertificate = base64.decode(developerCertificate);
 
     final GreenlightCredentials partnerCredentials = GreenlightCredentials(

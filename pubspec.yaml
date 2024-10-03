@@ -48,7 +48,6 @@ dependencies:
   auto_size_text_field: ^2.2.4
   share_plus: ^10.0.0
   mobile_scanner: ^5.2.3
-  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +56,6 @@ dev_dependencies:
 
 flutter:
   assets:
-    - .env
     - assets/
     - assets/locale/
     - assets/images/
