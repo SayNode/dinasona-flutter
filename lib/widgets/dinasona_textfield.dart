@@ -1,6 +1,7 @@
 // ignore_for_file: comment_references
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
@@ -35,6 +36,7 @@ class DinasonaTextField extends StatelessWidget {
     this.maxLines = 1,
     this.textStyle,
     this.hintStyle,
+    this.inputFormatters,
   });
 
   /// Error text to display beneath the TextField.
@@ -100,6 +102,8 @@ class DinasonaTextField extends StatelessWidget {
 
   final TextStyle? hintStyle;
 
+  final List<TextInputFormatter>? inputFormatters;
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -157,6 +161,7 @@ class DinasonaTextField extends StatelessWidget {
                   keyboardType: keyboardType,
                   maxLength: maxLength,
                   onFieldSubmitted: onEnter,
+                  inputFormatters: inputFormatters,
                   decoration: InputDecoration(
                     counterStyle: TextStyle(
                       color: theme.shadowed,

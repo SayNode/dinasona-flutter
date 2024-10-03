@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
+import '../create_new_need/create_new_need.dart';
 import 'controller/personal_details_controller.dart';
 
 class PersonalDetailsPage extends GetView<PersonalDetailsController> {
@@ -52,8 +54,8 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                     Obx(
                       () => Container(
                         margin: const EdgeInsets.all(20),
-                        width: getRelativeWidth(100),
-                        height: getRelativeHeight(100),
+                        width: getRelativeWidth(106),
+                        height: getRelativeWidth(106),
                         decoration: BoxDecoration(
                           border: Border.all(color: diasonaTheme.graphite),
                           shape: BoxShape.circle,
@@ -67,6 +69,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                 ),
                         ),
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(1000),
                           onTap: () {
                             controller.pickImage(ImageSource.gallery);
                           },
@@ -97,13 +100,13 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                     Row(
                       children: <Widget>[
                         Expanded(
-                          flex: 5,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
                               border: Border.all(color: diasonaTheme.graphite),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: DropdownButtonFormField<Gender>(
+                              isExpanded: true,
                               value: controller.selectedGender,
                               style: CustomTypography.fromColor(
                                 diasonaTheme.shadowed,
@@ -129,15 +132,22 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
-                                            Text(
-                                              gender.text,
-                                              style: CustomTypography.fromColor(
-                                                gender.name ==
-                                                        controller
-                                                            .selectedGender.name
-                                                    ? diasonaTheme.ferngreen
-                                                    : diasonaTheme.shadowed,
-                                              ).k16Reg,
+                                            Flexible(
+                                              child: AutoSizeText(
+                                                gender.text,
+                                                minFontSize: 9,
+                                                maxFontSize: 16,
+                                                maxLines: 1,
+                                                style:
+                                                    CustomTypography.fromColor(
+                                                  gender.name ==
+                                                          controller
+                                                              .selectedGender
+                                                              .name
+                                                      ? diasonaTheme.ferngreen
+                                                      : diasonaTheme.shadowed,
+                                                ).k16Reg,
+                                              ),
                                             ),
                                             Icon(
                                               gender.icon,
@@ -162,7 +172,6 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          flex: 4,
                           child: Obx(
                             () => TextField(
                               onTap: () => controller.selectDate(context),
@@ -220,7 +229,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
               ),
               SizedBox(height: gap),
               TextButton(
-                onPressed: () => Get.back<void>(),
+                onPressed: () => Get.to<void>(() => const CreateNewNeed()),
                 child: Text(
                   'Skip',
                   style:
