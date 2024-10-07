@@ -21,7 +21,7 @@ enum DonorItem {
       case DonorItem.home:
         return 'Home';
       case DonorItem.donate:
-        return 'Donate';
+        return 'Donation';
       case DonorItem.wallet:
         return 'Wallet';
       case DonorItem.profile:
