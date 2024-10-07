@@ -8,14 +8,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../base/auth_service_base.dart';
 import '../model/auth_response.dart';
-import 'user_state_service.dart';
 
 class AuthService extends AuthServiceBase {
   // Add your custom code here
@@ -66,9 +64,10 @@ class AuthService extends AuthServiceBase {
               'token',
               authResult.accessToken,
             );
-            await Get.find<UserStateService>().fetchUserInfo();
-            await Get.find<UserStateService>().fetchDonorStatistics();
-            await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+            await userStateService.fetchUserInfo();
+            userStateService.user.value.isDonor
+                ? await userStateService.fetchDonorStatistics()
+                : await userStateService.fetchBeneficiaryStatistics();
 
             return authResult;
           } catch (error) {
@@ -150,9 +149,10 @@ class AuthService extends AuthServiceBase {
           /// Save the token
           apiService.authenticationToken = authResult.accessToken;
           await storageService.writeString('token', authResult.accessToken);
-          await Get.find<UserStateService>().fetchUserInfo();
-          await Get.find<UserStateService>().fetchDonorStatistics();
-          await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+          await userStateService.fetchUserInfo();
+          userStateService.user.value.isDonor
+              ? await userStateService.fetchDonorStatistics()
+              : await userStateService.fetchBeneficiaryStatistics();
 
           return authResult;
         } catch (error) {
