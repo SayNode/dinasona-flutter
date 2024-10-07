@@ -19,13 +19,13 @@ import 'firebase_options.dart';
 import 'model/message.dart';
 import 'pages/choose_path_page.dart';
 import 'pages/error/error_page.dart';
-import 'pages/lost_connection/lost_connection_page.dart';
 import 'service/auth_service.dart';
 import 'service/localization_controller.dart';
+import 'service/logger_service.dart';
 import 'service/main_bindings.dart';
-import 'service/network_service.dart';
 import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
+import 'service/user_state_service.dart';
 import 'util/util.dart';
 
 bool isFirstRun = false;
@@ -36,69 +36,56 @@ Future<void> handleError(
   Iterable<Object> information = const <Object>[],
   bool async = false,
 }) async {
-  // Failed host lookup
-  if (error.toString().contains('Failed host lookup')) {
-    Get.put(NetworkService()).onInternetLostPage.value = true;
-    await Get.to(() => const LostConnectionPage());
-    if (error.toString().contains('No host specified in URI file:///')) {
-      return;
+  final GetMaterialController currentController = Get.rootController;
+
+  final String previousRoute = currentController.routing.previous;
+
+  if (Get.find<UserStateService>().user.value.id != -1) {
+    await FirebaseCrashlytics.instance.setUserIdentifier(
+      Get.find<UserStateService>().user.value.id.toString(),
+    );
+  }
+
+  if (fatal) {
+    // If you see fatal on the crashlytics, it was registered here
+    await FirebaseCrashlytics.instance.recordError(
+      error,
+      stack,
+      fatal: true,
+      information: <Object>[
+        'Current Route: ${Get.currentRoute}',
+        'Previous Route:  $previousRoute',
+        'Asynchronous: $async',
+        'User Id: ${Get.find<UserStateService>().user.value.id}',
+        ...information,
+      ],
+    );
+
+    if (getMaterialAppCalled) {
+      Get.find<LoggerService>().log(
+        'Fatal error caught by main zone',
+        stackTrace: stack,
+        error: error,
+      );
+      unawaited(Get.to<void>(() => ErrorPage(error: error)));
+    } else {
+      // Try to exit app:
+      await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     }
-
-    // Check if the application is running on dev mode
-    final bool devMode = bool.tryParse(
-          const String.fromEnvironment(
-            'DEV_MODE',
-          ),
-        ) ??
-        false;
-
-    final GetMaterialController currentController = Get.rootController;
-
-    final String previousRoute = currentController.routing.previous;
-
-    // if (Get.put(UserStateService()).user.value.id != -1) {
-    //   FirebaseCrashlytics.instance.setUserIdentifier(
-    //       Get.put(UserStateService()).user.value.id.toString());
-    // }
-
-    if (!devMode) {
-      if (fatal) {
-        // If you see fatal on the crashlytics, it was registered here
-        await FirebaseCrashlytics.instance.recordError(
-          error,
-          stack,
-          fatal: true,
-          information: <Object>[
-            'Current Route: ${Get.currentRoute}',
-            'Previous Route:  $previousRoute',
-            'Asynchronous: $async',
-            // "User Id: ${Get.put(UserStateService()).user.value.id.toString()}",
-            ...information,
-          ],
-        );
-
-        if (getMaterialAppCalled) {
-          await Get.to(() => ErrorPage(error: error));
-        } else {
-          // Try to exit app:
-          // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        }
-      } else {
-        // If you see non fatal on the crashlytics, it was registered here
-        await FirebaseCrashlytics.instance.recordError(
-          error,
-          stack,
-          reason: 'a non-fatal error, this will be ignored',
-          information: <Object>[
-            'Current Route: ${Get.currentRoute}',
-            'Previous Route:  $previousRoute',
-            'Asynchronous: $async',
-            // "User Id: ${Get.put(UserStateService()).user.value.id.toString()}",
-            ...information,
-          ],
-        );
-      }
-    }
+  } else {
+    // If you see non fatal on the crashlytics, it was registered here
+    await FirebaseCrashlytics.instance.recordError(
+      error,
+      stack,
+      reason: 'a non-fatal error, this will be ignored',
+      information: <Object>[
+        'Current Route: ${Get.currentRoute}',
+        'Previous Route:  $previousRoute',
+        'Asynchronous: $async',
+        'User Id: ${Get.find<UserStateService>().user.value.id}',
+        ...information,
+      ],
+    );
   }
 }
 
