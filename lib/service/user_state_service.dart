@@ -92,14 +92,12 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        print('test1: ${beneficiaryStatistics.value}');
         beneficiaryStatistics.value = BeneficiaryStatistics.fromJson(
           jsonEncode(
             (response.data as Map<String, dynamic>)['result']
                 as Map<String, dynamic>,
           ),
         );
-        print('test2: ${beneficiaryStatistics.value}');
       } else {
         logger.log(
           'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',

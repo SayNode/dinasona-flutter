@@ -93,6 +93,9 @@ class SignupController extends GetxController {
   }
 
   Future<void> proceed(bool isBeneficiary) async {
+    await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
+      'is_donor': !isBeneficiary,
+    });
     showPopup(isBeneficiary: isBeneficiary);
     await Get.to(
       () => isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
+import '../../../service/user_state_service.dart';
 import '../../../util/mock_data.dart';
 import '../../../util/popup_manager.dart';
 
@@ -18,6 +19,7 @@ class BeneficiaryHomePageController extends GetxController {
   @override
   void onInit() {
     needs.addAll(MockData.needs);
+    // TODO JULIEN
     filterList();
     super.onInit();
   }
@@ -32,6 +34,18 @@ class BeneficiaryHomePageController extends GetxController {
         currentTab.value = NeedsTab.past;
       case 3:
         currentTab.value = NeedsTab.draft;
+    }
+  }
+
+  String getGreetingMessage() {
+    final int hour = DateTime.now().hour;
+
+    if (hour >= 0 && hour < 12) {
+      return 'Good morning'.tr;
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good afternoon'.tr;
+    } else {
+      return 'Good evening'.tr;
     }
   }
 
