@@ -9,6 +9,7 @@ import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../root/beneficiary_root_page.dart';
 import '../../root/donor_root_page.dart';
+import '../forgot_password/forgot_password.dart';
 
 class LoginController extends GetxController {
   final SecureStorageService secureStorageService =
@@ -40,6 +41,11 @@ class LoginController extends GetxController {
 
   void setShowPassword() {
     showPassword.value = !showPassword.value;
+  }
+
+  Future<void> forgotPassword() async {
+    // TODO Julien
+    await Get.to<void>(() => const ForgotPassword());
   }
 
   Future<void> loginSubmit(bool isBeneficiary) async {

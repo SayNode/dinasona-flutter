@@ -1,0 +1,109 @@
+// ignore_for_file: inference_failure_on_function_invocation
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../model/auth_response.dart';
+import '../../../../service/auth_service.dart';
+import '../../../../widgets/password_updated_page.dart';
+import '../enter_new_password_page.dart';
+import '../password_reset_code_page.dart';
+import '../reset_password_page.dart';
+
+class ForgotPasswordController extends GetxController {
+  final TextEditingController emailController = TextEditingController();
+  final RxString email = ''.obs;
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final AuthService authService = Get.find<AuthService>();
+  RxBool matches = true.obs;
+  RxBool hasError = false.obs;
+  RxString createPasswordError = ''.obs;
+  RxString unknownEmailError = ''.obs;
+  RxBool emailIsSent = false.obs;
+  RxBool codeIsInValid = false.obs;
+
+  final RxBool isValid = false.obs;
+
+  void isEmail() {
+    email.value = emailController.text;
+    if (emailController.text.isEmail) {
+      isValid.value = true;
+    } else {
+      isValid.value = false;
+    }
+  }
+
+  Future<void> onSubmit() async {
+    emailIsSent.value = false;
+
+    unawaited(
+      Get.to<Widget>(
+        () => ResetPasswordPage(
+          email: emailController.text,
+          onTap: () => Get.to<void>(const PasswordResetCodePage()),
+        ),
+      ),
+    );
+
+    final AuthResponse authResponse =
+        await authService.resetPassword(emailController.text);
+    emailIsSent.value = authResponse.success;
+
+    if (emailIsSent.value) {
+      unknownEmailError.value = '';
+      Future<void>.delayed(const Duration(milliseconds: 2000), () {
+        Get.to<void>(() => const PasswordResetCodePage());
+      });
+    } else {
+      // ignore: always_specify_types
+      authResponse.result.forEach((String key, value) {
+        unknownEmailError.value = value.toString();
+      });
+    }
+  }
+
+  Future<void> validateCode(String recoveryCode) async {
+    codeIsInValid.value = !(await authService.verifyCode(recoveryCode)).success;
+
+    if (!codeIsInValid.value) {
+      unawaited(Get.to<void>(const EnterNewPasswordPage()));
+    }
+  }
+
+  void updateMatch() {
+    if (newPasswordController.text.compareTo(confirmPasswordController.text) ==
+            0 &&
+        confirmPasswordController.text.isNotEmpty) {
+      matches.value = true;
+      createPasswordError.value = '';
+    } else if (matches.value == true) {
+      createPasswordError.value = 'Passwords do not match'.tr;
+      matches.value = false;
+    }
+  }
+
+  Future<void> onPasswordChangeSubmit() async {
+    createPasswordError.value = '';
+
+    final AuthResponse result = await authService.changePasswordAfterReset(
+      newPasswordController.text,
+      confirmPasswordController.text,
+    );
+
+    if (result.success) {
+      unawaited(Get.offAll<void>(const PasswordUpdatedPage()));
+    } else {
+      // ignore: always_specify_types
+      /* result.result.forEach((String key, value) {
+        // TODO check this Julien
+        // ignore: avoid_dynamic_calls
+        createPasswordError.value = value[0].toString();
+      }); */
+      print('result: $result');
+    }
+  }
+}
