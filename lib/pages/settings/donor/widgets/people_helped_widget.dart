@@ -5,16 +5,15 @@ import 'package:get/get.dart';
 import '../../../../service/theme_service.dart';
 import '../../../../theme/theme.dart';
 import '../../../../theme/typography.dart';
+import '../../../wallet/controllers/wallet_page_controller.dart';
 
 class PeopleHelpedWidget extends StatelessWidget {
   const PeopleHelpedWidget({
     required this.peopleHelped,
-    required this.amountDonated,
     required this.countries,
     super.key,
   });
   final int peopleHelped;
-  final double amountDonated;
   final int countries;
 
   @override
@@ -36,9 +35,11 @@ class PeopleHelpedWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text(
-                '\$ $amountDonated',
-                style: CustomTypography.fromColor(theme.moonstone).k36Bold,
+              Obx(
+                () => Text(
+                  '\$ ${Get.find<WalletPageController>().amountSentInUserCurrency.value}',
+                  style: CustomTypography.fromColor(theme.moonstone).k36Bold,
+                ),
               ),
               Text(
                 'Your generosity fuels positive change',

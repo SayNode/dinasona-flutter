@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../service/theme_service.dart';
 import '../../../../theme/theme.dart';
 import '../../../../theme/typography.dart';
+import '../../../wallet/controllers/wallet_page_controller.dart';
 
 class HelpedRecievedWidget extends StatelessWidget {
   const HelpedRecievedWidget({
@@ -36,9 +37,11 @@ class HelpedRecievedWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text(
-                '\$ $amountDonated',
-                style: CustomTypography.fromColor(theme.moonstone).k36Bold,
+              Obx(
+                () => Text(
+                  '\$ ${double.parse(Get.find<WalletPageController>().balanceInUSD.value.toStringAsFixed(3))}',
+                  style: CustomTypography.fromColor(theme.moonstone).k36Bold,
+                ),
               ),
               Text(
                 'wallet balance',
