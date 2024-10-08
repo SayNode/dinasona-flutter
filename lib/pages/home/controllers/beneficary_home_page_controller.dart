@@ -20,6 +20,9 @@ class BeneficiaryHomePageController extends GetxController {
   void onInit() {
     needs.addAll(MockData.needs);
     // TODO JULIEN
+    Get.find<UserStateService>().fetchUserInfo();
+    print(Get.find<UserStateService>().user.value);
+
     filterList();
     super.onInit();
   }

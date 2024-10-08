@@ -1,7 +1,11 @@
 import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
+import '../../../pages/error/error_page.dart';
+import '../../../pages/root/beneficiary_root_page.dart';
+import '../../../pages/root/donor_root_page.dart';
 import '../../../service/auth_service.dart';
+import '../../../service/user_state_service.dart';
 
 class GoogleAppleSignInController {
   RxBool loadingGoogle = false.obs;
@@ -10,22 +14,36 @@ class GoogleAppleSignInController {
 
   final AuthService authService = Get.put(AuthService());
 
-  Future<String> googleSignInPressed() async {
+  Future<String> googleSignInPressed(
+    bool isBeneficiary,
+    bool isRegistration,
+  ) async {
     loadingGoogle.value = true;
     error.value = '';
     final AuthResponse loginResult = await authService.googleSignIn();
     if (loginResult.success) {
-      // TODO - Handle successful login
-      // Google sign in should be working fine in the frontend - backend is not ready at the moment of writing this
-      // The google sign in is only working in dev mode because the release signature hasn't been created yet
+      if (isRegistration) {
+        await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
+          'is_donor': !isBeneficiary,
+        });
+      }
+
+      await Get.to(
+        () => Get.find<UserStateService>().user.value.isDonor
+            ? const DonorRootPage()
+            : const BeneficiaryRootPage(),
+      );
     } else {
       //TODO: Handle error
+      await Get.to(() => const ErrorPage(error: 'Google sign in failed'));
     }
     loadingGoogle.value = false;
     return error.value;
   }
 
-  Future<String> appleSignInPressed({
+  Future<String> appleSignInPressed(
+    bool isBeneficiary,
+    bool isRegistration, {
     String? authorizationCode,
     String? identityToken,
   }) async {
@@ -36,11 +54,20 @@ class GoogleAppleSignInController {
       identityToken: identityToken,
     );
     if (loginResult.success) {
-      // TODO - Handle successful login
-      // Apple sign in needs the client ID from the Appstore to work -> The app is not yet initialized in the store
-      // The backend is not ready at the time of writing this
+      if (isRegistration) {
+        await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
+          'is_donor': !isBeneficiary,
+        });
+      }
+
+      await Get.to(
+        () => Get.find<UserStateService>().user.value.isDonor
+            ? const DonorRootPage()
+            : const BeneficiaryRootPage(),
+      );
     } else {
       //TODO: Handle error
+      await Get.to(() => const ErrorPage(error: 'Apple sign in failed'));
     }
     loadingApple.value = false;
     return error.value;

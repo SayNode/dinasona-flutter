@@ -32,15 +32,12 @@ class AuthService extends AuthServiceBase {
     try {
       // Clear cache
       await _googleSignIn.currentUser?.clearAuthCache();
-
       // Try to login silently
       final GoogleSignInAccount? result =
           await _googleSignIn.signInSilently() ?? await _googleSignIn.signIn();
-
       if (result != null) {
         final GoogleSignInAuthentication googleKey =
             await result.authentication;
-
         // Login in backend
         final http.Response response = await apiService.post(
           'auth/google/',
@@ -55,7 +52,6 @@ class AuthService extends AuthServiceBase {
         final AuthResponse authResult = AuthResponse.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>,
         );
-
         if (response.statusCode == 200) {
           try {
             /// Save the token
@@ -68,7 +64,6 @@ class AuthService extends AuthServiceBase {
             userStateService.user.value.isDonor
                 ? await userStateService.fetchDonorStatistics()
                 : await userStateService.fetchBeneficiaryStatistics();
-
             return authResult;
           } catch (error) {
             await disconnectProviders();
