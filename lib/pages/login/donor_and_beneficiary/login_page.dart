@@ -165,13 +165,16 @@ class LoginPage extends GetView<LoginController> {
                                 : const SizedBox(),
                           ),
                           SizedBox(height: getRelativeHeight(20)),
-                          DinasonaButton(
-                            text: isBeneficiary ? 'Continue'.tr : 'Sign in'.tr,
-                            loading: controller.loading.value,
-                            onPressed: () =>
-                                controller.loginSubmit(isBeneficiary),
-                            color: dinasonaTheme.ferngreen,
-                            locked: !controller.isSignInButtonActive.value,
+                          Obx(
+                            () => DinasonaButton(
+                              text:
+                                  isBeneficiary ? 'Continue'.tr : 'Sign in'.tr,
+                              loading: controller.loading.value,
+                              onPressed: () =>
+                                  controller.loginSubmit(isBeneficiary),
+                              color: dinasonaTheme.ferngreen,
+                              locked: !controller.isSignInButtonActive.value,
+                            ),
                           ),
                         ],
                       ),

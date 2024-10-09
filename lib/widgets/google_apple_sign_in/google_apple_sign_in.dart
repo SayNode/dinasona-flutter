@@ -43,16 +43,19 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
                 'Continue with Google'.tr,
                 style: CustomTypography.fromColor(theme.shadowed).k16Reg,
               ),
-              if (controller.loadingGoogle.value)
-                Container(
-                  margin: EdgeInsets.only(left: getRelativeWidth(20)),
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: theme.graphite,
-                  ),
-                ),
+              Obx(
+                () => controller.loadingGoogle.value
+                    ? Container(
+                        margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.graphite,
+                        ),
+                      )
+                    : Container(),
+              ),
             ],
           ),
         ),
@@ -77,16 +80,19 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
                 'Continue with Apple'.tr,
                 style: CustomTypography.fromColor(theme.shadowed).k16Reg,
               ),
-              if (controller.loadingApple.value)
-                Container(
-                  margin: EdgeInsets.only(left: getRelativeWidth(20)),
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: theme.graphite,
-                  ),
-                ),
+              Obx(
+                () => controller.loadingApple.value
+                    ? Container(
+                        margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.graphite,
+                        ),
+                      )
+                    : Container(),
+              ),
             ],
           ),
         ),

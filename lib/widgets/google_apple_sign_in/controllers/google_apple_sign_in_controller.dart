@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
@@ -28,14 +30,16 @@ class GoogleAppleSignInController {
         });
       }
 
-      await Get.to(
-        () => Get.find<UserStateService>().user.value.isDonor
-            ? const DonorRootPage()
-            : const BeneficiaryRootPage(),
+      unawaited(
+        Get.to(
+          () => Get.find<UserStateService>().user.value.isDonor
+              ? const DonorRootPage()
+              : const BeneficiaryRootPage(),
+        ),
       );
     } else {
       //TODO: Handle error
-      await Get.to(() => const ErrorPage(error: 'Google sign in failed'));
+      unawaited(Get.to(() => const ErrorPage(error: 'Google sign in failed')));
     }
     loadingGoogle.value = false;
     return error.value;
@@ -60,14 +64,18 @@ class GoogleAppleSignInController {
         });
       }
 
-      await Get.to(
-        () => Get.find<UserStateService>().user.value.isDonor
-            ? const DonorRootPage()
-            : const BeneficiaryRootPage(),
+      unawaited(
+        Get.to(
+          () => Get.find<UserStateService>().user.value.isDonor
+              ? const DonorRootPage()
+              : const BeneficiaryRootPage(),
+        ),
       );
     } else {
       //TODO: Handle error
-      await Get.to(() => const ErrorPage(error: 'Apple sign in failed'));
+      unawaited(
+        Get.to(() => const ErrorPage(error: 'Apple sign in failed')),
+      );
     }
     loadingApple.value = false;
     return error.value;
