@@ -71,6 +71,7 @@ class UserStateService extends GetxService {
       );
       if (response.statusCode == 200) {
         print('test: ${response.data}');
+        print('test2: ${response.data[0]}');
         /* userNeeds.value = DonorStatistics.fromJson(
           jsonEncode(
             (response.data as Map<String, dynamic>)['result']

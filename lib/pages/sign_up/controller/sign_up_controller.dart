@@ -97,6 +97,8 @@ class SignupController extends GetxController {
     await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
       'is_donor': !isBeneficiary,
     });
+    password.clear();
+    email.clear();
     showPopup(isBeneficiary: isBeneficiary);
     unawaited(
       Get.to(
