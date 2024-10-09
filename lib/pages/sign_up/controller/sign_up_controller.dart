@@ -97,8 +97,11 @@ class SignupController extends GetxController {
       'is_donor': !isBeneficiary,
     });
     showPopup(isBeneficiary: isBeneficiary);
-    await Get.to(
-      () => isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
+    unawaited(
+      Get.to(
+        () =>
+            isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
+      ),
     );
   }
 }
