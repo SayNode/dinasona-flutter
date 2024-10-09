@@ -65,10 +65,7 @@ abstract class AuthServiceBase extends GetxService {
         log: true,
       );
 
-      await userStateService.fetchUserInfo();
-      userStateService.user.value.isDonor
-          ? await userStateService.fetchDonorStatistics()
-          : await userStateService.fetchBeneficiaryStatistics();
+      await userStateService.init();
 
       final AuthResponse authResult = AuthResponse.fromJson(
         jsonDecode(response.body) as Map<String, dynamic>,
@@ -104,10 +101,7 @@ abstract class AuthServiceBase extends GetxService {
           'token',
           authResult.accessToken,
         );
-        await userStateService.fetchUserInfo();
-        userStateService.user.value.isDonor
-            ? await userStateService.fetchDonorStatistics()
-            : await userStateService.fetchBeneficiaryStatistics();
+        await userStateService.init();
 
         // Disconnect other providers
         await disconnectProviders();
@@ -207,10 +201,7 @@ abstract class AuthServiceBase extends GetxService {
           'token',
           authResult.accessToken,
         );
-        await userStateService.fetchUserInfo();
-        userStateService.user.value.isDonor
-            ? await userStateService.fetchDonorStatistics()
-            : await userStateService.fetchBeneficiaryStatistics();
+        await userStateService.init();
 
         // Disconnect other providers
         await disconnectProviders();

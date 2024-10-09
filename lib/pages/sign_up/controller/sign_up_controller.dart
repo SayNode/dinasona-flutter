@@ -93,6 +93,7 @@ class SignupController extends GetxController {
   }
 
   Future<void> proceed(bool isBeneficiary) async {
+    await Get.find<UserStateService>().init();
     await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
       'is_donor': !isBeneficiary,
     });

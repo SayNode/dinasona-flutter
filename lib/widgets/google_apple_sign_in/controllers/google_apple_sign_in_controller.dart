@@ -24,6 +24,7 @@ class GoogleAppleSignInController {
     error.value = '';
     final AuthResponse loginResult = await authService.googleSignIn();
     if (loginResult.success) {
+      await Get.find<UserStateService>().init();
       if (isRegistration) {
         await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
           'is_donor': !isBeneficiary,
