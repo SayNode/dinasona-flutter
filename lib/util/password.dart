@@ -39,9 +39,8 @@ int determinePasswordStrength(String password) {
   int strength = 0;
 
   strength += password.contains(RegExp('[A-Z]')) ? 1 : 0;
-  strength += password.contains(RegExp('[0-9]')) ? 1 : 0;
   strength += password.contains(RegExp('[a-z]')) ? 1 : 0;
-  strength += password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]')) ? 1 : 0;
+  strength += password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_]')) ? 1 : 0;
   strength += password.length >= 8 ? 10 : 0;
   if (strength < 12) {
     return 1;
