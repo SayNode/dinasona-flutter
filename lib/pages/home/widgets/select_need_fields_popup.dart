@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
+import '../../../theme/color.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
@@ -52,12 +53,37 @@ class SelectAreasOfInterestPopup
               ),
             ),
             Gap(getRelativeHeight(32)),
-            Obx(
-              () => DinasonaButton(
-                text: 'Explore'.tr,
-                onPressed: controller.close,
-                locked: controller.selectedAreasOfInterest.isEmpty,
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: DinasonaButton(
+                    expand: false,
+                    text: 'Reset'.tr,
+                    customElevation: 0,
+                    onPressed: Get.back,
+                    padding: EdgeInsets.all(getRelativeHeight(10)),
+                    color: LightColor.moonstone,
+                    textColor: LightColor.graphite,
+                    borderColor: LightColor.silvershine,
+                    borderSize: 1,
+                  ),
+                ),
+                const Gap(10),
+                Expanded(
+                  child: Obx(
+                    () => DinasonaButton(
+                      expand: false,
+                      customElevation: 0,
+                      padding: EdgeInsets.all(getRelativeHeight(10)),
+                      text: 'See MOCK needs'.tr,
+                      color: LightColor.amberglow,
+                      onPressed: controller.close,
+                      locked: controller.selectedAreasOfInterest.isEmpty,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

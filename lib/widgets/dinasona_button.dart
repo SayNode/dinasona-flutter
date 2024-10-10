@@ -19,6 +19,7 @@ class DinasonaButton extends StatelessWidget {
     this.showBackIcon = false,
     this.trailingWidget,
     this.fontSize,
+    this.borderSize,
     this.loading = false,
     this.locked = false,
     this.borderColor = Colors.transparent,
@@ -36,6 +37,7 @@ class DinasonaButton extends StatelessWidget {
   final bool showBackIcon;
   final Widget? trailingWidget;
   final double? fontSize;
+  final double? borderSize;
   final bool loading;
   final bool locked;
   final Color borderColor;
@@ -60,7 +62,7 @@ class DinasonaButton extends StatelessWidget {
           side: borderColor != Colors.transparent
               ? BorderSide(
                   color: locked ? theme.graphite : borderColor,
-                  width: 3,
+                  width: borderSize ?? 3,
                 )
               : null,
         ),

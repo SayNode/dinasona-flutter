@@ -58,22 +58,15 @@ class NeedCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(128),
                             child: Stack(
                               children: <Widget>[
-                                Image.network(
-                                  need.beneficiary.photoUrl,
-                                  height: getRelativeHeight(52),
-                                  width: getRelativeHeight(52),
-                                  errorBuilder: (
-                                    BuildContext context,
-                                    Object error,
-                                    StackTrace? stackTrace,
-                                  ) =>
-                                      Icon(
-                                    Icons.person,
-                                    size: getRelativeHeight(52),
-                                    color: theme.graphite,
+                                if (need.beneficiary.photoUrl == null)
+                                  const Icon(Icons.person)
+                                else
+                                  Image.network(
+                                    need.beneficiary.photoUrl!,
+                                    height: getRelativeHeight(52),
+                                    width: getRelativeHeight(52),
+                                    fit: BoxFit.cover,
                                   ),
-                                  fit: BoxFit.cover,
-                                ),
                               ],
                             ),
                           ),

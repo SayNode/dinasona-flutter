@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../model/need.dart';
 import '../../../service/need_service.dart';
 import '../../../util/popup_manager.dart';
+import '../../see_all/see_all_page.dart';
 import '../need_search_page.dart';
 
 class DonorHomePageController extends GetxController {
@@ -37,5 +38,12 @@ class DonorHomePageController extends GetxController {
     }
   }
 
-  Future<void> seeAll(AreaOfInterest? field) async {}
+  Future<void> seeAll(AreaOfInterest field, List<Need> donationsInField) async {
+    await Get.to<void>(
+      () => SeeAllPage(
+        field: field,
+        donationsInField: donationsInField,
+      ),
+    );
+  }
 }
