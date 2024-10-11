@@ -25,6 +25,7 @@ class UserStateService extends GetxService {
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
+  String? notificationToken;
   Rx<DonorStatistics> donorStatistics = DonorStatistics(
     totalAmountDonated: 0,
     totalCountriesDonatedTo: 0,
@@ -104,6 +105,13 @@ class UserStateService extends GetxService {
     } catch (e) {
       logger.log('Error while fetching donor statistics: $e');
     }
+  }
+
+  Future<void> handleUserOnLogin() async {
+    unawaited(updatePushNotificationToken());
+    await Get.find<UserStateService>().fetchUserInfo();
+    await Get.find<UserStateService>().fetchDonorStatistics();
+    await Get.find<UserStateService>().fetchBeneficiaryStatistics();
   }
 
   Future<void> fetchUserInfo() async {
@@ -209,6 +217,27 @@ class UserStateService extends GetxService {
     } catch (e) {
       logger.log('Error while updating avatar: $e');
       return false;
+    }
+  }
+
+  Future<bool> updatePushNotificationToken() async {
+    logger.log('AuthService - starting update notification token');
+    final String url =
+        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
+    final http.Response response = await apiService.patch(
+      url,
+      contentType: 'application/json',
+      body: <String, dynamic>{
+        'notification_token': notificationToken,
+      },
+    );
+    logger.log('AuthService - got response');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception(
+        'AuthService - error while updating Notification Token with status code ${response.body}',
+      );
     }
   }
 }

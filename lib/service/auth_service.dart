@@ -66,9 +66,7 @@ class AuthService extends AuthServiceBase {
               'token',
               authResult.accessToken,
             );
-            await Get.find<UserStateService>().fetchUserInfo();
-            await Get.find<UserStateService>().fetchDonorStatistics();
-            await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+            await Get.find<UserStateService>().handleUserOnLogin();
 
             return authResult;
           } catch (error) {
@@ -150,9 +148,7 @@ class AuthService extends AuthServiceBase {
           /// Save the token
           apiService.authenticationToken = authResult.accessToken;
           await storageService.writeString('token', authResult.accessToken);
-          await Get.find<UserStateService>().fetchUserInfo();
-          await Get.find<UserStateService>().fetchDonorStatistics();
-          await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+          await Get.find<UserStateService>().handleUserOnLogin();
 
           return authResult;
         } catch (error) {
