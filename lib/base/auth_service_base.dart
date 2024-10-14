@@ -259,11 +259,12 @@ abstract class AuthServiceBase extends GetxService {
           final Map<String, dynamic> userMap =
               jsonDecode(response.body) as Map<String, dynamic>;
 
-          print('result: verify: $userMap');
-
           /// save the verication token and uid
-          verificationToken = userMap['token'] as String;
-          verificationUid = userMap['code'] as String;
+          // ignore: avoid_dynamic_calls
+          verificationToken = userMap['result']['token'] as String;
+          // ignore: avoid_dynamic_calls
+          verificationUid = userMap['result']['uid'] as String;
+
           logger.log(
             'AuthService - verification Token and UID: $verificationUid $verificationToken',
           );
@@ -320,7 +321,6 @@ abstract class AuthServiceBase extends GetxService {
     String password2,
   ) async {
     try {
-      print('result: $verificationUid &&& $verificationToken');
       final http.Response response = await apiService.post(
         '/auth/password/reset/confirm/',
         contentType: 'application/json',

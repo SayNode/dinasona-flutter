@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
@@ -40,15 +41,16 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
               children: <Widget>[
                 Gap(getRelativeHeight(200)),
                 Obx(
-                  () => Text(
+                  () => AutoSizeText(
                     controller.emailIsSent.value
                         ? 'Email is sent'.tr
                         : controller.unknownEmailError.value.isEmpty
                             ? 'Email is being sent'.tr
                             : 'An error occured'.tr,
                     textAlign: TextAlign.center,
+                    maxLines: 2,
                     style: CustomTypography.fromColor(
-                      theme.graphite,
+                      theme.shadowed,
                     ).k36Bold,
                   ),
                 ),
@@ -58,7 +60,7 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       style: CustomTypography.fromColor(
-                        theme.graphite,
+                        theme.shadowed,
                       ).k16Reg,
                       children: <InlineSpan>[
                         TextSpan(
@@ -73,8 +75,8 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
                           TextSpan(
                             text: '$email ',
                             style: CustomTypography.fromColor(
-                              theme.silvershine,
-                            ).k16Reg,
+                              theme.shadowed,
+                            ).k16SemiBold,
                           ),
                       ],
                     ),
@@ -97,7 +99,7 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
                   () => !controller.emailIsSent.value &&
                           controller.unknownEmailError.isEmpty
                       ? SpinKitCircle(
-                          color: theme.silvershine,
+                          color: theme.ferngreen,
                           size: getRelativeWidth(180),
                         )
                       : Container(),

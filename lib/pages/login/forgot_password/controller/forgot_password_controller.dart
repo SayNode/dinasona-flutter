@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../../../model/auth_response.dart';
 import '../../../../service/auth_service.dart';
+import '../../../../util/password.dart';
 import '../../../../widgets/password_updated_page.dart';
 import '../enter_new_password_page.dart';
 import '../password_reset_code_page.dart';
@@ -18,8 +19,10 @@ class ForgotPasswordController extends GetxController {
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final TextEditingController codeController = TextEditingController();
   final AuthService authService = Get.find<AuthService>();
   RxBool matches = true.obs;
+  RxBool isStrong = false.obs;
   RxBool hasError = false.obs;
   RxString createPasswordError = ''.obs;
   RxString unknownEmailError = ''.obs;
@@ -79,10 +82,18 @@ class ForgotPasswordController extends GetxController {
             0 &&
         confirmPasswordController.text.isNotEmpty) {
       matches.value = true;
-      createPasswordError.value = '';
+
+      if (determinePasswordStrength(newPasswordController.text) >= 3) {
+        createPasswordError.value = '';
+        isStrong.value = true;
+      } else {
+        createPasswordError.value = 'Password is too weak'.tr;
+        isStrong.value = false;
+      }
     } else if (matches.value == true) {
       createPasswordError.value = 'Passwords do not match'.tr;
       matches.value = false;
+      isStrong.value = true;
     }
   }
 
@@ -98,12 +109,10 @@ class ForgotPasswordController extends GetxController {
       unawaited(Get.offAll<void>(const PasswordUpdatedPage()));
     } else {
       // ignore: always_specify_types
-      /* result.result.forEach((String key, value) {
-        // TODO check this Julien
+      result.result.forEach((String key, value) {
         // ignore: avoid_dynamic_calls
         createPasswordError.value = value[0].toString();
-      }); */
-      print('result: $result');
+      });
     }
   }
 }

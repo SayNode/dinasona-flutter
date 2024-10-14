@@ -10,6 +10,7 @@ import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
+import '../../../widgets/header_subheader.dart';
 import 'controller/forgot_password_controller.dart';
 import '../../../theme/typography.dart';
 
@@ -31,12 +32,12 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
           ),
           child: Column(
             children: <Widget>[
-              /* HeaderAndSubHeader(
+              HeaderAndSubHeader(
                 header: 'Forgot Password?'.tr,
                 subHeader:
                     'Don’t worry! It happens. Please enter the email associated with your account.'
                         .tr,
-              ), */
+              ),
               const Gap(50),
               Obx(
                 () => DinasonaTextField(

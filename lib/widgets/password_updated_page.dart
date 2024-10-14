@@ -6,6 +6,7 @@ import '../pages/login/donor_and_beneficiary/login_page.dart';
 import '../util/util.dart';
 import 'custom_scaffold.dart';
 import 'dinasona_button.dart';
+import 'header_subheader.dart';
 
 class PasswordUpdatedPage extends StatelessWidget {
   const PasswordUpdatedPage({super.key});
@@ -22,13 +23,13 @@ class PasswordUpdatedPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Gap(getRelativeHeight(150)),
-              /* HeaderAndSubHeader(
+              HeaderAndSubHeader(
                 isCentered: true,
                 header: 'Password successfully updated'.tr,
                 subHeader:
                     "You're all set! Your account is now secured with a new password"
                         .tr,
-              ), */
+              ),
               const Spacer(),
               DinasonaButton(
                 text: 'Log in'.tr,

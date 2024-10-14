@@ -9,6 +9,7 @@ import '../../../util/util.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
+import '../../../widgets/header_subheader.dart';
 import 'controller/forgot_password_controller.dart';
 
 class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
@@ -27,12 +28,12 @@ class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
         child: Center(
           child: Column(
             children: <Widget>[
-              /* HeaderAndSubHeader(
+              HeaderAndSubHeader(
                 header: 'Create a new password'.tr,
                 subHeader:
                     'Choose a strong and secure password to keep your account safe'
                         .tr,
-              ), */
+              ),
               Gap(getRelativeHeight(70)),
               DinasonaTextField(
                 //title: 'New password'.tr,
@@ -66,7 +67,8 @@ class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
                 () => DinasonaButton(
                   text: 'Change password'.tr,
                   onPressed: () => controller.onPasswordChangeSubmit(),
-                  locked: !controller.matches.value,
+                  locked:
+                      !controller.matches.value || !controller.isStrong.value,
                 ),
               ),
               Gap(getRelativeHeight(30)),

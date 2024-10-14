@@ -7,6 +7,7 @@ import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/header_subheader.dart';
 import 'controller/forgot_password_controller.dart';
 
 class PasswordResetCodePage extends GetView<ForgotPasswordController> {
@@ -41,21 +42,30 @@ class PasswordResetCodePage extends GetView<ForgotPasswordController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            /* HeaderAndSubHeader(
+            HeaderAndSubHeader(
               header: 'Password recovery code'.tr,
               subHeader:
                   'Please enter the code you received on your registered email address to reset your password.'
                       .tr,
-            ), */
-            const Text('ksdjfiskdjf'),
+            ),
             const Gap(30),
             Center(
               child: Column(
                 children: <Widget>[
                   Pinput(
+                    controller: controller.codeController,
                     defaultPinTheme: defaultPinTheme,
                     focusedPinTheme: focusedPinTheme,
+                    textCapitalization: TextCapitalization.characters,
                     keyboardType: TextInputType.text,
+                    onChanged: (String value) {
+                      controller.codeController.value = TextEditingValue(
+                        text: value.toUpperCase(),
+                        selection: TextSelection.fromPosition(
+                          TextPosition(offset: value.length),
+                        ),
+                      );
+                    },
                     onCompleted: (String recoveryCode) =>
                         <void>{controller.validateCode(recoveryCode)},
                   ),
