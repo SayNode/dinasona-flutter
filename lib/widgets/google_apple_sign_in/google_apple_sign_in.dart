@@ -10,8 +10,13 @@ import 'controllers/google_apple_sign_in_controller.dart';
 
 class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
   const GoogleAppleSignIn({
+    this.isBeneficiary = false,
+    this.isRegistration = false,
     super.key,
   });
+
+  final bool isBeneficiary;
+  final bool isRegistration;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,8 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
     return Column(
       children: <Widget>[
         ElevatedButton(
-          onPressed: controller.googleSignInPressed,
+          onPressed: () =>
+              controller.googleSignInPressed(isBeneficiary, isRegistration),
           style: ElevatedButton.styleFrom(
             backgroundColor: theme.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
@@ -37,22 +43,26 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
                 'Continue with Google'.tr,
                 style: CustomTypography.fromColor(theme.shadowed).k16Reg,
               ),
-              if (controller.loadingGoogle.value)
-                Container(
-                  margin: EdgeInsets.only(left: getRelativeWidth(20)),
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: theme.graphite,
-                  ),
-                ),
+              Obx(
+                () => controller.loadingGoogle.value
+                    ? Container(
+                        margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.graphite,
+                        ),
+                      )
+                    : Container(),
+              ),
             ],
           ),
         ),
         SizedBox(height: getRelativeHeight(10)),
         ElevatedButton(
-          onPressed: controller.appleSignInPressed,
+          onPressed: () =>
+              controller.appleSignInPressed(isBeneficiary, isRegistration),
           style: ElevatedButton.styleFrom(
             backgroundColor: theme.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
@@ -70,16 +80,19 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
                 'Continue with Apple'.tr,
                 style: CustomTypography.fromColor(theme.shadowed).k16Reg,
               ),
-              if (controller.loadingApple.value)
-                Container(
-                  margin: EdgeInsets.only(left: getRelativeWidth(20)),
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: theme.graphite,
-                  ),
-                ),
+              Obx(
+                () => controller.loadingApple.value
+                    ? Container(
+                        margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.graphite,
+                        ),
+                      )
+                    : Container(),
+              ),
             ],
           ),
         ),

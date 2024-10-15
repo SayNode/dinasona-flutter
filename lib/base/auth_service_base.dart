@@ -30,7 +30,7 @@ abstract class AuthServiceBase extends GetxService {
   String verificationUid = '';
 
   final SecureStorageService storageService = Get.find<StorageService>().secure;
-
+  final UserStateService userStateService = Get.find<UserStateService>();
   final APIService apiService = Get.find<APIService>();
 
   final LoggerService logger = Get.find<LoggerService>();
@@ -65,9 +65,7 @@ abstract class AuthServiceBase extends GetxService {
         log: true,
       );
 
-      await Get.find<UserStateService>().fetchUserInfo();
-      await Get.find<UserStateService>().fetchDonorStatistics();
-      await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+      await userStateService.init();
 
       final AuthResponse authResult = AuthResponse.fromJson(
         jsonDecode(response.body) as Map<String, dynamic>,
@@ -103,9 +101,7 @@ abstract class AuthServiceBase extends GetxService {
           'token',
           authResult.accessToken,
         );
-        await Get.find<UserStateService>().fetchUserInfo();
-        await Get.find<UserStateService>().fetchDonorStatistics();
-        await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+        await userStateService.init();
 
         // Disconnect other providers
         await disconnectProviders();
@@ -205,9 +201,7 @@ abstract class AuthServiceBase extends GetxService {
           'token',
           authResult.accessToken,
         );
-        await Get.find<UserStateService>().fetchUserInfo();
-        await Get.find<UserStateService>().fetchDonorStatistics();
-        await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+        await userStateService.init();
 
         // Disconnect other providers
         await disconnectProviders();
@@ -260,8 +254,11 @@ abstract class AuthServiceBase extends GetxService {
               jsonDecode(response.body) as Map<String, dynamic>;
 
           /// save the verication token and uid
-          verificationToken = userMap['token'] as String;
-          verificationUid = userMap['code'] as String;
+          // ignore: avoid_dynamic_calls
+          verificationToken = userMap['result']['token'] as String;
+          // ignore: avoid_dynamic_calls
+          verificationUid = userMap['result']['uid'] as String;
+
           logger.log(
             'AuthService - verification Token and UID: $verificationUid $verificationToken',
           );

@@ -5,6 +5,7 @@ import '../model/need.dart';
 class MockData {
   static List<Need> needs = <Need>[
     Need(
+      id: 1,
       title: 'Nutritious food for my three young children',
       description:
           "Hello, I'm a single mother in Nairobi, doing my best to provide nourishing meals for my three young children.",
@@ -21,12 +22,13 @@ class MockData {
       ),
       amount: 5,
       areasOfInterest: <AreaOfInterest>[AreaOfInterest.food],
-      photoUrls: <String>[
+      images: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
       status: NeedStatus.draft,
     ),
     Need(
+      id: 2,
       title: 'Nutritious food for my three young children',
       description:
           "Hello, I'm a single mother in Nairobi, doing my best to provide nourishing meals for my three young children.",
@@ -43,12 +45,13 @@ class MockData {
       ),
       amount: 5,
       areasOfInterest: <AreaOfInterest>[AreaOfInterest.food],
-      photoUrls: <String>[
+      images: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
       status: NeedStatus.ongoing,
     ),
     Need(
+      id: 3,
       title: 'Nutritious food for my three young children',
       description:
           "Hello, I'm a single mother in Nairobi, doing my best to provide nourishing meals for my three young children.",
@@ -65,12 +68,13 @@ class MockData {
       ),
       amount: 5,
       areasOfInterest: <AreaOfInterest>[AreaOfInterest.food],
-      photoUrls: <String>[
+      images: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
       status: NeedStatus.past,
     ),
     Need(
+      id: 4,
       title: 'Funding for house construction',
       description:
           "As a father, my dream is to provide a secure home for my family. I'm reaching out for financial support to build a modest house.",
@@ -86,12 +90,13 @@ class MockData {
       ),
       amount: 10,
       areasOfInterest: <AreaOfInterest>[AreaOfInterest.electricity],
-      photoUrls: <String>[
+      images: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
       status: NeedStatus.ongoing,
     ),
     Need(
+      id: 5,
       title: 'Funding for house construction',
       description:
           "As a father, my dream is to provide a secure home for my family. I'm reaching out for financial support to build a modest house.",
@@ -107,7 +112,7 @@ class MockData {
       ),
       amount: 10,
       areasOfInterest: <AreaOfInterest>[AreaOfInterest.electricity],
-      photoUrls: <String>[
+      images: <String>[
         'https://www.figma.com/file/j6d1TixfKJ4qwp9UJgu2WR/image/7d383c408d1c4b9cddd4217f7e04db11358de07c',
       ],
       status: NeedStatus.ongoing,

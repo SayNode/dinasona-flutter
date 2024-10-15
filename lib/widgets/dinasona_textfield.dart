@@ -25,6 +25,7 @@ class DinasonaTextField extends StatelessWidget {
     this.labelColor = LightColor.shadowed,
     this.textColor = LightColor.shadowed,
     this.hasVerticalMargin = false,
+    this.hasError = false,
     this.suffixIcon,
     this.prefix,
     this.validator,
@@ -99,10 +100,9 @@ class DinasonaTextField extends StatelessWidget {
   final int maxLines;
 
   final TextStyle? textStyle;
-
   final TextStyle? hintStyle;
-
   final List<TextInputFormatter>? inputFormatters;
+  final bool hasError;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +137,7 @@ class DinasonaTextField extends StatelessWidget {
                 Radius.circular(getRelativeWidth(16)),
               ),
               side: BorderSide(
-                color: borderColor,
+                color: hasError ? theme.inferno : borderColor,
               ),
             ),
             child: Center(

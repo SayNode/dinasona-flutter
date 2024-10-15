@@ -18,6 +18,10 @@ class BeneficiaryHomePageController extends GetxController {
   @override
   void onInit() {
     needs.addAll(MockData.needs);
+    // TODO
+    //Get.find<UserStateService>().fetchUserInfo();
+    //print(Get.find<UserStateService>().user.value);
+
     filterList();
     super.onInit();
   }
@@ -32,6 +36,18 @@ class BeneficiaryHomePageController extends GetxController {
         currentTab.value = NeedsTab.past;
       case 3:
         currentTab.value = NeedsTab.draft;
+    }
+  }
+
+  String getGreetingMessage() {
+    final int hour = DateTime.now().hour;
+
+    if (hour >= 0 && hour < 12) {
+      return 'Good morning'.tr;
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good afternoon'.tr;
+    } else {
+      return 'Good evening'.tr;
     }
   }
 

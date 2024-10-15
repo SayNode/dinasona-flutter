@@ -81,7 +81,7 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to(
+      await Get.to<void>(
         () => Get.find<UserStateService>().user.value.isDonor
             ? const DonorRootPage()
             : const BeneficiaryRootPage(),
