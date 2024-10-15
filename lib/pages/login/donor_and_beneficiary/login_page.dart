@@ -147,48 +147,48 @@ class LoginPage extends GetView<LoginController> {
                             obscureText: !controller.showPassword.value,
                             controller: controller.password,
                           ),
-                          Obx(
-                            () => controller.error.value.isNotEmpty
-                                ? Padding(
-                                    padding: EdgeInsets.only(
-                                      top: screenSize.height * 0.005,
-                                    ),
-                                    child: Text(
-                                      controller.error.value,
-                                      style: CustomTypography.fromColor(
-                                        dinasonaTheme.inferno,
-                                      ).k14Reg,
-                                    ),
-                                  )
-                                : const SizedBox(),
+                        ),
+                        Obx(
+                          () => controller.error.value.isNotEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.only(
+                                    top: screenSize.height * 0.005,
+                                  ),
+                                  child: Text(
+                                    controller.error.value,
+                                    style: CustomTypography.fromColor(
+                                      dinasonaTheme.inferno,
+                                    ).k14Reg,
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ),
+                        Transform(
+                          transform: Matrix4.translationValues(
+                            0,
+                            -7,
+                            0,
                           ),
-                          Transform(
-                            transform: Matrix4.translationValues(
-                              0,
-                              -7,
-                              0,
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                onPressed: () => controller.forgotPassword(),
-                                child: Text(
-                                  'Forgot password?'.tr,
-                                  style: CustomTypography.fromColor(
-                                    dinasonaTheme.graphite,
-                                  ).k16Reg,
-                                ),
+                          child: Container(
+                            width: double.infinity,
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                minimumSize: Size.zero,
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              onPressed: () => controller.forgotPassword(),
+                              child: Text(
+                                'Forgot password?'.tr,
+                                style: CustomTypography.fromColor(
+                                  dinasonaTheme.graphite,
+                                ).k16Reg,
                               ),
                             ),
                           ),
-                          SizedBox(height: getRelativeHeight(15)),
+                        ),
+                        SizedBox(height: getRelativeHeight(15)),
                         Obx(
                           () => DinasonaButton(
                             text: isBeneficiary ? 'Continue'.tr : 'Sign in'.tr,
