@@ -26,7 +26,7 @@ class UserStateService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
   bool _hasBeenInitialized = false;
-  final userNeeds = <dynamic>[].obs;
+  final RxList userNeeds = <dynamic>[].obs;
   Rx<DonorStatistics> donorStatistics = DonorStatistics(
     totalAmountDonated: 0,
     totalCountriesDonatedTo: 0,
@@ -70,8 +70,8 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        print('test: ${response.data}');
-        print('test2: ${response.data[0]}');
+        //print('test: ${response.data}');
+        //print('test2: ${response.data[0]}');
         /* userNeeds.value = DonorStatistics.fromJson(
           jsonEncode(
             (response.data as Map<String, dynamic>)['result']

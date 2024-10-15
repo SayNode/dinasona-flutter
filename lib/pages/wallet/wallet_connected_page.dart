@@ -51,9 +51,26 @@ class WalletConnectedPage extends GetView<WalletPageController> {
                     Gap(getRelativeHeight(15)),
                     const WalletInfoCard(),
                     Gap(getRelativeHeight(30)),
-                    const Expanded(
-                      child: SingleChildScrollView(child: ListOfTransactions()),
-                    ),
+                    if (controller.transactions.isEmpty)
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'Transactions'.tr,
+                              style: CustomTypography.fromColor(theme.shadowed)
+                                  .k24Bold,
+                            ),
+                            Gap(getRelativeHeight(15)),
+                            Text('No transactions yet'.tr),
+                          ],
+                        ),
+                      )
+                    else
+                      const Expanded(
+                        child: SingleChildScrollView(
+                          child: ListOfTransactions(),
+                        ),
+                      ),
                     Gap(getRelativeHeight(30)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

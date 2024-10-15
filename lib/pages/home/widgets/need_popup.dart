@@ -159,7 +159,7 @@ class NeedPopup extends GetView<NeedPopupController> {
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 Gap(getRelativeWidth(20)),
-                for (final String url in need.photoUrls)
+                for (final String url in need.images)
                   Padding(
                     padding: EdgeInsets.only(right: getRelativeWidth(10)),
                     child: AspectRatio(

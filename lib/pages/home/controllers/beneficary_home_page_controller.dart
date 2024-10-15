@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
-import '../../../service/user_state_service.dart';
 import '../../../util/mock_data.dart';
 import '../../../util/popup_manager.dart';
 
@@ -19,7 +18,7 @@ class BeneficiaryHomePageController extends GetxController {
   @override
   void onInit() {
     needs.addAll(MockData.needs);
-    // TODO JULIEN
+    // TODO
     //Get.find<UserStateService>().fetchUserInfo();
     //print(Get.find<UserStateService>().user.value);
 
