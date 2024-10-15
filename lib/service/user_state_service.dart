@@ -25,6 +25,9 @@ class UserStateService extends GetxService {
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
+  bool _hasBeenInitialized = false;
+  // ignore: strict_raw_type, always_specify_types
+  final RxList userNeeds = <dynamic>[].obs;
   Rx<DonorStatistics> donorStatistics = DonorStatistics(
     totalAmountDonated: 0,
     totalCountriesDonatedTo: 0,
@@ -38,12 +41,52 @@ class UserStateService extends GetxService {
   ).obs;
 
   Future<void> init() async {
-    await fetchUserInfo();
-    await fetchDonorStatistics();
+    if (!_hasBeenInitialized) {
+      await fetchUserInfo();
+      if (user.value.isDonor) {
+        await fetchDonorStatistics();
+      } else {
+        await fetchBeneficiaryStatistics();
+        await fetchUserNeeds();
+      }
+    }
+    _hasBeenInitialized = true;
   }
 
   void clear() {
     user.value = User();
+  }
+
+  Future<void> fetchUserNeeds() async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/need/beneficiary/').toString();
+    try {
+      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
+        url,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        //print('test: ${response.data}');
+        //print('test2: ${response.data[0]}');
+        /* userNeeds.value = DonorStatistics.fromJson(
+          jsonEncode(
+            (response.data as Map<String, dynamic>)['result']
+                as Map<String, dynamic>,
+          ),
+        ); */
+      } else {
+        logger.log(
+          'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while fetching donor statistics: $e');
+    }
   }
 
   Future<void> fetchDonorStatistics() async {

@@ -5,6 +5,7 @@
 //
 // https://saynode.ch
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:breez_sdk/breez_sdk.dart';
@@ -173,14 +174,18 @@ abstract class BreezBaseService extends GetxService {
   }
 
   Future<GreenlightCredentials> _loadGreenlightCredentials() async {
+    // final Uint8List greenlightDeveloperKey =
+    //     (await rootBundle.load('assets/greenlight/client-key.pem'))
+    //         .buffer
+    //         .asUint8List();
     final Uint8List greenlightDeveloperKey =
-        (await rootBundle.load('assets/greenlight/client-key.pem'))
-            .buffer
-            .asUint8List();
-    final Uint8List greenlightCertificate =
+        base64.decode(const String.fromEnvironment('GREENLIGHT_CLIENT_KEY'));
+    /* final Uint8List greenlightCertificate =
         (await rootBundle.load('assets/greenlight/client.crt'))
             .buffer
-            .asUint8List();
+            .asUint8List(); */
+    final Uint8List greenlightCertificate = base64
+        .decode(const String.fromEnvironment('GREENLIGHT_CLIENT_CERTIFICATE'));
 
     final GreenlightCredentials partnerCredentials = GreenlightCredentials(
       developerKey: greenlightDeveloperKey,

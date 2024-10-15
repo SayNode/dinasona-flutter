@@ -93,9 +93,18 @@ class SignupController extends GetxController {
   }
 
   Future<void> proceed(bool isBeneficiary) async {
+    await Get.find<UserStateService>().init();
+    await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
+      'is_donor': !isBeneficiary,
+    });
+    password.clear();
+    email.clear();
     showPopup(isBeneficiary: isBeneficiary);
-    await Get.to(
-      () => isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
+    unawaited(
+      Get.to(
+        () =>
+            isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
+      ),
     );
   }
 }

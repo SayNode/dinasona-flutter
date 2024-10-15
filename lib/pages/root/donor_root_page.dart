@@ -13,6 +13,7 @@ class DonorRootPage extends GetView<DonorRootController> {
     return Obx(
       () => CustomScaffold(
         body: controller.body[controller.tabIndex.value],
+        allowScopePop: false,
         bottomNavigationBar: DonorBottomNavigationBar(
           changeTabIndex: controller.changeTabIndex,
           tabIndex: controller.tabIndex.value,

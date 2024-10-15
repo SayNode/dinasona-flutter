@@ -62,8 +62,9 @@ class Need {
     required this.beneficiary,
     required this.amount,
     required this.areasOfInterest,
-    required this.photoUrls,
+    required this.images,
     required this.status,
+    required this.id,
   });
 
   factory Need.fromJson(Map<String, dynamic> json) {
@@ -79,7 +80,7 @@ class Need {
               .map((dynamic e) => AreaOfInterest.values[(e as int) - 1])
               .toList()
           : <AreaOfInterest>[],
-      photoUrls: <String>[],
+      images: <String>[],
       /*(json['image'] as List<dynamic>)
           .where(
             (dynamic e) => e != null,
@@ -89,6 +90,7 @@ class Need {
       status: json['status'] == null
           ? NeedStatus.draft
           : _statusFromString(json['status'] as String),
+      id: json['id'] as int? ?? 0,
     );
   }
 
@@ -110,6 +112,7 @@ class Need {
   final Beneficiary beneficiary;
   final double amount;
   final List<AreaOfInterest> areasOfInterest;
-  final List<String> photoUrls;
+  final List<String> images;
   final NeedStatus status;
+  final int id;
 }

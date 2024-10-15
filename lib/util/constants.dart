@@ -7,6 +7,11 @@
 
 class Constants {
   static const String apiDomain = String.fromEnvironment('API_URL');
+  static const String breezAPIKey = String.fromEnvironment('BREEZ_API_KEY');
+  static const String greenlightClientKey =
+      String.fromEnvironment('GREENLIGHT_CLIENT_KEY');
+  static const String greenlightClientCertificate =
+      String.fromEnvironment('GREENLIGHT_CLIENT_CERTIFICATE');
   static const String apiKey = String.fromEnvironment('DATABASE_API_KEY');
   static bool get devMode => apiDomain.contains('dev');
 }
