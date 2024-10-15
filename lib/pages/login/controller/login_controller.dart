@@ -44,7 +44,6 @@ class LoginController extends GetxController {
   }
 
   Future<void> forgotPassword() async {
-    // TODO Julien
     await Get.to<void>(() => const ForgotPassword());
   }
 

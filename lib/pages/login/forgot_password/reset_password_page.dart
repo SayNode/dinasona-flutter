@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
@@ -26,9 +27,6 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
   Widget build(BuildContext context) {
     final CustomTheme theme = ThemeService().theme;
     return CustomScaffold(
-      // TODO Julien
-      /* title: '',
-      backButton: true, */
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -110,8 +108,13 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
                     text: 'Continue'.tr,
                     // ignore: inference_failure_on_function_invocation
                     onPressed: controller.unknownEmailError.isNotEmpty
-                        // TODO Julien set is beneficiary or donor
-                        ? () => Get.to<void>(const SignupPage())
+                        ? () => Get.find<UserStateService>().user.value.isDonor
+                            ? Get.to<void>(const SignupPage())
+                            : Get.to<void>(
+                                const SignupPage(
+                                  isBeneficiary: true,
+                                ),
+                              )
                         : onTap,
                   ),
                 ),
