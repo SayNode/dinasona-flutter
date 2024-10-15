@@ -110,7 +110,7 @@ abstract class BreezBaseService extends GetxService {
   Future<dynamic> sendPayment({required String bolt11}) async {
     try {
       final SendPaymentRequest req =
-          SendPaymentRequest(bolt11: bolt11, useTrampoline: false);
+          SendPaymentRequest(bolt11: bolt11, useTrampoline: true);
       final SendPaymentResponse sendPaymentResponse =
           await breezSDK.sendPayment(req: req);
       return sendPaymentResponse;
