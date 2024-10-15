@@ -254,8 +254,11 @@ abstract class AuthServiceBase extends GetxService {
               jsonDecode(response.body) as Map<String, dynamic>;
 
           /// save the verication token and uid
-          verificationToken = userMap['token'] as String;
-          verificationUid = userMap['code'] as String;
+          // ignore: avoid_dynamic_calls
+          verificationToken = userMap['result']['token'] as String;
+          // ignore: avoid_dynamic_calls
+          verificationUid = userMap['result']['uid'] as String;
+
           logger.log(
             'AuthService - verification Token and UID: $verificationUid $verificationToken',
           );

@@ -163,7 +163,32 @@ class LoginPage extends GetView<LoginController> {
                                 )
                               : const SizedBox(),
                         ),
-                        SizedBox(height: getRelativeHeight(20)),
+                        Transform(
+                          transform: Matrix4.translationValues(
+                            0,
+                            -7,
+                            0,
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                minimumSize: Size.zero,
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              onPressed: () => controller.forgotPassword(),
+                              child: Text(
+                                'Forgot password?'.tr,
+                                style: CustomTypography.fromColor(
+                                  dinasonaTheme.graphite,
+                                ).k16Reg,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: getRelativeHeight(15)),
                         Obx(
                           () => DinasonaButton(
                             text: isBeneficiary ? 'Continue'.tr : 'Sign in'.tr,
