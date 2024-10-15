@@ -26,6 +26,7 @@ class UserStateService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
   bool _hasBeenInitialized = false;
+  // ignore: strict_raw_type, always_specify_types
   final RxList userNeeds = <dynamic>[].obs;
   Rx<DonorStatistics> donorStatistics = DonorStatistics(
     totalAmountDonated: 0,
