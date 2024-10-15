@@ -109,45 +109,43 @@ class LoginPage extends GetView<LoginController> {
                   SizedBox(
                     height: getRelativeHeight(30),
                   ),
-                  Obx(
-                    () => Form(
-                      child: Column(
-                        children: <Widget>[
-                          DinasonaTextField(
-                            hintText: 'Enter email'.tr,
+                  Form(
+                    child: Column(
+                      children: <Widget>[
+                        DinasonaTextField(
+                          hintText: 'Enter email'.tr,
+                          hasVerticalMargin: true,
+                          prefix: Icon(
+                            Icons.email,
+                            size: 25,
+                            color: dinasonaTheme.graphite,
+                          ),
+                          controller: controller.email,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        Obx(
+                          () => DinasonaTextField(
+                            hintText: 'Enter password'.tr,
                             hasVerticalMargin: true,
                             prefix: Icon(
-                              Icons.email,
+                              Icons.lock,
                               size: 25,
                               color: dinasonaTheme.graphite,
                             ),
-                            controller: controller.email,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          Obx(
-                            () => DinasonaTextField(
-                              hintText: 'Enter password'.tr,
-                              hasVerticalMargin: true,
-                              prefix: Icon(
-                                Icons.lock,
-                                size: 25,
-                                color: dinasonaTheme.graphite,
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: () => controller.setShowPassword(),
-                                child: Obx(
-                                  () => Icon(
-                                    controller.showPassword.value
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    size: 25,
-                                    color: dinasonaTheme.graphite,
-                                  ),
+                            suffixIcon: GestureDetector(
+                              onTap: () => controller.setShowPassword(),
+                              child: Obx(
+                                () => Icon(
+                                  controller.showPassword.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  size: 25,
+                                  color: dinasonaTheme.graphite,
                                 ),
                               ),
-                              obscureText: !controller.showPassword.value,
-                              controller: controller.password,
                             ),
+                            obscureText: !controller.showPassword.value,
+                            controller: controller.password,
                           ),
                           Obx(
                             () => controller.error.value.isNotEmpty
@@ -191,7 +189,8 @@ class LoginPage extends GetView<LoginController> {
                             ),
                           ),
                           SizedBox(height: getRelativeHeight(15)),
-                          DinasonaButton(
+                        Obx(
+                          () => DinasonaButton(
                             text: isBeneficiary ? 'Continue'.tr : 'Sign in'.tr,
                             loading: controller.loading.value,
                             onPressed: () =>
@@ -199,8 +198,8 @@ class LoginPage extends GetView<LoginController> {
                             color: dinasonaTheme.ferngreen,
                             locked: !controller.isSignInButtonActive.value,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: getRelativeHeight(40)),

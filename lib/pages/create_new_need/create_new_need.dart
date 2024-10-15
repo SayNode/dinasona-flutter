@@ -22,44 +22,48 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     Get.put(CreateNewNeedController());
-    return CustomScaffold(
-      padding: true,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Gap(30),
-          Text(
-            'Create a need'.tr,
-            style: CustomTypography.fromColor(theme.shadowed).k24Bold,
-          ),
-          Gap(getRelativeHeight(20)),
-          Obx(
-            () => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                for (int i = 0; i < 5; i++)
-                  ProgressBar(
-                    selected: controller.currentTab.value == NeedsTab.values[i],
-                  ),
-              ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScaffold(
+        padding: true,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Gap(30),
+            Text(
+              'Create a need'.tr,
+              style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
-          ),
-          Expanded(
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: controller.pageController,
-              onPageChanged: (int index) =>
-                  controller.currentPage.value = index,
-              children: const <Widget>[
-                NeedScreen1(),
-                NeedScreen2(),
-                NeedScreen3(),
-                NeedScreen4(),
-                NeedScreen5(),
-              ],
+            Gap(getRelativeHeight(20)),
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  for (int i = 0; i < 5; i++)
+                    ProgressBar(
+                      selected:
+                          controller.currentTab.value == NeedsTab.values[i],
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: controller.pageController,
+                onPageChanged: (int index) =>
+                    controller.currentPage.value = index,
+                children: const <Widget>[
+                  NeedScreen1(),
+                  NeedScreen2(),
+                  NeedScreen3(),
+                  NeedScreen4(),
+                  NeedScreen5(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
