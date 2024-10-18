@@ -11,12 +11,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/auth_response.dart';
-import '../pages/wallet/controllers/wallet_page_controller.dart';
 import '../service/api_service.dart';
 import '../service/logger_service.dart';
 import '../service/storage/secure_storage_service.dart';
 import '../service/storage/storage_service.dart';
 import '../service/user_state_service.dart';
+import '../service/wallet_service.dart';
 
 enum ProviderTypes {
   none,
@@ -157,7 +157,7 @@ abstract class AuthServiceBase extends GetxService {
         await storageService.delete('token');
         // Disconnect other providers
         await disconnectProviders();
-        await Get.find<WalletPageController>().deleteUserWallet();
+        await Get.find<WalletService>().deleteUserWallet();
       } else {
         // Unexpected status code:
         // await Get.to<void>(() => HtmlDebug(res: response.body));

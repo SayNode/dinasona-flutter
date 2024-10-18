@@ -106,7 +106,13 @@ void main() async {
     final WidgetsBinding widgetsBinding =
         WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
     // Initialize services:
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
     await initializeServices();
 
     Get.put<ThemeService>(ThemeService());
@@ -115,11 +121,6 @@ void main() async {
     await localizationController.init();
     FlutterNativeSplash.remove();
 
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-    }
     await SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[DeviceOrientation.portraitUp],
     );

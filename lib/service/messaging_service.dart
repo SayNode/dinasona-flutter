@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
-import '../util/popup_manager.dart';
 import 'logger_service.dart';
 import 'user_state_service.dart';
 
@@ -10,7 +9,6 @@ enum AnnouncementTopicTypes {
   topicOne,
   topic2,
 }
-
 
 class MessagingService extends GetxService {
   FlutterLocalNotificationsPlugin notificationPlugin =
@@ -42,7 +40,7 @@ class MessagingService extends GetxService {
       if (await _messaging.getAPNSToken() == null) {
         await Future<void>.delayed(const Duration(seconds: 3));
         if (await _messaging.getAPNSToken() == null) {
-         loggerService.log("Still can't get APNS token, after delay.");
+          loggerService.log("Still can't get APNS token, after delay.");
           return this;
         }
       }
@@ -91,7 +89,7 @@ class MessagingService extends GetxService {
     return this;
   }
 
-   void onDidReceiveNotificationResponse(NotificationResponse response) {
+  void onDidReceiveNotificationResponse(NotificationResponse response) {
     loggerService.log(
       'onDidReceiveNotificationResponse - ${response.payload} - ${response.id} - ${response.input}',
     );
@@ -103,7 +101,7 @@ class MessagingService extends GetxService {
     }
   }
 
-   void onDidReceiveBackgroundNotificationResponse(
+  void onDidReceiveBackgroundNotificationResponse(
     NotificationResponse response,
   ) {
     loggerService.log(
@@ -125,8 +123,7 @@ class MessagingService extends GetxService {
         //final routeName = _getRouteNameForNotificationType(route);
         return route;
       } else {
-        loggerService
-            .log('MessagingService - No notification type specified');
+        loggerService.log('MessagingService - No notification type specified');
       }
     } else {
       loggerService.log('MessagingService - No initial message');
@@ -171,7 +168,8 @@ class MessagingService extends GetxService {
       // local notification to show to users using the created channel.
       if (message.data['pop_up'] != null) {
         // Show local in-app notification
-        PopupManager.
+        // TODO
+        //PopupManager.
       } else if (notification != null && android != null) {
         notificationPlugin.show(
           notification.hashCode,
@@ -202,7 +200,7 @@ class MessagingService extends GetxService {
         //Get.toNamed(routeName);
         //Get.find<RoutingService>().to(route);
       } else {
-       loggerService
+        loggerService
             .log('MessagingService - Unknown notification type: $route');
       }
     } else {

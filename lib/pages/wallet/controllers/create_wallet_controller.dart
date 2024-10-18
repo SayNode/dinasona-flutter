@@ -1,7 +1,10 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../service/breez_service.dart';
 import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../../util/util.dart';
 import '../../root/beneficiary_root_page.dart';
@@ -11,24 +14,35 @@ import 'wallet_page_controller.dart';
 class CreateWalletController extends GetxController {
   final SecureStorageService secureStorageService =
       Get.find<SecureStorageService>();
+  final WalletService walletService = Get.find<WalletService>();
+  final BreezService breezService = Get.find<BreezService>();
 
   final WalletPageController controller = Get.find<WalletPageController>();
   RxString seedPhrase = ''.obs;
   RxBool userHasEnteredSeedPhrase = false.obs;
 
+  final TextEditingController seedConfirmationInput1 = TextEditingController();
+  final TextEditingController seedConfirmationInput2 = TextEditingController();
+  final TextEditingController seedConfirmationInput3 = TextEditingController();
+
+  void resetWalletConnectionInputs() {
+    seedConfirmationInput1.clear();
+    seedConfirmationInput2.clear();
+    seedConfirmationInput3.clear();
+  }
+
   void updateUserInputs() {
-    userHasEnteredSeedPhrase.value =
-        !(controller.seedConfirmationInput1.text.isNotEmpty &&
-            controller.seedConfirmationInput2.text.isNotEmpty &&
-            controller.seedConfirmationInput3.text.isNotEmpty);
+    userHasEnteredSeedPhrase.value = !(seedConfirmationInput1.text.isNotEmpty &&
+        seedConfirmationInput2.text.isNotEmpty &&
+        seedConfirmationInput3.text.isNotEmpty);
   }
 
   Future<void> createWallet() async {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    await controller.clearWalletEnvironment();
-    await controller.breezService.connectToNode(seedPhrase.value);
+    await walletService.clearWalletEnvironment();
+    await breezService.connectToNode(seedPhrase.value);
     await Get.find<UserStateService>().fetchUserInfo();
     await secureStorageService.writeString(
       'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
@@ -39,7 +53,7 @@ class CreateWalletController extends GetxController {
       hideLoadingDialog(Get.context!);
     }
 
-    controller.isWalletConnected.value = true;
+    walletService.isWalletConnected.value = true;
 
     Future<void>.delayed(const Duration(milliseconds: 1000), () {
       PopupManager.openWalletInfoPopup(
@@ -58,11 +72,11 @@ class CreateWalletController extends GetxController {
 
   void validateSeedPhrase(List<String> expectedValues) {
     if (expectedValues[0].toLowerCase() !=
-            controller.seedConfirmationInput1.text.toLowerCase() ||
+            seedConfirmationInput1.text.toLowerCase() ||
         expectedValues[1].toLowerCase() !=
-            controller.seedConfirmationInput2.text.toLowerCase() ||
+            seedConfirmationInput2.text.toLowerCase() ||
         expectedValues[2].toLowerCase() !=
-            controller.seedConfirmationInput3.text.toLowerCase()) {
+            seedConfirmationInput3.text.toLowerCase()) {
       Future<void>.delayed(const Duration(milliseconds: 500), () {
         PopupManager.openWalletInfoPopup(
           'Invalid seed phrase'.tr,
