@@ -12,6 +12,7 @@ import '../need_search_page.dart';
 class DonorHomePageController extends GetxController {
   RxList<AreaOfInterest> defaultAreasOfInterest = <AreaOfInterest>[].obs;
   RxList<Need> needs = <Need>[].obs;
+  final NeedService needService = Get.find<NeedService>();
 
   @override
   Future<void> onInit() async {
