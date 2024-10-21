@@ -22,6 +22,19 @@ class WalletService extends GetxService {
   RxList<Payment> transactions = <Payment>[].obs;
   RxBool isWalletConnected = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    isWalletConnected.listen((bool value) async {
+      if (value) {
+        await breezService.breezSDK.registerWebhook(webhookUrl: "");
+        return;
+      }
+      await breezService.breezSDK.unregisterWebhook(webhookUrl: "");
+    });
+  }
+
   Future<void> getTransactions() async {
     // ignore: no_leading_underscores_for_local_identifiers
     final List<Payment> _transactions = await breezService.getPaymentHistory();
