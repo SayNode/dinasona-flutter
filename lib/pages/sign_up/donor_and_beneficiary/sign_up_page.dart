@@ -29,7 +29,6 @@ class SignupPage extends GetView<SignupController> {
     final LocalizationController localizationController =
         Get.find<LocalizationController>();
     if (isBeneficiary) {
-      print('Default language: ${localizationController.defaulLanguage}');
       if (localizationController.defaulLanguage ||
           controller.chosenCurrency.isEmpty) {
         return const ChooseLanguagePage();
