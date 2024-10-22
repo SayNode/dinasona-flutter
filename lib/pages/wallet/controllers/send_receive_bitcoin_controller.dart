@@ -110,6 +110,7 @@ class SendReceiveBitcoinController extends GetxController {
       );
     } catch (e) {
       sendBTCPaymentError.value = 'Insufficient outgoing balance'.tr;
+      loggerService.log('Error sending payment: $e');
       if (Get.context != null) {
         hideLoadingDialog(Get.context!);
       }
@@ -118,6 +119,7 @@ class SendReceiveBitcoinController extends GetxController {
 
     if (response is SendPaymentResponse) {
       // TODO might add a status indicator here in the future
+      print(response);
     } else {
       sendBTCPaymentError.value = response.toString();
     }
