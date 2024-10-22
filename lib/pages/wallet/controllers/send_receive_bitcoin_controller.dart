@@ -119,7 +119,6 @@ class SendReceiveBitcoinController extends GetxController {
 
     if (response is SendPaymentResponse) {
       // TODO might add a status indicator here in the future
-      print(response);
     } else {
       sendBTCPaymentError.value = response.toString();
     }
