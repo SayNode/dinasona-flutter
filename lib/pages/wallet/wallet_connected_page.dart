@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../service/theme_service.dart';
+import '../../service/wallet_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -51,7 +52,7 @@ class WalletConnectedPage extends GetView<WalletPageController> {
                     Gap(getRelativeHeight(15)),
                     const WalletInfoCard(),
                     Gap(getRelativeHeight(30)),
-                    if (controller.transactions.isEmpty)
+                    if (Get.find<WalletService>().transactions.isEmpty)
                       Expanded(
                         child: Column(
                           children: <Widget>[

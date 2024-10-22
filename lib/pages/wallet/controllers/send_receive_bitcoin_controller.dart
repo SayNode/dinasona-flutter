@@ -23,7 +23,7 @@ class SendReceiveBitcoinController extends GetxController {
   RxString bolt11Invoice = ''.obs;
   final TextEditingController sendBTCInputBTC =
       TextEditingController(text: '0.0');
-  RxString sendBTCInputCheck = ''.obs;
+  RxString sendBTCInputCheck = '0.0'.obs;
   final TextEditingController sendBTCInputUserCurrency =
       TextEditingController(text: '0.0');
   final TextEditingController sendBTCInvoiceInput = TextEditingController();
@@ -62,6 +62,7 @@ class SendReceiveBitcoinController extends GetxController {
 
   Future<void> getInvoiceAmount() async {
     try {
+      sendBTCPaymentError.value = '';
       final LNInvoice invoice = await breezService.breezSDK.parseInvoice(
         sendBTCInvoiceInput.text,
       );
@@ -85,6 +86,10 @@ class SendReceiveBitcoinController extends GetxController {
       ))
               .toString();
     } catch (e) {
+      if (sendBTCInvoiceInput.text.length > 2) {
+        sendBTCPaymentError.value = 'Invalid invoice'.tr;
+      }
+
       invoiceAmountBTC.value = '0.0';
       invoiceAmountUserCurrency.value = '0.0';
       invoiceDescription.value = '';
@@ -105,6 +110,7 @@ class SendReceiveBitcoinController extends GetxController {
       );
     } catch (e) {
       sendBTCPaymentError.value = 'Insufficient outgoing balance'.tr;
+      loggerService.log('Error sending payment: $e');
       if (Get.context != null) {
         hideLoadingDialog(Get.context!);
       }

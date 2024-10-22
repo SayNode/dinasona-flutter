@@ -171,8 +171,12 @@ abstract class BreezBaseService extends GetxService {
   }
 
   Future<NodeState?> getNodeState() async {
-    final NodeState? nodeInfo = await breezSDK.nodeInfo();
-    return nodeInfo;
+    try {
+      final NodeState? nodeInfo = await breezSDK.nodeInfo();
+      return nodeInfo;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<GreenlightCredentials> _loadGreenlightCredentials() async {

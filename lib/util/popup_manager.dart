@@ -9,7 +9,9 @@ import '../widgets/custom_popup.dart';
 import '../widgets/dialogs/delete_account_dialog.dart';
 import '../widgets/dialogs/logout_dialog.dart';
 import '../widgets/popups/contact_us_popup.dart';
+import '../widgets/popups/contribution_popup.dart';
 import '../widgets/popups/draft_popup.dart';
+import '../widgets/popups/need_fulfilled_popup.dart';
 import '../widgets/popups/publish_popup.dart';
 import '../widgets/popups/story_popup.dart';
 import '../widgets/popups/wallet_info_popup.dart';
@@ -97,6 +99,18 @@ class PopupManager {
   ) async {
     await openCustomPopup<void>(
       ContactUsPopup(sendingMessageSuccess),
+    );
+  }
+
+  static Future<void> openNeedFulfilledPopup() async {
+    await openCustomPopup<void>(
+      const NeedFulfilledPopup(),
+    );
+  }
+
+  static Future<void> openContributionPopup() async {
+    await openCustomPopup<void>(
+      const ContributionPopup(),
     );
   }
 }
