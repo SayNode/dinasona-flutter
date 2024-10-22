@@ -25,6 +25,8 @@ class CustomScaffold extends StatelessWidget {
     this.appBarTitle,
     this.actions,
     this.boldTitle = true,
+    this.allowScopePop = true,
+    this.customScopePopAction,
   });
 
   final Widget body;
@@ -35,6 +37,8 @@ class CustomScaffold extends StatelessWidget {
   final String? appBarTitle;
   final List<Widget>? actions;
   final bool boldTitle;
+  final bool allowScopePop;
+  final Function? customScopePopAction;
 
   AppBar _appBar(CustomTheme theme) => AppBar(
         backgroundColor: theme.moonstone,
@@ -53,41 +57,50 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    return Scaffold(
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: appBarTitle != null ? _appBar(theme) : null,
-      body: Column(
-        children: <Widget>[
-          if (appBarTitle == null)
+    return PopScope(
+      canPop: allowScopePop,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (didPop && customScopePopAction != null) {
+          // ignore: avoid_dynamic_calls
+          customScopePopAction!();
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        appBar: appBarTitle != null ? _appBar(theme) : null,
+        body: Column(
+          children: <Widget>[
+            if (appBarTitle == null)
+              Container(
+                color: theme.moonstone,
+                height: MediaQuery.of(Get.context!).viewPadding.top,
+                width: double.infinity,
+              ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: padding ? getRelativeWidth(15) : 0,
+                ),
+                child: body,
+              ),
+            ),
             Container(
               color: theme.moonstone,
-              height: MediaQuery.of(Get.context!).viewPadding.top,
+              height: MediaQuery.of(Get.context!).viewPadding.bottom,
               width: double.infinity,
             ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: padding ? getRelativeWidth(15) : 0,
-              ),
-              child: body,
-            ),
-          ),
-          Container(
-            color: theme.moonstone,
-            height: MediaQuery.of(Get.context!).viewPadding.bottom,
-            width: double.infinity,
-          ),
-        ],
-      ),
-      backgroundColor: theme.moonstone,
-      bottomNavigationBar: bottomNavigationBar,
-      floatingActionButton: FloatingActionButton(
-        heroTag: null,
-        onPressed: () {
-          Get.find<LoggerService>().show();
-        },
-        backgroundColor: Colors.red,
-        child: const Icon(Icons.logo_dev_rounded),
+          ],
+        ),
+        backgroundColor: theme.moonstone,
+        bottomNavigationBar: bottomNavigationBar,
+        floatingActionButton: FloatingActionButton(
+          heroTag: null,
+          onPressed: () {
+            Get.find<LoggerService>().show();
+          },
+          backgroundColor: Colors.red,
+          child: const Icon(Icons.logo_dev_rounded),
+        ),
       ),
     );
   }

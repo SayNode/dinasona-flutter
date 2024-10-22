@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../service/theme_service.dart';
+import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -20,13 +21,18 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
   Widget build(BuildContext context) {
     Get.put(BeneficiaryHomePageController());
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    final String userNameForGreeting =
+        Get.find<UserStateService>().user.value.name.split(' ')[0];
+
     return CustomScaffold(
       padding: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Good morning, Fatima'.tr,
+            userNameForGreeting.isNotEmpty
+                ? '${controller.getGreetingMessage()}, $userNameForGreeting'
+                : controller.getGreetingMessage(),
             style: CustomTypography.fromColor(theme.shadowed).k24Bold,
           ),
           const Gap(20),

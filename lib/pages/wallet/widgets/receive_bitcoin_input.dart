@@ -121,12 +121,15 @@ class ReceiveBitcoinInput extends GetView<SendReceiveBitcoinController> {
             ),
             Gap(getRelativeWidth(10)),
             Expanded(
-              child: DinasonaButton(
-                text: 'Create'.tr,
-                onPressed: () {
-                  controller.createInvoice();
-                },
-                color: theme.amberglow,
+              child: Obx(
+                () => DinasonaButton(
+                  text: 'Create'.tr,
+                  onPressed: () {
+                    controller.createInvoice();
+                  },
+                  locked: double.parse(controller.sendBTCInputCheck.value) <= 0,
+                  color: theme.amberglow,
+                ),
               ),
             ),
           ],

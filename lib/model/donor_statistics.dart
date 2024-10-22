@@ -36,7 +36,7 @@ class DonorStatistics {
 
   factory DonorStatistics.fromMap(Map<String, dynamic> map) {
     return DonorStatistics(
-      totalAmountDonated: map['total_amount_donated'] as double? ?? -1,
+      totalAmountDonated: map['total_amount_donated'] as double? ?? 0.0,
       totalCountriesDonatedTo:
           map['total_beneficiaries_donated_to'] as int? ?? -1,
       totalBeneficiariesDonatedTo:

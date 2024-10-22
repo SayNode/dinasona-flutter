@@ -47,12 +47,14 @@ class NeedPopup extends GetView<NeedPopupController> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(128),
-                        child: Image.network(
-                          need.beneficiary.photoUrl,
-                          height: getRelativeHeight(52),
-                          width: getRelativeHeight(52),
-                          fit: BoxFit.cover,
-                        ),
+                        child: need.beneficiary.photoUrl.isEmpty
+                            ? const SizedBox()
+                            : Image.network(
+                                need.beneficiary.photoUrl,
+                                height: getRelativeHeight(52),
+                                width: getRelativeHeight(52),
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ),
@@ -159,7 +161,7 @@ class NeedPopup extends GetView<NeedPopupController> {
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 Gap(getRelativeWidth(20)),
-                for (final String url in need.photoUrls)
+                for (final String url in need.images)
                   Padding(
                     padding: EdgeInsets.only(right: getRelativeWidth(10)),
                     child: AspectRatio(

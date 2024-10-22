@@ -1,6 +1,7 @@
 import 'package:breez_sdk/bridge_generated.dart';
 import 'package:get/get.dart';
 
+import '../util/constants.dart';
 import '../util/util.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
@@ -21,17 +22,24 @@ class WalletService extends GetxService {
   RxString timeSinceLastTransaction = ''.obs;
   RxList<Payment> transactions = <Payment>[].obs;
   RxBool isWalletConnected = false.obs;
+  RxDouble amountSentInUserCurrency = 0.0.obs;
 
   @override
   void onInit() {
     super.onInit();
 
     isWalletConnected.listen((bool value) async {
-      if (value) {
-        await breezService.breezSDK.registerWebhook(webhookUrl: "");
-        return;
+      if ((await breezService.getNodeState()) != null) {
+        if (value) {
+          await breezService.breezSDK.registerWebhook(
+            webhookUrl: Constants.notificationDeliveryServiceEndpoint,
+          );
+          return;
+        }
+        await breezService.breezSDK.unregisterWebhook(
+          webhookUrl: Constants.notificationDeliveryServiceEndpoint,
+        );
       }
-      await breezService.breezSDK.unregisterWebhook(webhookUrl: "");
     });
   }
 
@@ -43,11 +51,22 @@ class WalletService extends GetxService {
     int lastTransactionTime = 0;
     transactions.clear();
     transactionAmounts.clear();
+    amountSentInUserCurrency.value = 0.0;
 
     for (final Payment transaction in _transactions) {
       if (lastTransactionTime < transaction.paymentTime) {
         lastTransactionTime = transaction.paymentTime;
       }
+      if (transaction.paymentType == PaymentType.Sent) {
+        amountSentInUserCurrency.value +=
+            await currencyConversionService.convertSatoshiToUserCurrency(
+          (transaction.amountMsat / 1000).round(),
+        );
+      }
+
+      amountSentInUserCurrency.value =
+          double.parse(amountSentInUserCurrency.toStringAsFixed(3));
+
       _transactionAmounts.add(
         await currencyConversionService.convertSatoshiToUserCurrency(
           (transaction.amountMsat / 1000).round(),

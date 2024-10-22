@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../service/theme_service.dart';
+import '../../service/wallet_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -51,9 +52,26 @@ class WalletConnectedPage extends GetView<WalletPageController> {
                     Gap(getRelativeHeight(15)),
                     const WalletInfoCard(),
                     Gap(getRelativeHeight(30)),
-                    const Expanded(
-                      child: SingleChildScrollView(child: ListOfTransactions()),
-                    ),
+                    if (Get.find<WalletService>().transactions.isEmpty)
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'Transactions'.tr,
+                              style: CustomTypography.fromColor(theme.shadowed)
+                                  .k24Bold,
+                            ),
+                            Gap(getRelativeHeight(15)),
+                            Text('No transactions yet'.tr),
+                          ],
+                        ),
+                      )
+                    else
+                      const Expanded(
+                        child: SingleChildScrollView(
+                          child: ListOfTransactions(),
+                        ),
+                      ),
                     Gap(getRelativeHeight(30)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

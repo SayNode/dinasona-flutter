@@ -8,14 +8,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../base/auth_service_base.dart';
 import '../model/auth_response.dart';
-import 'user_state_service.dart';
 
 class AuthService extends AuthServiceBase {
   // Add your custom code here
@@ -34,15 +32,12 @@ class AuthService extends AuthServiceBase {
     try {
       // Clear cache
       await _googleSignIn.currentUser?.clearAuthCache();
-
       // Try to login silently
       final GoogleSignInAccount? result =
           await _googleSignIn.signInSilently() ?? await _googleSignIn.signIn();
-
       if (result != null) {
         final GoogleSignInAuthentication googleKey =
             await result.authentication;
-
         // Login in backend
         final http.Response response = await apiService.post(
           'auth/google/',
@@ -57,7 +52,6 @@ class AuthService extends AuthServiceBase {
         final AuthResponse authResult = AuthResponse.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>,
         );
-
         if (response.statusCode == 200) {
           try {
             /// Save the token
@@ -66,7 +60,8 @@ class AuthService extends AuthServiceBase {
               'token',
               authResult.accessToken,
             );
-            await Get.find<UserStateService>().handleUserOnLogin();
+            await userStateService.handleUserOnLogin();
+            await userStateService.init();
 
             return authResult;
           } catch (error) {
@@ -148,7 +143,8 @@ class AuthService extends AuthServiceBase {
           /// Save the token
           apiService.authenticationToken = authResult.accessToken;
           await storageService.writeString('token', authResult.accessToken);
-          await Get.find<UserStateService>().handleUserOnLogin();
+          await userStateService.handleUserOnLogin();
+          await userStateService.init();
 
           return authResult;
         } catch (error) {
