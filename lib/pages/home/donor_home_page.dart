@@ -54,7 +54,8 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(8),
-                          onTap: () => controller.seeAll(field),
+                          onTap: () =>
+                              controller.seeAll(field, donationsInField),
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
                               getRelativeWidth(8),

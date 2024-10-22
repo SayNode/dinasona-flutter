@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
+import '../../../theme/color.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
@@ -24,43 +25,71 @@ class SelectAreasOfInterestPopup
     return UpwardPopup(
       title: 'Categories'.tr,
       onClose: Get.back,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: getRelativeWidth(20),
-        ),
-        child: Column(
-          children: <Widget>[
-            Obx(
-              () => SizedBox(
-                width: double.infinity,
-                child: Wrap(
-                  spacing: getRelativeWidth(5),
-                  runSpacing: getRelativeHeight(6),
+      child: Obx(
+        () => controller.loading.value
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: getRelativeWidth(20),
+                ),
+                child: Column(
                   children: <Widget>[
-                    for (final AreaOfInterest field in AreaOfInterest.values)
-                      AreaOfInterestChip(
-                        field: field,
-                        selected:
-                            controller.selectedAreasOfInterest.contains(field),
-                        onTap: () => controller.selectedAreasOfInterest
-                                .contains(field)
-                            ? controller.selectedAreasOfInterest.remove(field)
-                            : controller.selectedAreasOfInterest.add(field),
+                    Obx(
+                      () => SizedBox(
+                        width: double.infinity,
+                        child: Wrap(
+                          spacing: getRelativeWidth(5),
+                          runSpacing: getRelativeHeight(6),
+                          children: <Widget>[
+                            for (final AreaOfInterest field
+                                in AreaOfInterest.values)
+                              AreaOfInterestChip(
+                                field: field,
+                                selected: controller.selectedAreasOfInterest
+                                    .contains(field),
+                                onTap: () => controller.seeNeeds(field),
+                              ),
+                          ],
+                        ),
                       ),
+                    ),
+                    Gap(getRelativeHeight(32)),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Expanded(
+                          child: DinasonaButton(
+                            expand: false,
+                            text: 'Reset'.tr,
+                            customElevation: 0,
+                            onPressed: Get.back,
+                            padding: EdgeInsets.all(getRelativeHeight(10)),
+                            color: LightColor.moonstone,
+                            textColor: LightColor.graphite,
+                            borderColor: LightColor.silvershine,
+                            borderSize: 1,
+                          ),
+                        ),
+                        const Gap(10),
+                        Expanded(
+                          child: Obx(
+                            () => DinasonaButton(
+                              expand: false,
+                              customElevation: 0,
+                              padding: EdgeInsets.all(getRelativeHeight(10)),
+                              text: 'See ${controller.count.value} needs'.tr,
+                              color: LightColor.amberglow,
+                              onPressed: controller.close,
+                              locked:
+                                  controller.selectedAreasOfInterest.isEmpty,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            ),
-            Gap(getRelativeHeight(32)),
-            Obx(
-              () => DinasonaButton(
-                text: 'Explore'.tr,
-                onPressed: controller.close,
-                locked: controller.selectedAreasOfInterest.isEmpty,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
