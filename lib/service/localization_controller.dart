@@ -12,12 +12,46 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../model/language_model.dart';
+import 'storage/storage_service.dart';
 
 class LocalizationController extends GetxController implements GetxService {
+  final StorageService storageService = Get.find<StorageService>();
+  bool defaulLanguage = true;
+  bool defaultCurrencie = true;
+
+  Map<String, String> selectedCurrency = <String, String>{
+    'name': 'Swiss Frank',
+    'code': 'CHF',
+    'image': 'assets/images/switzerland.png',
+  };
+
+  final List<Map<String, String>> supportedCurrencies = <Map<String, String>>[
+    <String, String>{
+      'name': 'Swiss Frank',
+      'code': 'CHF',
+      'image': 'assets/images/switzerland.png',
+    },
+    <String, String>{
+      'name': 'Australian Dollar',
+      'code': 'AUD',
+      'image': 'assets/images/australia.png',
+    },
+    <String, String>{
+      'name': 'British Pound',
+      'code': 'GBP',
+      'image': 'assets/images/great_britain.png',
+    },
+    <String, String>{
+      'name': 'Canadian Dollar',
+      'code': 'CAD',
+      'image': 'assets/images/canada.png',
+    }
+  ];
+
   Map<String, Map<String, String>> translations =
       <String, Map<String, String>>{};
   Locale get locale => _locale;
-  final List<LanguageModel> _supportedLanguageList = <LanguageModel>[
+  final List<LanguageModel> supportedLanguageList = <LanguageModel>[
     LanguageModel(
       imageUrl: '🇺🇸',
       languageName: 'English',
@@ -25,16 +59,18 @@ class LocalizationController extends GetxController implements GetxService {
       countryCode: 'US',
     ),
   ];
-  final Locale _locale = const Locale(
+  Locale _locale = const Locale(
     'en',
     'US',
   );
   Future<void> init() async {
-    await _loadLanguages();
+    _loadCurrency();
+    _loadLanguage();
+    await _loadTranslations();
   }
 
-  Future<void> _loadLanguages() async {
-    for (final LanguageModel languageModel in _supportedLanguageList) {
+  Future<void> _loadTranslations() async {
+    for (final LanguageModel languageModel in supportedLanguageList) {
       final String jsonStringValues = await rootBundle
           .loadString('assets/locale/${languageModel.languageCode}.json');
       final Map<String, dynamic> mappedJson =
@@ -46,5 +82,44 @@ class LocalizationController extends GetxController implements GetxService {
       translations[
           '${languageModel.languageCode}_${languageModel.countryCode}'] = json;
     }
+  }
+
+  //change currency
+  Future<void> changeCurrency(String currency) async {
+    await storageService.shared.writeString('currency', currency);
+    defaultCurrencie = false;
+  }
+
+  //load currency
+  void _loadCurrency() {
+    try {
+      final String currency = storageService.shared.readString('currency');
+      if (currency.isNotEmpty) {
+        defaultCurrencie = false;
+      }
+    } catch (_) {}
+  }
+
+  Future<void> changeLanguage(LanguageModel languageModel) async {
+    final Locale newLocale =
+        Locale(languageModel.languageCode, languageModel.countryCode);
+    _locale = newLocale;
+    await storageService.shared
+        .writeString('language', languageModel.toJson().toString());
+    defaulLanguage = false;
+  }
+
+  void _loadLanguage() {
+    try {
+      final String languageString =
+          storageService.shared.readString('language');
+      final LanguageModel languageModel = LanguageModel.fromJson(
+        jsonDecode(languageString) as Map<String, dynamic>,
+      );
+      final Locale newLocale =
+          Locale(languageModel.languageCode, languageModel.countryCode);
+      _locale = newLocale;
+      defaulLanguage = false;
+    } catch (_) {}
   }
 }

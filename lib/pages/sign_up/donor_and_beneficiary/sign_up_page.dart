@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -25,8 +26,11 @@ class SignupPage extends GetView<SignupController> {
 
   @override
   Widget build(BuildContext context) {
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
     if (isBeneficiary) {
-      if (controller.chosenLanguage.isEmpty ||
+      print('Default language: ${localizationController.defaulLanguage}');
+      if (localizationController.defaulLanguage ||
           controller.chosenCurrency.isEmpty) {
         return const ChooseLanguagePage();
       }
