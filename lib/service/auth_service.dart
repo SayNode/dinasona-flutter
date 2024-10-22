@@ -60,7 +60,9 @@ class AuthService extends AuthServiceBase {
               'token',
               authResult.accessToken,
             );
+            await userStateService.handleUserOnLogin();
             await userStateService.init();
+
             return authResult;
           } catch (error) {
             await disconnectProviders();
@@ -141,6 +143,7 @@ class AuthService extends AuthServiceBase {
           /// Save the token
           apiService.authenticationToken = authResult.accessToken;
           await storageService.writeString('token', authResult.accessToken);
+          await userStateService.handleUserOnLogin();
           await userStateService.init();
 
           return authResult;

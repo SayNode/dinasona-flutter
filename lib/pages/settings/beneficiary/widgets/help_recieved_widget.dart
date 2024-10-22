@@ -3,9 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../../service/theme_service.dart';
+import '../../../../service/wallet_service.dart';
 import '../../../../theme/theme.dart';
 import '../../../../theme/typography.dart';
-import '../../../wallet/controllers/wallet_page_controller.dart';
 
 class HelpedRecievedWidget extends StatelessWidget {
   const HelpedRecievedWidget({
@@ -39,7 +39,7 @@ class HelpedRecievedWidget extends StatelessWidget {
             children: <Widget>[
               Obx(
                 () => Text(
-                  '\$ ${double.parse(Get.find<WalletPageController>().balanceInUSD.value.toStringAsFixed(3))}',
+                  '\$ ${double.parse(Get.find<WalletService>().balanceInUSD.value.toStringAsFixed(3))}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

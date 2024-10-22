@@ -7,6 +7,7 @@
 
 class Constants {
   static const String apiDomain = String.fromEnvironment('API_URL');
+  static const String notificationDeliveryServiceEndpoint = 'test123';
   static const String breezAPIKey = String.fromEnvironment('BREEZ_API_KEY');
   static const String greenlightClientKey =
       String.fromEnvironment('GREENLIGHT_CLIENT_KEY');

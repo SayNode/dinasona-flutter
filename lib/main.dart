@@ -23,6 +23,7 @@ import 'service/auth_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
 import 'service/main_bindings.dart';
+import 'service/messaging_service.dart';
 import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
 import 'service/user_state_service.dart';
@@ -105,7 +106,13 @@ void main() async {
     final WidgetsBinding widgetsBinding =
         WidgetsFlutterBinding.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
     // Initialize services:
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
     await initializeServices();
 
     Get.put<ThemeService>(ThemeService());
@@ -114,11 +121,6 @@ void main() async {
     await localizationController.init();
     FlutterNativeSplash.remove();
 
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-    }
     await SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[DeviceOrientation.portraitUp],
     );
@@ -138,6 +140,7 @@ Future<void> initializeServices() async {
   // Initialize services:
   await Get.find<StorageService>().init();
   Get.find<AuthService>().init();
+  await Get.put(MessagingService()).init();
 }
 
 class MyApp extends StatelessWidget {

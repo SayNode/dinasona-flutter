@@ -10,7 +10,6 @@ import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import 'controllers/create_wallet_controller.dart';
-import 'controllers/wallet_page_controller.dart';
 import 'widgets/confirm_wallet_seedphrase_input.dart';
 
 class ConfirmSeedPhrasePage extends GetView<CreateWalletController> {
@@ -18,8 +17,6 @@ class ConfirmSeedPhrasePage extends GetView<CreateWalletController> {
 
   @override
   Widget build(BuildContext context) {
-    final WalletPageController walletPageController =
-        Get.find<WalletPageController>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     if (!controller.seedPhraseShuffeled.value) {
@@ -53,19 +50,19 @@ class ConfirmSeedPhrasePage extends GetView<CreateWalletController> {
                 Obx(
                   () => ConfirmWalletSeedphraseInput(
                     controller.randomSeedPhraseIndexes[0] + 1,
-                    walletPageController.seedConfirmationInput1,
+                    controller.seedConfirmationInput1,
                   ),
                 ),
                 Obx(
                   () => ConfirmWalletSeedphraseInput(
                     controller.randomSeedPhraseIndexes[1] + 1,
-                    walletPageController.seedConfirmationInput2,
+                    controller.seedConfirmationInput2,
                   ),
                 ),
                 Obx(
                   () => ConfirmWalletSeedphraseInput(
                     controller.randomSeedPhraseIndexes[2] + 1,
-                    walletPageController.seedConfirmationInput3,
+                    controller.seedConfirmationInput3,
                   ),
                 ),
               ],
