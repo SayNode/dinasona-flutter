@@ -102,4 +102,35 @@ class NeedService extends GetxService {
       throw Exception('Failed to load needs - an exception occurred: $e');
     }
   }
+
+  Future<Map<String, int>> getAmoutOfNeeds() async {
+    try {
+      Get.find<LoggerService>().log(
+        'NeedService.getAmoutOfNeeds() called...',
+      );
+
+      const String url = '/need/total/amount';
+
+      final http.Response response = await apiService.get(
+        url,
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> needList = Map<String, dynamic>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+        );
+        Get.find<LoggerService>().log(
+          'NeedService.getAmoutOfNeeds() - got ${needList.length} needs',
+        );
+        final Map<String, int> needs =
+            Map<String, int>.from(needList['result'] as Map<String, dynamic>);
+        return needs;
+      } else {
+        throw Exception(
+          'Failed to load needs - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to load needs - an exception occurred: $e');
+    }
+  }
 }
