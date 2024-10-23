@@ -43,7 +43,7 @@ class ImportWalletController extends GetxController {
     try {
       loggerService.log('Importing wallet');
 
-      final dynamic connectionResult = await breezService.connectToNode(
+      final dynamic connectionResult = await breezService.connectToLiquid(
         seedPhrase,
       );
 

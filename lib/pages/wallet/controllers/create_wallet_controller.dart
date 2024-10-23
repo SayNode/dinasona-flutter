@@ -72,7 +72,7 @@ class CreateWalletController extends GetxController {
       showLoadingDialog(Get.context!);
     }
     await walletService.clearWalletEnvironment();
-    await breezService.connectToNode(seedPhrase.value);
+    await breezService.connectToLiquid(seedPhrase.value);
     await Get.find<UserStateService>().fetchUserInfo();
     await secureStorageService.writeString(
       'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',

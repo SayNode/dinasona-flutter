@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 
 import './util/constants.dart';
 import 'firebase_options.dart';
@@ -113,6 +114,7 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
+    await liquid_sdk.initialize();
     await initializeServices();
 
     Get.put<ThemeService>(ThemeService());
