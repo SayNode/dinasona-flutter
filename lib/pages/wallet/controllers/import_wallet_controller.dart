@@ -15,7 +15,8 @@ import 'wallet_page_controller.dart';
 class ImportWalletController extends GetxController {
   final SecureStorageService secureStorageService =
       Get.find<SecureStorageService>();
-  final WalletService walletService = Get.find<WalletService>();
+  //TODO liquid switch
+  //final WalletService walletService = Get.find<WalletService>();
   final BreezService breezService = Get.find<BreezService>();
   final LoggerService loggerService = Get.find<LoggerService>();
   final RxString seedImportErrorMessage = ''.obs;
@@ -39,11 +40,12 @@ class ImportWalletController extends GetxController {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    await walletService.clearWalletEnvironment();
+    //TODO liquid switch
+    //await walletService.clearWalletEnvironment();
     try {
       loggerService.log('Importing wallet');
 
-      final dynamic connectionResult = await breezService.connectToNode(
+      final dynamic connectionResult = await breezService.connectToLiquid(
         seedPhrase,
       );
 
@@ -67,7 +69,8 @@ class ImportWalletController extends GetxController {
         hideLoadingDialog(Get.context!);
       }
 
-      walletService.isWalletConnected.value = true;
+      //TODO liquid switch
+      //walletService.isWalletConnected.value = true;
       loggerService.log('Wallet successfully imported');
 
       Future<void>.delayed(const Duration(milliseconds: 1000), () {

@@ -1,4 +1,5 @@
-import 'package:breez_sdk/bridge_generated.dart';
+//TODO liquid switch
+/* import 'package:breez_sdk/bridge_generated.dart';
 import 'package:get/get.dart';
 
 import '../util/constants.dart';
@@ -135,3 +136,4 @@ class WalletService extends GetxService {
     }
   }
 }
+ */

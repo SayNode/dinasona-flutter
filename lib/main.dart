@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 
 import './util/constants.dart';
 import 'firebase_options.dart';
@@ -20,6 +21,7 @@ import 'model/message.dart';
 import 'pages/choose_path_page.dart';
 import 'pages/error/error_page.dart';
 import 'service/auth_service.dart';
+import 'service/breez_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
 import 'service/main_bindings.dart';
@@ -114,6 +116,7 @@ void main() async {
       );
     }
     await initializeServices();
+    await liquid_sdk.initialize();
 
     Get.put<ThemeService>(ThemeService());
     final LocalizationController localizationController =

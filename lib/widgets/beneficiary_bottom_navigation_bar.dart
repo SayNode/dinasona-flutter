@@ -49,7 +49,8 @@ enum BeneficaryItem {
       case BeneficaryItem.add:
         return const AddPage();
       case BeneficaryItem.wallet:
-        return const WalletPage();
+      //TODO liquid switch
+      //return const WalletPage();
       case BeneficaryItem.profile:
         return const BeneficiarySettingsPage();
     }

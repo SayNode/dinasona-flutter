@@ -16,7 +16,8 @@ class WalletInfoCard extends GetView<WalletPageController> {
 
   @override
   Widget build(BuildContext context) {
-    final WalletService walletService = Get.find<WalletService>();
+    //TODO liquid switch
+    //final WalletService walletService = Get.find<WalletService>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     return Container(
@@ -53,7 +54,8 @@ class WalletInfoCard extends GetView<WalletPageController> {
               Obx(
                 () => Text(
                   // ignore: use_raw_strings
-                  '\$ ${walletService.balanceInUSD.value.toStringAsFixed(2)}',
+                  //TODO liquid switch
+                  '\$ ', //${walletService.balanceInUSD.value.toStringAsFixed(2)}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),
@@ -64,7 +66,9 @@ class WalletInfoCard extends GetView<WalletPageController> {
               ),
               Obx(
                 () => Text(
-                  walletService.timeSinceLastTransaction.value,
+                  '',
+                  //TODO liquid switch
+                  //walletService.timeSinceLastTransaction.value,
                   style:
                       CustomTypography.fromColor(theme.moonstone).k16SemiBold,
                 ),

@@ -40,8 +40,9 @@ class ChosePathPage extends StatelessWidget {
                 onTap: () async {
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
-                    await Get.find<WalletService>()
-                        .connectToWalletAfterSignIn();
+                    //TODO liquid switch
+                    //await Get.find<WalletService>()
+                    //    .connectToWalletAfterSignIn();
 
                     unawaited(
                       Get.to<void>(
@@ -102,8 +103,9 @@ class ChosePathPage extends StatelessWidget {
                 onTap: () async {
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
-                    await Get.find<WalletService>()
-                        .connectToWalletAfterSignIn();
+                    //TODO liquid switch
+                    //await Get.find<WalletService>()
+                    //    .connectToWalletAfterSignIn();
 
                     unawaited(
                       Get.to<void>(

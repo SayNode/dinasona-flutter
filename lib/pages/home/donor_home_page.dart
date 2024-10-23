@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../model/need.dart';
+import '../../service/breez_service.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
@@ -117,6 +118,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    final BreezService breezService = Get.find<BreezService>();
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -131,6 +133,12 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               ),
             ),
           ),
+          TextButton(
+              onPressed: () async {
+                await breezService.connectToLiquid('');
+                await breezService.createLightningInvoice();
+              },
+              child: Text('test')),
           Gap(getRelativeHeight(16)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(20)),

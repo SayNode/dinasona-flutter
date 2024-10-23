@@ -14,7 +14,8 @@ import '../show_seed_phrase_page.dart';
 import 'create_wallet_controller.dart';
 
 class WalletPageController extends GetxController {
-  final WalletService walletService = Get.find<WalletService>();
+  //TODO liquid switch
+  //final WalletService walletService = Get.find<WalletService>();
   final SecureStorageService secureStorageService =
       Get.find<SecureStorageService>();
   BreezService breezService = Get.find<BreezService>();
@@ -28,15 +29,18 @@ class WalletPageController extends GetxController {
       showWalletOptions.value = !showWalletOptions.value;
 
   Future<void> getTransactions() async {
-    await walletService.getTransactions();
+    //TODO liquid switch
+    //await walletService.getTransactions();
   }
 
   Future<void> deleteUserWallet() async {
-    await walletService.deleteUserWallet();
+    //TODO liquid switch
+    //await walletService.deleteUserWallet();
   }
 
   Future<void> getBalanceInUSD() async {
-    await walletService.getBalanceInUSD();
+    //TODO liquid switch
+    //await walletService.getBalanceInUSD();
   }
 
   void goToSeedPhraseConfirmation() {

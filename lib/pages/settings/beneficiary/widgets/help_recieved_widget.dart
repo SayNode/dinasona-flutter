@@ -39,7 +39,8 @@ class HelpedRecievedWidget extends StatelessWidget {
             children: <Widget>[
               Obx(
                 () => Text(
-                  '\$ ${double.parse(Get.find<WalletService>().balanceInUSD.value.toStringAsFixed(3))}',
+                  //TODO liquid switch
+                  '\$ ', //${double.parse(Get.find<WalletService>().balanceInUSD.value.toStringAsFixed(3))}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

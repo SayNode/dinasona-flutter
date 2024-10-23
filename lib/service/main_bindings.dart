@@ -9,6 +9,7 @@
 
 import 'package:get/get.dart';
 
+import '../base/breez_base_service.dart';
 import '../pages/add/controllers/add_page_controller.dart';
 import '../pages/donate/controllers/donate_page_controller.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';
@@ -66,7 +67,8 @@ class MainBindings extends Bindings {
       ..lazyPut(SecureStorageService.new)
       ..lazyPut(SharedStorageService.new)
       ..lazyPut(StorageService.new)
-      ..lazyPut(WalletService.new)
+      //TODO liquid switch
+      //..lazyPut(WalletService.new)
       ..lazyPut(ThemeService.new)
       ..lazyPut(LocalizationController.new)
       ..lazyPut(BreezService.new)

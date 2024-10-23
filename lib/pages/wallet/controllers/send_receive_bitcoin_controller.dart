@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:breez_sdk/bridge_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -48,10 +47,11 @@ class SendReceiveBitcoinController extends GetxController {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    createdInvoiceBolt11.value = await breezService.createInvoice(
+    //TODO liquid switch
+    /* createdInvoiceBolt11.value = await breezService.createInvoice(
       description: userInvoiceMessage.text,
       amountInSatoshi: (double.parse(sendBTCInputBTC.text) * 100000000).round(),
-    );
+    ); */
 
     if (Get.context != null) {
       hideLoadingDialog(Get.context!);
@@ -61,7 +61,8 @@ class SendReceiveBitcoinController extends GetxController {
   }
 
   Future<void> getInvoiceAmount() async {
-    try {
+    //TODO liquid switch
+    /* try {
       sendBTCPaymentError.value = '';
       final LNInvoice invoice = await breezService.breezSDK.parseInvoice(
         sendBTCInvoiceInput.text,
@@ -94,11 +95,12 @@ class SendReceiveBitcoinController extends GetxController {
       invoiceAmountUserCurrency.value = '0.0';
       invoiceDescription.value = '';
       loggerService.log('Error getting invoice amount: $e');
-    }
+    } */
   }
 
   Future<void> sendBitcoin() async {
-    final dynamic response;
+    //TODO liquid switch
+    /* final dynamic response;
 
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
@@ -125,7 +127,7 @@ class SendReceiveBitcoinController extends GetxController {
 
     if (Get.context != null) {
       hideLoadingDialog(Get.context!);
-    }
+    } */
   }
 
   void _onPaymentChangedHandleDebounce(
