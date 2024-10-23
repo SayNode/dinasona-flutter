@@ -133,4 +133,46 @@ class NeedService extends GetxService {
       throw Exception('Failed to load needs - an exception occurred: $e');
     }
   }
+
+  Future<Need> createNewNeed(
+    String title,
+    String description,
+    String amount,
+    String status,
+    List<int> areaOfInterest,
+  ) async {
+    try {
+      Get.find<LoggerService>().log(
+        'NeedService.createNewNeed() called...',
+      );
+
+      const String url = '/need/create';
+
+      final http.Response response = await apiService.post(
+        url,
+        body: <String, dynamic>{
+          'title': title,
+          'description': description,
+          'amount': amount,
+          'status': status,
+          'area_of_interest': areaOfInterest,
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> need = Map<String, dynamic>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+        );
+        Get.find<LoggerService>().log(
+          'NeedService.createNewNeed() - created new need',
+        );
+        return Need.fromJson(need);
+      } else {
+        throw Exception(
+          'Failed to create new need - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to create new need - an exception occurred: $e');
+    }
+  }
 }

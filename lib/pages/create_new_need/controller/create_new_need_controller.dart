@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../model/need.dart';
+import '../../../service/need_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../util/popup_manager.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
@@ -15,9 +17,12 @@ class CreateNewNeedController extends GetxController {
   PageController pageController = PageController();
   TextEditingController screen1 = TextEditingController();
   TextEditingController screen3 = TextEditingController();
+  TextEditingController screen4 = TextEditingController();
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
+  NeedService needService = Get.find<NeedService>();
+  UserStateService userStateService = Get.find<UserStateService>();
   final int descriptionMaxLenth = 300;
 
   final Rx<File?> selectedImage = Rx<File?>(null);
@@ -44,10 +49,12 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapdraftButton() {
+    createNewNeed('draft');
     PopupManager.openDraftPopup();
   }
 
   void onTapPublishButton() {
+    createNewNeed('published');
     PopupManager.openPublishPopup();
   }
 
@@ -80,5 +87,15 @@ class CreateNewNeedController extends GetxController {
       tab.index,
     );
     currentTab.value = tab;
+  }
+
+  void createNewNeed(String status) {
+    needService.createNewNeed(
+      screen1.text,
+      screen4.text,
+      screen3.text,
+      status,
+      <int>[1],
+    );
   }
 }
