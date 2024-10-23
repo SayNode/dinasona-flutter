@@ -161,8 +161,7 @@ abstract class AuthServiceBase extends GetxService {
         await storageService.delete('token');
         // Disconnect other providers
         await disconnectProviders();
-        //TODO liquid switch
-        //await Get.find<WalletService>().deleteUserWallet();
+        await Get.find<WalletService>().deleteUserWallet();
       } else {
         // Unexpected status code:
         // await Get.to<void>(() => HtmlDebug(res: response.body));

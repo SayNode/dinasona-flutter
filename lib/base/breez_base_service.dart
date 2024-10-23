@@ -94,6 +94,13 @@ abstract class BreezBaseService extends GetxService {
     //await breezSDKLiquid.instance!.unregisterWebhook();
   }
 
+  Future<liquid_sdk.LNInvoice> parseInvoice(String bolt11Invoice) async {
+    final liquid_sdk.LNInvoice parsedInvoice =
+        liquid_sdk.parseInvoice(input: bolt11Invoice);
+
+    return parsedInvoice;
+  }
+
   Future<String> createInvoice(String description, int amountInSatoshi) async {
     final String bolt11Invoice = await breezSDKLiquid.createInvoice(
       description: description,

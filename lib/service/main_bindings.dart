@@ -9,7 +9,6 @@
 
 import 'package:get/get.dart';
 
-import '../base/breez_base_service.dart';
 import '../pages/add/controllers/add_page_controller.dart';
 import '../pages/donate/controllers/donate_page_controller.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';

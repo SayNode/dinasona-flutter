@@ -37,8 +37,7 @@ class PeopleHelpedWidget extends StatelessWidget {
             children: <Widget>[
               Obx(
                 () => Text(
-                  //TODO liquid switch
-                  '\$ ', //${Get.find<WalletService>().amountSentInUserCurrency.value}',
+                  '\$ ${Get.find<WalletService>().amountSentInUserCurrency.value}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

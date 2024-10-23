@@ -1,4 +1,3 @@
-////TODO liquid switch
 import 'package:flutter/material.dart';
 import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:gap/gap.dart';

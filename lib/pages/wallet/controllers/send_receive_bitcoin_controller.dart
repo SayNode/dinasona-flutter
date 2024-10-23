@@ -62,20 +62,20 @@ class SendReceiveBitcoinController extends GetxController {
   }
 
   Future<void> getInvoiceAmount() async {
-    /* try {
+    try {
       sendBTCPaymentError.value = '';
-      final LNInvoice invoice = await breezService.breezSDK.parseInvoice(
+      final LNInvoice invoice = await breezService.parseInvoice(
         sendBTCInvoiceInput.text,
       );
       bolt11Invoice.value = sendBTCInvoiceInput.text;
       invoiceDescription.value = invoice.description ?? '';
 
-      double btcAmount = invoice.amountMsat! / 100000000000;
+      double btcAmount = invoice.amountMsat!.toInt() / 100000000000;
 
       if (btcAmount.toString().contains('.') &&
           btcAmount.toString().split('.')[1].length > 20) {
         btcAmount = double.parse(
-          (invoice.amountMsat! / 100000000000).toStringAsFixed(20),
+          (invoice.amountMsat!.toInt() / 100000000000).toStringAsFixed(20),
         );
       }
 
@@ -95,7 +95,7 @@ class SendReceiveBitcoinController extends GetxController {
       invoiceAmountUserCurrency.value = '0.0';
       invoiceDescription.value = '';
       loggerService.log('Error getting invoice amount: $e');
-    } */
+    }
   }
 
   Future<void> sendBitcoin() async {

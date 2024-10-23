@@ -21,7 +21,6 @@ import 'model/message.dart';
 import 'pages/choose_path_page.dart';
 import 'pages/error/error_page.dart';
 import 'service/auth_service.dart';
-import 'service/breez_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
 import 'service/main_bindings.dart';
