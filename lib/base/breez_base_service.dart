@@ -1,38 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-//import 'package:breez_liquid/breez_liquid.dart';
 import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../util/constants.dart';
 import 'breez_sdk_instance.dart';
-
-/* var walletInfo = await breezSDKLiquid.instance!.getInfo();
-    print('Public Key: ${walletInfo.pubkey}');
-
-    final secondTest = liquid_sdk.PrepareReceiveResponse(
-        paymentMethod: liquid_sdk.PaymentMethod.liquidAddress,
-        payerAmountSat: BigInt.from(10000),
-        feesSat: BigInt.from(1000));
-    final teest = liquid_sdk.ReceivePaymentRequest(
-        description: seedPhrase, prepareResponse: secondTest);
-
-    var bip21Uri = await breezSDKLiquid.instance!.receivePayment(req: teest);
-
-    print('test: ${bip21Uri.destination}');
-    Uri uri = Uri.parse(bip21Uri.toString());
-    String address = uri.path;
-    print('New Testnet Address: $address');
-
-    breezSDKLiquid._fetchWalletData(breezSDKLiquid.instance!);
-
-    var lool =
-        await breezSDKLiquid._listPayments(sdk: breezSDKLiquid.instance!);
-    print('test: ${lool.first.amountSat}');
-
-    //print('test: ${breezSDKLiquid.instance!.listPayments(req: req)}') */
 
 abstract class BreezBaseService extends GetxService {
   BreezSDKLiquid breezSDKLiquid = BreezSDKLiquid();
