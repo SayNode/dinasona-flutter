@@ -1,8 +1,6 @@
-//TODO liquid switch
-/* import 'package:breez_sdk/bridge_generated.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:get/get.dart';
 
-import '../util/constants.dart';
 import '../util/util.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
@@ -30,16 +28,12 @@ class WalletService extends GetxService {
     super.onInit();
 
     isWalletConnected.listen((bool value) async {
-      if ((await breezService.getNodeState()) != null) {
+      if (breezService.breezSDKLiquid.instance != null) {
         if (value) {
-          await breezService.breezSDK.registerWebhook(
-            webhookUrl: Constants.notificationDeliveryServiceEndpoint,
-          );
+          await breezService.registerWebhook();
           return;
         }
-        await breezService.breezSDK.unregisterWebhook(
-          webhookUrl: Constants.notificationDeliveryServiceEndpoint,
-        );
+        await breezService.unregisterWebhook();
       }
     });
   }
@@ -55,13 +49,13 @@ class WalletService extends GetxService {
     amountSentInUserCurrency.value = 0.0;
 
     for (final Payment transaction in _transactions) {
-      if (lastTransactionTime < transaction.paymentTime) {
-        lastTransactionTime = transaction.paymentTime;
+      if (lastTransactionTime < transaction.timestamp) {
+        lastTransactionTime = transaction.timestamp;
       }
-      if (transaction.paymentType == PaymentType.Sent) {
+      if (transaction.paymentType == PaymentType.send) {
         amountSentInUserCurrency.value +=
             await currencyConversionService.convertSatoshiToUserCurrency(
-          (transaction.amountMsat / 1000).round(),
+          transaction.amountSat.toInt(),
         );
       }
 
@@ -70,7 +64,7 @@ class WalletService extends GetxService {
 
       _transactionAmounts.add(
         await currencyConversionService.convertSatoshiToUserCurrency(
-          (transaction.amountMsat / 1000).round(),
+          transaction.amountSat.toInt(),
         ),
       );
     }
@@ -88,8 +82,7 @@ class WalletService extends GetxService {
   }
 
   Future<void> getBalanceInUSD() async {
-    final int balanceInSatoshis =
-        (await breezService.getBalanceInSatoshis() / 1000).round();
+    final int balanceInSatoshis = await breezService.getBalanceInSatoshis();
 
     // ignore: no_leading_underscores_for_local_identifiers
     final double _balanceInUSD = await currencyConversionService
@@ -99,13 +92,11 @@ class WalletService extends GetxService {
 
   Future<void> clearWalletEnvironment() async {
     try {
-      await breezService.breezSDK.disconnect();
-      // ignore: empty_catches
-    } catch (e) {}
+      await breezService.disconnectFromLiquid();
+    } catch (_) {}
     try {
       await breezService.clearApplicationDocumentsDirectory();
-      // ignore: empty_catches
-    } catch (e) {}
+    } catch (_) {}
     isWalletConnected.value = false;
   }
 
@@ -117,6 +108,7 @@ class WalletService extends GetxService {
   }
 
   Future<void> connectToWalletAfterSignIn() async {
+    isWalletConnected.value = false;
     await Get.find<UserStateService>().fetchUserInfo();
     final String seedPhrase = await secureStorageService.readString(
           'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
@@ -125,7 +117,7 @@ class WalletService extends GetxService {
 
     if (seedPhrase.isNotEmpty) {
       try {
-        await breezService.connectToNode(
+        await breezService.connectToLiquid(
           seedPhrase,
         );
         await getTransactions();
@@ -136,4 +128,3 @@ class WalletService extends GetxService {
     }
   }
 }
- */

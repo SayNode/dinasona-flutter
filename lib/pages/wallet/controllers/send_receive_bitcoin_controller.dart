@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:get/get.dart';
 
 import '../../../service/breez_service.dart';
@@ -47,11 +48,11 @@ class SendReceiveBitcoinController extends GetxController {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    //TODO liquid switch
-    /* createdInvoiceBolt11.value = await breezService.createInvoice(
-      description: userInvoiceMessage.text,
-      amountInSatoshi: (double.parse(sendBTCInputBTC.text) * 100000000).round(),
-    ); */
+
+    createdInvoiceBolt11.value = await breezService.createInvoice(
+      userInvoiceMessage.text,
+      (double.parse(sendBTCInputBTC.text) * 100000000).round(),
+    );
 
     if (Get.context != null) {
       hideLoadingDialog(Get.context!);
@@ -61,7 +62,6 @@ class SendReceiveBitcoinController extends GetxController {
   }
 
   Future<void> getInvoiceAmount() async {
-    //TODO liquid switch
     /* try {
       sendBTCPaymentError.value = '';
       final LNInvoice invoice = await breezService.breezSDK.parseInvoice(
@@ -99,8 +99,7 @@ class SendReceiveBitcoinController extends GetxController {
   }
 
   Future<void> sendBitcoin() async {
-    //TODO liquid switch
-    /* final dynamic response;
+    final dynamic response;
 
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
@@ -108,7 +107,7 @@ class SendReceiveBitcoinController extends GetxController {
 
     try {
       response = await breezService.sendPayment(
-        bolt11: bolt11Invoice.value,
+        bolt11Invoice.value,
       );
     } catch (e) {
       sendBTCPaymentError.value = 'Insufficient outgoing balance'.tr;
@@ -127,7 +126,7 @@ class SendReceiveBitcoinController extends GetxController {
 
     if (Get.context != null) {
       hideLoadingDialog(Get.context!);
-    } */
+    }
   }
 
   void _onPaymentChangedHandleDebounce(

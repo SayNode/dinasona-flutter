@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 import 'package:rxdart/rxdart.dart';
 
+import 'breez_base_service.dart';
+
 class BreezSDKLiquid {
   factory BreezSDKLiquid() => _singleton;
 
@@ -21,9 +23,9 @@ class BreezSDKLiquid {
   }) async {
     try {
       _instance = await liquid_sdk.connect(req: req);
-      _initializeEventsStream(_instance!);
-      _subscribeToSdkStreams(_instance!);
-      await _fetchWalletData(_instance!);
+      _initializeEventsStream();
+      _subscribeToSdkStreams();
+      await _fetchWalletData();
     } catch (e) {
       _instance = null;
       rethrow;
@@ -40,62 +42,114 @@ class BreezSDKLiquid {
     _instance = null;
   }
 
-  Future<void> _fetchWalletData(liquid_sdk.BindingLiquidSdk sdk) async {
-    await _getInfo(sdk);
-    await _listPayments(sdk: sdk);
+  Future<void> _fetchWalletData() async {
+    await _getInfo();
+    await listPayments();
   }
 
-  Future<liquid_sdk.GetInfoResponse> _getInfo(
-    liquid_sdk.BindingLiquidSdk sdk,
-  ) async {
-    final liquid_sdk.GetInfoResponse walletInfo = await sdk.getInfo();
+  Future<liquid_sdk.GetInfoResponse> _getInfo() async {
+    final liquid_sdk.GetInfoResponse walletInfo = await _instance!.getInfo();
     _walletInfoController.add(walletInfo);
     return walletInfo;
+  }
+
+  // TODO Liquid Julien
+  Future<dynamic> prepareReceivingTransaction({
+    required int amountInSatoshi,
+    required String description,
+  }) async {
+    /* final liquid_sdk.LightningPaymentLimitsResponse currentLightningLimits =
+        await _instance!.fetchLightningLimits(); */
+
+    //print('test Minimum amount: ${currentLightningLimits.receive.minSat} sats');
+    //print('test Maximum amount: ${currentLightningLimits.receive.maxSat} sats');
+
+    /* final liquid_sdk.PrepareReceiveResponse prepareResponse =
+        await _instance!.prepareReceivePayment(
+      req: liquid_sdk.PrepareReceiveRequest(
+        paymentMethod: liquid_sdk.PaymentMethod.lightning,
+        payerAmountSat: BigInt.from(amountInSatoshi),
+      ),
+    ); */
+
+    //final BigInt receiveFeesSat = prepareResponse.feesSat;
   }
 
   Future<String> createInvoice({
     required String description,
     required int amountInSatoshi,
   }) async {
-    // Fetch the Receive lightning limits
-    final liquid_sdk.LightningPaymentLimitsResponse currentLightningLimits =
-        await _instance!.fetchLightningLimits();
-    print('test Minimum amount: ${currentLightningLimits.receive.minSat} sats');
-    print('test Maximum amount: ${currentLightningLimits.receive.maxSat} sats');
+    try {
+      // Create an invoice and set the invoice amount
+      final liquid_sdk.PrepareReceiveResponse prepareResponse =
+          await _instance!.prepareReceivePayment(
+        req: liquid_sdk.PrepareReceiveRequest(
+          paymentMethod: liquid_sdk.PaymentMethod.lightning,
+          payerAmountSat: BigInt.from(amountInSatoshi),
+        ),
+      );
 
-    // Create an invoice and set the invoice amount
-    final liquid_sdk.PrepareReceiveResponse prepareResponse =
-        await _instance!.prepareReceivePayment(
-      req: liquid_sdk.PrepareReceiveRequest(
-        paymentMethod: liquid_sdk.PaymentMethod.lightning,
-        payerAmountSat: BigInt.from(amountInSatoshi),
-      ),
-    );
+      final liquid_sdk.ReceivePaymentRequest receivePaymentRequest =
+          liquid_sdk.ReceivePaymentRequest(
+        description: description,
+        prepareResponse: prepareResponse,
+      );
 
-    // If the fees are acceptable, continue to create the Receive Payment
-    final BigInt receiveFeesSat = prepareResponse.feesSat;
-    print("test Fees: $receiveFeesSat sats");
+      final liquid_sdk.ReceivePaymentResponse invoice =
+          await _instance!.receivePayment(req: receivePaymentRequest);
 
-    final liquid_sdk.ReceivePaymentRequest receivePaymentRequest =
-        liquid_sdk.ReceivePaymentRequest(
-      description: description,
-      prepareResponse: prepareResponse,
-    );
-
-    final liquid_sdk.ReceivePaymentResponse invoice =
-        await _instance!.receivePayment(req: receivePaymentRequest);
-
-    print('test: bolt11 ${invoice.destination}');
-
-    return invoice.destination;
+      return invoice.destination;
+    } catch (e) {
+      // ignore: only_throw_errors
+      throw 'Error creating invoice: $e';
+    }
   }
 
-  Future<List<liquid_sdk.Payment>> _listPayments({
-    required liquid_sdk.BindingLiquidSdk sdk,
-  }) async {
+  Future<dynamic> sendPayment({required String bolt11}) async {
+    try {
+      final liquid_sdk.PrepareSendResponse prepareSendResponse =
+          await _instance!.prepareSendPayment(
+        req: liquid_sdk.PrepareSendRequest(destination: bolt11),
+      );
+
+      final liquid_sdk.SendPaymentResponse sendPaymentResponse =
+          await _instance!.sendPayment(
+        req:
+            liquid_sdk.SendPaymentRequest(prepareResponse: prepareSendResponse),
+      );
+
+      return sendPaymentResponse;
+    } catch (e) {
+      if (e.toString().replaceAll(RegExp(r'FrbAnyhowException\(|\)'), '') ==
+          'Invoice already paid') {
+        return 'Invoice already paid';
+      }
+      throw Exception('BreezService -- Error sending payment: $e');
+    }
+  }
+
+  Future<int> getBalanceInSatoshis() async {
+    final liquid_sdk.GetInfoResponse walletInfo = await _instance!.getInfo();
+    final BigInt balanceSat = walletInfo.balanceSat;
+    //final BigInt pendingSendSat = walletInfo.pendingSendSat;
+    //final BigInt pendingReceiveSat = walletInfo.pendingReceiveSat;
+
+    return balanceSat.toInt();
+  }
+
+  Future<List<liquid_sdk.Payment>> getPaymentHistory() async {
+    try {
+      final List<liquid_sdk.Payment> paymentsList = await listPayments();
+      return paymentsList;
+    } catch (e) {
+      throw Exception('BreezService -- Error getting payment history: $e');
+    }
+  }
+
+  Future<List<liquid_sdk.Payment>> listPayments() async {
     const liquid_sdk.ListPaymentsRequest req = liquid_sdk.ListPaymentsRequest();
     final List<liquid_sdk.Payment> paymentsList =
-        await sdk.listPayments(req: req);
+        await _instance!.listPayments(req: req);
     _paymentsController.add(paymentsList);
     return paymentsList;
   }
@@ -115,13 +169,13 @@ class BreezSDKLiquid {
 
   Stream<liquid_sdk.SdkEvent>? _breezEventsStream;
 
-  void _initializeEventsStream(liquid_sdk.BindingLiquidSdk sdk) {
-    _breezEventsStream ??= sdk.addEventListener().asBroadcastStream();
+  void _initializeEventsStream() {
+    _breezEventsStream ??= _instance!.addEventListener().asBroadcastStream();
   }
 
   /// Subscribes to SDK's event & log streams.
-  void _subscribeToSdkStreams(liquid_sdk.BindingLiquidSdk sdk) {
-    _subscribeToEventsStream(sdk);
+  void _subscribeToSdkStreams() {
+    _subscribeToEventsStream();
     _subscribeToLogStream();
   }
 
@@ -146,7 +200,7 @@ class BreezSDKLiquid {
 
   /* TODO: Liquid - Log statements are added for debugging purposes, should be removed after early development stage is complete & events are behaving as expected.*/
   /// Subscribes to SdkEvent's stream
-  void _subscribeToEventsStream(liquid_sdk.BindingLiquidSdk sdk) {
+  void _subscribeToEventsStream() {
     _breezEventsSubscription = _breezEventsStream?.listen(
       (liquid_sdk.SdkEvent event) async {
         if (event is liquid_sdk.SdkEvent_PaymentFailed) {
@@ -212,7 +266,7 @@ class BreezSDKLiquid {
             ),
           );
         }
-        await _fetchWalletData(sdk);
+        await _fetchWalletData();
       },
     );
   }

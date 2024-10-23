@@ -1,5 +1,5 @@
 //TODO liquid switch
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../service/wallet_service.dart';
@@ -18,4 +18,3 @@ class WalletPage extends StatelessWidget {
     );
   }
 }
- */

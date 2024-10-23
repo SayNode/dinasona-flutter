@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 //import 'package:breez_liquid/breez_liquid.dart';
 import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../util/constants.dart';
 import 'breez_sdk_instance.dart';
@@ -35,19 +35,9 @@ import 'breez_sdk_instance.dart';
     //print('test: ${breezSDKLiquid.instance!.listPayments(req: req)}') */
 
 abstract class BreezBaseService extends GetxService {
-  final RxBool isConnected = false.obs;
   BreezSDKLiquid breezSDKLiquid = BreezSDKLiquid();
 
-  Future<void> createLightningInvoice() async {
-    await breezSDKLiquid.createInvoice(
-      description: 'Test payment',
-      amountInSatoshi: 1000,
-    );
-  }
-
   Future<dynamic> connectToLiquid(String seedPhrase) async {
-    isConnected.value = false;
-
     try {
       // TODO Julien - Improve config after prototype is finished
       final liquid_sdk.Config defaultConfiguration = liquid_sdk.defaultConfig(
@@ -70,9 +60,66 @@ abstract class BreezBaseService extends GetxService {
           liquid_sdk.ConnectRequest(mnemonic: seedPhrase, config: fullConfig);
 
       await breezSDKLiquid.connect(req: connectRequest);
-      isConnected.value = true;
     } catch (e) {
-      isConnected.value = false;
+      // ignore: only_throw_errors
+      throw 'Error connecting to liquid: $e';
+    }
+  }
+
+  Future<void> disconnectFromLiquid() async {
+    breezSDKLiquid.disconnect();
+  }
+
+  Future<List<liquid_sdk.Payment>> getPaymentHistory() async {
+    final List<liquid_sdk.Payment> paymentsHistory =
+        await breezSDKLiquid.listPayments();
+    return paymentsHistory;
+  }
+
+  Future<int> getBalanceInSatoshis() async {
+    final int balance = await breezSDKLiquid.getBalanceInSatoshis();
+
+    return balance;
+  }
+
+  Future<void> registerWebhook() async {
+    //TODO not needed now
+    /* await breezSDKLiquid.instance!.registerWebhook(
+      webhookUrl: Constants.notificationDeliveryServiceEndpoint,
+    ); */
+  }
+
+  Future<void> unregisterWebhook() async {
+    //TODO not needed now
+    //await breezSDKLiquid.instance!.unregisterWebhook();
+  }
+
+  Future<String> createInvoice(String description, int amountInSatoshi) async {
+    final String bolt11Invoice = await breezSDKLiquid.createInvoice(
+      description: description,
+      amountInSatoshi: amountInSatoshi,
+    );
+
+    return bolt11Invoice;
+  }
+
+  Future<dynamic> sendPayment(String bolt11Invoice) async {
+    final dynamic sendPaymentResponse =
+        await breezSDKLiquid.sendPayment(bolt11: bolt11Invoice);
+
+    return sendPaymentResponse;
+  }
+
+  Future<void> clearApplicationDocumentsDirectory() async {
+    final Directory directory = await getApplicationDocumentsDirectory();
+    if (directory.existsSync()) {
+      directory.listSync().forEach((FileSystemEntity file) {
+        if (file is File) {
+          file.deleteSync();
+        } else if (file is Directory) {
+          file.deleteSync(recursive: true);
+        }
+      });
     }
   }
 }

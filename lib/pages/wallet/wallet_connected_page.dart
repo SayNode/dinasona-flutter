@@ -1,5 +1,5 @@
 //TODO liquid switch
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -112,4 +112,3 @@ class WalletConnectedPage extends GetView<WalletPageController> {
     );
   }
 }
- */

@@ -16,8 +16,7 @@ import 'wallet_page_controller.dart';
 class CreateWalletController extends GetxController {
   final SecureStorageService secureStorageService =
       Get.find<SecureStorageService>();
-  //TODO liquid switch
-  //final WalletService walletService = Get.find<WalletService>();
+  final WalletService walletService = Get.find<WalletService>();
   final BreezService breezService = Get.find<BreezService>();
 
   final WalletPageController controller = Get.find<WalletPageController>();
@@ -72,8 +71,7 @@ class CreateWalletController extends GetxController {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    //TODO liquid switch
-    //await walletService.clearWalletEnvironment();
+    await walletService.clearWalletEnvironment();
     await breezService.connectToLiquid(seedPhrase.value);
     await Get.find<UserStateService>().fetchUserInfo();
     await secureStorageService.writeString(
@@ -85,8 +83,7 @@ class CreateWalletController extends GetxController {
       hideLoadingDialog(Get.context!);
     }
 
-    //TODO liquid switch
-    //walletService.isWalletConnected.value = true;
+    walletService.isWalletConnected.value = true;
 
     Future<void>.delayed(const Duration(milliseconds: 1000), () {
       PopupManager.openWalletInfoPopup(

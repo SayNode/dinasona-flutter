@@ -49,8 +49,7 @@ enum DonorItem {
       case DonorItem.donate:
         return const DonatePage();
       case DonorItem.wallet:
-      //TODO liquid switch
-      //return const WalletPage();
+        return const WalletPage();
       case DonorItem.profile:
         return const DonorSettingsPage();
     }

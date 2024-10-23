@@ -115,8 +115,8 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
-    await initializeServices();
     await liquid_sdk.initialize();
+    await initializeServices();
 
     Get.put<ThemeService>(ThemeService());
     final LocalizationController localizationController =
