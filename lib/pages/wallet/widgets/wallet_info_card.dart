@@ -52,7 +52,6 @@ class WalletInfoCard extends GetView<WalletPageController> {
               Gap(getRelativeHeight(5)),
               Obx(
                 () => Text(
-                  // ignore: use_raw_strings
                   '\$ ${walletService.balanceInUSD.value.toStringAsFixed(2)}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),

@@ -1,5 +1,5 @@
-import 'package:breez_sdk/bridge_generated.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -45,20 +45,20 @@ class ListOfTransactions extends GetView<WalletPageController> {
                       child: Obx(
                         () => Transform.rotate(
                           angle: walletService.transactions[index].status ==
-                                  PaymentStatus.Pending
+                                  PaymentState.pending
                               ? 0
                               : walletService.transactions[index].paymentType ==
-                                      PaymentType.Received
+                                      PaymentType.receive
                                   ? 0.8
                                   : 3.9,
                           child: walletService.transactions[index].status ==
-                                  PaymentStatus.Pending
+                                  PaymentState.pending
                               ? Icon(Icons.more_horiz, color: theme.shadowed)
                               : Icon(
                                   Icons.arrow_upward,
                                   color: walletService.transactions[index]
                                               .paymentType ==
-                                          PaymentType.Received
+                                          PaymentType.receive
                                       ? theme.ferngreen
                                       : theme.inferno,
                                 ),
@@ -71,17 +71,17 @@ class ListOfTransactions extends GetView<WalletPageController> {
                       children: <Widget>[
                         Text(
                           walletService.transactions[index].status ==
-                                  PaymentStatus.Pending
+                                  PaymentState.pending
                               ? 'waiting'.tr
                               : walletService.transactions[index].status ==
-                                      PaymentStatus.Complete
+                                      PaymentState.complete
                                   ? walletService.transactions[index]
                                               .paymentType ==
-                                          PaymentType.Received
+                                          PaymentType.receive
                                       ? 'done'.tr
                                       : walletService.transactions[index]
                                                   .paymentType ==
-                                              PaymentType.Sent
+                                              PaymentType.send
                                           ? 'spent'.tr
                                           : 'closed channel'.tr
                                   : 'failed'.tr,
@@ -91,7 +91,7 @@ class ListOfTransactions extends GetView<WalletPageController> {
                         Text(
                           getTimePassedString(
                             DateTime.fromMillisecondsSinceEpoch(
-                              walletService.transactions[index].paymentTime *
+                              walletService.transactions[index].timestamp *
                                   1000,
                             ),
                           ),
@@ -110,14 +110,14 @@ class ListOfTransactions extends GetView<WalletPageController> {
                           );
                         } else {
                           return Text(
-                            '${walletService.transactions[index].paymentType == PaymentType.Received ? '+' : '-'} ${walletService.transactionAmounts[index].toStringAsFixed(3)}',
+                            '${walletService.transactions[index].paymentType == PaymentType.receive ? '+' : '-'} ${walletService.transactionAmounts[index].toStringAsFixed(3)}',
                             style: CustomTypography.fromColor(
                               walletService.transactions[index].status ==
-                                      PaymentStatus.Pending
+                                      PaymentState.pending
                                   ? theme.shadowed
                                   : walletService.transactions[index]
                                               .paymentType ==
-                                          PaymentType.Received
+                                          PaymentType.receive
                                       ? theme.ferngreen
                                       : theme.inferno,
                             ).k16SemiBold,

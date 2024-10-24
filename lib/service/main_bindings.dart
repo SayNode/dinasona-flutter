@@ -66,10 +66,10 @@ class MainBindings extends Bindings {
       ..lazyPut(SecureStorageService.new)
       ..lazyPut(SharedStorageService.new)
       ..lazyPut(StorageService.new)
+      ..lazyPut(BreezService.new)
       ..lazyPut(WalletService.new)
       ..lazyPut(ThemeService.new)
       ..lazyPut(LocalizationController.new)
-      ..lazyPut(BreezService.new)
       ..lazyPut(NeedService.new)
       ..lazyPut(CurrencyConversionService.new);
   }
