@@ -1,9 +1,10 @@
-import 'package:breez_sdk/bridge_generated.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
@@ -14,6 +15,7 @@ class ListOfTransactions extends GetView<WalletPageController> {
 
   @override
   Widget build(BuildContext context) {
+    final WalletService walletService = Get.find<WalletService>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     return Column(
@@ -28,7 +30,7 @@ class ListOfTransactions extends GetView<WalletPageController> {
             padding: EdgeInsets.only(top: getRelativeHeight(15)),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: controller.transactions.length,
+            itemCount: walletService.transactions.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 margin: EdgeInsets.only(bottom: getRelativeHeight(15)),
@@ -42,21 +44,21 @@ class ListOfTransactions extends GetView<WalletPageController> {
                       ),
                       child: Obx(
                         () => Transform.rotate(
-                          angle: controller.transactions[index].status ==
-                                  PaymentStatus.Pending
+                          angle: walletService.transactions[index].status ==
+                                  PaymentState.pending
                               ? 0
-                              : controller.transactions[index].paymentType ==
-                                      PaymentType.Received
+                              : walletService.transactions[index].paymentType ==
+                                      PaymentType.receive
                                   ? 0.8
                                   : 3.9,
-                          child: controller.transactions[index].status ==
-                                  PaymentStatus.Pending
+                          child: walletService.transactions[index].status ==
+                                  PaymentState.pending
                               ? Icon(Icons.more_horiz, color: theme.shadowed)
                               : Icon(
                                   Icons.arrow_upward,
-                                  color: controller.transactions[index]
+                                  color: walletService.transactions[index]
                                               .paymentType ==
-                                          PaymentType.Received
+                                          PaymentType.receive
                                       ? theme.ferngreen
                                       : theme.inferno,
                                 ),
@@ -68,18 +70,18 @@ class ListOfTransactions extends GetView<WalletPageController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          controller.transactions[index].status ==
-                                  PaymentStatus.Pending
+                          walletService.transactions[index].status ==
+                                  PaymentState.pending
                               ? 'waiting'.tr
-                              : controller.transactions[index].status ==
-                                      PaymentStatus.Complete
-                                  ? controller.transactions[index]
+                              : walletService.transactions[index].status ==
+                                      PaymentState.complete
+                                  ? walletService.transactions[index]
                                               .paymentType ==
-                                          PaymentType.Received
+                                          PaymentType.receive
                                       ? 'done'.tr
-                                      : controller.transactions[index]
+                                      : walletService.transactions[index]
                                                   .paymentType ==
-                                              PaymentType.Sent
+                                              PaymentType.send
                                           ? 'spent'.tr
                                           : 'closed channel'.tr
                                   : 'failed'.tr,
@@ -89,7 +91,8 @@ class ListOfTransactions extends GetView<WalletPageController> {
                         Text(
                           getTimePassedString(
                             DateTime.fromMillisecondsSinceEpoch(
-                              controller.transactions[index].paymentTime * 1000,
+                              walletService.transactions[index].timestamp *
+                                  1000,
                             ),
                           ),
                           style:
@@ -101,20 +104,20 @@ class ListOfTransactions extends GetView<WalletPageController> {
                     Obx(
                       () {
                         if (index < 0 ||
-                            index >= controller.transactionAmounts.length) {
+                            index >= walletService.transactionAmounts.length) {
                           return CircularProgressIndicator(
                             color: theme.shadowed,
                           );
                         } else {
                           return Text(
-                            '${controller.transactions[index].paymentType == PaymentType.Received ? '+' : '-'} ${controller.transactionAmounts[index].toStringAsFixed(3)}',
+                            '${walletService.transactions[index].paymentType == PaymentType.receive ? '+' : '-'} ${walletService.transactionAmounts[index].toStringAsFixed(3)}',
                             style: CustomTypography.fromColor(
-                              controller.transactions[index].status ==
-                                      PaymentStatus.Pending
+                              walletService.transactions[index].status ==
+                                      PaymentState.pending
                                   ? theme.shadowed
-                                  : controller.transactions[index]
+                                  : walletService.transactions[index]
                                               .paymentType ==
-                                          PaymentType.Received
+                                          PaymentType.receive
                                       ? theme.ferngreen
                                       : theme.inferno,
                             ).k16SemiBold,

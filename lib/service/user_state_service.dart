@@ -25,6 +25,7 @@ class UserStateService extends GetxService {
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
   Rx<User> user = User().obs;
+  String? notificationToken;
   bool _hasBeenInitialized = false;
   // ignore: strict_raw_type, always_specify_types
   final RxList userNeeds = <dynamic>[].obs;
@@ -149,6 +150,14 @@ class UserStateService extends GetxService {
     }
   }
 
+  Future<void> handleUserOnLogin() async {
+    // TODO backend not ready
+    //unawaited(updatePushNotificationToken());
+    await Get.find<UserStateService>().fetchUserInfo();
+    await Get.find<UserStateService>().fetchDonorStatistics();
+    await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+  }
+
   Future<void> fetchUserInfo() async {
     final String url = Uri.https(Constants.apiDomain, '/user-info/').toString();
     try {
@@ -252,6 +261,27 @@ class UserStateService extends GetxService {
     } catch (e) {
       logger.log('Error while updating avatar: $e');
       return false;
+    }
+  }
+
+  Future<bool> updatePushNotificationToken() async {
+    logger.log('AuthService - starting update notification token');
+    final String url =
+        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
+    final http.Response response = await apiService.patch(
+      url,
+      contentType: 'application/json',
+      body: <String, dynamic>{
+        'notification_token': notificationToken,
+      },
+    );
+    logger.log('AuthService - got response');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception(
+        'AuthService - error while updating Notification Token with status code ${response.body}',
+      );
     }
   }
 }

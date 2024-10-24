@@ -39,12 +39,14 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                     child: Center(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(256),
-                        child: Image.network(
-                          beneficiary.photoUrl,
-                          height: getRelativeHeight(200),
-                          width: getRelativeHeight(200),
-                          fit: BoxFit.cover,
-                        ),
+                        child: beneficiary.photoUrl == null
+                            ? const Icon(Icons.person)
+                            : Image.network(
+                                beneficiary.photoUrl!,
+                                height: getRelativeHeight(200),
+                                width: getRelativeHeight(200),
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ),

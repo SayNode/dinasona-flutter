@@ -3,9 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../../service/theme_service.dart';
+import '../../../../service/wallet_service.dart';
 import '../../../../theme/theme.dart';
 import '../../../../theme/typography.dart';
-import '../../../wallet/controllers/wallet_page_controller.dart';
 
 class PeopleHelpedWidget extends StatelessWidget {
   const PeopleHelpedWidget({
@@ -37,7 +37,7 @@ class PeopleHelpedWidget extends StatelessWidget {
             children: <Widget>[
               Obx(
                 () => Text(
-                  '\$ ${Get.find<WalletPageController>().amountSentInUserCurrency.value}',
+                  '\$ ${Get.find<WalletService>().amountSentInUserCurrency.value}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

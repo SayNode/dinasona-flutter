@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -146,24 +147,31 @@ class SendBitcoinPage extends GetView<SendReceiveBitcoinController> {
               ],
             ),
             Gap(getRelativeHeight(10)),
-            Row(
-              children: <Widget>[
-                Obx(
-                  () => Text(
-                    controller.sendBTCPaymentError.value.isNotEmpty
-                        ? '${'Error'.tr}:\t'
-                        : '',
-                    style:
-                        CustomTypography.fromColor(theme.shadowed).k16SemiBold,
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Obx(
+                    () => Text(
+                      controller.sendBTCPaymentError.value.isNotEmpty
+                          ? '${'Error'.tr}:\t'
+                          : '',
+                      style: CustomTypography.fromColor(theme.shadowed)
+                          .k16SemiBold,
+                    ),
                   ),
-                ),
-                Obx(
-                  () => Text(
-                    controller.sendBTCPaymentError.value,
-                    style: CustomTypography.fromColor(theme.inferno).k16Reg,
+                  Flexible(
+                    child: Obx(
+                      () => AutoSizeText(
+                        controller.sendBTCPaymentError.value,
+                        maxLines: 4,
+                        style: CustomTypography.fromColor(theme.inferno).k16Reg,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const Spacer(),
             Obx(

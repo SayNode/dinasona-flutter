@@ -24,3 +24,29 @@ class Wallet {
         'keystore': keystore,
       };
 }
+
+//TODO liquid Julien
+class PreparedReceivingTransactionStats {
+  PreparedReceivingTransactionStats(
+    this.amount,
+    this.fee,
+    this.total,
+  );
+
+  PreparedReceivingTransactionStats.fromJson(Map<String, dynamic> json)
+      : amount = json['amount'] as String,
+        fee = json['fee'] as String,
+        total = json['total'] as String;
+
+  final String amount;
+
+  final String fee;
+
+  final String total;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'amount': amount,
+        'fee': fee,
+        'total': total,
+      };
+}

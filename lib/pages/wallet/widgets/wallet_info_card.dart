@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
@@ -15,6 +16,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
 
   @override
   Widget build(BuildContext context) {
+    final WalletService walletService = Get.find<WalletService>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     return Container(
@@ -50,8 +52,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
               Gap(getRelativeHeight(5)),
               Obx(
                 () => Text(
-                  // ignore: use_raw_strings
-                  '\$ ${controller.balanceInUSD.value.toStringAsFixed(2)}',
+                  '\$ ${walletService.balanceInUSD.value.toStringAsFixed(2)}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),
@@ -62,7 +63,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
               ),
               Obx(
                 () => Text(
-                  controller.timeSinceLastTransaction.value,
+                  walletService.timeSinceLastTransaction.value,
                   style:
                       CustomTypography.fromColor(theme.moonstone).k16SemiBold,
                 ),

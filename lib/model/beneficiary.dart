@@ -33,7 +33,7 @@ class Beneficiary {
       name: json['name'] as String? ?? 'Anonymous',
       location: json['location'] as String? ?? 'Location hidden',
       email: json['email'] as String? ?? 'Email hidden',
-      photoUrl: json['photo_url'] as String? ?? '',
+      photoUrl: json['photo_url'] as String?,
       dateOfBirth: json['date_of_birth'] == null
           ? null
           : format.parse(
@@ -62,7 +62,7 @@ class Beneficiary {
   final String name;
   final String location;
   final String email;
-  final String photoUrl;
+  final String? photoUrl;
   final DateTime? dateOfBirth;
   final Gender gender;
   final String bio;

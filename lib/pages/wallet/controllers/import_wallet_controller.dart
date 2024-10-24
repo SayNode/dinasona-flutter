@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../service/breez_service.dart';
 import '../../../service/logger_service.dart';
 import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
@@ -14,7 +15,8 @@ import 'wallet_page_controller.dart';
 class ImportWalletController extends GetxController {
   final SecureStorageService secureStorageService =
       Get.find<SecureStorageService>();
-  final WalletPageController controller = Get.find<WalletPageController>();
+  final WalletService walletService = Get.find<WalletService>();
+  final BreezService breezService = Get.find<BreezService>();
   final LoggerService loggerService = Get.find<LoggerService>();
   final RxString seedImportErrorMessage = ''.obs;
   final RxList<String> reactiveImportSeedInputs = <String>[''].obs;
@@ -37,12 +39,11 @@ class ImportWalletController extends GetxController {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    await controller.clearWalletEnvironment();
+    await walletService.clearWalletEnvironment();
     try {
       loggerService.log('Importing wallet');
 
-      final dynamic connectionResult =
-          await controller.breezService.connectToNode(
+      final dynamic connectionResult = await breezService.connectToLiquid(
         seedPhrase,
       );
 
@@ -55,11 +56,6 @@ class ImportWalletController extends GetxController {
         return;
       }
 
-      Get.find<WalletService>().createWalletFromSeedWords(
-        'password',
-        seedPhrase.split(' '),
-      );
-
       await Get.find<UserStateService>().fetchUserInfo();
       await secureStorageService.writeString(
         'walletSeedPhrase${Get.find<UserStateService>().user.value.email}',
@@ -71,7 +67,7 @@ class ImportWalletController extends GetxController {
         hideLoadingDialog(Get.context!);
       }
 
-      controller.isWalletConnected.value = true;
+      walletService.isWalletConnected.value = true;
       loggerService.log('Wallet successfully imported');
 
       Future<void>.delayed(const Duration(milliseconds: 1000), () {

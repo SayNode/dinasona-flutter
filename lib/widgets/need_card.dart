@@ -56,24 +56,18 @@ class NeedCard extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(128),
-                            child: Stack(
+                            child: const Stack(
                               children: <Widget>[
-                                Image.network(
-                                  need.beneficiary.photoUrl,
-                                  height: getRelativeHeight(52),
-                                  width: getRelativeHeight(52),
-                                  errorBuilder: (
-                                    BuildContext context,
-                                    Object error,
-                                    StackTrace? stackTrace,
-                                  ) =>
-                                      Icon(
-                                    Icons.person,
-                                    size: getRelativeHeight(52),
-                                    color: theme.graphite,
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
+                                //! the following code block is commented out because we are waiting to fix the cloundfront issue
+                                // if (need.beneficiary.photoUrl == null)
+                                Icon(Icons.person),
+                                // else
+                                //   Image.network(
+                                //     need.beneficiary.photoUrl!,
+                                //     height: getRelativeHeight(52),
+                                //     width: getRelativeHeight(52),
+                                //     fit: BoxFit.cover,
+                                //   ),
                               ],
                             ),
                           ),

@@ -5,8 +5,13 @@
 //
 // https://saynode.ch
 
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
+
 class Constants {
   static const String apiDomain = String.fromEnvironment('API_URL');
+  static const String notificationDeliveryServiceEndpoint = 'test123';
+  static const liquid_sdk.LiquidNetwork networkType =
+      liquid_sdk.LiquidNetwork.testnet;
   static const String breezAPIKey = String.fromEnvironment('BREEZ_API_KEY');
   static const String greenlightClientKey =
       String.fromEnvironment('GREENLIGHT_CLIENT_KEY');
