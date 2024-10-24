@@ -138,9 +138,9 @@ class NeedService extends GetxService {
     String title,
     String description,
     String amount,
-    String status,
-    List<AreaOfInterest> areaOfInterest,
-  ) async {
+    List<AreaOfInterest> areaOfInterest, {
+    List<String> images = const <String>[],
+  }) async {
     try {
       Get.find<LoggerService>().log(
         'NeedService.createNewNeed() called...',
@@ -148,13 +148,13 @@ class NeedService extends GetxService {
 
       const String url = '/need/create';
 
-      final http.Response response = await apiService.post(
+      final http.Response response = await apiService.multipartFilePost(
         url,
+        images,
         body: <String, dynamic>{
           'title': title,
           'description': description,
           'amount': amount,
-          'status': status,
           'area_of_interest': areaOfInterest
               .map(
                 (AreaOfInterest e) => (e.index + 1).toString(),

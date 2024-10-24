@@ -139,6 +139,56 @@ abstract class ApiServiceInterface extends GetxService {
     return response;
   }
 
+  Future<http.Response> multipartFilePost(
+    String path,
+    List<String> filePaths, {
+    Map<String, dynamic>? body,
+    String? contentType,
+    Map<String, dynamic>? queryParameters,
+    bool omitBearerToken = false,
+    bool log = false,
+  }) async {
+    final Uri url = Uri.https(Constants.apiDomain, path, queryParameters);
+    if (log) {
+      loggerService.log(
+        'API - called POST at $url',
+      );
+    }
+    final http.MultipartRequest request = http.MultipartRequest('POST', url);
+
+    for (int i = 0; i < filePaths.length; i++) {
+      request.files
+          .add(await http.MultipartFile.fromPath('images', filePaths[i]));
+    }
+    request.headers.addAll(<String, String>{
+      'key': Constants.apiKey,
+      'Content-Type': contentType ?? 'application/json',
+      ...(omitBearerToken
+          ? <String, String>{}
+          : <String, String>{
+              HttpHeaders.authorizationHeader: 'Bearer $authenticationToken',
+            }),
+    });
+    if (body != null) {
+      request.fields.addAll(
+        body.map(
+          (String key, dynamic value) =>
+              MapEntry<String, String>(key, value.toString()),
+        ),
+      );
+    }
+
+    final http.StreamedResponse res = await request.send();
+    final http.Response response = await http.Response.fromStream(res);
+
+    if (log) {
+      loggerService.log(
+        'API - MultipartPost to queryParameters - Got ${response.statusCode} with body: ${response.body}',
+      );
+    }
+    return response;
+  }
+
   /// Get request to the backend.
   /// [path] the path to the endpoint.
   Future<http.Response> get(

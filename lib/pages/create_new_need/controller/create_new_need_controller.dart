@@ -50,12 +50,12 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapdraftButton() {
-    createNewNeed('draft');
+    createNewNeed();
     PopupManager.openDraftPopup();
   }
 
   void onTapPublishButton() {
-    createNewNeed('published');
+    createNewNeed();
     PopupManager.openPublishPopup();
   }
 
@@ -98,13 +98,16 @@ class CreateNewNeedController extends GetxController {
     currentTab.value = tab;
   }
 
-  void createNewNeed(String status) {
+  void createNewNeed() {
     needService.createNewNeed(
       screen1.text,
       screen4.text,
       screen3.text,
-      status,
       selectedAreasOfInterest,
+      images: <String>[
+        if (selectedImage.value != null) selectedImage.value!.path,
+        if (selectedImage2.value != null) selectedImage2.value!.path,
+      ],
     );
   }
 }
