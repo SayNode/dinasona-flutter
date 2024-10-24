@@ -139,7 +139,7 @@ class NeedService extends GetxService {
     String description,
     String amount,
     String status,
-    List<int> areaOfInterest,
+    List<String> areaOfInterest,
   ) async {
     try {
       Get.find<LoggerService>().log(

@@ -35,10 +35,7 @@ class NeedScreen2 extends GetView<CreateNewNeedController> {
                 AreaOfInterestChip(
                   field: field,
                   selected: controller.selectedAreasOfInterest.contains(field),
-                  onTap: () =>
-                      controller.selectedAreasOfInterest.contains(field)
-                          ? controller.selectedAreasOfInterest.remove(field)
-                          : controller.selectedAreasOfInterest.add(field),
+                  onTap: () => controller.onSelectAreaOfInterest(field),
                 ),
             ],
           ),
