@@ -139,7 +139,7 @@ class NeedService extends GetxService {
     String description,
     String amount,
     String status,
-    List<String> areaOfInterest,
+    List<AreaOfInterest> areaOfInterest,
   ) async {
     try {
       Get.find<LoggerService>().log(
@@ -155,7 +155,11 @@ class NeedService extends GetxService {
           'description': description,
           'amount': amount,
           'status': status,
-          'area_of_interest': areaOfInterest,
+          'area_of_interest': areaOfInterest
+              .map(
+                (AreaOfInterest e) => e.index.toString(),
+              )
+              .toList(),
         },
       );
       if (response.statusCode == 200) {
