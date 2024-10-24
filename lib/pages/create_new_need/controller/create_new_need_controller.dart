@@ -21,7 +21,7 @@ class CreateNewNeedController extends GetxController {
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
-  List<String> selectedAreasOfInterestName = <String>[];
+  List<String> selectedAreaOfInterestName = <String>[];
   NeedService needService = Get.find<NeedService>();
   UserStateService userStateService = Get.find<UserStateService>();
   final int descriptionMaxLenth = 300;
@@ -71,10 +71,10 @@ class CreateNewNeedController extends GetxController {
   void onSelectAreaOfInterest(AreaOfInterest field) {
     if (selectedAreasOfInterest.contains(field)) {
       selectedAreasOfInterest.remove(field);
-      selectedAreasOfInterestName.remove(field.name);
+      selectedAreaOfInterestName.remove(field.name);
     } else {
       selectedAreasOfInterest.add(field);
-      selectedAreasOfInterestName.add(field.name);
+      selectedAreaOfInterestName.add(field.name);
     }
   }
 
@@ -106,7 +106,7 @@ class CreateNewNeedController extends GetxController {
       screen4.text,
       screen3.text,
       status,
-      selectedAreasOfInterestName,
+      selectedAreaOfInterestName,
     );
   }
 }
