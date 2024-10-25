@@ -9,17 +9,17 @@ import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
-import 'controllers/send_receive_bitcoin_controller.dart';
+import 'controllers/send_payment_controller.dart';
 import 'widgets/qr_code_scanner_page.dart';
 
-class SendBitcoinPage extends GetView<SendReceiveBitcoinController> {
+class SendBitcoinPage extends GetView<SendPaymentController> {
   const SendBitcoinPage({this.bolt11InvoiceFromQRCode = '', super.key});
 
   final String? bolt11InvoiceFromQRCode;
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SendReceiveBitcoinController());
+    Get.put(SendPaymentController());
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
