@@ -9,7 +9,6 @@
 
 import 'package:get/get.dart';
 
-import '../pages/add/controllers/add_page_controller.dart';
 import '../pages/donate/controllers/donate_page_controller.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';
 import '../pages/home/controllers/donor_home_page_controller.dart';
@@ -87,7 +86,6 @@ class MainBindings extends Bindings {
       ..lazyPut(BeneficiaryHomePageController.new, fenix: true)
       ..lazyPut(BeneficiaryProfilePageController.new, fenix: true)
       ..lazyPut(WalletPageController.new, fenix: true)
-      ..lazyPut(AddPageController.new, fenix: true)
       ..lazyPut(DonorPersonalDetailsController.new, fenix: true)
       ..lazyPut(AvatarWidgetController.new, fenix: true)
       ..lazyPut(ChangePasswordController.new, fenix: true)

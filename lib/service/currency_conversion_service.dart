@@ -4,12 +4,15 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../theme/theme.dart';
+import 'localization_controller.dart';
 import 'logger_service.dart';
 import 'theme_service.dart';
 
 class CurrencyConversionService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
   final CustomTheme theme = Get.put(ThemeService()).theme;
+  final LocalizationController localizationController =
+      Get.find<LocalizationController>();
   bool snackBarDebouncing = false;
   bool currencyConversionRateDebouncing = false;
   double conversionRateBTCUSD = 0;
@@ -27,7 +30,7 @@ class CurrencyConversionService extends GetxService {
         response = await http.get(
           Uri.parse(
             // TODO replace with the correct currency
-            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency['code']}',
           ),
         );
         Future<void>.delayed(const Duration(milliseconds: 2000), () {
