@@ -127,7 +127,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
                   onPressed: () {
                     controller.createInvoice();
                   },
-                  locked: double.parse(controller.sendBTCInputCheck.value) <= 0,
+                  locked: double.parse(controller.sendBTCInputCheck.value) < 1,
                   color: theme.amberglow,
                 ),
               ),
