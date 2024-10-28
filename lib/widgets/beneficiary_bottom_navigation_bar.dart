@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-import '../pages/add/add_page.dart';
+import '../pages/create_new_need/create_new_need.dart';
 import '../pages/home/beneficary_home_page.dart';
 import '../pages/settings/beneficiary/pages/beneficiary_settings_page.dart';
 import '../pages/wallet/wallet_page.dart';
@@ -47,7 +47,7 @@ enum BeneficaryItem {
       case BeneficaryItem.home:
         return const BeneficiaryHomePage();
       case BeneficaryItem.add:
-        return const AddPage();
+        return const CreateNewNeed();
       case BeneficaryItem.wallet:
         return const WalletPage();
       case BeneficaryItem.profile:

@@ -117,6 +117,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
