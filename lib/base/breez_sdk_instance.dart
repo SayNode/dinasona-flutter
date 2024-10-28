@@ -199,6 +199,7 @@ class BreezSDKLiquid {
 
   Stream<liquid_sdk.SdkEvent>? _breezEventsStream;
 
+  // ignore: unused_element
   void _initializeEventsStream() {
     try {
       _breezEventsStream ??= _instance!.addEventListener().asBroadcastStream();
@@ -206,6 +207,7 @@ class BreezSDKLiquid {
   }
 
   /// Subscribes to SDK's event & log streams.
+  // ignore: unused_element
   void _subscribeToSdkStreams() {
     try {
       //_subscribeToEventsStream();
@@ -234,6 +236,7 @@ class BreezSDKLiquid {
 
   /* TODO: Liquid - Log statements are added for debugging purposes, should be removed after early development stage is complete & events are behaving as expected.*/
   /// Subscribes to SdkEvent's stream
+  // ignore: unused_element
   void _subscribeToEventsStream() {
     try {
       _breezEventsSubscription = _breezEventsStream?.listen(
@@ -313,6 +316,7 @@ class BreezSDKLiquid {
   Stream<liquid_sdk.LogEntry> get logStream => _logStreamController.stream;
 
   /// Subscribes to SDK's logs stream
+  // ignore: unused_element
   void _subscribeToLogStream() {
     try {
       // ignore: unnecessary_lambdas
