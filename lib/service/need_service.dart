@@ -157,7 +157,7 @@ class NeedService extends GetxService {
           'amount': amount,
           'area_of_interest': areaOfInterest
               .map(
-                (AreaOfInterest e) => (e.index + 1).toString(),
+                (AreaOfInterest e) => e.index + 1,
               )
               .toList(),
         },
