@@ -11,7 +11,6 @@ import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../show_seed_phrase_page.dart';
-import 'create_wallet_controller.dart';
 
 class WalletPageController extends GetxController {
   final WalletService walletService = Get.find<WalletService>();
@@ -40,8 +39,6 @@ class WalletPageController extends GetxController {
   }
 
   void goToSeedPhraseConfirmation() {
-    Get.put(CreateWalletController()).seedPhrase.value =
-        breezService.generateSeedPhrase();
     Get.to<void>(() => const ShowSeedPhrasePage());
   }
 

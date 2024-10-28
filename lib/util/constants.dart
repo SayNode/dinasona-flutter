@@ -9,9 +9,10 @@ import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 
 class Constants {
   static const String apiDomain = String.fromEnvironment('API_URL');
-  static const String notificationDeliveryServiceEndpoint = 'test123';
+  static const String notificationDeliveryServiceEndpoint =
+      'https://webhook.site/382617b1-a72c-4de4-ba08-5ca192a65dcc?needId=123&donationId=123';
   static const liquid_sdk.LiquidNetwork networkType =
-      liquid_sdk.LiquidNetwork.testnet;
+      liquid_sdk.LiquidNetwork.mainnet;
   static const String breezAPIKey = String.fromEnvironment('BREEZ_API_KEY');
   static const String greenlightClientKey =
       String.fromEnvironment('GREENLIGHT_CLIENT_KEY');

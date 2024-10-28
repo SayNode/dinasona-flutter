@@ -86,7 +86,9 @@ class ImportWalletPage extends GetView<ImportWalletController> {
                   }
 
                   if (importSeedBuffer.toString().isNotEmpty) {
-                    controller.importWallet(importSeedBuffer.toString());
+                    controller.importWallet(
+                      importSeedBuffer.toString().replaceAll('  ', ' '),
+                    );
                   }
                 },
                 color: theme.amberglow,

@@ -60,9 +60,9 @@ class LoginController extends GetxController {
           email.clear();
           unawaited(
             Get.to<void>(
-              () => isBeneficiary
-                  ? const BeneficiaryRootPage()
-                  : const DonorRootPage(),
+              () => Get.find<UserStateService>().user.value.isDonor
+                  ? const DonorRootPage()
+                  : const BeneficiaryRootPage(),
             ),
           );
         } else {

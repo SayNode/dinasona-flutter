@@ -13,6 +13,45 @@ class CurrencyConversionService extends GetxService {
   bool snackBarDebouncing = false;
   bool currencyConversionRateDebouncing = false;
   double conversionRateBTCUSD = 0;
+  // TODO change this
+  double conversionRateFiatCHF = 0.87;
+
+  Future<double> fetchFiatCHFRate() async {
+    http.Response response = http.Response('', 999);
+
+    try {
+      if (!currencyConversionRateDebouncing) {
+        currencyConversionRateDebouncing = true;
+        response = await http.get(
+          Uri.parse(
+            // TODO replace with the correct currency
+            'https://api.coingecko.com/api/v3/simple/price?ids=usd&vs_currencies=chf',
+          ),
+        );
+        Future<void>.delayed(const Duration(milliseconds: 2000), () {
+          currencyConversionRateDebouncing = false;
+        });
+      }
+      if (response.statusCode == 999) {
+        return conversionRateFiatCHF;
+      }
+      if (response.statusCode == 200) {
+        // ignore: always_specify_types
+        final data = json.decode(response.body);
+        // ignore: avoid_dynamic_calls, join_return_with_assignment
+        conversionRateFiatCHF = double.parse(data['usd']['chf'].toString());
+        return conversionRateFiatCHF;
+      } else if (response.statusCode == 429) {
+        return conversionRateFiatCHF;
+      } else {
+        throw Exception(
+          'Failed to load conversion rate with status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to load conversion rate: $e');
+    }
+  }
 
   Future<double> fetchConversionRateBTCUSD() async {
     http.Response response = http.Response('', 999);
@@ -45,21 +84,6 @@ class CurrencyConversionService extends GetxService {
         return conversionRateBTCUSD;
       } else if (response.statusCode == 429) {
         return conversionRateBTCUSD;
-        /* if (!snackBarDebouncing) {
-          snackBarDebouncing = true;
-          Get.snackbar(
-            'Coingecko API rate limit reached',
-            'This needs to be looked into before launching the app.',
-            colorText: theme.snowfall,
-            backgroundColor: theme.amberglow,
-          );
-          Future<void>.delayed(const Duration(milliseconds: 1000), () {
-            snackBarDebouncing = false;
-          });
-        }
-        throw Exception(
-          'Failed to load conversion rate with status code: ${response.statusCode}',
-        ); */
       } else {
         throw Exception(
           'Failed to load conversion rate with status code: ${response.statusCode}',
