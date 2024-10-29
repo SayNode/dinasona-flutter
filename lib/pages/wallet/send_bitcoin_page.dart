@@ -25,14 +25,14 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      controller.bolt11Invoice.value = bolt11InvoiceFromQRCode ?? '';
-      controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
-      controller.sendBTCPaymentError.value = '';
-      controller.invoiceDescription.value = '';
-      controller.sendPaymentTransactionFee.value = 0;
-      controller.sendPaymentSayNodeFee.value = 0;
-      await controller.getInvoiceAmount();
-      unawaited(controller.getFees());
+      //controller.bolt11Invoice.value = bolt11InvoiceFromQRCode ?? '';
+      //controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
+      //controller.sendBTCPaymentError.value = '';
+      //controller.invoiceDescription.value = '';
+      //controller.sendPaymentTransactionFee.value = 0;
+      //controller.sendPaymentSayNodeFee.value = 0;
+      //await controller.getInvoiceAmount();
+      //unawaited(controller.getFees());
     });
 
     return CustomScaffold(
@@ -208,7 +208,8 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
                 onPressed: () {
                   controller.sendPaymentWithFee();
                 },
-                locked: controller.bolt11Invoice.value == '',
+                locked: controller.bolt11Invoice.value == '' ||
+                    controller.feesCalculated.value == false,
               ),
             ),
             Gap(getRelativeHeight(30)),

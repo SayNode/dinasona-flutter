@@ -18,7 +18,7 @@ class ReceivePaymentController extends GetxController {
   TextEditingController userInvoiceMessage = TextEditingController();
   final TextEditingController sendBTCInputBTC =
       TextEditingController(text: '0.0');
-  RxString sendBTCInputCheck = '0.0'.obs;
+  RxString sendBTCUserCurrencyInputCheck = '0.0'.obs;
   final TextEditingController sendBTCInputUserCurrency =
       TextEditingController(text: '0.0');
 
@@ -57,7 +57,7 @@ class ReceivePaymentController extends GetxController {
   void _onPaymentChangedHandleDebounce(
     bool isBTCInput,
   ) {
-    sendBTCInputCheck.value = sendBTCInputBTC.text;
+    sendBTCUserCurrencyInputCheck.value = sendBTCInputUserCurrency.text;
     if (_isDebouncing) return;
 
     if (_debounce.isActive) _debounce.cancel();

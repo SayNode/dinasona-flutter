@@ -99,7 +99,7 @@ class CurrencyConversionService extends GetxService {
   ) async {
     try {
       final double rate = await fetchConversionRateBTCUSD();
-
+      print('test rate: $rate');
       return amountInUserCurrency * (1 / rate);
     } catch (e) {
       logger.log('Failed to convert user currency to bitcoin: $e');

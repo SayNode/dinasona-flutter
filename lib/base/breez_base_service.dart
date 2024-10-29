@@ -10,6 +10,7 @@ import 'breez_sdk_instance.dart';
 
 abstract class BreezBaseService extends GetxService {
   BreezSDKLiquid breezSDKLiquid = BreezSDKLiquid();
+  //breezSDKLiquid.
 
   Future<dynamic> connectToLiquid(String seedPhrase) async {
     try {

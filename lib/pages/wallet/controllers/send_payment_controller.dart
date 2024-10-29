@@ -32,16 +32,25 @@ class SendPaymentController extends GetxController {
   final RxInt sendPaymentSayNodeFee = 0.obs;
   late PrepareSendResponse preparedMainTransation;
   late PrepareSendResponse preparedSayNodeTransaction;
+  final RxBool feesCalculated = false.obs;
+  final RxBool mainTransactionWentThrough = false.obs;
 
   Future<void> getFees() async {
+    feesCalculated.value = false;
+    int tmpTransactionfee = 0;
+
+    if (sendBTCPaymentError.value.isNotEmpty) {
+      return;
+    }
     if (bolt11Invoice.value.isEmpty) {
+      sendPaymentTransactionFee.value = 0;
+      sendPaymentSayNodeFee.value = 0;
       return;
     }
     if (double.parse(invoiceAmountUserCurrency.value) >=
         Get.find<WalletService>().balanceInUSD.value) {
       sendBTCPaymentError.value = 'Insufficient balance'.tr;
     }
-    int tmpTransactionfee = 0;
     try {
       // Prepare main transaction
       preparedMainTransation =
@@ -60,9 +69,17 @@ class SendPaymentController extends GetxController {
           (await currencyConversionService.fetchFiatCHFRate()) *
               saynodeVariableFeeInUserCurrency;
 
-      if (saynodeVariableFeeInCHF >= 0.5) {
+      final double breezMinimumTransactionAmountInCHF =
+          (await currencyConversionService.fetchFiatCHFRate()) *
+              (await currencyConversionService
+                  .convertBitcoinToUserCurrency(0.00001));
+
+      if (saynodeVariableFeeInCHF >= 0.5 &&
+          saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
         sendPaymentSayNodeFee.value =
             ((double.parse(invoiceAmountBTC.value) * 100000000) * 0.01).toInt();
+      } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
+        sendPaymentSayNodeFee.value = 1000;
       } else {
         sendPaymentSayNodeFee.value =
             ((await currencyConversionService.convertUserCurrencyToBitcoin(
@@ -80,11 +97,20 @@ class SendPaymentController extends GetxController {
       preparedSayNodeTransaction =
           await breezService.prepareSendingTransaction(sayNodeFeeInvoice);
 
+      // Transaction fees are the sum of the Main transaction fee and the SayNode transaction fee
       sendPaymentTransactionFee.value =
           tmpTransactionfee + preparedSayNodeTransaction.feesSat.toInt();
-    } catch (_) {
+    } catch (e) {
       // Invalid invoice provided
+      loggerService.log('Error getting invoice: $e');
+      if (e.toString().contains('Invoice has expired')) {
+        sendBTCPaymentError.value = 'Invoice has expired'.tr;
+      } else {
+        sendBTCPaymentError.value = 'Invoice is invalid'.tr;
+      }
+      return;
     }
+    feesCalculated.value = true;
   }
 
   Future<Map<String, double>> getInvoiceAmount() async {
@@ -172,7 +198,36 @@ class SendPaymentController extends GetxController {
     }
   }
 
+  Future<void> waitForTransactionCompletion() async {
+    const Duration listeningDuration = Duration(minutes: 1);
+
+    final Timer timer = Timer(listeningDuration, () {
+      // Main transaction timed out
+      // TODO add popup info
+      return;
+    });
+
+    while (!mainTransactionWentThrough.value) {
+      await Future<void>.delayed(const Duration(seconds: 2));
+
+      if (!timer.isActive) {
+        break;
+      }
+    }
+
+    // finished before timeout
+    if (mainTransactionWentThrough.value) {
+      timer.cancel();
+      return;
+    }
+  }
+
   Future<void> sendPaymentWithFee() async {
+    if (Get.context != null) {
+      showLoadingDialog(Get.context!);
+    }
+
+    mainTransactionWentThrough.value = false;
     final dynamic mainTransactionPaymentResponse =
         await sendBitcoin(preparedSendResponse: preparedMainTransation);
 
@@ -182,12 +237,26 @@ class SendPaymentController extends GetxController {
           mainTransactionPaymentResponse.payment.status ==
               PaymentState.timedOut) {
         sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+
+        if (Get.context != null) {
+          hideLoadingDialog(Get.context!);
+        }
+
         return;
       }
     } else {
       sendBTCPaymentError.value = mainTransactionPaymentResponse.toString();
+
+      if (Get.context != null) {
+        hideLoadingDialog(Get.context!);
+      }
+
       return;
     }
+
+    // Currently can't do two transactions simultaneously
+    // Therefore we wait for the main transaction
+    await waitForTransactionCompletion();
 
     final dynamic sayNodeFeeTransactionPaymentResponse =
         await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
@@ -198,6 +267,11 @@ class SendPaymentController extends GetxController {
           sayNodeFeeTransactionPaymentResponse.payment.status ==
               PaymentState.timedOut) {
         sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+
+        if (Get.context != null) {
+          hideLoadingDialog(Get.context!);
+        }
+
         return;
       } else {
         Future<void>.delayed(
@@ -206,11 +280,16 @@ class SendPaymentController extends GetxController {
         );
         await Get.find<WalletService>().getTransactions();
         await Get.find<WalletService>().getBalanceInUSD();
+
         Get.back<void>();
       }
     } else {
       sendBTCPaymentError.value =
           sayNodeFeeTransactionPaymentResponse.toString();
+    }
+
+    if (Get.context != null) {
+      hideLoadingDialog(Get.context!);
     }
   }
 
@@ -218,27 +297,16 @@ class SendPaymentController extends GetxController {
     PrepareSendResponse? preparedSendResponse,
     String? bolt11Invoice,
   }) async {
-    if (Get.context != null) {
-      showLoadingDialog(Get.context!);
-    }
-
     try {
       final dynamic paymentResponse = await breezService.sendPayment(
         preparedSendData: preparedSendResponse,
         bolt11Invoice: bolt11Invoice,
       );
 
-      if (Get.context != null) {
-        hideLoadingDialog(Get.context!);
-      }
-
       return paymentResponse;
     } catch (e) {
       sendBTCPaymentError.value = 'Insufficient outgoing balance'.tr;
       loggerService.log('Error sending payment: $e');
-      if (Get.context != null) {
-        hideLoadingDialog(Get.context!);
-      }
       return 'Invoice already paid or expired';
     }
   }

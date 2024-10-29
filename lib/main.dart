@@ -114,6 +114,7 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
+
     await liquid_sdk.initialize();
     await initializeServices();
 
