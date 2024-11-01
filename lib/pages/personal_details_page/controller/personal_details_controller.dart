@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../service/theme_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../create_new_need/create_new_need.dart';
 
 enum Gender {
@@ -29,7 +30,7 @@ class PersonalDetailsController extends GetxController {
       TextEditingController();
   final int descriptionMaxLenth = 300;
   final Rx<File?> selectedImage = Rx<File?>(null);
-
+  UserStateService userState = Get.find<UserStateService>();
   set selectedGender(Gender value) {
     _selectedGender.value = value;
   }
@@ -64,6 +65,7 @@ class PersonalDetailsController extends GetxController {
 
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
+      await userState.updateAvatar(file: selectedImage.value!);
     }
   }
 

@@ -13,6 +13,24 @@ class LanguageModel {
     required this.languageCode,
   });
 
+  factory LanguageModel.fromJson(Map<String, dynamic> json) {
+    return LanguageModel(
+      imageUrl: json['imageUrl'] as String,
+      languageName: json['languageName'] as String,
+      countryCode: json['countryCode'] as String,
+      languageCode: json['languageCode'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'imageUrl': imageUrl,
+      'languageName': languageName,
+      'countryCode': countryCode,
+      'languageCode': languageCode,
+    };
+  }
+
   String imageUrl;
   String languageName;
   String languageCode;

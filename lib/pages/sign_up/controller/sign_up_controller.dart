@@ -12,6 +12,11 @@ import '../../root/beneficiary_root_page.dart';
 import '../../root/donor_root_page.dart';
 
 class SignupController extends GetxController {
+  //Services
+  final AuthService authService = Get.put(AuthService());
+  final UserStateService userStateService = Get.find<UserStateService>();
+
+  //Variables
   RxBool showPassword = false.obs;
   final Password passwordStrength = Password();
   final TextEditingController password = TextEditingController();
@@ -20,9 +25,6 @@ class SignupController extends GetxController {
   RxString error = ''.obs;
   final Rx<GlobalKey<FormState>> registrationFormKey =
       GlobalKey<FormState>().obs;
-  final AuthService authService = Get.put(AuthService());
-  UserStateService userStateService = Get.find<UserStateService>();
-  RxString chosenLanguage = ''.obs;
   RxString chosenCurrency = ''.obs;
   RxBool isCreateAccountButtonActive = false.obs;
   RxBool isEmailFieldEmpty = false.obs;
