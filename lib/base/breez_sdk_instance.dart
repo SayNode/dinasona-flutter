@@ -190,6 +190,7 @@ class BreezSDKLiquid {
     final List<liquid_sdk.Payment> paymentsList =
         await _instance!.listPayments(req: req);
     _paymentsController.add(paymentsList);
+
     return paymentsList;
   }
 

@@ -203,7 +203,7 @@ class SendPaymentController extends GetxController {
 
     final Timer timer = Timer(listeningDuration, () {
       // Main transaction timed out
-      // TODO add popup info
+      // TODO add popup info that the payment is taking a bit longer
       return;
     });
 
