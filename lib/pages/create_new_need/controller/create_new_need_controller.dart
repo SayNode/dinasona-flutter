@@ -110,4 +110,19 @@ class CreateNewNeedController extends GetxController {
       ],
     );
   }
+
+  void deleteNeed(int id) {
+    needService.deleteNeed(id);
+  }
+
+  void updateNeed(int id) {
+    needService.updateNeed(
+      id,
+      screen1.text,
+      screen4.text,
+      screen3.text,
+      'draft',
+      userStateService.user.value.id,
+    );
+  }
 }
