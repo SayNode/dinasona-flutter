@@ -164,7 +164,7 @@ class NeedService extends GetxService {
     String title,
     String description,
     String amount,
-    List<AreaOfInterest> areaOfInterest, {
+    String areaOfInterest, {
     List<String> images = const <String>[],
   }) async {
     try {
@@ -174,18 +174,14 @@ class NeedService extends GetxService {
 
       const String url = '/need/create/';
 
-      final http.Response response = await apiService.post(
+      final http.Response response = await apiService.multipartFilePost(
         url,
-        // images,
+        images,
         body: <String, dynamic>{
           'title': title,
           'description': description,
           'amount': amount,
-          'area_of_interest': areaOfInterest
-              .map(
-                (AreaOfInterest e) => e.index + 1,
-              )
-              .toList(),
+          'area_of_interest': areaOfInterest,
         },
       );
       if (response.statusCode == 201) {

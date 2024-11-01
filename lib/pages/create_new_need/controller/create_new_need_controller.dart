@@ -99,11 +99,18 @@ class CreateNewNeedController extends GetxController {
   }
 
   void createNewNeed() {
+    final String areasOfInterest = selectedAreasOfInterest
+        .map(
+          (AreaOfInterest e) => e.title,
+        )
+        .toString()
+        .replaceAll('(', '')
+        .replaceAll(')', '');
     needService.createNewNeed(
       screen1.text,
       screen4.text,
       screen3.text,
-      selectedAreasOfInterest,
+      areasOfInterest,
       images: <String>[
         if (selectedImage.value != null) selectedImage.value!.path,
         if (selectedImage2.value != null) selectedImage2.value!.path,
