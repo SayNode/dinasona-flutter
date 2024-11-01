@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../model/need.dart';
 import '../../../util/popup_manager.dart';
@@ -9,36 +10,39 @@ class TabNeedWidget extends StatelessWidget {
     required this.needs,
     super.key,
   });
-  final List<Need> needs;
+  final RxList<Need> needs;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          if (needs.isEmpty)
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  "If you haven't created any needs yet, create one and it will appear here.",
-                  textAlign: TextAlign.center,
+      child: Obx(
+        () => Column(
+          children: <Widget>[
+            if (needs.isEmpty)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    "If you haven't created any needs yet, create one and it will appear here.",
+                    textAlign: TextAlign.center,
+                  ),
                 ),
+              )
+            else
+              ListView.builder(
+                padding: const EdgeInsets.only(top: 16),
+                shrinkWrap: true,
+                itemCount: needs.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return NeedCard(
+                    need: needs[index],
+                    onCardClicked: () =>
+                        PopupManager.openMyNeedPopup(needs[index]),
+                  );
+                },
               ),
-            )
-          else
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: needs.length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                return NeedCard(
-                  need: needs[index],
-                  onCardClicked: () =>
-                      PopupManager.openMyNeedPopup(needs[index]),
-                );
-              },
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -59,7 +59,7 @@ class CustomScaffold extends StatelessWidget {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     return PopScope(
       canPop: allowScopePop,
-      onPopInvokedWithResult: (bool didPop, Object? result) {
+      onPopInvoked: (bool didPop) {
         if (didPop && customScopePopAction != null) {
           // ignore: avoid_dynamic_calls
           customScopePopAction!();

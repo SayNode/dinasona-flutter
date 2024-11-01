@@ -68,6 +68,32 @@ class NeedService extends GetxService {
         .join(',');
   }
 
+  Future<List<Need>> getBeneficiaryNeeds() async {
+    try {
+      const String url = 'need/beneficiary/';
+      final http.Response response = await apiService.get(url);
+
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> needList =
+            List<Map<String, dynamic>>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>,
+        );
+        Get.find<LoggerService>().log(
+          'NeedService.getBeneficiaryNeeds() - got ${needList.length} needs',
+        );
+        return needList.map(Need.fromJson).toList();
+      } else {
+        throw Exception(
+          'Failed to load beneficiary needs - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception(
+        'Failed to load beneficiary needs - an exception occurred: $e',
+      );
+    }
+  }
+
   Future<List<Need>> getPublishedNeedsMatchingAreasOfInterest(
     List<AreaOfInterest> areas,
   ) async {

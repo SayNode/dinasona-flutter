@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -17,14 +20,8 @@ class ChooseLanguagePage extends GetView<SignupController> {
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     Get.put(SignupController());
-    final List<String> languages = <String>[
-      'Deutsch',
-      'English',
-      'العربية',
-      '中文',
-      'Guniandi',
-      'chiTonga',
-    ];
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
 
     return CustomScaffold(
       body: SingleChildScrollView(
@@ -45,7 +42,8 @@ class ChooseLanguagePage extends GetView<SignupController> {
                   color: dinasonaTheme.moonstone,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: languages.length,
+                    itemCount:
+                        localizationController.supportedLanguageList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         width: double.infinity,
@@ -59,14 +57,21 @@ class ChooseLanguagePage extends GetView<SignupController> {
                           borderRadius: BorderRadius.circular(10),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(10),
-                            onTap: () {
-                              controller.chosenLanguage.value =
-                                  languages[index];
-                              Get.to<void>(() => const ChooseCurrencyPage());
+                            onTap: () async {
+                              await localizationController.changeLanguage(
+                                localizationController
+                                    .supportedLanguageList[index],
+                              );
+                              unawaited(
+                                Get.to<void>(
+                                  () => const ChooseCurrencyPage(),
+                                ),
+                              );
                             },
                             child: Center(
                               child: Text(
-                                languages[index],
+                                localizationController
+                                    .supportedLanguageList[index].languageName,
                                 style: CustomTypography.fromColor(
                                   dinasonaTheme.shadowed,
                                 ).k16Reg,

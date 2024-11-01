@@ -21,11 +21,13 @@ class SeeAllPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: getRelativeWidth(15),
         ),
-        child: Column(
-          children: <Widget>[
-            for (final Need donation in donationsInField)
-              NeedCard(need: donation),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              for (final Need donation in donationsInField)
+                NeedCard(need: donation),
+            ],
+          ),
         ),
       ),
     );
