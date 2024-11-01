@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
-import '../../../util/mock_data.dart';
+import '../../../service/need_service.dart';
 import '../../../util/popup_manager.dart';
 
 enum NeedsTab { allNeeds, ongoing, past, draft }
@@ -16,12 +16,12 @@ class BeneficiaryHomePageController extends GetxController {
   Rx<NeedsTab> currentTab = NeedsTab.allNeeds.obs;
 
   @override
-  void onInit() {
-    needs.addAll(MockData.needs);
+  Future<void> onInit() async {
     // TODO
+
     //Get.find<UserStateService>().fetchUserInfo();
     //print(Get.find<UserStateService>().user.value);
-
+    needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
     filterList();
     super.onInit();
   }
@@ -56,7 +56,8 @@ class BeneficiaryHomePageController extends GetxController {
     draftNeeds.clear();
     pastNeeds.clear();
     for (final Need need in needs) {
-      if (need.status == NeedStatus.ongoing) {
+      if (need.status == NeedStatus.ongoing ||
+          need.status == NeedStatus.published) {
         onGoingNeeds.add(need);
       } else if (need.status == NeedStatus.draft) {
         draftNeeds.add(need);

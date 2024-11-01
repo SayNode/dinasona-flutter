@@ -52,7 +52,8 @@ enum AreaOfInterest {
 enum NeedStatus {
   draft,
   ongoing,
-  past,
+  published,
+  past;
 }
 
 class Need {
