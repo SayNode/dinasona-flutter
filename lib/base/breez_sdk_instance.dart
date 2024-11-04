@@ -150,7 +150,7 @@ class BreezSDKLiquid {
               await _instance!.prepareSendPayment(
                 req: liquid_sdk.PrepareSendRequest(destination: bolt11!),
               );
-      print('test 123 prepareSendResponse: ${prepareSendResponse.feesSat}');
+
       final liquid_sdk.SendPaymentResponse sendPaymentResponse =
           await _instance!.sendPayment(
         req:

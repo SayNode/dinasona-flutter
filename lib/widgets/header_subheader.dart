@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
@@ -28,19 +27,6 @@ class HeaderAndSubHeader extends StatelessWidget {
         const Gap(20),
         Row(
           children: <Widget>[
-            Material(
-              color: Colors.transparent,
-              shape: const CircleBorder(),
-              child: InkWell(
-                onTap: () => Get.back<void>(),
-                customBorder: const CircleBorder(),
-                child: const Icon(
-                  Icons.chevron_left,
-                  size: 32,
-                ),
-              ),
-            ),
-            const Gap(4),
             Flexible(
               child: Container(
                 margin: EdgeInsets.only(

@@ -34,8 +34,8 @@ class WalletPageController extends GetxController {
     await walletService.deleteUserWallet();
   }
 
-  Future<void> getBalanceInUSD() async {
-    await walletService.getBalanceInUSD();
+  Future<void> getBalanceInUserCurrency() async {
+    await walletService.getBalanceInUserCurrency();
   }
 
   void goToSeedPhraseConfirmation() {

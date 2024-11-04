@@ -44,7 +44,11 @@ class LoginController extends GetxController {
   }
 
   Future<void> forgotPassword() async {
-    await Get.to<void>(() => const ForgotPassword());
+    unawaited(
+      Get.off(
+        () => const ForgotPassword(),
+      ),
+    );
   }
 
   Future<void> loginSubmit(bool isBeneficiary) async {

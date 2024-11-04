@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../service/wallet_service.dart';
 import '../../../theme/theme.dart';
@@ -17,6 +18,8 @@ class WalletInfoCard extends GetView<WalletPageController> {
   @override
   Widget build(BuildContext context) {
     final WalletService walletService = Get.find<WalletService>();
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     return Container(
@@ -52,7 +55,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
               Gap(getRelativeHeight(5)),
               Obx(
                 () => Text(
-                  '\$ ${walletService.balanceInUSD.value.toStringAsFixed(2)}',
+                  '${localizationController.selectedCurrency['sign']} ${walletService.balanceInUserCurrency.value.toStringAsFixed(2)}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

@@ -37,6 +37,8 @@ class PasswordResetCodePage extends GetView<ForgotPasswordController> {
     );
 
     return CustomScaffold(
+      showBackButtonInAppBar: false,
+      allowScopePop: false,
       body: SafeArea(
         minimum: const EdgeInsets.all(16),
         child: Column(

@@ -48,7 +48,7 @@ class SendPaymentController extends GetxController {
       return;
     }
     if (double.parse(invoiceAmountUserCurrency.value) >=
-        Get.find<WalletService>().balanceInUSD.value) {
+        Get.find<WalletService>().balanceInUserCurrency.value) {
       sendBTCPaymentError.value = 'Insufficient balance'.tr;
     }
     try {
@@ -165,7 +165,6 @@ class SendPaymentController extends GetxController {
   Future<String> getSayNodeFeeInvoice(double feeInSatoshis) async {
     final String url =
         Uri.https(Constants.apiDomain, '/donation/create-invoice/').toString();
-
     try {
       final http.Response response = await http.post(
         Uri.parse(url),
@@ -178,7 +177,6 @@ class SendPaymentController extends GetxController {
           'value': feeInSatoshis,
         }),
       );
-
       if (response.statusCode == 200) {
         loggerService.log(response.body);
 
@@ -279,7 +277,7 @@ class SendPaymentController extends GetxController {
           PopupManager.openContributionPopup,
         );
         await Get.find<WalletService>().getTransactions();
-        await Get.find<WalletService>().getBalanceInUSD();
+        await Get.find<WalletService>().getBalanceInUserCurrency();
 
         Get.back<void>();
       }

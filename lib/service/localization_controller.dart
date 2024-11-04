@@ -22,6 +22,7 @@ class LocalizationController extends GetxController implements GetxService {
   Map<String, String> selectedCurrency = <String, String>{
     'name': 'Swiss Frank',
     'code': 'CHF',
+    'sign': 'CHF',
     'image': 'assets/images/switzerland.png',
   };
 
@@ -29,21 +30,25 @@ class LocalizationController extends GetxController implements GetxService {
     <String, String>{
       'name': 'Swiss Frank',
       'code': 'CHF',
+      'sign': 'CHF',
       'image': 'assets/images/switzerland.png',
     },
     <String, String>{
       'name': 'Australian Dollar',
       'code': 'AUD',
+      'sign': r'AU$',
       'image': 'assets/images/australia.png',
     },
     <String, String>{
       'name': 'British Pound',
       'code': 'GBP',
+      'sign': '£',
       'image': 'assets/images/great_britain.png',
     },
     <String, String>{
       'name': 'Canadian Dollar',
       'code': 'CAD',
+      'sign': r'CA$',
       'image': 'assets/images/canada.png',
     }
   ];

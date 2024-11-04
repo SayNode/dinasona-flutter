@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../service/localization_controller.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
@@ -64,7 +65,7 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
             Gap(getRelativeHeight(10)),
             Obx(
               () => Text(
-                '${controller.invoiceAmountUserCurrency.value} \$',
+                '${controller.invoiceAmountUserCurrency.value} ${Get.find<LocalizationController>().selectedCurrency['sign']}',
                 style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               ),
             ),

@@ -28,8 +28,12 @@ class ForgotPasswordController extends GetxController {
   RxString unknownEmailError = ''.obs;
   RxBool emailIsSent = false.obs;
   RxBool codeIsInValid = false.obs;
-
+  RxBool showPassword = false.obs;
   final RxBool isValid = false.obs;
+
+  void setShowPassword() {
+    showPassword.value = !showPassword.value;
+  }
 
   void isEmail() {
     email.value = emailController.text;

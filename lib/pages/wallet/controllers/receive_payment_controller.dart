@@ -43,7 +43,7 @@ class ReceivePaymentController extends GetxController {
     }
 
     createdInvoiceBolt11.value = await breezService.createInvoice(
-      userInvoiceMessage.text,
+      '${userInvoiceMessage.text} ::999',
       (double.parse(sendBTCInputBTC.text) * 100000000).round(),
     );
 

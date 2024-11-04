@@ -15,20 +15,22 @@ class CurrencyConversionService extends GetxService {
       Get.find<LocalizationController>();
   bool snackBarDebouncing = false;
   bool currencyConversionRateDebouncing = false;
-  double conversionRateBTCUSD = 0;
-  // TODO change this
-  double conversionRateFiatCHF = 0.87;
+  double conversionRateBTCUserCurrency = 0;
+  double conversionRateFiatCHF = 0;
 
   Future<double> fetchFiatCHFRate() async {
     http.Response response = http.Response('', 999);
 
+    if (localizationController.selectedCurrency['code']?.toLowerCase() ==
+        'chf') {
+      return 1;
+    }
     try {
       if (!currencyConversionRateDebouncing) {
         currencyConversionRateDebouncing = true;
         response = await http.get(
           Uri.parse(
-            // TODO replace with the correct currency
-            'https://api.coingecko.com/api/v3/simple/price?ids=usd&vs_currencies=chf',
+            'https://api.coingecko.com/api/v3/simple/price?ids=${localizationController.selectedCurrency['code'] ?? 'usd'}&vs_currencies=chf',
           ),
         );
         Future<void>.delayed(const Duration(milliseconds: 2000), () {
@@ -42,7 +44,12 @@ class CurrencyConversionService extends GetxService {
         // ignore: always_specify_types
         final data = json.decode(response.body);
         // ignore: avoid_dynamic_calls, join_return_with_assignment
-        conversionRateFiatCHF = double.parse(data['usd']['chf'].toString());
+        conversionRateFiatCHF = double.parse(
+          // ignore: avoid_dynamic_calls
+          data[localizationController.selectedCurrency['code'] ?? 'usd']['chf']
+              .toString(),
+        );
+
         return conversionRateFiatCHF;
       } else if (response.statusCode == 429) {
         return conversionRateFiatCHF;
@@ -56,37 +63,41 @@ class CurrencyConversionService extends GetxService {
     }
   }
 
-  Future<double> fetchConversionRateBTCUSD() async {
+  Future<double> fetchConversionRateBTCUserCurrency() async {
     http.Response response = http.Response('', 999);
-
-    // TODO Waiting for the user service to be implemented correctly
-    /* final String targetCurrency =
-        Get.find<UserStateService>().user.value.country; */
 
     try {
       if (!currencyConversionRateDebouncing) {
         currencyConversionRateDebouncing = true;
+
         response = await http.get(
           Uri.parse(
             // TODO replace with the correct currency
-            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency['code']}',
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency['code'] ?? 'usd'}',
           ),
         );
+
         Future<void>.delayed(const Duration(milliseconds: 2000), () {
           currencyConversionRateDebouncing = false;
         });
       }
       if (response.statusCode == 999) {
-        return conversionRateBTCUSD;
+        return conversionRateBTCUserCurrency;
       }
       if (response.statusCode == 200) {
         // ignore: always_specify_types
         final data = json.decode(response.body);
         // ignore: avoid_dynamic_calls, join_return_with_assignment
-        conversionRateBTCUSD = double.parse(data['bitcoin']['usd'].toString());
-        return conversionRateBTCUSD;
+        conversionRateBTCUserCurrency = double.parse(
+          // ignore: avoid_dynamic_calls
+          data['bitcoin'][localizationController.selectedCurrency['code']
+                      ?.toLowerCase() ??
+                  'usd']
+              .toString(),
+        );
+        return conversionRateBTCUserCurrency;
       } else if (response.statusCode == 429) {
-        return conversionRateBTCUSD;
+        return conversionRateBTCUserCurrency;
       } else {
         throw Exception(
           'Failed to load conversion rate with status code: ${response.statusCode}',
@@ -101,8 +112,8 @@ class CurrencyConversionService extends GetxService {
     double amountInUserCurrency,
   ) async {
     try {
-      final double rate = await fetchConversionRateBTCUSD();
-      print('test rate: $rate');
+      final double rate = await fetchConversionRateBTCUserCurrency();
+
       return amountInUserCurrency * (1 / rate);
     } catch (e) {
       logger.log('Failed to convert user currency to bitcoin: $e');
@@ -112,7 +123,7 @@ class CurrencyConversionService extends GetxService {
 
   Future<double> convertBitcoinToUserCurrency(double amountInBitcoin) async {
     try {
-      final double rate = await fetchConversionRateBTCUSD();
+      final double rate = await fetchConversionRateBTCUserCurrency();
 
       return amountInBitcoin * rate;
     } catch (e) {
@@ -123,7 +134,7 @@ class CurrencyConversionService extends GetxService {
 
   Future<double> convertSatoshiToUserCurrency(int amountInSatoshi) async {
     try {
-      final double rate = await fetchConversionRateBTCUSD();
+      final double rate = await fetchConversionRateBTCUserCurrency();
       return amountInSatoshi * (rate / 100000000);
     } catch (e) {
       logger.log('Failed to convert satoshi to user currency: $e');

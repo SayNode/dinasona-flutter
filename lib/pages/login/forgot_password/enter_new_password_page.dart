@@ -20,6 +20,8 @@ class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
     final CustomTheme theme = ThemeService().theme;
 
     return CustomScaffold(
+      showBackButtonInAppBar: false,
+      allowScopePop: false,
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: getRelativeHeight(16),
@@ -35,21 +37,49 @@ class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
                         .tr,
               ),
               Gap(getRelativeHeight(70)),
-              DinasonaTextField(
-                //title: 'New password'.tr,
-                hintText: 'Create new password'.tr,
-                obscureText: true,
-                controller: controller.newPasswordController,
+              Obx(
+                () => DinasonaTextField(
+                  //title: 'New password'.tr,
+                  hintText: 'Create new password'.tr,
+                  suffixIcon: GestureDetector(
+                    onTap: () => controller.setShowPassword(),
+                    child: Obx(
+                      () => Icon(
+                        controller.showPassword.value
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        size: 25,
+                        color: theme.graphite,
+                      ),
+                    ),
+                  ),
+                  obscureText: !controller.showPassword.value,
+                  controller: controller.newPasswordController,
+                ),
               ),
               Gap(getRelativeHeight(30)),
-              DinasonaTextField(
-                //title: 'Confirm new password'.tr,
-                hintText: 'Confirm new password'.tr,
-                obscureText: true,
-                controller: controller.confirmPasswordController,
-                onChanged: (String value) {
-                  controller.updateMatch();
-                },
+              Obx(
+                () => DinasonaTextField(
+                  //title: 'Confirm new password'.tr,
+                  hintText: 'Confirm new password'.tr,
+                  suffixIcon: GestureDetector(
+                    onTap: () => controller.setShowPassword(),
+                    child: Obx(
+                      () => Icon(
+                        controller.showPassword.value
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        size: 25,
+                        color: theme.graphite,
+                      ),
+                    ),
+                  ),
+                  obscureText: !controller.showPassword.value,
+                  controller: controller.confirmPasswordController,
+                  onChanged: (String value) {
+                    controller.updateMatch();
+                  },
+                ),
               ),
               Gap(getRelativeHeight(20)),
               Obx(

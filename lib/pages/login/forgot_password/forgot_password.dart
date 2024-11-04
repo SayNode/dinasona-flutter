@@ -24,6 +24,8 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
     String errorMessage;
 
     return CustomScaffold(
+      showBackButtonInAppBar: false,
+      allowScopePop: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(

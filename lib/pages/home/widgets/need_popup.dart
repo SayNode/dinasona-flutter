@@ -47,7 +47,8 @@ class NeedPopup extends GetView<NeedPopupController> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(128),
-                        child: need.beneficiary.photoUrl!.isEmpty
+                        child: need.beneficiary.photoUrl == null ||
+                                need.beneficiary.photoUrl!.isEmpty
                             ? const SizedBox()
                             : Image.network(
                                 need.beneficiary.photoUrl!,
@@ -203,7 +204,10 @@ class NeedPopup extends GetView<NeedPopupController> {
             ),
             child: DinasonaButton(
               text: 'Donate now'.tr,
-              onPressed: controller.donate,
+              locked: need.status == NeedStatus.draft ||
+                  need.status == NeedStatus.past ||
+                  need.status == NeedStatus.ongoing,
+              onPressed: () => controller.donate(need),
             ),
           ),
         ],
