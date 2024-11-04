@@ -58,6 +58,7 @@ workflows:
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
+          - julien@saynode.ch
         notify:
           success: true
           failure: true
@@ -116,8 +117,6 @@ workflows:
             --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$(($PROJECT_BUILD_NUMBER + 1)) \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
-            --dart-define=GREENLIGHT_CLIENT_KEY=$GREENLIGHT_CLIENT_KEY_CODEMAGIC \
-            --dart-define=GREENLIGHT_CLIENT_CERTIFICATE=$GREENLIGHT_CLIENT_CERTIFICATE_CODEMAGIC \
             --dart-define=API_URL=$API_URL_DEV \
             --export-options-plist=/Users/builder/export_options.plist
     artifacts:
@@ -135,6 +134,7 @@ workflows:
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
+          - julien@saynode.ch
         notify:
           success: true
           failure: true
@@ -195,8 +195,6 @@ workflows:
             --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$BUILD_NUMBER \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
-            --dart-define=GREENLIGHT_CLIENT_KEY=$GREENLIGHT_CLIENT_KEY_CODEMAGIC \
-            --dart-define=GREENLIGHT_CLIENT_CERTIFICATE=$GREENLIGHT_CLIENT_CERTIFICATE_CODEMAGIC \
             --dart-define=API_URL=$API_URL_PROD \
     artifacts:
       - build/**/outputs/**/*.aab
@@ -213,6 +211,7 @@ workflows:
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
+          - julien@saynode.ch
         notify:
           success: true
           failure: true
@@ -267,8 +266,6 @@ workflows:
             --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$(($PROJECT_BUILD_NUMBER + 1)) \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
-            --dart-define=GREENLIGHT_CLIENT_KEY=$GREENLIGHT_CLIENT_KEY_CODEMAGIC \
-            --dart-define=GREENLIGHT_CLIENT_CERTIFICATE=$GREENLIGHT_CLIENT_CERTIFICATE_CODEMAGIC \
             --dart-define=API_URL=$API_URL_PROD \
             --export-options-plist=/Users/builder/export_options.plist
     artifacts:
@@ -286,6 +283,7 @@ workflows:
           - werner@saynode.ch
           - renato@saynode.ch
           - paula@saynode.ch
+          - julien@saynode.ch
         notify:
           success: true
           failure: true
