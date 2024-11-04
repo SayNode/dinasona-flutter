@@ -10,6 +10,7 @@ import 'breez_sdk_instance.dart';
 
 abstract class BreezBaseService extends GetxService {
   BreezSDKLiquid breezSDKLiquid = BreezSDKLiquid();
+  //breezSDKLiquid.
 
   Future<dynamic> connectToLiquid(String seedPhrase) async {
     try {
@@ -57,15 +58,17 @@ abstract class BreezBaseService extends GetxService {
   }
 
   Future<void> registerWebhook() async {
-    //TODO not needed now
-    /* await breezSDKLiquid.instance!.registerWebhook(
-      webhookUrl: Constants.notificationDeliveryServiceEndpoint,
-    ); */
+    try {
+      await breezSDKLiquid.instance!.registerWebhook(
+        webhookUrl: Constants.notificationDeliveryServiceEndpoint,
+      );
+    } catch (_) {}
   }
 
   Future<void> unregisterWebhook() async {
-    //TODO not needed now
-    //await breezSDKLiquid.instance!.unregisterWebhook();
+    try {
+      await breezSDKLiquid.instance!.unregisterWebhook();
+    } catch (_) {}
   }
 
   Future<liquid_sdk.LNInvoice> parseInvoice(String bolt11Invoice) async {
@@ -84,9 +87,22 @@ abstract class BreezBaseService extends GetxService {
     return bolt11Invoice;
   }
 
-  Future<dynamic> sendPayment(String bolt11Invoice) async {
-    final dynamic sendPaymentResponse =
-        await breezSDKLiquid.sendPayment(bolt11: bolt11Invoice);
+  Future<liquid_sdk.PrepareSendResponse> prepareSendingTransaction(
+    String bolt11Invoice,
+  ) async {
+    final liquid_sdk.PrepareSendResponse prepareSendResponse =
+        await breezSDKLiquid.prepareSendingTransaction(bolt11Invoice);
+    return prepareSendResponse;
+  }
+
+  Future<dynamic> sendPayment({
+    liquid_sdk.PrepareSendResponse? preparedSendData,
+    String? bolt11Invoice,
+  }) async {
+    final dynamic sendPaymentResponse = await breezSDKLiquid.sendPayment(
+      bolt11: bolt11Invoice,
+      preparedSendData: preparedSendData,
+    );
 
     return sendPaymentResponse;
   }

@@ -50,19 +50,19 @@ class ConfirmSeedPhrasePage extends GetView<CreateWalletController> {
                 Obx(
                   () => ConfirmWalletSeedphraseInput(
                     controller.randomSeedPhraseIndexes[0] + 1,
-                    controller.seedConfirmationInput1,
+                    0,
                   ),
                 ),
                 Obx(
                   () => ConfirmWalletSeedphraseInput(
                     controller.randomSeedPhraseIndexes[1] + 1,
-                    controller.seedConfirmationInput2,
+                    1,
                   ),
                 ),
                 Obx(
                   () => ConfirmWalletSeedphraseInput(
                     controller.randomSeedPhraseIndexes[2] + 1,
-                    controller.seedConfirmationInput3,
+                    2,
                   ),
                 ),
               ],
@@ -77,67 +77,100 @@ class ConfirmSeedPhrasePage extends GetView<CreateWalletController> {
                   return Row(
                     children: <Widget>[
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(
-                            getRelativeWidth(2.5),
-                          ),
-                          padding: EdgeInsets.all(getRelativeWidth(5)),
-                          decoration: BoxDecoration(
-                            color: theme.silvershine,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Obx(
-                            () => AutoSizeText(
+                        child: Material(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                          child: InkWell(
+                            onTap: () => controller.onSeedPhraseTap(
                               controller.mixedSeedPhrase[index * 3],
-                              minFontSize: 8,
-                              maxLines: 1,
-                              style: CustomTypography.fromColor(theme.shadowed)
-                                  .k16SemiBold,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(
+                                getRelativeWidth(2.5),
+                              ),
+                              padding: EdgeInsets.all(getRelativeWidth(5)),
+                              decoration: BoxDecoration(
+                                color: theme.silvershine,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Obx(
+                                () => AutoSizeText(
+                                  controller.mixedSeedPhrase[index * 3],
+                                  minFontSize: 8,
+                                  maxLines: 1,
+                                  style:
+                                      CustomTypography.fromColor(theme.shadowed)
+                                          .k16SemiBold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(
-                            getRelativeWidth(2.5),
-                          ),
-                          padding: EdgeInsets.all(getRelativeWidth(5)),
-                          decoration: BoxDecoration(
-                            color: theme.silvershine,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Obx(
-                            () => AutoSizeText(
+                        child: Material(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                          child: InkWell(
+                            onTap: () => controller.onSeedPhraseTap(
                               controller.mixedSeedPhrase[1 + index * 3],
-                              minFontSize: 8,
-                              maxLines: 1,
-                              style: CustomTypography.fromColor(theme.shadowed)
-                                  .k16SemiBold,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(
+                                getRelativeWidth(2.5),
+                              ),
+                              padding: EdgeInsets.all(getRelativeWidth(5)),
+                              decoration: BoxDecoration(
+                                color: theme.silvershine,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Obx(
+                                () => AutoSizeText(
+                                  controller.mixedSeedPhrase[1 + index * 3],
+                                  minFontSize: 8,
+                                  maxLines: 1,
+                                  style:
+                                      CustomTypography.fromColor(theme.shadowed)
+                                          .k16SemiBold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(
-                            getRelativeWidth(2.5),
-                          ),
-                          padding: EdgeInsets.all(getRelativeWidth(5)),
-                          decoration: BoxDecoration(
-                            color: theme.silvershine,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Obx(
-                            () => AutoSizeText(
+                        child: Material(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                          child: InkWell(
+                            onTap: () => controller.onSeedPhraseTap(
                               controller.mixedSeedPhrase[2 + index * 3],
-                              minFontSize: 8,
-                              maxLines: 1,
-                              style: CustomTypography.fromColor(theme.shadowed)
-                                  .k16SemiBold,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(
+                                getRelativeWidth(2.5),
+                              ),
+                              padding: EdgeInsets.all(getRelativeWidth(5)),
+                              decoration: BoxDecoration(
+                                color: theme.silvershine,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Obx(
+                                () => AutoSizeText(
+                                  controller.mixedSeedPhrase[2 + index * 3],
+                                  minFontSize: 8,
+                                  maxLines: 1,
+                                  style:
+                                      CustomTypography.fromColor(theme.shadowed)
+                                          .k16SemiBold,
+                                ),
+                              ),
                             ),
                           ),
                         ),

@@ -14,6 +14,8 @@ class PasswordUpdatedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      showBackButtonInAppBar: false,
+      allowScopePop: false,
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: getRelativeHeight(16),

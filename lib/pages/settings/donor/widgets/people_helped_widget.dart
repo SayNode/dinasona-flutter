@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../service/localization_controller.dart';
 import '../../../../service/theme_service.dart';
 import '../../../../service/wallet_service.dart';
 import '../../../../theme/theme.dart';
@@ -37,7 +38,7 @@ class PeopleHelpedWidget extends StatelessWidget {
             children: <Widget>[
               Obx(
                 () => Text(
-                  '\$ ${Get.find<WalletService>().amountSentInUserCurrency.value}',
+                  '${Get.find<LocalizationController>().selectedCurrency['sign']} ${Get.find<WalletService>().amountSentInUserCurrency.value}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

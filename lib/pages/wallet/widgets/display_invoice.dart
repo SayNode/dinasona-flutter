@@ -9,9 +9,9 @@ import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
-import '../controllers/send_receive_bitcoin_controller.dart';
+import '../controllers/receive_payment_controller.dart';
 
-class DisplayInvoice extends GetView<SendReceiveBitcoinController> {
+class DisplayInvoice extends GetView<ReceivePaymentController> {
   const DisplayInvoice({super.key});
 
   @override

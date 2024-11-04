@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
@@ -48,6 +49,9 @@ class ImportWalletInput extends GetView<ImportWalletController> {
                       border: InputBorder.none,
                       hintText: '',
                     ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
                     onChanged: (String value) {
                       controller.reactiveImportSeedInputs.value =
                           controller.importSeedInputs

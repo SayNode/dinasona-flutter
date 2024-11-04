@@ -27,6 +27,8 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
   Widget build(BuildContext context) {
     final CustomTheme theme = ThemeService().theme;
     return CustomScaffold(
+      showBackButtonInAppBar: false,
+      allowScopePop: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(

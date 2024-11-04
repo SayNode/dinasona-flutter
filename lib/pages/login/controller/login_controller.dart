@@ -44,7 +44,11 @@ class LoginController extends GetxController {
   }
 
   Future<void> forgotPassword() async {
-    await Get.to<void>(() => const ForgotPassword());
+    unawaited(
+      Get.off(
+        () => const ForgotPassword(),
+      ),
+    );
   }
 
   Future<void> loginSubmit(bool isBeneficiary) async {
@@ -60,9 +64,9 @@ class LoginController extends GetxController {
           email.clear();
           unawaited(
             Get.to<void>(
-              () => isBeneficiary
-                  ? const BeneficiaryRootPage()
-                  : const DonorRootPage(),
+              () => Get.find<UserStateService>().user.value.isDonor
+                  ? const DonorRootPage()
+                  : const BeneficiaryRootPage(),
             ),
           );
         } else {

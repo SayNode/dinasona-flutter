@@ -22,13 +22,13 @@ class WalletConnectedPage extends GetView<WalletPageController> {
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     controller
-      ..getBalanceInUSD()
+      ..getBalanceInUserCurrency()
       ..getTransactions();
 
     return RefreshIndicator(
       color: theme.shadowed,
       onRefresh: () async {
-        await controller.getBalanceInUSD();
+        await controller.getBalanceInUserCurrency();
         await controller.getTransactions();
       },
       child: GestureDetector(

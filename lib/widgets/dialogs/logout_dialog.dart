@@ -37,7 +37,8 @@ class LogoutDialog extends StatelessWidget {
             ),
             Text(
               textAlign: TextAlign.center,
-              'Are you sure you want to log out?'.tr,
+              'Are you sure you want to log out? You will also be logged out of your wallet.'
+                  .tr,
               style: CustomTypography.fromColor(theme.graphite).k16Reg,
             ),
             Gap(getRelativeHeight(10)),

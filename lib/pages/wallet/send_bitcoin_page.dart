@@ -1,33 +1,39 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../service/localization_controller.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
-import 'controllers/send_receive_bitcoin_controller.dart';
+import 'controllers/send_payment_controller.dart';
 import 'widgets/qr_code_scanner_page.dart';
 
-class SendBitcoinPage extends GetView<SendReceiveBitcoinController> {
+class SendBitcoinPage extends GetView<SendPaymentController> {
   const SendBitcoinPage({this.bolt11InvoiceFromQRCode = '', super.key});
 
   final String? bolt11InvoiceFromQRCode;
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SendReceiveBitcoinController());
+    Get.put(SendPaymentController());
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.bolt11Invoice.value = bolt11InvoiceFromQRCode ?? '';
-      controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
-      controller.sendBTCPaymentError.value = '';
-      controller.invoiceDescription.value = '';
-      controller.getInvoiceAmount();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //controller.bolt11Invoice.value = bolt11InvoiceFromQRCode ?? '';
+      //controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
+      //controller.sendBTCPaymentError.value = '';
+      //controller.invoiceDescription.value = '';
+      //controller.sendPaymentTransactionFee.value = 0;
+      //controller.sendPaymentSayNodeFee.value = 0;
+      //await controller.getInvoiceAmount();
+      //unawaited(controller.getFees());
     });
 
     return CustomScaffold(
@@ -59,14 +65,17 @@ class SendBitcoinPage extends GetView<SendReceiveBitcoinController> {
             Gap(getRelativeHeight(10)),
             Obx(
               () => Text(
-                '${controller.invoiceAmountUserCurrency.value} \$',
+                '${controller.invoiceAmountUserCurrency.value} ${Get.find<LocalizationController>().selectedCurrency['sign']}',
                 style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               ),
             ),
             Gap(getRelativeHeight(10)),
             TextField(
               controller: controller.sendBTCInvoiceInput,
-              onChanged: (String value) => controller.getInvoiceAmount(),
+              onChanged: (String value) async {
+                await controller.getInvoiceAmount();
+                unawaited(controller.getFees());
+              },
               decoration: InputDecoration(
                 hintText: 'Invoice'.tr,
                 contentPadding: EdgeInsets.symmetric(
@@ -117,12 +126,31 @@ class SendBitcoinPage extends GetView<SendReceiveBitcoinController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Fee'.tr,
+                  'Transaction fee'.tr,
                   style: CustomTypography.fromColor(theme.shadowed).k16Reg,
                 ),
-                Text(
-                  '1 sat',
+                Obx(
+                  () => Text(
+                    '${controller.sendPaymentTransactionFee.value} sat${controller.sendPaymentTransactionFee.value == 1 ? '' : 's'}',
+                    style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                // TODO change to user currency
+                AutoSizeText(
+                  'SayNode Fee (1%, min CHF 0.50)'.tr,
+                  maxLines: 1,
                   style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                ),
+                Obx(
+                  () => Text(
+                    '${controller.sendPaymentSayNodeFee.value} sat${controller.sendPaymentSayNodeFee.value == 1 ? '' : 's'}',
+                    style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                  ),
                 ),
               ],
             ),
@@ -179,9 +207,10 @@ class SendBitcoinPage extends GetView<SendReceiveBitcoinController> {
                 text: 'Send'.tr,
                 color: theme.amberglow,
                 onPressed: () {
-                  controller.sendBitcoin();
+                  controller.sendPaymentWithFee();
                 },
-                locked: controller.bolt11Invoice.value == '',
+                locked: controller.bolt11Invoice.value == '' ||
+                    controller.feesCalculated.value == false,
               ),
             ),
             Gap(getRelativeHeight(30)),

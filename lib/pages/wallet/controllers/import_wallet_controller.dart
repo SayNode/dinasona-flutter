@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,9 +41,9 @@ class ImportWalletController extends GetxController {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
-    await walletService.clearWalletEnvironment();
+    loggerService.log('Importing wallet');
     try {
-      loggerService.log('Importing wallet');
+      await walletService.clearWalletEnvironment();
 
       final dynamic connectionResult = await breezService.connectToLiquid(
         seedPhrase,
@@ -77,12 +79,15 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to<void>(
-        () => Get.find<UserStateService>().user.value.isDonor
-            ? const DonorRootPage()
-            : const BeneficiaryRootPage(),
+      unawaited(
+        Get.offAll<void>(
+          () => Get.find<UserStateService>().user.value.isDonor
+              ? const DonorRootPage()
+              : const BeneficiaryRootPage(),
+        ),
       );
     } catch (e) {
+      loggerService.log('Wallet import failed: $e');
       Future<void>.delayed(const Duration(milliseconds: 1000), () {
         PopupManager.openWalletInfoPopup(
           'Failed to import wallet'.tr,
@@ -90,11 +95,9 @@ class ImportWalletController extends GetxController {
               .tr,
         );
       });
-      await Get.to(
-        () => Get.find<UserStateService>().user.value.isDonor
-            ? const DonorRootPage()
-            : const BeneficiaryRootPage(),
-      );
+      if (Get.context != null) {
+        hideLoadingDialog(Get.context!);
+      }
     }
   }
 }

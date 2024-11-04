@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../service/localization_controller.dart';
 import '../../../../service/theme_service.dart';
 import '../../../../service/wallet_service.dart';
 import '../../../../theme/theme.dart';
@@ -39,7 +40,7 @@ class HelpedRecievedWidget extends StatelessWidget {
             children: <Widget>[
               Obx(
                 () => Text(
-                  '\$ ${double.parse(Get.find<WalletService>().balanceInUSD.value.toStringAsFixed(3))}',
+                  '${Get.find<LocalizationController>().selectedCurrency['sign']} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(3))}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),

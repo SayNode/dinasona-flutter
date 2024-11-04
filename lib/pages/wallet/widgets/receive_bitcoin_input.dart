@@ -9,9 +9,9 @@ import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
-import '../controllers/send_receive_bitcoin_controller.dart';
+import '../controllers/receive_payment_controller.dart';
 
-class ReceiveBitcoinInput extends GetView<SendReceiveBitcoinController> {
+class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
   const ReceiveBitcoinInput({super.key});
 
   @override
@@ -127,7 +127,12 @@ class ReceiveBitcoinInput extends GetView<SendReceiveBitcoinController> {
                   onPressed: () {
                     controller.createInvoice();
                   },
-                  locked: double.parse(controller.sendBTCInputCheck.value) <= 0,
+                  locked: () {
+                    final double? parsedValue = double.tryParse(
+                      controller.sendBTCUserCurrencyInputCheck.value,
+                    );
+                    return parsedValue == null || parsedValue < 1;
+                  }(),
                   color: theme.amberglow,
                 ),
               ),

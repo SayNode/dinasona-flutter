@@ -11,7 +11,6 @@ import '../../../service/storage/secure_storage_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../show_seed_phrase_page.dart';
-import 'create_wallet_controller.dart';
 
 class WalletPageController extends GetxController {
   final WalletService walletService = Get.find<WalletService>();
@@ -35,13 +34,11 @@ class WalletPageController extends GetxController {
     await walletService.deleteUserWallet();
   }
 
-  Future<void> getBalanceInUSD() async {
-    await walletService.getBalanceInUSD();
+  Future<void> getBalanceInUserCurrency() async {
+    await walletService.getBalanceInUserCurrency();
   }
 
   void goToSeedPhraseConfirmation() {
-    Get.put(CreateWalletController()).seedPhrase.value =
-        breezService.generateSeedPhrase();
     Get.to<void>(() => const ShowSeedPhrasePage());
   }
 

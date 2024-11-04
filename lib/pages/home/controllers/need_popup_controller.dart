@@ -6,7 +6,7 @@ class NeedPopupController extends GetxController {
   NeedPopupController({required this.need});
   final Need need;
 
-  Future<void> donate() async {
+  Future<void> donate(Need need) async {
     // Donate to the need
   }
 }

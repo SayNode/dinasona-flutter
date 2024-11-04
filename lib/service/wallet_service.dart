@@ -16,7 +16,7 @@ class WalletService extends GetxService {
   CurrencyConversionService currencyConversionService =
       Get.find<CurrencyConversionService>();
 
-  RxDouble balanceInUSD = 0.0.obs;
+  RxDouble balanceInUserCurrency = 0.0.obs;
   RxList<double> transactionAmounts = <double>[].obs;
   RxString timeSinceLastTransaction = ''.obs;
   RxList<Payment> transactions = <Payment>[].obs;
@@ -81,13 +81,13 @@ class WalletService extends GetxService {
           );
   }
 
-  Future<void> getBalanceInUSD() async {
+  Future<void> getBalanceInUserCurrency() async {
     final int balanceInSatoshis = await breezService.getBalanceInSatoshis();
 
     // ignore: no_leading_underscores_for_local_identifiers
-    final double _balanceInUSD = await currencyConversionService
+    final double _balanceInUserCurrency = await currencyConversionService
         .convertSatoshiToUserCurrency(balanceInSatoshis);
-    balanceInUSD.value = _balanceInUSD;
+    balanceInUserCurrency.value = _balanceInUserCurrency;
   }
 
   Future<void> clearWalletEnvironment() async {
