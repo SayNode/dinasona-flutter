@@ -29,7 +29,6 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Gap(30),
             Text(
               'Create a need'.tr,
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,

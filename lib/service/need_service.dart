@@ -159,4 +159,110 @@ class NeedService extends GetxService {
       throw Exception('Failed to load needs - an exception occurred: $e');
     }
   }
+
+  Future<Map<String, dynamic>> createNewNeed(
+    String title,
+    String description,
+    String amount,
+    String areaOfInterest, {
+    List<String> images = const <String>[],
+  }) async {
+    try {
+      Get.find<LoggerService>().log(
+        'NeedService.createNewNeed() called...',
+      );
+
+      const String url = '/need/create/';
+
+      final http.Response response = await apiService.multipartFilePost(
+        url,
+        images,
+        body: <String, dynamic>{
+          'title': title,
+          'description': description,
+          'amount': amount,
+          'area_of_interest': areaOfInterest,
+        },
+      );
+      if (response.statusCode == 201) {
+        final Map<String, dynamic> need = Map<String, dynamic>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+        );
+        Get.find<LoggerService>().log(
+          'NeedService.createNewNeed() - created new need',
+        );
+        return need;
+      } else {
+        throw Exception(
+          'Failed to create new need - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to create new need - an exception occurred: $e');
+    }
+  }
+
+  Future<Need> updateNeed(
+    int id,
+    String? title,
+    String? description,
+    String? amount,
+    String? status,
+    int beneficiaryId,
+  ) async {
+    try {
+      Get.find<LoggerService>().log(
+        'NeedService.updateNeed() called...',
+      );
+
+      final http.Response response = await apiService.put(
+        '/need/updade/$id',
+        body: <String, dynamic>{
+          'Title': title,
+          'Description': description,
+          'Amount': amount,
+          'Status': status,
+          'Beneficiary': beneficiaryId,
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> need = Map<String, dynamic>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+        );
+        Get.find<LoggerService>().log(
+          'NeedService.updateNeed() - updated need',
+        );
+        return Need.fromJson(need);
+      } else {
+        throw Exception(
+          'Failed to update need - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to update need - an exception occurred: $e');
+    }
+  }
+
+  Future<void> deleteNeed(int id) async {
+    try {
+      Get.find<LoggerService>().log(
+        'NeedService.deleteNeed() called...',
+      );
+
+      final http.Response response = await apiService.delete(
+        '/need/delete/$id',
+      );
+      if (response.statusCode == 200) {
+        Get.find<LoggerService>().log(
+          'NeedService.deleteNeed() - deleted need',
+        );
+      } else {
+        throw Exception(
+          'Failed to delete need - got status code ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to delete need - an exception occurred: $e');
+    }
+  }
 }

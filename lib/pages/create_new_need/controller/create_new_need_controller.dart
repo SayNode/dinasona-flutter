@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../model/need.dart';
+import '../../../service/need_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../util/popup_manager.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
@@ -15,9 +17,13 @@ class CreateNewNeedController extends GetxController {
   PageController pageController = PageController();
   TextEditingController screen1 = TextEditingController();
   TextEditingController screen3 = TextEditingController();
+  TextEditingController screen4 = TextEditingController();
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
+
+  NeedService needService = Get.find<NeedService>();
+  UserStateService userStateService = Get.find<UserStateService>();
   final int descriptionMaxLenth = 300;
 
   final Rx<File?> selectedImage = Rx<File?>(null);
@@ -44,10 +50,12 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapdraftButton() {
+    createNewNeed();
     PopupManager.openDraftPopup();
   }
 
   void onTapPublishButton() {
+    createNewNeed();
     PopupManager.openPublishPopup();
   }
 
@@ -57,6 +65,14 @@ class CreateNewNeedController extends GetxController {
     );
     if (temp != null) {
       selectedAreasOfInterest.value = temp;
+    }
+  }
+
+  void onSelectAreaOfInterest(AreaOfInterest field) {
+    if (selectedAreasOfInterest.contains(field)) {
+      selectedAreasOfInterest.remove(field);
+    } else {
+      selectedAreasOfInterest.add(field);
     }
   }
 
@@ -80,5 +96,40 @@ class CreateNewNeedController extends GetxController {
       tab.index,
     );
     currentTab.value = tab;
+  }
+
+  void createNewNeed() {
+    final String areasOfInterest = selectedAreasOfInterest
+        .map(
+          (AreaOfInterest e) => e.title,
+        )
+        .toString()
+        .replaceAll('(', '')
+        .replaceAll(')', '');
+    needService.createNewNeed(
+      screen1.text,
+      screen4.text,
+      screen3.text,
+      areasOfInterest,
+      images: <String>[
+        if (selectedImage.value != null) selectedImage.value!.path,
+        if (selectedImage2.value != null) selectedImage2.value!.path,
+      ],
+    );
+  }
+
+  void deleteNeed(int id) {
+    needService.deleteNeed(id);
+  }
+
+  void updateNeed(int id) {
+    needService.updateNeed(
+      id,
+      screen1.text,
+      screen4.text,
+      screen3.text,
+      'draft',
+      userStateService.user.value.id,
+    );
   }
 }
