@@ -123,13 +123,12 @@ class CreateNewNeedController extends GetxController {
   }
 
   void updateNeed(int id) {
-    needService.updateNeed(
-      id,
-      screen1.text,
-      screen4.text,
-      screen3.text,
-      'draft',
-      userStateService.user.value.id,
-    );
+    needService.updateNeed(id, <String, dynamic>{
+      'Beneficiary': userStateService.user.value.id,
+      'Title': screen1.text,
+      'Description': screen4.text,
+      'Amount': screen3.text,
+      'Status': 'draft',
+    });
   }
 }
