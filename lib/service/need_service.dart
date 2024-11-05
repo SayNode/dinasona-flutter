@@ -1,11 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio_import;
 import 'package:http/http.dart' as http;
 
 import '../model/need.dart';
+import '../util/constants.dart';
 import 'api_service.dart';
+import 'breez_service.dart';
+import 'currency_conversion_service.dart';
 import 'logger_service.dart';
+import 'user_state_service.dart';
+import 'dart:developer';
 
 class NeedService extends GetxService {
   APIService apiService = Get.find<APIService>();
@@ -191,6 +198,30 @@ class NeedService extends GetxService {
         Get.find<LoggerService>().log(
           'NeedService.createNewNeed() - created new need',
         );
+        try {
+          // Beneficiary comes back as an int ??
+          need['beneficiary'] = null;
+          final Need parsedNeed = Need.fromJson(need);
+          final int needAmountInSatoshi =
+              ((await Get.find<CurrencyConversionService>()
+                          .convertUserCurrencyToBitcoin(double.parse(amount))) *
+                      100000000)
+                  .toInt();
+          final String bolt11Invoice =
+              await Get.find<BreezService>().createInvoice(
+            'Need invoice ::${parsedNeed.id}',
+            needAmountInSatoshi,
+          );
+
+          await updateNeed(parsedNeed.id, <String, dynamic>{
+            'bolt11Invoice': bolt11Invoice,
+          });
+        } catch (e) {
+          throw Exception(
+            'Failed to add bolt11Invoice to new need - got status code ${response.statusCode}',
+          );
+        }
+
         return need;
       } else {
         throw Exception(
@@ -204,36 +235,48 @@ class NeedService extends GetxService {
 
   Future<Need> updateNeed(
     int id,
-    String? title,
-    String? description,
-    String? amount,
-    String? status,
-    int beneficiaryId,
+    Map<String, dynamic> data,
   ) async {
     try {
       Get.find<LoggerService>().log(
         'NeedService.updateNeed() called...',
       );
+      final String url =
+          Uri.https(Constants.apiDomain, '/need/update/$id/').toString();
+      final dio_import.FormData formData = dio_import.FormData.fromMap(data);
 
-      final http.Response response = await apiService.put(
-        '/need/updade/$id',
-        body: <String, dynamic>{
-          'Title': title,
-          'Description': description,
-          'Amount': amount,
-          'Status': status,
-          'Beneficiary': beneficiaryId,
-        },
+      final dio_import.Response<dynamic> response = await dio_import.Dio(
+        dio_import.BaseOptions(
+          validateStatus: (int? code) {
+            return true;
+          },
+        ),
+      ).patch(
+        url,
+        data: formData,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
       );
+
       if (response.statusCode == 200) {
-        final Map<String, dynamic> need = Map<String, dynamic>.from(
-          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
-        );
+        final Map<String, dynamic> needJson =
+            response.data as Map<String, dynamic>;
+
+        // Beneficiary comes back as an int ??
+        // ignore: cascade_invocations
+        needJson.remove('beneficiary');
+
         Get.find<LoggerService>().log(
           'NeedService.updateNeed() - updated need',
         );
-        return Need.fromJson(need);
+        return Need.fromJson(needJson);
       } else {
+        log('test: ${response.data}');
         throw Exception(
           'Failed to update need - got status code ${response.statusCode}',
         );
