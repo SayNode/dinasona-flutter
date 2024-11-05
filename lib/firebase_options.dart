@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:265595937590:android:44172642403745d38e0997',
     messagingSenderId: '265595937590',
     projectId: 'dinasona',
-    storageBucket: 'dinasona.appspot.com',
+    storageBucket: 'dinasona.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,7 +62,10 @@ class DefaultFirebaseOptions {
     appId: '1:265595937590:ios:55f748a83a4bea518e0997',
     messagingSenderId: '265595937590',
     projectId: 'dinasona',
-    storageBucket: 'dinasona.appspot.com',
+    storageBucket: 'dinasona.firebasestorage.app',
+    androidClientId: '265595937590-u3dd8krfii1c4u95bvildth7465k37rn.apps.googleusercontent.com',
+    iosClientId: '265595937590-tkh1g1g28ild34s536kikeoqml13573r.apps.googleusercontent.com',
     iosBundleId: 'org.dinasona.dinasona',
   );
+
 }
