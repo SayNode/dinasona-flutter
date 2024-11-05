@@ -63,9 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '265595937590',
     projectId: 'dinasona',
     storageBucket: 'dinasona.firebasestorage.app',
-    androidClientId: '265595937590-u3dd8krfii1c4u95bvildth7465k37rn.apps.googleusercontent.com',
-    iosClientId: '265595937590-tkh1g1g28ild34s536kikeoqml13573r.apps.googleusercontent.com',
+    androidClientId:
+        '265595937590-u3dd8krfii1c4u95bvildth7465k37rn.apps.googleusercontent.com',
+    iosClientId:
+        '265595937590-tkh1g1g28ild34s536kikeoqml13573r.apps.googleusercontent.com',
     iosBundleId: 'org.dinasona.dinasona',
   );
-
 }
