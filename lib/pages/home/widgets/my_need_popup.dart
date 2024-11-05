@@ -10,6 +10,7 @@ import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
 import '../../beneficiary/beneficiary_page.dart';
+import '../../create_new_need/create_new_need.dart';
 import '../controllers/my_need_popup_controller.dart';
 import 'need_field_chip.dart';
 
@@ -217,7 +218,9 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                 children: <Widget>[
                   DinasonaButton(
                     text: 'Edit your need'.tr,
-                    onPressed: () => controller.editNeed(need),
+                    onPressed: () => Get.to<void>(
+                      const CreateNewNeed(),
+                    ),
                   ),
                   Gap(getRelativeHeight(20)),
                   InkWell(
