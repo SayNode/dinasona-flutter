@@ -42,9 +42,9 @@ Future<void> handleError(
 
   final String previousRoute = currentController.routing.previous;
 
-  if (Get.find<UserStateService>().user.value.id != -1) {
+  if (Get.put(UserStateService()).user.value.id != -1) {
     await FirebaseCrashlytics.instance.setUserIdentifier(
-      Get.find<UserStateService>().user.value.id.toString(),
+      Get.put(UserStateService()).user.value.id.toString(),
     );
   }
 
@@ -58,13 +58,13 @@ Future<void> handleError(
         'Current Route: ${Get.currentRoute}',
         'Previous Route:  $previousRoute',
         'Asynchronous: $async',
-        'User Id: ${Get.find<UserStateService>().user.value.id}',
+        'User Id: ${Get.put(UserStateService()).user.value.id}',
         ...information,
       ],
     );
 
     if (getMaterialAppCalled) {
-      Get.find<LoggerService>().log(
+      Get.put(LoggerService()).log(
         'Fatal error caught by main zone',
         stackTrace: stack,
         error: error,
@@ -84,7 +84,7 @@ Future<void> handleError(
         'Current Route: ${Get.currentRoute}',
         'Previous Route:  $previousRoute',
         'Asynchronous: $async',
-        'User Id: ${Get.find<UserStateService>().user.value.id}',
+        'User Id: ${Get.put(UserStateService()).user.value.id}',
         ...information,
       ],
     );
