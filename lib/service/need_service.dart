@@ -11,7 +11,6 @@ import 'api_service.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
 import 'logger_service.dart';
-import 'user_state_service.dart';
 import 'dart:developer';
 
 class NeedService extends GetxService {
