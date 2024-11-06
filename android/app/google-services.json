@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "265595937590",
     "project_id": "dinasona",
-    "storage_bucket": "dinasona.appspot.com"
+    "storage_bucket": "dinasona.firebasestorage.app"
   },
   "client": [
     {
@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "265595937590-81eu4j17rfgbupti99ntpa5s6kotu2rn.apps.googleusercontent.com",
+          "client_id": "265595937590-u3dd8krfii1c4u95bvildth7465k37rn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.dinasona.dinasona",
@@ -35,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "265595937590-j69ea0gcs1ns9g84ms09vcu409eiv9q6.apps.googleusercontent.com",
+              "client_id": "265595937590-689efk32bte2tpeh7badlujl9c52vnc8.apps.googleusercontent.com",
               "client_type": 3
             },
             {
