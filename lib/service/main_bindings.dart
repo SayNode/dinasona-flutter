@@ -44,10 +44,11 @@ import 'wallet_service.dart';
 class MainBindings extends Bindings {
   @override
   Future<void> dependencies() async {
-    await Get.put(UpgraderService()).init();
     //inject services and controllers
     _injectServices();
     _injectControllers();
+
+    await Get.put(UpgraderService()).init();
   }
 
   void _injectServices() {
