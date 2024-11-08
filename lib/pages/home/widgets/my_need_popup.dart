@@ -10,6 +10,7 @@ import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
 import '../../beneficiary/beneficiary_page.dart';
+import '../../create_new_need/create_new_need.dart';
 import '../controllers/my_need_popup_controller.dart';
 import 'need_field_chip.dart';
 
@@ -47,14 +48,18 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(128),
-                        child: need.beneficiary.photoUrl == null
-                            ? const Icon(Icons.person)
-                            : Image.network(
-                                need.beneficiary.photoUrl!,
-                                height: getRelativeHeight(52),
-                                width: getRelativeHeight(52),
-                                fit: BoxFit.cover,
-                              ),
+                        child: Image.network(
+                          need.beneficiary.photoUrl!,
+                          height: getRelativeHeight(52),
+                          width: getRelativeHeight(52),
+                          fit: BoxFit.cover,
+                          errorBuilder: (
+                            BuildContext context,
+                            Object error,
+                            StackTrace? stackTrace,
+                          ) =>
+                              const Icon(Icons.person),
+                        ),
                       ),
                     ),
                   ),
@@ -159,30 +164,33 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
             ),
           ),
           Gap(getRelativeHeight(14)),
-          SizedBox(
-            height: getRelativeHeight(100),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Gap(getRelativeWidth(20)),
-                for (final String url in need.images)
-                  Padding(
-                    padding: EdgeInsets.only(right: getRelativeWidth(10)),
-                    child: AspectRatio(
-                      aspectRatio: 1.25,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.network(
-                          url,
-                          fit: BoxFit.cover,
+          if (need.images.isEmpty)
+            const SizedBox()
+          else
+            SizedBox(
+              height: getRelativeHeight(100),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Gap(getRelativeWidth(20)),
+                  for (final String url in need.images)
+                    Padding(
+                      padding: EdgeInsets.only(right: getRelativeWidth(10)),
+                      child: AspectRatio(
+                        aspectRatio: 1.25,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.network(
+                            url,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                Gap(getRelativeWidth(10)),
-              ],
+                  Gap(getRelativeWidth(10)),
+                ],
+              ),
             ),
-          ),
           Gap(getRelativeHeight(14)),
           Padding(
             padding: EdgeInsets.symmetric(
@@ -206,9 +214,28 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               padding: EdgeInsets.symmetric(
                 horizontal: getRelativeWidth(20),
               ),
-              child: DinasonaButton(
-                text: 'Edit your need'.tr,
-                onPressed: controller.editNeed,
+              child: Column(
+                children: <Widget>[
+                  DinasonaButton(
+                    text: 'Edit your need'.tr,
+                    onPressed: () => Get.to<void>(
+                      const CreateNewNeed(),
+                    ),
+                  ),
+                  Gap(getRelativeHeight(20)),
+                  InkWell(
+                    onTap: () => controller.deleteNeed(need.id),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        'Delete your need'.tr,
+                        style: CustomTypography.fromColor(
+                          theme.shadowed,
+                        ).k16SemiBold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
           else if (need.status == NeedStatus.ongoing)
