@@ -18,6 +18,11 @@ class ChangePasswordController extends GetxController {
   final RxnString errorTextCurrentPassword = RxnString();
   final RxnString errorTextNewPassword = RxnString();
   final RxnString errorTextConfirmPassword = RxnString();
+  RxBool showPassword = false.obs;
+
+  void setShowPassword() {
+    showPassword.value = !showPassword.value;
+  }
 
   void validatePasswords() {
     validPassword.value = newPasswordController.text.isNotEmpty &&
