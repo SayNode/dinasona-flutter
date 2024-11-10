@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
+import '../../../service/api_service.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
 import '../../../service/logger_service.dart';
+import '../../../util/constants.dart';
 import '../../../util/util.dart';
 
 class ReceivePaymentController extends GetxController {
@@ -37,13 +41,13 @@ class ReceivePaymentController extends GetxController {
     );
   }
 
-  Future<void> createInvoice() async {
+  Future<void> createInvoice({int needId = 999}) async {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
 
     createdInvoiceBolt11.value = await breezService.createInvoice(
-      '${userInvoiceMessage.text} ::999',
+      '${userInvoiceMessage.text} ::$needId',
       (double.parse(sendBTCInputBTC.text) * 100000000).round(),
     );
 

@@ -104,7 +104,8 @@ class SendPaymentController extends GetxController {
       // Invalid invoice provided
       loggerService.log('Error getting invoice: $e');
       if (e.toString().contains('Invoice has expired')) {
-        sendBTCPaymentError.value = 'Invoice has expired'.tr;
+        sendBTCPaymentError.value =
+            'Invoice has expired or has already been paid'.tr;
       } else {
         sendBTCPaymentError.value = 'Invoice is invalid'.tr;
       }
