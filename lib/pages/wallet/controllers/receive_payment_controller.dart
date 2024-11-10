@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
-import '../../../service/api_service.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
 import '../../../service/logger_service.dart';
-import '../../../util/constants.dart';
 import '../../../util/util.dart';
 
 class ReceivePaymentController extends GetxController {
