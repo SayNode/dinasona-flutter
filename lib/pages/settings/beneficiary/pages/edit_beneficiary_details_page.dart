@@ -3,7 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../model/beneficiary.dart';
 import '../../../../service/theme_service.dart';
+import '../../../../service/user_state_service.dart';
 import '../../../../theme/theme.dart';
 import '../../../../theme/typography.dart';
 import '../../../../util/util.dart';
@@ -19,6 +21,7 @@ class EditBeneficiaryPage
 
   @override
   Widget build(BuildContext context) {
+    final UserStateService userStateService = Get.find<UserStateService>();
     final CustomTheme theme = Get.find<ThemeService>().theme;
     return CustomScaffold(
       padding: true,
@@ -43,13 +46,6 @@ class EditBeneficiaryPage
               DinasonaTextField(
                 hintText: 'Full name'.tr,
                 controller: controller.nameController,
-                textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
-                hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
-              ),
-              const Gap(6),
-              DinasonaTextField(
-                hintText: 'Email'.tr,
-                controller: controller.emailController,
                 textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
                 hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
@@ -80,7 +76,16 @@ class EditBeneficiaryPage
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
-                          items: <String>['Male', 'Female', 'Other']
+                          value:
+                              userStateService.user.value.beneficiary.gender ==
+                                      Gender.male
+                                  ? 'Male'
+                                  : userStateService
+                                              .user.value.beneficiary.gender ==
+                                          Gender.female
+                                      ? 'Female'
+                                      : 'Gender',
+                          items: <String>['Male', 'Female']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -93,7 +98,7 @@ class EditBeneficiaryPage
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            controller.gender = newValue!;
+                            controller.gender.value = newValue!;
                           },
                         ),
                       ),
@@ -132,7 +137,12 @@ class EditBeneficiaryPage
                           onTap: () async {
                             final DateTime? pickedDate = await showDatePicker(
                               context: context,
-                              initialDate: DateTime(1990),
+                              initialDate: Get.find<UserStateService>()
+                                      .user
+                                      .value
+                                      .beneficiary
+                                      .dateOfBirth ??
+                                  DateTime(1960),
                               firstDate: DateTime(1900),
                               lastDate: DateTime.now(),
                             );

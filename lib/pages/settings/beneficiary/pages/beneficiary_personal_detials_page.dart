@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../../service/theme_service.dart';
+import '../../../../service/user_state_service.dart';
 import '../../../../theme/theme.dart';
 import '../../../../theme/typography.dart';
 import '../../../../util/util.dart';
@@ -16,12 +19,16 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserStateService userStateService = Get.find<UserStateService>();
     final CustomTheme theme = Get.find<ThemeService>().theme;
     return CustomScaffold(
       appBarTitle: 'Personal details'.tr,
       actions: <Widget>[
         TextButton(
-          onPressed: () => Get.to(() => const EditBeneficiaryPage()),
+          onPressed: () async {
+            await userStateService.fetchBeneficiaryInfo();
+            unawaited(Get.to(() => const EditBeneficiaryPage()));
+          },
           child: Text(
             'Edit'.tr,
             style: CustomTypography.fromColor(theme.ferngreen).k16SemiBold,
@@ -35,7 +42,9 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
           const AvatarWidget(),
           Gap(getRelativeHeight(42)),
           Text(
-            'name placeholder'.tr,
+            userStateService.user.value.name.isEmpty
+                ? 'Name placeholder'.tr
+                : userStateService.user.value.name,
             style: CustomTypography.fromColor(theme.shadowed).k24Bold,
           ),
           const Gap(12),
@@ -55,7 +64,9 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
               Icon(Symbols.mail, color: theme.graphite),
               const Gap(6),
               Text(
-                'email placeholder'.tr,
+                userStateService.user.value.email.isEmpty
+                    ? 'email placeholder'.tr
+                    : userStateService.user.value.email,
                 style: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
             ],

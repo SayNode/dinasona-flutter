@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../model/beneficiary.dart';
 import '../model/beneficiary_statistics.dart';
 import '../model/donor_statistics.dart';
 import '../model/user.dart';
@@ -171,10 +172,14 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        user.value = User.fromJson(
-          ((response.data as Map<String, dynamic>)['result']
-              as Map<String, dynamic>)['user'] as Map<String, dynamic>,
+        // ignore: no_leading_underscores_for_local_identifiers
+        final User _user = User.fromJson(
+          (response.data as Map<String, dynamic>)['user']
+              as Map<String, dynamic>,
         );
+        // ignore: cascade_invocations
+        _user.beneficiary = Beneficiary.anonymous();
+        user.value = _user;
       } else {
         logger.log(
           'Failed to fetch user info: StatusCode: ${response.statusCode}, ${response.data}',
@@ -182,6 +187,37 @@ class UserStateService extends GetxService {
       }
     } catch (e) {
       logger.log('Error while fetching user info: $e');
+    }
+  }
+
+  Future<void> fetchBeneficiaryInfo() async {
+    await fetchUserInfo();
+    final String url =
+        Uri.https(Constants.apiDomain, '/beneficiary/').toString();
+    try {
+      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
+        url,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final Beneficiary beneficiary = Beneficiary.fromJson(
+          (response.data as List<dynamic>)[0] as Map<String, dynamic>,
+        );
+        // ignore: cascade_invocations
+        beneficiary.name = user.value.name;
+        user.value.beneficiary = beneficiary;
+      } else {
+        logger.log(
+          'Failed to fetch beneficiary info: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while fetching beneficiary info: $e');
     }
   }
 
@@ -202,8 +238,8 @@ class UserStateService extends GetxService {
 
       if (response.statusCode == 200) {
         user.value = User.fromJson(
-          (((jsonDecode(response.body) as Map<String, dynamic>)['result']
-              as Map<String, dynamic>)['user']) as Map<String, dynamic>,
+          ((jsonDecode(response.body) as Map<String, dynamic>)['user'])
+              as Map<String, dynamic>,
         );
         logger.log(response.body);
       } else {
@@ -213,6 +249,39 @@ class UserStateService extends GetxService {
       }
     } catch (e) {
       logger.log('Error while updating user info: $e');
+    }
+  }
+
+  Future<void> updateBeneficiaryInfo(
+    Map<String, dynamic> beneficiaryUpdatedFields,
+  ) async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/beneficiary/update/').toString();
+
+    try {
+      final http.Response response = await http.patch(
+        Uri.parse(url),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              'Bearer ${apiService.authenticationToken}',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(beneficiaryUpdatedFields),
+      );
+
+      if (response.statusCode == 200) {
+        user.value.beneficiary = Beneficiary.fromJson(
+          ((jsonDecode(response.body) as Map<String, dynamic>)['result'])
+              as Map<String, dynamic>,
+        );
+        logger.log(response.body);
+      } else {
+        logger.log(
+          'Failed to update beneficiary info: StatusCode: ${response.statusCode}, ${response.body}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while updating beneficiary info: $e');
     }
   }
 
