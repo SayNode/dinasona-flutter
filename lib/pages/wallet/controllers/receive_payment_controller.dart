@@ -37,13 +37,13 @@ class ReceivePaymentController extends GetxController {
     );
   }
 
-  Future<void> createInvoice() async {
+  Future<void> createInvoice({int needId = 999}) async {
     if (Get.context != null) {
       showLoadingDialog(Get.context!);
     }
 
     createdInvoiceBolt11.value = await breezService.createInvoice(
-      '${userInvoiceMessage.text} ::999',
+      '${userInvoiceMessage.text} ::$needId',
       (double.parse(sendBTCInputBTC.text) * 100000000).round(),
     );
 

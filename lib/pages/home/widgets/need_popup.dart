@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 
 import '../../../model/need.dart';
 import '../../../service/theme_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
+import '../../../util/network_image_handler.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
@@ -50,11 +52,10 @@ class NeedPopup extends GetView<NeedPopupController> {
                         child: need.beneficiary.photoUrl == null ||
                                 need.beneficiary.photoUrl!.isEmpty
                             ? const SizedBox()
-                            : Image.network(
-                                need.beneficiary.photoUrl!,
+                            : NetworkImageHandler(
+                                url: need.beneficiary.photoUrl!,
                                 height: getRelativeHeight(52),
                                 width: getRelativeHeight(52),
-                                fit: BoxFit.cover,
                               ),
                       ),
                     ),
@@ -169,10 +170,11 @@ class NeedPopup extends GetView<NeedPopupController> {
                       aspectRatio: 1.25,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.network(
-                          url,
-                          fit: BoxFit.cover,
-                        ),
+                        child: url.isEmpty
+                            ? const SizedBox()
+                            : NetworkImageHandler(
+                                url: url,
+                              ),
                       ),
                     ),
                   ),
@@ -204,12 +206,17 @@ class NeedPopup extends GetView<NeedPopupController> {
             ),
             child: DinasonaButton(
               text: 'Donate now'.tr,
-              locked: need.status == NeedStatus.draft ||
-                  need.status == NeedStatus.past ||
-                  need.status == NeedStatus.ongoing,
+              locked: need.status == NeedStatus.past ||
+                  Get.find<WalletService>().balanceInUserCurrency < need.amount,
               onPressed: () => controller.donate(need),
             ),
           ),
+          if (Get.find<WalletService>().balanceInUserCurrency < need.amount)
+            Center(
+              child: Text(
+                'Not enough balance in your wallet'.tr,
+              ),
+            ),
         ],
       ),
     );

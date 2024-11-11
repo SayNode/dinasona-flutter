@@ -7,6 +7,7 @@ import '../pages/beneficiary/beneficiary_page.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
+import '../util/network_image_handler.dart';
 import '../util/popup_manager.dart';
 import '../util/util.dart';
 
@@ -56,18 +57,16 @@ class NeedCard extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(128),
-                            child: const Stack(
+                            child: Stack(
                               children: <Widget>[
-                                //! the following code block is commented out because we are waiting to fix the cloundfront issue
-                                // if (need.beneficiary.photoUrl == null)
-                                Icon(Icons.person),
-                                // else
-                                //   Image.network(
-                                //     need.beneficiary.photoUrl!,
-                                //     height: getRelativeHeight(52),
-                                //     width: getRelativeHeight(52),
-                                //     fit: BoxFit.cover,
-                                //   ),
+                                if (need.beneficiary.photoUrl == null)
+                                  const Icon(Icons.person)
+                                else
+                                  NetworkImageHandler(
+                                    url: need.beneficiary.photoUrl!,
+                                    height: getRelativeHeight(52),
+                                    width: getRelativeHeight(52),
+                                  ),
                               ],
                             ),
                           ),

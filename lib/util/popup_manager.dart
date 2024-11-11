@@ -10,6 +10,7 @@ import '../widgets/dialogs/delete_account_dialog.dart';
 import '../widgets/dialogs/logout_dialog.dart';
 import '../widgets/popups/contact_us_popup.dart';
 import '../widgets/popups/contribution_popup.dart';
+import '../widgets/popups/donation_error_popup.dart';
 import '../widgets/popups/draft_popup.dart';
 import '../widgets/popups/need_fulfilled_popup.dart';
 import '../widgets/popups/publish_popup.dart';
@@ -111,6 +112,14 @@ class PopupManager {
   static Future<void> openContributionPopup() async {
     await openCustomPopup<void>(
       const ContributionPopup(),
+    );
+  }
+
+  static Future<void> donationErrorPopup(String error) async {
+    await openCustomPopup<void>(
+      DonationErrorPopup(
+        error: error,
+      ),
     );
   }
 }

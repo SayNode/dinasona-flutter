@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../model/auth_response.dart';
 import '../service/auth_service.dart';
 import '../service/theme_service.dart';
+import '../service/user_state_service.dart';
 import '../service/wallet_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
@@ -45,7 +46,9 @@ class ChosePathPage extends StatelessWidget {
 
                     unawaited(
                       Get.to<void>(
-                        () => const DonorRootPage(),
+                        () => Get.find<UserStateService>().user.value.isDonor
+                            ? const DonorRootPage()
+                            : const BeneficiaryRootPage(),
                       ),
                     );
                   } else {
@@ -107,7 +110,9 @@ class ChosePathPage extends StatelessWidget {
 
                     unawaited(
                       Get.to<void>(
-                        () => const BeneficiaryRootPage(),
+                        () => Get.find<UserStateService>().user.value.isDonor
+                            ? const DonorRootPage()
+                            : const BeneficiaryRootPage(),
                       ),
                     );
                   } else {

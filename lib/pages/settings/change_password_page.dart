@@ -31,10 +31,22 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             () {
               return DinasonaTextField(
                 hintText: 'Current password'.tr,
-                obscureText: true,
+                obscureText: !controller.showPassword.value,
                 controller: controller.currentPasswordController,
                 onChanged: (_) => controller.validatePasswords(),
                 errorText: controller.errorTextCurrentPassword.value,
+                suffixIcon: GestureDetector(
+                  onTap: () => controller.setShowPassword(),
+                  child: Obx(
+                    () => Icon(
+                      controller.showPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      size: 25,
+                      color: theme.graphite,
+                    ),
+                  ),
+                ),
               );
             },
           ),
@@ -43,10 +55,22 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             () {
               return DinasonaTextField(
                 hintText: 'New password'.tr,
-                obscureText: true,
+                obscureText: !controller.showPassword.value,
                 controller: controller.newPasswordController,
                 onChanged: (_) => controller.validatePasswords(),
                 errorText: controller.errorTextNewPassword.value,
+                suffixIcon: GestureDetector(
+                  onTap: () => controller.setShowPassword(),
+                  child: Obx(
+                    () => Icon(
+                      controller.showPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      size: 25,
+                      color: theme.graphite,
+                    ),
+                  ),
+                ),
               );
             },
           ),
@@ -55,10 +79,22 @@ class ChangePasswordPage extends GetView<ChangePasswordController> {
             () {
               return DinasonaTextField(
                 hintText: 'Re-enter new password'.tr,
-                obscureText: true,
+                obscureText: !controller.showPassword.value,
                 controller: controller.confirmPasswordController,
                 onChanged: (_) => controller.validatePasswords(),
                 errorText: controller.errorTextConfirmPassword.value,
+                suffixIcon: GestureDetector(
+                  onTap: () => controller.setShowPassword(),
+                  child: Obx(
+                    () => Icon(
+                      controller.showPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      size: 25,
+                      color: theme.graphite,
+                    ),
+                  ),
+                ),
               );
             },
           ),
