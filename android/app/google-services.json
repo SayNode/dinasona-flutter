@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "265595937590-9dqovltjvhlgbmbiggiqlua19adqk7jk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.dinasona.dinasona",
+            "certificate_hash": "9b574f139c02eb179ac979163ecb9a02152d05ad"
+          }
+        },
+        {
+          "client_id": "265595937590-tv2fuv907fp5juthhas5gskallrv2um8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.dinasona.dinasona",
+            "certificate_hash": "f361a6e3a3f6b065d58d0da70708fb5bfd2d2887"
+          }
+        },
+        {
           "client_id": "265595937590-u3dd8krfii1c4u95bvildth7465k37rn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
