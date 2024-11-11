@@ -48,18 +48,20 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(128),
-                        child: Image.network(
-                          need.beneficiary.photoUrl!,
-                          height: getRelativeHeight(52),
-                          width: getRelativeHeight(52),
-                          fit: BoxFit.cover,
-                          errorBuilder: (
-                            BuildContext context,
-                            Object error,
-                            StackTrace? stackTrace,
-                          ) =>
-                              const Icon(Icons.person),
-                        ),
+                        child: (need.beneficiary.photoUrl ?? '').isEmpty
+                            ? const SizedBox()
+                            : Image.network(
+                                need.beneficiary.photoUrl!,
+                                height: getRelativeHeight(52),
+                                width: getRelativeHeight(52),
+                                fit: BoxFit.cover,
+                                errorBuilder: (
+                                  BuildContext context,
+                                  Object error,
+                                  StackTrace? stackTrace,
+                                ) =>
+                                    const Icon(Icons.person),
+                              ),
                       ),
                     ),
                   ),

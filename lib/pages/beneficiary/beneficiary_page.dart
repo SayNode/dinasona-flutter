@@ -9,6 +9,7 @@ import '../../model/need.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
+import '../../util/network_image_handler.dart';
 import '../../util/util.dart';
 import '../../widgets/alternate_need_card.dart';
 import '../../widgets/custom_scaffold.dart';
@@ -41,11 +42,10 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                         borderRadius: BorderRadius.circular(256),
                         child: beneficiary.photoUrl == null
                             ? const Icon(Icons.person)
-                            : Image.network(
-                                beneficiary.photoUrl!,
+                            : NetworkImageHandler(
+                                url: beneficiary.photoUrl!,
                                 height: getRelativeHeight(200),
                                 width: getRelativeHeight(200),
-                                fit: BoxFit.cover,
                               ),
                       ),
                     ),
