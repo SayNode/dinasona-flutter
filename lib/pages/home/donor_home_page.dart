@@ -22,7 +22,9 @@ class DonorHomePage extends GetView<DonorHomePageController> {
   ) {
     final List<Need> donationsInField = allNeeds
         .where(
-          (Need e) => e.areasOfInterest.contains(field),
+          (Need e) =>
+              e.areasOfInterest.contains(field) &&
+              e.status == NeedStatus.published,
         )
         .toList();
     return donationsInField.isEmpty
