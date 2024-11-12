@@ -143,7 +143,7 @@ Future<void> initializeServices() async {
   // Initialize services:
   await Get.find<StorageService>().init();
   Get.find<AuthService>().init();
-  await Get.put(MessagingService()).init();
+  // await Get.put(MessagingService()).init();
 }
 
 class MyApp extends StatelessWidget {
