@@ -41,46 +41,15 @@ class LoginPage extends GetView<LoginController> {
                   bottomRight: Radius.circular(20),
                 ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: getRelativeWidth(17.5),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          Get.back<void>();
-                        },
-                        borderRadius: BorderRadius.circular(50),
-                        child: Ink(
-                          width: getRelativeWidth(50),
-                          height: getRelativeWidth(50),
-                          child: const Icon(
-                            Icons.arrow_back_sharp,
-                            color: Colors.black,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: getRelativeHeight(30)),
-                      child: Image.asset(
-                        'assets/images/logos/dinasona_logo.png',
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: getRelativeWidth(85),
-                  ),
-                ],
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(
+                  vertical: getRelativeHeight(30),
+                ),
+                child: Image.asset(
+                  'assets/images/logos/dinasona_logo.png',
+                  width: getRelativeWidth(240),
+                ),
               ),
             ),
             Container(
