@@ -98,29 +98,24 @@ class AuthService extends AuthServiceBase {
     String? identityToken,
   }) async {
     try {
-      if (authorizationCode != null &&
-          identityToken != null &&
-          authorizationCode.isNotEmpty &&
-          identityToken.isNotEmpty) {
-        final AuthorizationCredentialAppleID credential =
-            await SignInWithApple.getAppleIDCredential(
-          scopes: <AppleIDAuthorizationScopes>[
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-          webAuthenticationOptions: WebAuthenticationOptions(
-            clientId: '', // TODO
-            redirectUri:
-                // For web your redirect URI needs to be the host of the "current page",
-                // while for Android you will be using the API server that redirects back into your app via a deep link
-                kIsWeb
-                    ? Uri.parse('') // TODO
-                    : Uri.parse(''), // TODO
-          ),
-        );
-        authorizationCode = credential.authorizationCode;
-        identityToken = credential.identityToken;
-      }
+      final AuthorizationCredentialAppleID credential =
+          await SignInWithApple.getAppleIDCredential(
+        scopes: <AppleIDAuthorizationScopes>[
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: '', // TODO
+          redirectUri:
+              // For web your redirect URI needs to be the host of the "current page",
+              // while for Android you will be using the API server that redirects back into your app via a deep link
+              kIsWeb
+                  ? Uri.parse('') // TODO
+                  : Uri.parse(''), // TODO
+        ),
+      );
+      authorizationCode = credential.authorizationCode;
+      identityToken = credential.identityToken;
 
       // This is the endpoint that will convert an authorization code obtained
       // via Sign in with Apple into a session in your system
