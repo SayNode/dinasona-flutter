@@ -1,10 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import '../../../../model/beneficiary.dart';
 import '../../../../service/theme_service.dart';
 import '../../../../service/user_state_service.dart';
 import '../../../../theme/theme.dart';
@@ -21,13 +21,17 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserStateService userStateService = Get.find<UserStateService>();
     final CustomTheme theme = Get.find<ThemeService>().theme;
+    final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+    userStateService.fetchBeneficiaryInfo();
+
     return CustomScaffold(
       appBarTitle: 'Personal details'.tr,
       actions: <Widget>[
         TextButton(
           onPressed: () async {
             await userStateService.fetchBeneficiaryInfo();
-            unawaited(Get.to(() => const EditBeneficiaryPage()));
+            await Get.to(() => const EditBeneficiaryPage());
           },
           child: Text(
             'Edit'.tr,
@@ -53,7 +57,9 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
               Icon(Symbols.location_on, color: theme.graphite),
               const Gap(6),
               Text(
-                'location placeholder'.tr,
+                userStateService.user.value.beneficiary.location.isEmpty
+                    ? 'location placeholder'.tr
+                    : userStateService.user.value.beneficiary.location,
                 style: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
             ],
@@ -77,7 +83,13 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
               Icon(Symbols.male, color: theme.graphite),
               const Gap(6),
               Text(
-                'gender placeholder'.tr,
+                userStateService.user.value.beneficiary.gender ==
+                        Gender.anonymous
+                    ? 'gender placeholder'.tr
+                    : userStateService.user.value.beneficiary.gender ==
+                            Gender.male
+                        ? 'Male'.tr
+                        : 'Female'.tr,
                 style: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
             ],
@@ -88,7 +100,11 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
               Icon(Symbols.location_on, color: theme.graphite),
               const Gap(6),
               Text(
-                'birthdate placeholder'.tr,
+                userStateService.user.value.beneficiary.dateOfBirth == null
+                    ? 'Birthday placeholder'.tr
+                    : dateFormat.format(
+                        userStateService.user.value.beneficiary.dateOfBirth!,
+                      ),
                 style: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
             ],
@@ -97,7 +113,9 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Description placeholder'.tr,
+              userStateService.user.value.beneficiary.bio.isEmpty
+                  ? 'Description placeholder'.tr
+                  : userStateService.user.value.beneficiary.bio,
               style: CustomTypography.fromColor(theme.graphite).k16Reg,
             ),
           ),

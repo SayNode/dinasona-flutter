@@ -31,6 +31,11 @@ class GoogleAppleSignInController {
         });
       }
 
+      if (isBeneficiary) {
+        // Change this to a dynamic country code
+        await Get.find<UserStateService>().createBeneficiaryInstance();
+      }
+
       unawaited(
         Get.to(
           () => Get.find<UserStateService>().user.value.isDonor
@@ -63,6 +68,11 @@ class GoogleAppleSignInController {
         await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
           'is_donor': !isBeneficiary,
         });
+      }
+
+      if (isBeneficiary) {
+        // Change this to a dynamic country code
+        await Get.find<UserStateService>().createBeneficiaryInstance();
       }
 
       unawaited(

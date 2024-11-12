@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import '../../../../service/user_state_service.dart';
 import '../../about_page.dart';
 import '../../change_password_page.dart';
 import '../../contact_us_page.dart';
@@ -11,7 +14,7 @@ import '../../widget/profile_widget.dart';
 import '../../widget/settings_bar.dart';
 import '../controllers/beneficiary_settings_page_controller.dart';
 import '../widgets/help_recieved_widget.dart';
-import 'beneficiary_personal_detials_page.dart';
+import 'beneficiary_personal_details_page.dart';
 
 class BeneficiarySettingsPage
     extends GetView<BeneficiarySettingsPageController> {
@@ -40,7 +43,10 @@ class BeneficiarySettingsPage
             SettingsBar(
               icon: Symbols.person,
               title: 'Personal details'.tr,
-              onTap: () => Get.to(BeneficiaryPersonalDetailsPage.new),
+              onTap: () async {
+                await Get.find<UserStateService>().fetchBeneficiaryInfo();
+                unawaited(Get.to(BeneficiaryPersonalDetailsPage.new));
+              },
             ),
             const Gap(6),
             SettingsBar(

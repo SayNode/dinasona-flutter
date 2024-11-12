@@ -221,6 +221,36 @@ class UserStateService extends GetxService {
     }
   }
 
+  Future<void> createBeneficiaryInstance() async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/beneficiary/').toString();
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              'Bearer ${apiService.authenticationToken}',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: '{}',
+      );
+      if (response.statusCode == 201) {
+        user.value.beneficiary = Beneficiary.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>,
+        );
+
+        logger.log(response.body);
+      } else {
+        logger.log(
+          'Failed to create beneficiary instance: StatusCode: ${response.statusCode}, ${response.body}',
+        );
+      }
+    } catch (e) {
+      logger.log('Error while creating beneficiary instance: $e');
+    }
+  }
+
   Future<void> updateUserInfo(Map<String, dynamic> updatedUser) async {
     final String url =
         Uri.https(Constants.apiDomain, '/user-info/update/').toString();
@@ -237,10 +267,21 @@ class UserStateService extends GetxService {
       );
 
       if (response.statusCode == 200) {
-        user.value = User.fromJson(
-          ((jsonDecode(response.body) as Map<String, dynamic>)['user'])
-              as Map<String, dynamic>,
-        );
+        final Map<String, dynamic> decodedResponse =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        // ignore: always_specify_types
+        final userJson =
+            // ignore: avoid_dynamic_calls
+            decodedResponse['user'] ?? decodedResponse['result']?['user'];
+
+        if (userJson != null) {
+          user.value = User.fromJson(userJson as Map<String, dynamic>);
+        } else {
+          logger.log(
+            'Failed to update user info: StatusCode: ${response.statusCode}, ${response.body}',
+          );
+        }
+
         logger.log(response.body);
       } else {
         logger.log(
@@ -285,7 +326,7 @@ class UserStateService extends GetxService {
     }
   }
 
-  Future<bool> updateAvatar({
+  Future<bool> updateUserAvatar({
     required File file,
   }) async {
     final String url =
@@ -329,6 +370,54 @@ class UserStateService extends GetxService {
       }
     } catch (e) {
       logger.log('Error while updating avatar: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateBeneficiaryImage({
+    required File file,
+  }) async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/beneficiary/update/').toString();
+    try {
+      final dio_import.MultipartFile multipartFile =
+          await dio_import.MultipartFile.fromFile(
+        file.path,
+        contentType: MediaType('image', 'jpg'),
+      );
+      final dio_import.FormData formData =
+          dio_import.FormData.fromMap(<String, dynamic>{
+        'image': multipartFile,
+      });
+      final dio_import.Response<dynamic> response = await dio_import.Dio(
+        dio_import.BaseOptions(
+          validateStatus: (int? code) {
+            return true;
+          },
+        ),
+      ).put(
+        url,
+        data: formData,
+        options: dio_import.Options(
+          headers: <String, dynamic>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+            HttpHeaders.authorizationHeader:
+                'Bearer ${apiService.authenticationToken}',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        await fetchUserInfo();
+        logger.log('Avatar updated');
+        return true;
+      } else {
+        logger.log(
+          'Failed to update beneficiary image: StatusCode: ${response.statusCode}, ${response.data}',
+        );
+        return false;
+      }
+    } catch (e) {
+      logger.log('Error while updating beneficiary image: $e');
       return false;
     }
   }
