@@ -99,6 +99,12 @@ class SignupController extends GetxController {
     await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
       'is_donor': !isBeneficiary,
     });
+
+    if (isBeneficiary) {
+      // Change this to a dynamic country code
+      await Get.find<UserStateService>().createBeneficiaryInstance();
+    }
+
     password.clear();
     email.clear();
     showPopup(isBeneficiary: isBeneficiary);

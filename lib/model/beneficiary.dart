@@ -1,18 +1,18 @@
 import 'package:intl/intl.dart';
 
 enum Gender {
+  anonymous,
   male,
-  female,
-  preferNotToSay;
+  female;
 
   String get title {
     switch (this) {
+      case anonymous:
+        return 'Prefer not to say';
       case male:
         return 'Male';
       case female:
         return 'Female';
-      case preferNotToSay:
-        return 'Prefer not to say';
     }
   }
 }
@@ -31,19 +31,22 @@ class Beneficiary {
   factory Beneficiary.fromJson(Map<String, dynamic> json) {
     return Beneficiary(
       name: json['name'] as String? ?? 'Anonymous',
-      location: json['location'] as String? ?? 'Location hidden',
+      location: json['location'] as String? ??
+          json['city'] as String? ??
+          'Location hidden',
       email: json['email'] as String? ?? 'Email hidden',
-      photoUrl: json['photo_url'] as String?,
+      photoUrl: json['photo_url'] as String? ?? '',
       dateOfBirth: json['date_of_birth'] == null
           ? null
           : format.parse(
               json['date_of_birth'] as String,
             ),
-      gender: Gender.preferNotToSay,
-      /* json['gender'] == null
-          ? Gender.preferNotToSay
-          : Gender.values[json['gender'] as int],*/
-      bio: json['bio'] as String? ?? 'Empty bio',
+      gender: (json['gender'] == null)
+          ? Gender.anonymous
+          : (json['gender'] as int == 0 ? Gender.male : Gender.female),
+      bio: json['bio'] as String? ??
+          json['description'] as String? ??
+          'Empty bio',
     );
   }
   factory Beneficiary.anonymous() {
@@ -53,17 +56,17 @@ class Beneficiary {
       email: 'Email hidden',
       photoUrl: '',
       dateOfBirth: null,
-      gender: Gender.preferNotToSay,
+      gender: Gender.anonymous,
       bio: 'Empty bio',
     );
   }
 
   static DateFormat format = DateFormat('yyyy-MM-dd');
-  final String name;
-  final String location;
-  final String email;
-  final String? photoUrl;
-  final DateTime? dateOfBirth;
-  final Gender gender;
-  final String bio;
+  String name;
+  String location;
+  String email;
+  String? photoUrl;
+  DateTime? dateOfBirth;
+  Gender gender;
+  String bio;
 }

@@ -21,7 +21,11 @@ class BeneficiaryHomePageController extends GetxController {
 
     //Get.find<UserStateService>().fetchUserInfo();
     //print(Get.find<UserStateService>().user.value);
-    needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+    try {
+      needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+    } catch (_) {
+      // new beneficiaries have no needs and backend sends empty list - TODO handle this properly
+    }
     filterList();
     super.onInit();
   }

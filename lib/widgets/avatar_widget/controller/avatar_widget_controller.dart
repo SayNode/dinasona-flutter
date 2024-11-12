@@ -15,7 +15,11 @@ class AvatarWidgetController extends GetxController {
 
     try {
       file = await ImageLoader.pickImage(ImageSource.gallery);
-      await userStateService.updateAvatar(file: file);
+      await userStateService.updateUserAvatar(file: file);
+
+      if (!Get.find<UserStateService>().user.value.isDonor) {
+        await userStateService.updateBeneficiaryImage(file: file);
+      }
     } catch (e) {
       if (e == 'No image selected') {
         return;

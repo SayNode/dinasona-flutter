@@ -5,12 +5,16 @@
 //
 // https://saynode.ch
 
+import 'beneficiary.dart';
+
 class User {
   User();
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int? ?? json['pk'] as int? ?? -1,
         name = json['name'] as String? ?? '',
+        beneficiary =
+            Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
         email = json['email'] as String? ?? '',
         avatar = json['avatar'] as String? ?? '',
         username = json['username'] as String? ?? '',
@@ -22,7 +26,7 @@ class User {
   int id = -1;
   String email = '';
   String name = '';
-
+  Beneficiary beneficiary = Beneficiary.anonymous();
   String avatar = '';
   String username = '';
   bool firstLogin = true;

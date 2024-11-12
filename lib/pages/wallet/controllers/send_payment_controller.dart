@@ -93,6 +93,8 @@ class SendPaymentController extends GetxController {
       // Prepare SayNode fee transaction
       final String sayNodeFeeInvoice = await getSayNodeFeeInvoice(
         sendPaymentSayNodeFee.value.toDouble(),
+        // TODO julien when implementing donations
+        999,
       );
       preparedSayNodeTransaction =
           await breezService.prepareSendingTransaction(sayNodeFeeInvoice);
@@ -163,9 +165,9 @@ class SendPaymentController extends GetxController {
     }
   }
 
-  Future<String> getSayNodeFeeInvoice(double feeInSatoshis) async {
+  Future<String> getSayNodeFeeInvoice(double feeInSatoshis, int needId) async {
     final String url =
-        Uri.https(Constants.apiDomain, '/donation/create-invoice/').toString();
+        Uri.https(Constants.apiDomain, '/donation/add_invoice/').toString();
     try {
       final http.Response response = await http.post(
         Uri.parse(url),
@@ -174,8 +176,9 @@ class SendPaymentController extends GetxController {
               'Bearer ${apiService.authenticationToken}',
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, double>{
+        body: jsonEncode(<String, dynamic>{
           'value': feeInSatoshis,
+          'description': 'SayNode fee invoice ::$needId',
         }),
       );
       if (response.statusCode == 200) {

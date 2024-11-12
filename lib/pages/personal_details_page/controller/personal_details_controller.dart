@@ -65,7 +65,11 @@ class PersonalDetailsController extends GetxController {
 
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
-      await userState.updateAvatar(file: selectedImage.value!);
+      await userState.updateUserAvatar(file: selectedImage.value!);
+
+      if (!userState.user.value.isDonor) {
+        await userState.updateBeneficiaryImage(file: selectedImage.value!);
+      }
     }
   }
 
