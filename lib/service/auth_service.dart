@@ -7,7 +7,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -35,6 +34,7 @@ class AuthService extends AuthServiceBase {
       // Try to login silently
       final GoogleSignInAccount? result =
           await _googleSignIn.signInSilently() ?? await _googleSignIn.signIn();
+
       if (result != null) {
         final GoogleSignInAuthentication googleKey =
             await result.authentication;
@@ -78,12 +78,13 @@ class AuthService extends AuthServiceBase {
           throw Exception('AuthService - ${authResult.message}');
         }
       }
+
       return AuthResponse(
         result: <String, dynamic>{},
         accessToken: '',
         message:
-            "Google auth isn't working at the moment. Please try again later.",
-        status: 0,
+            "Cancelled Google Sign In. If you didn't cancel, please try again.",
+        status: -1,
         success: false,
       );
     } catch (e) {

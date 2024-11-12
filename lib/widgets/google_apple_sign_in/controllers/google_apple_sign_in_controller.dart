@@ -44,6 +44,10 @@ class GoogleAppleSignInController {
         ),
       );
     } else {
+      if (loginResult.status == -1) {
+        loadingGoogle.value = false;
+        return 'Google sign in cancelled';
+      }
       //TODO: Handle error
       unawaited(Get.to(() => const ErrorPage(error: 'Google sign in failed')));
     }
