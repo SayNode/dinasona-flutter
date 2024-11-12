@@ -151,21 +151,17 @@ class AuthService extends AuthServiceBase {
         return authResult;
       }
     } //handles the error if user cancels apple signin and stops app crashing
-    on PlatformException catch (e) {
-      if (e.code == 'cancelled') {
+    on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code == AuthorizationErrorCode.canceled) {
         // User canceled the sign in
         return AuthResponse(
           result: <String, dynamic>{},
           accessToken: '',
           message: 'Sign in cancelled',
-          status: 0,
+          status: -1,
           success: false,
         );
-      } else {
-        // Other authorization error occurred
-        throw Exception('Authorization error: $e');
       }
-    } on SignInWithAppleAuthorizationException catch (e) {
       // Other error occurred
       return AuthResponse(
         result: <String, dynamic>{},
