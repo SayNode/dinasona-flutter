@@ -106,15 +106,15 @@ class EditBeneficiaryPage
                                       : null,
                               items: <String>[
                                 'Male',
-                                'Female'
+                                'Female',
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(
                                     value,
                                     style: CustomTypography.fromColor(
-                                            theme.shadowed)
-                                        .k16Reg,
+                                      theme.shadowed,
+                                    ).k16Reg,
                                   ),
                                 );
                               }).toList(),
