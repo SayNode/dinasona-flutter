@@ -172,11 +172,21 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data =
-            // ignore: avoid_dynamic_calls
-            response.data['user'] as Map<String, dynamic>;
+        final Map<String, dynamic> data;
+        if (user.value.isDonor) {
+          data =
+              // ignore: avoid_dynamic_calls
+              response.data['result'] as Map<String, dynamic>;
+        } else {
+          data =
+              // ignore: avoid_dynamic_calls
+              response.data['user'] as Map<String, dynamic>;
+        }
+
         // ignore: no_leading_underscores_for_local_identifiers
-        final User _user = User.fromJson(data);
+        final User _user = User.fromJson(
+          data,
+        );
         // ignore: cascade_invocations
         _user.beneficiary = Beneficiary.anonymous();
         user.value = _user;
