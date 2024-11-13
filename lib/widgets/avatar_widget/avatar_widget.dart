@@ -19,32 +19,53 @@ class AvatarWidget extends GetView<AvatarWidgetController> {
         children: <Widget>[
           Obx(
             () {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: (userStateService.user.value.avatar.isNotEmpty)
-                    ? Image.network(
-                        userStateService.user.value.avatar,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                        errorBuilder: (
-                          BuildContext context,
-                          Object error,
-                          StackTrace? stackTrace,
-                        ) {
-                          return Image.asset(
-                            'assets/images/profile_picture_placeholder.png',
-                            width: 100,
-                            height: 100,
-                          );
-                        },
-                      )
-                    : Image.asset(
-                        'assets/images/profile_picture_placeholder.png',
-                        width: 100,
-                        height: 100,
+              return (controller.isUploading.value == true)
+                  ? Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: theme.silvershine,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-              );
+                      child: Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: theme.ferngreen,
+                          ),
+                        ),
+                      ),
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: (userStateService.user.value.avatar.isNotEmpty)
+                          ? Image.network(
+                              userStateService.user.value.avatar,
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                              errorBuilder: (
+                                BuildContext context,
+                                Object error,
+                                StackTrace? stackTrace,
+                              ) {
+                                return Image.asset(
+                                  'assets/images/profile_picture_placeholder.png',
+                                  width: 100,
+                                  height: 100,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              'assets/images/profile_picture_placeholder.png',
+                              width: 100,
+                              height: 100,
+                            ),
+                    );
             },
           ),
           Positioned(
