@@ -19,12 +19,13 @@ class AvatarWidget extends GetView<AvatarWidgetController> {
         children: <Widget>[
           Obx(
             () {
-              return Container(
+              return ClipOval(
                 child: (userStateService.user.value.avatar.isNotEmpty)
                     ? Image.network(
                         userStateService.user.value.avatar,
                         height: 100,
                         width: 100,
+                        fit: BoxFit.cover,
                         errorBuilder: (
                           BuildContext context,
                           Object error,
