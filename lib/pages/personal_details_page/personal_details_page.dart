@@ -62,21 +62,32 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                           decoration: BoxDecoration(
                             border: Border.all(color: diasonaTheme.graphite),
                             shape: BoxShape.circle,
-                            image: controller.selectedImage.value == null
-                                ? null
-                                : DecorationImage(
-                                    image: FileImage(
-                                      controller.selectedImage.value!,
+                            image: controller.userStateService.user.value.avatar
+                                    .isNotEmpty
+                                ? DecorationImage(
+                                    image: NetworkImage(
+                                      controller
+                                          .userStateService.user.value.avatar,
                                     ),
                                     fit: BoxFit.cover,
-                                  ),
+                                  )
+                                : controller.selectedImage.value == null
+                                    ? null
+                                    : DecorationImage(
+                                        image: FileImage(
+                                          controller.selectedImage.value!,
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
                           ),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(1000),
                             onTap: () {
                               controller.pickImage(ImageSource.gallery);
                             },
-                            child: controller.selectedImage.value == null
+                            child: controller.selectedImage.value == null &&
+                                    controller.userStateService.user.value
+                                        .avatar.isEmpty
                                 ? SizedBox(
                                     width: getRelativeWidth(30),
                                     child: SvgPicture.asset(
