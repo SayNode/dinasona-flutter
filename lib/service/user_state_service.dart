@@ -37,9 +37,9 @@ class UserStateService extends GetxService {
   ).obs;
 
   Rx<BeneficiaryStatistics> beneficiaryStatistics = BeneficiaryStatistics(
-    totalAmountDonated: -1,
-    totalNeedsClosed: -1,
-    totalPeopleDonated: -1,
+    totalAmountDonated: 0,
+    totalNeedsClosed: 0,
+    totalPeopleDonated: 0,
   ).obs;
 
   Future<void> init() async {
