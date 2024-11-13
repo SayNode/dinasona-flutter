@@ -13,8 +13,9 @@ class User {
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'] as int? ?? json['pk'] as int? ?? -1,
         name = json['name'] as String? ?? '',
-        beneficiary =
-            Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
+        beneficiary = json['beneficiary'] == null
+            ? Beneficiary.anonymous()
+            : Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
         email = json['email'] as String? ?? '',
         avatar = json['avatar'] as String? ?? '',
         username = json['username'] as String? ?? '',

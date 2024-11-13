@@ -172,10 +172,12 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
+        final Map<String, dynamic> data =
+            // ignore: avoid_dynamic_calls
+            response.data['result'] as Map<String, dynamic>;
         // ignore: no_leading_underscores_for_local_identifiers
         final User _user = User.fromJson(
-          (response.data as Map<String, dynamic>)['user']
-              as Map<String, dynamic>,
+          data['user'] as Map<String, dynamic>,
         );
         // ignore: cascade_invocations
         _user.beneficiary = Beneficiary.anonymous();
@@ -412,7 +414,7 @@ class UserStateService extends GetxService {
         return true;
       } else {
         logger.log(
-          'Failed to update beneficiary image: StatusCode: ${response.statusCode}, ${response.data}',
+          'Failed to update beneficiary image: StatusCode: ${response.statusCode}',
         );
         return false;
       }
