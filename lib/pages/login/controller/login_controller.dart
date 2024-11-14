@@ -60,6 +60,10 @@ class LoginController extends GetxController {
             await authService.login(email.text, password.text);
         if (loginResult.success) {
           await Get.find<UserStateService>().init();
+          await Get.find<UserStateService>().fetchUserInfo();
+          if (!Get.find<UserStateService>().user.value.isDonor) {
+            await Get.find<UserStateService>().fetchBeneficiaryInfo();
+          }
           password.clear();
           email.clear();
           unawaited(

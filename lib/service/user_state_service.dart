@@ -49,7 +49,7 @@ class UserStateService extends GetxService {
         await fetchDonorStatistics();
       } else {
         await fetchBeneficiaryStatistics();
-        await fetchUserNeeds();
+        //await fetchUserNeeds();
       }
     }
     _hasBeenInitialized = true;
@@ -57,38 +57,6 @@ class UserStateService extends GetxService {
 
   void clear() {
     user.value = User();
-  }
-
-  Future<void> fetchUserNeeds() async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/need/beneficiary/').toString();
-    try {
-      final dio_import.Response<dynamic> response = await dio_import.Dio().get(
-        url,
-        options: dio_import.Options(
-          headers: <String, dynamic>{
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
-          },
-        ),
-      );
-      if (response.statusCode == 200) {
-        //print('test: ${response.data}');
-        //print('test2: ${response.data[0]}');
-        /* userNeeds.value = DonorStatistics.fromJson(
-          jsonEncode(
-            (response.data as Map<String, dynamic>)['result']
-                as Map<String, dynamic>,
-          ),
-        ); */
-      } else {
-        logger.log(
-          'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',
-        );
-      }
-    } catch (e) {
-      logger.log('Error while fetching donor statistics: $e');
-    }
   }
 
   Future<void> fetchDonorStatistics() async {
@@ -143,11 +111,11 @@ class UserStateService extends GetxService {
         );
       } else {
         logger.log(
-          'Failed to fetch donor statistics: StatusCode: ${response.statusCode}, ${response.data}',
+          'Failed to fetch beneficiary statistics: StatusCode: ${response.statusCode}, ${response.data}',
         );
       }
     } catch (e) {
-      logger.log('Error while fetching donor statistics: $e');
+      logger.log('Error while fetching beneficiary statistics: $e');
     }
   }
 
@@ -172,24 +140,22 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data;
-        if (user.value.isDonor) {
-          data =
-              // ignore: avoid_dynamic_calls
-              response.data['result'] as Map<String, dynamic>;
-        } else {
-          data =
-              // ignore: avoid_dynamic_calls
-              response.data['user'] as Map<String, dynamic>;
-        }
+        final Map<String, dynamic> decodedResponse =
+            response.data as Map<String, dynamic>;
+        // ignore: always_specify_types
+        final userJson =
+            // ignore: avoid_dynamic_calls
+            decodedResponse['user'] ?? decodedResponse['result']?['user'];
 
-        // ignore: no_leading_underscores_for_local_identifiers
-        final User _user = User.fromJson(
-          data,
-        );
-        // ignore: cascade_invocations
-        _user.beneficiary = Beneficiary.anonymous();
-        user.value = _user;
+        if (userJson != null) {
+          // ignore: avoid_dynamic_calls
+          userJson['beneficiary'] = Beneficiary.anonymous();
+          user.value = User.fromJson(userJson as Map<String, dynamic>);
+        } else {
+          logger.log(
+            'Failed to update user info: StatusCode: ${response.statusCode}, ${response.data}',
+          );
+        }
       } else {
         logger.log(
           'Failed to fetch user info: StatusCode: ${response.statusCode}, ${response.data}',
@@ -249,7 +215,6 @@ class UserStateService extends GetxService {
         user.value.beneficiary = Beneficiary.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>,
         );
-
         logger.log(response.body);
       } else {
         logger.log(
@@ -291,7 +256,6 @@ class UserStateService extends GetxService {
             'Failed to update user info: StatusCode: ${response.statusCode}, ${response.body}',
           );
         }
-
         logger.log(response.body);
       } else {
         logger.log(

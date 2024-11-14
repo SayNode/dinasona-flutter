@@ -101,7 +101,6 @@ class SignupController extends GetxController {
     });
 
     if (isBeneficiary) {
-      // Change this to a dynamic country code
       await Get.find<UserStateService>().createBeneficiaryInstance();
     }
 
