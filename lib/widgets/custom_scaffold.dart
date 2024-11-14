@@ -47,7 +47,9 @@ class CustomScaffold extends StatelessWidget {
         elevation: 0,
         title: Text(
           appBarTitle!,
-          style: boldTitle ? CustomTypography.fromColor(theme.shadowed).k24Bold : CustomTypography.fromColor(theme.shadowed).k16SemiBold,
+          style: boldTitle
+              ? CustomTypography.fromColor(theme.shadowed).k24Bold
+              : CustomTypography.fromColor(theme.shadowed).k16SemiBold,
         ),
         actions: actions,
       );

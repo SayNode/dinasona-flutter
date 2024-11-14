@@ -20,7 +20,8 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
   Widget build(BuildContext context) {
     Get.put(BeneficiaryHomePageController());
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    final String userNameForGreeting = Get.find<UserStateService>().user.value.name.split(' ')[0];
+    final String userNameForGreeting =
+        Get.find<UserStateService>().user.value.name.split(' ')[0];
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: getRelativeHeight(16)),
@@ -29,7 +30,9 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
         children: <Widget>[
           Gap(getRelativeHeight(20)),
           Text(
-            userNameForGreeting.isNotEmpty ? '${controller.getGreetingMessage()}, $userNameForGreeting' : controller.getGreetingMessage(),
+            userNameForGreeting.isNotEmpty
+                ? '${controller.getGreetingMessage()}, $userNameForGreeting'
+                : controller.getGreetingMessage(),
             style: CustomTypography.fromColor(theme.shadowed).k24Bold,
           ),
           const Gap(20),

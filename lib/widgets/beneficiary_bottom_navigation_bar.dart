@@ -93,8 +93,10 @@ class BeneficiaryBottomNavigationBar extends StatelessWidget {
           backgroundColor: theme.moonstone,
           unselectedItemColor: theme.graphite,
           selectedItemColor: theme.ferngreen,
-          unselectedLabelStyle: CustomTypography.fromColor(theme.graphite).k14Reg,
-          selectedLabelStyle: CustomTypography.fromColor(theme.ferngreen).k14Reg,
+          unselectedLabelStyle:
+              CustomTypography.fromColor(theme.graphite).k14Reg,
+          selectedLabelStyle:
+              CustomTypography.fromColor(theme.ferngreen).k14Reg,
           items: <BottomNavigationBarItem>[
             for (final BeneficaryItem item in BeneficaryItem.values)
               BottomNavigationBarItem(
