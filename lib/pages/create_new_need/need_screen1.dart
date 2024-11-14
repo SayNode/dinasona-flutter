@@ -16,28 +16,31 @@ class NeedScreen1 extends GetView<CreateNewNeedController> {
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     Get.put(CreateNewNeedController());
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Gap(getRelativeHeight(40)),
-        Text(
-          'Give your need a title'.tr,
-          style: CustomTypography.fromColor(theme.shadowed).k16SemiBold,
-        ),
-        DinasonaTextField(
-          hintText: 'Give your need a title',
-          controller: controller.screen1,
-        ),
-        const Spacer(),
-        Obx(
-          () => DinasonaButton(
-            text: 'Continue'.tr,
-            onPressed: () => controller.selectTab(NeedsTab.screen2),
-            locked: !controller.isScreen1ButtonActive.value,
+    return Container(
+      color: theme.ferngreen,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Gap(getRelativeHeight(40)),
+          Text(
+            'Give your need a title'.tr,
+            style: CustomTypography.fromColor(theme.shadowed).k16SemiBold,
           ),
-        ),
-        Gap(getRelativeHeight(20)),
-      ],
+          DinasonaTextField(
+            hintText: 'Give your need a title',
+            controller: controller.screen1,
+          ),
+          const Spacer(),
+          Obx(
+            () => DinasonaButton(
+              text: 'Continue'.tr,
+              onPressed: () => controller.selectTab(NeedsTab.screen2),
+              locked: !controller.isScreen1ButtonActive.value,
+            ),
+          ),
+          Gap(getRelativeHeight(20)),
+        ],
+      ),
     );
   }
 }

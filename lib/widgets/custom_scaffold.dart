@@ -47,9 +47,7 @@ class CustomScaffold extends StatelessWidget {
         elevation: 0,
         title: Text(
           appBarTitle!,
-          style: boldTitle
-              ? CustomTypography.fromColor(theme.shadowed).k24Bold
-              : CustomTypography.fromColor(theme.shadowed).k16SemiBold,
+          style: boldTitle ? CustomTypography.fromColor(theme.shadowed).k24Bold : CustomTypography.fromColor(theme.shadowed).k16SemiBold,
         ),
         actions: actions,
       );
@@ -85,11 +83,14 @@ class CustomScaffold extends StatelessWidget {
                 child: body,
               ),
             ),
-            Container(
-              color: theme.moonstone,
-              height: MediaQuery.of(Get.context!).viewPadding.bottom,
-              width: double.infinity,
-            ),
+            if (bottomNavigationBar == null)
+              Container(
+                color: theme.moonstone,
+                height: MediaQuery.of(Get.context!).viewPadding.bottom,
+                width: double.infinity,
+              )
+            else
+              Container(),
           ],
         ),
         backgroundColor: theme.moonstone,
