@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
@@ -35,6 +35,15 @@ class PersonalDetailsController extends GetxController {
     _selectedGender.value = value;
   }
 
+  final UserStateService userStateService = Get.find<UserStateService>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    fullNameController.text = userState.user.value.name;
+    emailController.text = userState.user.value.email;
+  }
+
   Future<void> selectDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
       context: context,
@@ -54,8 +63,8 @@ class PersonalDetailsController extends GetxController {
       },
     );
     if (selectedDate != null) {
-      final DateTime dateOfBirth = selectedDate.toLocal();
-      dateOfBirthController.value = dateOfBirth.toString().split(' ')[0];
+      final String dateOfBirth = DateFormat('yyyy-MM-dd').format(selectedDate);
+      dateOfBirthController.value = dateOfBirth;
     }
   }
 
@@ -73,16 +82,25 @@ class PersonalDetailsController extends GetxController {
     }
   }
 
-  void submit() {
-    // TODO implement submit
-    Get.to<void>(() => const CreateNewNeed());
-    log('Image: ${selectedImage.value?.path}');
-    log('Full Name: ${fullNameController.text}');
-    log('Email: ${emailController.text}');
-    log('Gender: ${_selectedGender.value.text}');
-    log('Date of Birth: ${dateOfBirthController.value}');
-    log('Location: ${locationController.text}');
-    log('Description: ${descriptionTextController.text}');
+  Future<void> submit() async {
+    await userStateService.updateUserInfo(
+      <String, dynamic>{
+        'name': fullNameController.text,
+        // 'email': emailController.text,
+      },
+    );
+    await userStateService.updateBeneficiaryInfo(
+      <String, dynamic>{
+        'name': fullNameController.text,
+        'city': locationController.text,
+        'email': userStateService.user.value.email,
+        'date_of_birth': dateOfBirthController.value,
+        'description': descriptionTextController.text,
+        'gender': _selectedGender.value.text.toLowerCase() == 'male' ? 0 : 1,
+      },
+    );
+
+    await Get.to<void>(() => const CreateNewNeed());
   }
 
   @override

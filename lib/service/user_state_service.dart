@@ -37,9 +37,9 @@ class UserStateService extends GetxService {
   ).obs;
 
   Rx<BeneficiaryStatistics> beneficiaryStatistics = BeneficiaryStatistics(
-    totalAmountDonated: -1,
-    totalNeedsClosed: -1,
-    totalPeopleDonated: -1,
+    totalAmountDonated: 0,
+    totalNeedsClosed: 0,
+    totalPeopleDonated: 0,
   ).obs;
 
   Future<void> init() async {
@@ -172,10 +172,20 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
+        final Map<String, dynamic> data;
+        if (user.value.isDonor) {
+          data =
+              // ignore: avoid_dynamic_calls
+              response.data['result'] as Map<String, dynamic>;
+        } else {
+          data =
+              // ignore: avoid_dynamic_calls
+              response.data['user'] as Map<String, dynamic>;
+        }
+
         // ignore: no_leading_underscores_for_local_identifiers
         final User _user = User.fromJson(
-          (response.data as Map<String, dynamic>)['user']
-              as Map<String, dynamic>,
+          data,
         );
         // ignore: cascade_invocations
         _user.beneficiary = Beneficiary.anonymous();
@@ -412,7 +422,7 @@ class UserStateService extends GetxService {
         return true;
       } else {
         logger.log(
-          'Failed to update beneficiary image: StatusCode: ${response.statusCode}, ${response.data}',
+          'Failed to update beneficiary image: StatusCode: ${response.statusCode}',
         );
         return false;
       }
