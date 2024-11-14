@@ -41,14 +41,11 @@ class ChosePathPage extends StatelessWidget {
                 onTap: () async {
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
-                    await Get.find<WalletService>()
-                        .connectToWalletAfterSignIn();
+                    await Get.find<WalletService>().connectToWalletAfterSignIn();
 
                     unawaited(
-                      Get.to<void>(
-                        () => Get.find<UserStateService>().user.value.isDonor
-                            ? const DonorRootPage()
-                            : const BeneficiaryRootPage(),
+                      Get.off<void>(
+                        () => Get.find<UserStateService>().user.value.isDonor ? const DonorRootPage() : const BeneficiaryRootPage(),
                       ),
                     );
                   } else {
@@ -69,15 +66,11 @@ class ChosePathPage extends StatelessWidget {
                       Gap(getRelativeHeight(20)),
                       Text(
                         'Donate now',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k36Bold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k36Bold,
                       ),
                       Text(
                         'Support those in need by contributing money to help improve their lives.',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k16SemiBold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k16SemiBold,
                         textAlign: TextAlign.center,
                       ),
                       Gap(getRelativeHeight(20)),
@@ -105,14 +98,11 @@ class ChosePathPage extends StatelessWidget {
                 onTap: () async {
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
-                    await Get.find<WalletService>()
-                        .connectToWalletAfterSignIn();
+                    await Get.find<WalletService>().connectToWalletAfterSignIn();
 
                     unawaited(
-                      Get.to<void>(
-                        () => Get.find<UserStateService>().user.value.isDonor
-                            ? const DonorRootPage()
-                            : const BeneficiaryRootPage(),
+                      Get.off<void>(
+                        () => Get.find<UserStateService>().user.value.isDonor ? const DonorRootPage() : const BeneficiaryRootPage(),
                       ),
                     );
                   } else {
@@ -133,15 +123,11 @@ class ChosePathPage extends StatelessWidget {
                       Gap(getRelativeHeight(20)),
                       Text(
                         'Get help',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k36Bold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k36Bold,
                       ),
                       Text(
                         'Receive financial assistance and support to overcome your challenges..',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k16SemiBold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k16SemiBold,
                         textAlign: TextAlign.center,
                       ),
                       Gap(getRelativeHeight(20)),

@@ -22,41 +22,62 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     Get.put(CreateNewNeedController());
     return GestureDetector(
+      behavior: HitTestBehavior.opaque, // Ensure gestures pass through
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'Create a need'.tr,
-            style: CustomTypography.fromColor(theme.shadowed).k24Bold,
-          ),
-          Gap(getRelativeHeight(20)),
-          Obx(
-            () => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                for (int i = 0; i < 5; i++)
-                  ProgressBar(
-                    selected: controller.currentTab.value == NeedsTab.values[i],
-                  ),
-              ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(16)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Gap(getRelativeHeight(20)),
+            Text(
+              'Create a need'.tr,
+              style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
-          ),
-          Expanded(
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: controller.pageController,
-              onPageChanged: (int index) => controller.currentPage.value = index,
-              children: const <Widget>[
-                NeedScreen1(),
-                NeedScreen2(),
-                NeedScreen3(),
-                NeedScreen4(),
-                NeedScreen5(),
-              ],
+            Gap(getRelativeHeight(20)),
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  for (int i = 0; i < 5; i++)
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to the tapped page
+                        controller.pageController.animateToPage(
+                          i,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                        // Update the current page and tab
+                        controller.currentPage.value = i;
+                        controller.currentTab.value = NeedsTab.values[i];
+                      },
+                      child: ProgressBar(
+                        selected: controller.currentPage.value == i,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: PageView(
+                physics: const PageScrollPhysics(),
+                controller: controller.pageController,
+                onPageChanged: (int index) {
+                  controller.currentPage.value = index;
+                  controller.currentTab.value = NeedsTab.values[index];
+                },
+                children: const <Widget>[
+                  NeedScreen1(),
+                  NeedScreen2(),
+                  NeedScreen3(),
+                  NeedScreen4(),
+                  NeedScreen5(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
