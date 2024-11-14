@@ -54,7 +54,7 @@ class LogoutDialog extends StatelessWidget {
                   onPressed: () async {
                     await Get.find<AuthService>().logout();
                     userStateService.clear();
-                    await Get.to<void>(
+                    await Get.offAll<void>(
                       () => const ChosePathPage(),
                       transition: Transition.upToDown,
                     );
