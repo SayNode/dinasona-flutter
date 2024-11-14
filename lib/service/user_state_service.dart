@@ -177,19 +177,13 @@ class UserStateService extends GetxService {
           data =
               // ignore: avoid_dynamic_calls
               response.data['result'] as Map<String, dynamic>;
+          user.value = User.fromJson(data['user'] as Map<String, dynamic>);
         } else {
           data =
               // ignore: avoid_dynamic_calls
               response.data['user'] as Map<String, dynamic>;
+          user.value = User.fromJson(data);
         }
-
-        // ignore: no_leading_underscores_for_local_identifiers
-        final User _user = User.fromJson(
-          data,
-        );
-        // ignore: cascade_invocations
-        _user.beneficiary = Beneficiary.anonymous();
-        user.value = _user;
       } else {
         logger.log(
           'Failed to fetch user info: StatusCode: ${response.statusCode}, ${response.data}',
