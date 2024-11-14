@@ -15,7 +15,11 @@ class User {
         name = json['name'] as String? ?? '',
         beneficiary = json['beneficiary'] == null
             ? Beneficiary.anonymous()
-            : Beneficiary.fromJson(json['beneficiary'] as Map<String, dynamic>),
+            : json['beneficiary'] is Beneficiary
+                ? json['beneficiary'] as Beneficiary
+                : Beneficiary.fromJson(
+                    json['beneficiary'] as Map<String, dynamic>,
+                  ),
         email = json['email'] as String? ?? '',
         avatar = json['avatar'] as String? ?? '',
         username = json['username'] as String? ?? '',

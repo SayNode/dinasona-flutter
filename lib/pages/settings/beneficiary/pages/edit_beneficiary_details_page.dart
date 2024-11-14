@@ -40,6 +40,7 @@ class EditBeneficiaryPage
           FocusScope.of(context).unfocus();
         },
         child: CustomScaffold(
+          resizeToAvoidBottomInset: true,
           padding: true,
           body: SafeArea(
             child: SingleChildScrollView(
