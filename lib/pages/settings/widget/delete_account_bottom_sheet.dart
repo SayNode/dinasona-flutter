@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../service/auth_service.dart';
+import '../../../service/storage/shared_storage_service.dart';
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../theme/theme.dart';
@@ -118,6 +119,7 @@ class DeleteAccountBottomSheet extends StatelessWidget {
             onPressed: () async {
               await Get.find<AuthService>().deleteUser();
               userStateService.clear();
+              await Get.find<SharedStorageService>().delete('language');
               await Get.offAll<void>(
                 () => const ChosePathPage(),
                 transition: Transition.upToDown,

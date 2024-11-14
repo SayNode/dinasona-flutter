@@ -120,19 +120,17 @@ class ChosePathPage extends StatelessWidget {
                   } else {
                     final bool savedLanguage =
                         await storageService.containsKey('language');
-                    if (savedLanguage) {
-                      unawaited(
-                        Get.to<void>(
-                          () => const SignupPage(isBeneficiary: true),
-                        ),
-                      );
-                    } else {
-                      unawaited(
-                        Get.to<void>(
-                          () => const ChooseLanguagePage(),
-                        ),
-                      );
-                    }
+
+                    unawaited(
+                      Get.to<void>(
+                        savedLanguage
+                            ? () => const SignupPage(
+                                  savedLanguage: true,
+                                  isBeneficiary: true,
+                                )
+                            : () => const ChooseLanguagePage(),
+                      ),
+                    );
                   }
                 },
                 child: Padding(
