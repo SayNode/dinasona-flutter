@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../model/auth_response.dart';
 import '../service/auth_service.dart';
+import '../service/storage/shared_storage_service.dart';
 import '../service/theme_service.dart';
 import '../service/user_state_service.dart';
 import '../service/wallet_service.dart';
@@ -24,6 +25,7 @@ class ChosePathPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SharedStorageService storageService = Get.find();
     final ThemeService service = Get.find();
     final CustomTheme diasonaTheme = service.theme;
     final AuthService authService = Get.find();
@@ -116,9 +118,17 @@ class ChosePathPage extends StatelessWidget {
                       ),
                     );
                   } else {
+                    final bool savedLanguage =
+                        await storageService.containsKey('language');
+
                     unawaited(
                       Get.to<void>(
-                        () => const ChooseLanguagePage(),
+                        savedLanguage
+                            ? () => const SignupPage(
+                                  savedLanguage: true,
+                                  isBeneficiary: true,
+                                )
+                            : () => const ChooseLanguagePage(),
                       ),
                     );
                   }

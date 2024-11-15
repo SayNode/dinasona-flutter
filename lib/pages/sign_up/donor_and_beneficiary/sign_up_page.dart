@@ -19,16 +19,17 @@ import 'choose_language_page.dart';
 class SignupPage extends GetView<SignupController> {
   const SignupPage({
     this.isBeneficiary = false,
+    this.savedLanguage = false,
     super.key,
   });
-
   final bool isBeneficiary;
+  final bool savedLanguage;
 
   @override
   Widget build(BuildContext context) {
     final LocalizationController localizationController =
         Get.find<LocalizationController>();
-    if (isBeneficiary) {
+    if (isBeneficiary && !savedLanguage) {
       if (localizationController.defaulLanguage ||
           controller.chosenCurrency.isEmpty) {
         return const ChooseLanguagePage();
