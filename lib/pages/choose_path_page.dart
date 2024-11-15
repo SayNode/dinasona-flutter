@@ -39,7 +39,6 @@ class ChosePathPage extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () async {
-                  Get.find<UserStateService>().user.value.isDonor = true;
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
                     await Get.find<WalletService>()
@@ -104,7 +103,6 @@ class ChosePathPage extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () async {
-                  Get.find<UserStateService>().user.value.isDonor = false;
                   final AuthResponse response = await authService.silentLogin();
                   if (response.success) {
                     await Get.find<WalletService>()
