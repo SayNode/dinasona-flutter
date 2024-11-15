@@ -11,7 +11,6 @@ import '../../util/util.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
-import '../create_new_need/create_new_need.dart';
 import 'controller/personal_details_controller.dart';
 
 class PersonalDetailsPage extends GetView<PersonalDetailsController> {
@@ -39,16 +38,13 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Personal details'.tr,
-                    style: CustomTypography.fromColor(diasonaTheme.shadowed)
-                        .k24Bold,
+                    style: CustomTypography.fromColor(diasonaTheme.shadowed).k24Bold,
                   ),
                 ),
                 SizedBox(height: gap),
                 Text(
-                  'Share key details to personalize your experience. Your information helps us connect you with the right support.'
-                      .tr,
-                  style:
-                      CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                  'Share key details to personalize your experience. Your information helps us connect you with the right support.'.tr,
+                  style: CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
                 ),
                 SizedBox(height: gap),
                 Form(
@@ -62,12 +58,10 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                           decoration: BoxDecoration(
                             border: Border.all(color: diasonaTheme.graphite),
                             shape: BoxShape.circle,
-                            image: controller.userStateService.user.value.avatar
-                                    .isNotEmpty
+                            image: controller.userStateService.user.value.avatar.isNotEmpty
                                 ? DecorationImage(
                                     image: NetworkImage(
-                                      controller
-                                          .userStateService.user.value.avatar,
+                                      controller.userStateService.user.value.avatar,
                                     ),
                                     fit: BoxFit.cover,
                                   )
@@ -85,9 +79,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                             onTap: () {
                               controller.pickImage(ImageSource.gallery);
                             },
-                            child: controller.selectedImage.value == null &&
-                                    controller.userStateService.user.value
-                                        .avatar.isEmpty
+                            child: controller.selectedImage.value == null && controller.userStateService.user.value.avatar.isEmpty
                                 ? SizedBox(
                                     width: getRelativeWidth(30),
                                     child: SvgPicture.asset(
@@ -116,8 +108,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                           Expanded(
                             child: DecoratedBox(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: diasonaTheme.graphite),
+                                border: Border.all(color: diasonaTheme.graphite),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: DropdownButtonFormField<Gender>(
@@ -135,17 +126,14 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                   ),
                                   hintText: 'Gender',
                                 ),
-                                items: Gender.values
-                                    .map<DropdownMenuItem<Gender>>(
-                                        (Gender gender) {
+                                items: Gender.values.map<DropdownMenuItem<Gender>>((Gender gender) {
                                   return DropdownMenuItem<Gender>(
                                     value: gender,
                                     child: Column(
                                       children: <Widget>[
                                         Obx(
                                           () => Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               Flexible(
                                                 child: AutoSizeText(
@@ -153,24 +141,14 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                                   minFontSize: 9,
                                                   maxFontSize: 16,
                                                   maxLines: 1,
-                                                  style: CustomTypography
-                                                      .fromColor(
-                                                    gender.name ==
-                                                            controller
-                                                                .selectedGender
-                                                                .name
-                                                        ? diasonaTheme.ferngreen
-                                                        : diasonaTheme.shadowed,
+                                                  style: CustomTypography.fromColor(
+                                                    gender.name == controller.selectedGender.name ? diasonaTheme.ferngreen : diasonaTheme.shadowed,
                                                   ).k16Reg,
                                                 ),
                                               ),
                                               Icon(
                                                 gender.icon,
-                                                color: gender.name ==
-                                                        controller
-                                                            .selectedGender.name
-                                                    ? diasonaTheme.ferngreen
-                                                    : diasonaTheme.shadowed,
+                                                color: gender.name == controller.selectedGender.name ? diasonaTheme.ferngreen : diasonaTheme.shadowed,
                                               ),
                                             ],
                                           ),
@@ -195,10 +173,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  hintText: controller
-                                          .dateOfBirthController.value.isEmpty
-                                      ? 'Date of birth'
-                                      : controller.dateOfBirthController.value,
+                                  hintText: controller.dateOfBirthController.value.isEmpty ? 'Date of birth' : controller.dateOfBirthController.value,
                                   suffixIcon: const Icon(Icons.calendar_month),
                                 ),
                               ),
@@ -244,11 +219,10 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                 ),
                 SizedBox(height: gap),
                 TextButton(
-                  onPressed: () => Get.to<void>(() => const CreateNewNeed()),
+                  onPressed: () => controller.skip(),
                   child: Text(
                     'Skip',
-                    style: CustomTypography.fromColor(diasonaTheme.ferngreen)
-                        .k16Reg,
+                    style: CustomTypography.fromColor(diasonaTheme.ferngreen).k16Reg,
                   ),
                 ),
               ],

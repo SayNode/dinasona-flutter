@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
-import '../../create_new_need/create_new_need.dart';
+import '../../root/controllers/beneficiary_root_controller.dart';
 
 enum Gender {
   male('Male', Icons.male),
@@ -26,8 +26,7 @@ class PersonalDetailsController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final RxString dateOfBirthController = ''.obs;
   final TextEditingController locationController = TextEditingController();
-  final TextEditingController descriptionTextController =
-      TextEditingController();
+  final TextEditingController descriptionTextController = TextEditingController();
   final int descriptionMaxLenth = 300;
   final Rx<File?> selectedImage = Rx<File?>(null);
   UserStateService userState = Get.find<UserStateService>();
@@ -35,6 +34,7 @@ class PersonalDetailsController extends GetxController {
     _selectedGender.value = value;
   }
 
+  BeneficiaryRootController beneficiaryRootController = Get.find<BeneficiaryRootController>();
   final UserStateService userStateService = Get.find<UserStateService>();
 
   @override
@@ -100,7 +100,13 @@ class PersonalDetailsController extends GetxController {
       },
     );
 
-    await Get.to<void>(() => const CreateNewNeed());
+    Get.back();
+    beneficiaryRootController.changeTabIndex(1);
+  }
+
+  void skip() {
+    Get.back();
+    beneficiaryRootController.changeTabIndex(1);
   }
 
   @override
