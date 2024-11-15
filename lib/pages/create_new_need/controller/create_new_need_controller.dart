@@ -10,6 +10,7 @@ import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../root/controllers/beneficiary_root_controller.dart';
+import '../../wallet/wallet_page.dart';
 import '../wallet_instructions.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
@@ -61,7 +62,8 @@ class CreateNewNeedController extends GetxController {
   void onTapPublishButton() {
     if (walletService.isWalletConnected.value) {
       createNewNeed();
-      PopupManager.openPublishPopup();
+      //PopupManager.openPublishPopup();
+      Get.to<void>(const WalletPage());
     } else {
       Get.to(InstructionsPage.new);
     }

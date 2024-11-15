@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../pages/home/beneficary_home_page.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
@@ -39,8 +40,7 @@ class DraftPopup extends StatelessWidget {
             ),
             Gap(getRelativeHeight(10)),
             InkWell(
-              //todo: change this later
-              onTap: Get.back,
+              onTap: () => Get.to<void>(() => const BeneficiaryHomePage()),
               child: Container(
                 alignment: Alignment.center,
                 width: double.infinity,

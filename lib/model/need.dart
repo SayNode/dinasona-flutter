@@ -65,6 +65,7 @@ class Need {
     required this.areasOfInterest,
     required this.images,
     required this.status,
+    required this.bolt11invoice,
     required this.id,
   });
 
@@ -91,6 +92,7 @@ class Need {
       status: json['status'] == null
           ? NeedStatus.draft
           : _statusFromString(json['status'] as String),
+      bolt11invoice: json['bolt11Invoice'] as String? ?? '',
       id: json['id'] as int? ?? 0,
     );
   }
@@ -115,5 +117,6 @@ class Need {
   final List<AreaOfInterest> areasOfInterest;
   final List<String> images;
   final NeedStatus status;
+  final String bolt11invoice;
   final int id;
 }

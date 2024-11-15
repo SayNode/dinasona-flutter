@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,19 +10,27 @@ import '../../../service/api_service.dart';
 import '../../../service/logger_service.dart';
 import '../../../util/constants.dart';
 import '../../../util/popup_manager.dart';
+import '../../wallet/controllers/send_payment_controller.dart';
+import '../../wallet/send_bitcoin_page.dart';
 
 class NeedPopupController extends GetxController {
   NeedPopupController({required this.need});
   final Need need;
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
+  final SendPaymentController sendPaymentController =
+      Get.put(SendPaymentController());
 
   Future<void> donate(Need need) async {
     try {
-      final http.Response createDonationResponse =
-          await createDonationObject(need);
+      await Get.to<void>(
+        () =>
+            SendBitcoinPage(bolt11FromDonation: need.bolt11invoice, need: need),
+      );
+      /* final http.Response createDonationResponse =
+          await createDonationObject(need); */
 
-      if (createDonationResponse.statusCode != 201) {
+      /* if (createDonationResponse.statusCode != 201 && false) {
         // ignore: avoid_dynamic_calls
         if (jsonDecode(createDonationResponse.body)['message'] ==
             'Donation already exists for this need') {
@@ -33,7 +42,9 @@ class NeedPopupController extends GetxController {
             'Donation could not be created. Please try again later.'.tr,
           );
         }
-      }
+      } else {
+        unawaited(Get.to<void>(() => const SendBitcoinPage()));
+      } */
       // ignore: empty_catches
     } catch (e) {
       await PopupManager.donationErrorPopup(
@@ -52,11 +63,12 @@ class NeedPopupController extends GetxController {
         headers: <String, String>{
           HttpHeaders.authorizationHeader:
               'Bearer ${apiService.authenticationToken}',
+          'Content-Type': 'application/json',
         },
-        body: <String, dynamic>{
+        body: json.encode(<String, Object>{
           'need': need.id.toString(),
-          'amount': need.amount.toString(),
-        },
+          'amount': need.amount, // This can be int or double
+        }),
       );
 
       if (response.statusCode == 201) {

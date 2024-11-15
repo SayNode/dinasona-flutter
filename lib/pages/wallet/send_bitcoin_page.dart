@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../model/need.dart';
 import '../../service/localization_controller.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
@@ -16,18 +17,38 @@ import 'controllers/send_payment_controller.dart';
 import 'widgets/qr_code_scanner_page.dart';
 
 class SendBitcoinPage extends GetView<SendPaymentController> {
-  const SendBitcoinPage({this.bolt11InvoiceFromQRCode = '', super.key});
+  const SendBitcoinPage({
+    this.bolt11InvoiceFromQRCode = '',
+    super.key,
+    this.bolt11FromDonation,
+    this.need,
+  });
 
   final String? bolt11InvoiceFromQRCode;
+  final String? bolt11FromDonation;
+  final Need? need;
 
   @override
   Widget build(BuildContext context) {
     Get.put(SendPaymentController());
+
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //controller.bolt11Invoice.value = bolt11InvoiceFromQRCode ?? '';
-      //controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
+      if ((bolt11InvoiceFromQRCode ?? '').isNotEmpty) {
+        controller.bolt11Invoice.value = bolt11InvoiceFromQRCode!;
+        controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
+
+        await controller.getInvoiceAmount();
+        unawaited(controller.getFees());
+      }
+      if ((bolt11FromDonation ?? '').isNotEmpty) {
+        controller.bolt11Invoice.value = bolt11FromDonation!;
+        controller.sendBTCInvoiceInput.text = controller.bolt11Invoice.value;
+
+        await controller.getInvoiceAmount();
+        unawaited(controller.getFees());
+      }
       //controller.sendBTCPaymentError.value = '';
       //controller.invoiceDescription.value = '';
       //controller.sendPaymentTransactionFee.value = 0;

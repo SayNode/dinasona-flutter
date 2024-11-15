@@ -292,9 +292,9 @@ class NeedService extends GetxService {
       );
 
       final http.Response response = await apiService.delete(
-        '/need/delete/$id',
+        '/need/delete/$id/',
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         Get.find<LoggerService>().log(
           'NeedService.deleteNeed() - deleted need',
         );
