@@ -26,7 +26,8 @@ class PersonalDetailsController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final RxString dateOfBirthController = ''.obs;
   final TextEditingController locationController = TextEditingController();
-  final TextEditingController descriptionTextController = TextEditingController();
+  final TextEditingController descriptionTextController =
+      TextEditingController();
   final int descriptionMaxLenth = 300;
   final Rx<File?> selectedImage = Rx<File?>(null);
   UserStateService userState = Get.find<UserStateService>();
@@ -34,7 +35,8 @@ class PersonalDetailsController extends GetxController {
     _selectedGender.value = value;
   }
 
-  BeneficiaryRootController beneficiaryRootController = Get.find<BeneficiaryRootController>();
+  BeneficiaryRootController beneficiaryRootController =
+      Get.find<BeneficiaryRootController>();
   final UserStateService userStateService = Get.find<UserStateService>();
 
   @override
