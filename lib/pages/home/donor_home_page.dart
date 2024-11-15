@@ -24,7 +24,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
         .where(
           (Need e) =>
               e.areasOfInterest.contains(field) &&
-              e.status == NeedStatus.published,
+              e.status == NeedStatus.ongoing,
         )
         .toList();
     return donationsInField.isEmpty
@@ -119,6 +119,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    Get.put(DonorHomePageController());
 
     return SingleChildScrollView(
       child: Column(
