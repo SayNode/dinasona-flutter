@@ -67,7 +67,7 @@ class LoginController extends GetxController {
           password.clear();
           email.clear();
           unawaited(
-            Get.to<void>(
+            Get.offAll<void>(
               () => Get.find<UserStateService>().user.value.isDonor
                   ? const DonorRootPage()
                   : const BeneficiaryRootPage(),

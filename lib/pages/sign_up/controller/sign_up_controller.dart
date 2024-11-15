@@ -108,7 +108,7 @@ class SignupController extends GetxController {
     email.clear();
     showPopup(isBeneficiary: isBeneficiary);
     unawaited(
-      Get.to(
+      Get.offAll(
         () =>
             isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
       ),
