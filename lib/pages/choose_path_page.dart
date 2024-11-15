@@ -47,7 +47,7 @@ class ChosePathPage extends StatelessWidget {
                         .connectToWalletAfterSignIn();
 
                     unawaited(
-                      Get.to<void>(
+                      Get.off<void>(
                         () => Get.find<UserStateService>().user.value.isDonor
                             ? const DonorRootPage()
                             : const BeneficiaryRootPage(),
@@ -111,7 +111,7 @@ class ChosePathPage extends StatelessWidget {
                         .connectToWalletAfterSignIn();
 
                     unawaited(
-                      Get.to<void>(
+                      Get.off<void>(
                         () => Get.find<UserStateService>().user.value.isDonor
                             ? const DonorRootPage()
                             : const BeneficiaryRootPage(),

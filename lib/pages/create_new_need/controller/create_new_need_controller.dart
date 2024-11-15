@@ -7,7 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import '../../../model/need.dart';
 import '../../../service/need_service.dart';
 import '../../../service/user_state_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
+import '../../root/controllers/beneficiary_root_controller.dart';
+import '../wallet_instructions.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
 
@@ -21,11 +24,12 @@ class CreateNewNeedController extends GetxController {
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
-
+  WalletService walletService = Get.find<WalletService>();
   NeedService needService = Get.find<NeedService>();
   UserStateService userStateService = Get.find<UserStateService>();
   final int descriptionMaxLenth = 300;
-
+  BeneficiaryRootController beneficiaryRootController =
+      Get.find<BeneficiaryRootController>();
   final Rx<File?> selectedImage = Rx<File?>(null);
   final Rx<File?> selectedImage2 = Rx<File?>(null);
 
@@ -55,8 +59,12 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapPublishButton() {
-    createNewNeed();
-    PopupManager.openPublishPopup();
+    if (walletService.isWalletConnected.value) {
+      createNewNeed();
+      PopupManager.openPublishPopup();
+    } else {
+      Get.to(InstructionsPage.new);
+    }
   }
 
   Future<void> openCurrency({Widget? child}) async {
@@ -116,6 +124,11 @@ class CreateNewNeedController extends GetxController {
         if (selectedImage2.value != null) selectedImage2.value!.path,
       ],
     );
+  }
+
+  void getToCreateWalletScreen() {
+    Get.back();
+    beneficiaryRootController.changeTabIndex(2);
   }
 
   void deleteNeed(int id) {

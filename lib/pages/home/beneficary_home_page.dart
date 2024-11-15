@@ -8,7 +8,6 @@ import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
-import '../../widgets/custom_scaffold.dart';
 import 'controllers/beneficary_home_page_controller.dart';
 import 'widgets/all_needs_widget.dart';
 import 'widgets/create_need_container_widget.dart';
@@ -24,11 +23,12 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
     final String userNameForGreeting =
         Get.find<UserStateService>().user.value.name.split(' ')[0];
 
-    return CustomScaffold(
-      padding: true,
-      body: Column(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: getRelativeHeight(16)),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Gap(getRelativeHeight(20)),
           Text(
             userNameForGreeting.isNotEmpty
                 ? '${controller.getGreetingMessage()}, $userNameForGreeting'
