@@ -175,6 +175,7 @@ class NeedService extends GetxService {
     String description,
     String amount,
     String areaOfInterest, {
+    bool isDraft = true,
     List<String> images = const <String>[],
   }) async {
     try {
@@ -192,6 +193,7 @@ class NeedService extends GetxService {
           'description': description,
           'amount': amount,
           'area_of_interest': areaOfInterest,
+          'status': isDraft ? 'draft' : 'published',
         },
       );
       if (response.statusCode == 201) {

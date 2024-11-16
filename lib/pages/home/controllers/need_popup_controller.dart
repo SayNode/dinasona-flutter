@@ -23,14 +23,10 @@ class NeedPopupController extends GetxController {
 
   Future<void> donate(Need need) async {
     try {
-      await Get.to<void>(
-        () =>
-            SendBitcoinPage(bolt11FromDonation: need.bolt11invoice, need: need),
-      );
-      /* final http.Response createDonationResponse =
-          await createDonationObject(need); */
+      final http.Response createDonationResponse =
+          await createDonationObject(need);
 
-      /* if (createDonationResponse.statusCode != 201 && false) {
+      if (createDonationResponse.statusCode != 201) {
         // ignore: avoid_dynamic_calls
         if (jsonDecode(createDonationResponse.body)['message'] ==
             'Donation already exists for this need') {
@@ -43,9 +39,13 @@ class NeedPopupController extends GetxController {
           );
         }
       } else {
-        unawaited(Get.to<void>(() => const SendBitcoinPage()));
-      } */
-      // ignore: empty_catches
+        await Get.to<void>(
+          () => SendBitcoinPage(
+            bolt11FromDonation: need.bolt11invoice,
+            need: need,
+          ),
+        );
+      }
     } catch (e) {
       await PopupManager.donationErrorPopup(
         'Donation could not be created. Please try again later.'.tr,

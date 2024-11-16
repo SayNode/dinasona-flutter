@@ -10,7 +10,6 @@ import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../root/controllers/beneficiary_root_controller.dart';
-import '../../wallet/wallet_page.dart';
 import '../wallet_instructions.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
@@ -43,6 +42,27 @@ class CreateNewNeedController extends GetxController {
     screen3.addListener(() {
       isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
     });
+
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    pageController = PageController();
+  }
+
+  @override
+  void onClose() {
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    super.onClose();
+  }
+
+  void initializePageController() {
+    try {
+      pageController.dispose();
+    } catch (_) {}
+
+    pageController = PageController();
   }
 
   Future<void> pickImage(ImageSource source, Rx<File?> image) async {
@@ -55,15 +75,24 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapdraftButton() {
-    createNewNeed();
-    PopupManager.openDraftPopup();
+    if (walletService.isWalletConnected.value) {
+      createNewNeed();
+
+      PopupManager.openDraftPopup();
+      pageController.dispose();
+      Get.delete<CreateNewNeedController>();
+    } else {
+      Get.to(InstructionsPage.new);
+    }
   }
 
   void onTapPublishButton() {
     if (walletService.isWalletConnected.value) {
-      createNewNeed();
-      //PopupManager.openPublishPopup();
-      Get.to<void>(const WalletPage());
+      createNewNeed(isDraft: false);
+
+      PopupManager.openPublishPopup();
+      pageController.dispose();
+      Get.delete<CreateNewNeedController>();
     } else {
       Get.to(InstructionsPage.new);
     }
@@ -108,7 +137,7 @@ class CreateNewNeedController extends GetxController {
     currentTab.value = tab;
   }
 
-  void createNewNeed() {
+  void createNewNeed({bool isDraft = true}) {
     final String areasOfInterest = selectedAreasOfInterest
         .map(
           (AreaOfInterest e) => e.title,
@@ -121,6 +150,7 @@ class CreateNewNeedController extends GetxController {
       screen4.text,
       screen3.text,
       areasOfInterest,
+      isDraft: isDraft,
       images: <String>[
         if (selectedImage.value != null) selectedImage.value!.path,
         if (selectedImage2.value != null) selectedImage2.value!.path,

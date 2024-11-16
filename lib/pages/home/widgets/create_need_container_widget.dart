@@ -7,7 +7,6 @@ import '../../../service/user_state_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
-import '../../settings/beneficiary/pages/edit_beneficiary_details_page.dart';
 import '../controllers/beneficary_home_page_controller.dart';
 
 class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {

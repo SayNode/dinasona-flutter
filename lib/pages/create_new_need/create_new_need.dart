@@ -60,21 +60,28 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
               ),
             ),
             Expanded(
-              child: PageView(
-                physics: const PageScrollPhysics(),
-                controller: controller.pageController,
-                onPageChanged: (int index) {
-                  controller.currentPage.value = index;
-                  controller.currentTab.value = NeedsTab.values[index];
-                },
-                children: const <Widget>[
-                  NeedScreen1(),
-                  NeedScreen2(),
-                  NeedScreen3(),
-                  NeedScreen4(),
-                  NeedScreen5(),
-                ],
-              ),
+              child: Obx(() {
+                controller.currentPage.value;
+                controller.initializePageController();
+
+                return PageView(
+                  // ignore: always_specify_types
+
+                  physics: const PageScrollPhysics(),
+                  controller: controller.pageController,
+                  onPageChanged: (int index) {
+                    controller.currentPage.value = index;
+                    controller.currentTab.value = NeedsTab.values[index];
+                  },
+                  children: const <Widget>[
+                    NeedScreen1(),
+                    NeedScreen2(),
+                    NeedScreen3(),
+                    NeedScreen4(),
+                    NeedScreen5(),
+                  ],
+                );
+              }),
             ),
           ],
         ),
