@@ -32,6 +32,8 @@ class CreateNewNeedController extends GetxController {
       Get.find<BeneficiaryRootController>();
   final Rx<File?> selectedImage = Rx<File?>(null);
   final Rx<File?> selectedImage2 = Rx<File?>(null);
+  final RxBool isEditingNeed = false.obs;
+  final RxInt editingNeedId = 0.obs;
 
   @override
   void onInit() {
@@ -75,26 +77,42 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapdraftButton() {
-    if (walletService.isWalletConnected.value) {
-      createNewNeed();
+    if (!isEditingNeed.value) {
+      if (walletService.isWalletConnected.value) {
+        createNewNeed();
+
+        PopupManager.openDraftPopup();
+        pageController.dispose();
+        Get.delete<CreateNewNeedController>();
+      } else {
+        Get.to(InstructionsPage.new);
+      }
+    } else {
+      updateNeed(editingNeedId.value, true);
 
       PopupManager.openDraftPopup();
       pageController.dispose();
       Get.delete<CreateNewNeedController>();
-    } else {
-      Get.to(InstructionsPage.new);
     }
   }
 
   void onTapPublishButton() {
-    if (walletService.isWalletConnected.value) {
-      createNewNeed(isDraft: false);
+    if (!isEditingNeed.value) {
+      if (walletService.isWalletConnected.value) {
+        createNewNeed(isDraft: false);
+
+        PopupManager.openPublishPopup();
+        pageController.dispose();
+        Get.delete<CreateNewNeedController>();
+      } else {
+        Get.to(InstructionsPage.new);
+      }
+    } else {
+      updateNeed(editingNeedId.value, false);
 
       PopupManager.openPublishPopup();
       pageController.dispose();
       Get.delete<CreateNewNeedController>();
-    } else {
-      Get.to(InstructionsPage.new);
     }
   }
 
@@ -167,13 +185,12 @@ class CreateNewNeedController extends GetxController {
     needService.deleteNeed(id);
   }
 
-  void updateNeed(int id) {
+  void updateNeed(int id, bool isDraft) {
     needService.updateNeed(id, <String, dynamic>{
-      'Beneficiary': userStateService.user.value.id,
-      'Title': screen1.text,
-      'Description': screen4.text,
-      'Amount': screen3.text,
-      'Status': 'draft',
+      'title': screen1.text,
+      'description': screen4.text,
+      'amount': screen3.text,
+      'status': isDraft ? 'draft' : 'published',
     });
   }
 }
