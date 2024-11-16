@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -6,12 +7,15 @@ import 'package:dio/dio.dart' as dio_import;
 import 'package:http/http.dart' as http;
 
 import '../model/need.dart';
+import '../pages/home/controllers/beneficary_home_page_controller.dart';
 import '../util/constants.dart';
 import 'api_service.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
 import 'logger_service.dart';
 import 'dart:developer';
+
+import 'user_state_service.dart';
 
 class NeedService extends GetxService {
   APIService apiService = Get.find<APIService>();
@@ -298,6 +302,11 @@ class NeedService extends GetxService {
         Get.find<LoggerService>().log(
           'NeedService.deleteNeed() - deleted need',
         );
+
+        await Get.find<UserStateService>().fetchUserInfo();
+        await Get.find<UserStateService>().fetchBeneficiaryInfo();
+        await Get.find<BeneficiaryHomePageController>().onRefresh();
+        Get.back<void>();
       } else {
         throw Exception(
           'Failed to delete need - got status code ${response.statusCode}',
