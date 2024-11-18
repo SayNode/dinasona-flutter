@@ -35,6 +35,8 @@ class PersonalDetailsController extends GetxController {
     _selectedGender.value = value;
   }
 
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
   BeneficiaryRootController beneficiaryRootController =
       Get.find<BeneficiaryRootController>();
   final UserStateService userStateService = Get.find<UserStateService>();
@@ -44,6 +46,17 @@ class PersonalDetailsController extends GetxController {
     super.onInit();
     fullNameController.text = userState.user.value.name;
     emailController.text = userState.user.value.email;
+    if (userState.user.value.beneficiary.dateOfBirth != null) {
+      dateOfBirthController.value = dateFormat.format(
+        userStateService.user.value.beneficiary.dateOfBirth!,
+      );
+    }
+    if (userState.user.value.beneficiary.location.isNotEmpty) {
+      locationController.text = userState.user.value.beneficiary.location;
+    }
+    if (userState.user.value.beneficiary.bio.isNotEmpty) {
+      descriptionTextController.text = userState.user.value.beneficiary.bio;
+    }
   }
 
   Future<void> selectDate(BuildContext context) async {

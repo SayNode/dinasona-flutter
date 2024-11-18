@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../service/theme_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
@@ -51,7 +52,10 @@ class CreateNeedContainerWidget extends GetView<BeneficiaryHomePageController> {
               ),
             ),
             InkWell(
-              onTap: controller.openStoryPopup,
+              onTap: () async {
+                await Get.find<UserStateService>().fetchBeneficiaryInfo();
+                controller.openStoryPopup();
+              },
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: theme.silvershine,

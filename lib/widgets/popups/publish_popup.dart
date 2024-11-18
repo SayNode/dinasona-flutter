@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../pages/home/controllers/beneficary_home_page_controller.dart';
+import '../../pages/root/beneficiary_root_page.dart';
+import '../../pages/root/controllers/beneficiary_root_controller.dart';
 import '../../service/theme_service.dart';
+import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -13,6 +19,7 @@ class PublishPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserStateService userStateService = Get.find<UserStateService>();
     final CustomTheme theme = Get.find<ThemeService>().theme;
     return SizedBox(
       width: double.infinity,
@@ -39,8 +46,16 @@ class PublishPopup extends StatelessWidget {
             ),
             Gap(getRelativeHeight(10)),
             InkWell(
-              onTap: () {
-                Get.close(3);
+              onTap: () async {
+                /* await userStateService.fetchUserInfo();
+                await userStateService.fetchBeneficiaryInfo();
+                await Get.find<BeneficiaryHomePageController>().onRefresh();
+                Get.close(3); */
+                await userStateService.fetchUserInfo();
+                await userStateService.fetchBeneficiaryInfo();
+                await Get.find<BeneficiaryHomePageController>().onRefresh();
+                Get.find<BeneficiaryRootController>().changeTabIndex(0);
+                unawaited(Get.off<void>(() => const BeneficiaryRootPage()));
               },
               child: Container(
                 alignment: Alignment.center,

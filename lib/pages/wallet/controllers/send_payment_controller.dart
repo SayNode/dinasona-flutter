@@ -108,6 +108,8 @@ class SendPaymentController extends GetxController {
       if (e.toString().contains('Invoice has expired')) {
         sendBTCPaymentError.value =
             'Invoice has expired or has already been paid'.tr;
+      } else if (e.toString().contains('selfTransferNotSupported')) {
+        sendBTCPaymentError.value = 'Self transfer is not supported'.tr;
       } else {
         sendBTCPaymentError.value = 'Invoice is invalid'.tr;
       }
@@ -167,7 +169,7 @@ class SendPaymentController extends GetxController {
 
   Future<String> getSayNodeFeeInvoice(double feeInSatoshis, int needId) async {
     final String url =
-        Uri.https(Constants.apiDomain, '/donation/add_invoice/').toString();
+        Uri.https(Constants.apiDomain, '/need/add_invoice/').toString();
     try {
       final http.Response response = await http.post(
         Uri.parse(url),

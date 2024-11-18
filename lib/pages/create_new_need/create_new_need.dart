@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../model/need.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
@@ -15,12 +16,29 @@ import 'need_screen5.dart';
 import 'widgets/progress_bar.dart';
 
 class CreateNewNeed extends GetView<CreateNewNeedController> {
-  const CreateNewNeed({super.key});
+  const CreateNewNeed({super.key, this.need});
+
+  final Need? need;
 
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     Get.put(CreateNewNeedController());
+
+    // If wanted in the future edit to be able to edit current areas of interest and photos
+    controller.isEditingNeed.value = need != null;
+    if (need != null) {
+      controller.editingNeedId.value = need!.id;
+
+      final String tmpAmount = need!.amount == need!.amount.toInt()
+          ? need!.amount.toInt().toString()
+          : need!.amount.toString();
+
+      controller.screen1.text = need!.title;
+      controller.screen3.text = tmpAmount;
+      controller.screen4.text = need!.description;
+    }
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque, // Ensure gestures pass through
       onTap: () => FocusScope.of(context).unfocus(),
@@ -60,21 +78,28 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
               ),
             ),
             Expanded(
-              child: PageView(
-                physics: const PageScrollPhysics(),
-                controller: controller.pageController,
-                onPageChanged: (int index) {
-                  controller.currentPage.value = index;
-                  controller.currentTab.value = NeedsTab.values[index];
-                },
-                children: const <Widget>[
-                  NeedScreen1(),
-                  NeedScreen2(),
-                  NeedScreen3(),
-                  NeedScreen4(),
-                  NeedScreen5(),
-                ],
-              ),
+              child: Obx(() {
+                controller.currentPage.value;
+                controller.initializePageController();
+
+                return PageView(
+                  // ignore: always_specify_types
+
+                  physics: const PageScrollPhysics(),
+                  controller: controller.pageController,
+                  onPageChanged: (int index) {
+                    controller.currentPage.value = index;
+                    controller.currentTab.value = NeedsTab.values[index];
+                  },
+                  children: const <Widget>[
+                    NeedScreen1(),
+                    NeedScreen2(),
+                    NeedScreen3(),
+                    NeedScreen4(),
+                    NeedScreen5(),
+                  ],
+                );
+              }),
             ),
           ],
         ),

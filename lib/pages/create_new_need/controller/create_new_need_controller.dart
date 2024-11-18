@@ -32,6 +32,8 @@ class CreateNewNeedController extends GetxController {
       Get.find<BeneficiaryRootController>();
   final Rx<File?> selectedImage = Rx<File?>(null);
   final Rx<File?> selectedImage2 = Rx<File?>(null);
+  final RxBool isEditingNeed = false.obs;
+  final RxInt editingNeedId = 0.obs;
 
   @override
   void onInit() {
@@ -42,6 +44,27 @@ class CreateNewNeedController extends GetxController {
     screen3.addListener(() {
       isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
     });
+
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    pageController = PageController();
+  }
+
+  @override
+  void onClose() {
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    super.onClose();
+  }
+
+  void initializePageController() {
+    try {
+      pageController.dispose();
+    } catch (_) {}
+
+    pageController = PageController();
   }
 
   Future<void> pickImage(ImageSource source, Rx<File?> image) async {
@@ -54,16 +77,42 @@ class CreateNewNeedController extends GetxController {
   }
 
   void onTapdraftButton() {
-    createNewNeed();
-    PopupManager.openDraftPopup();
+    if (!isEditingNeed.value) {
+      if (walletService.isWalletConnected.value) {
+        createNewNeed();
+
+        PopupManager.openDraftPopup();
+        pageController.dispose();
+        Get.delete<CreateNewNeedController>();
+      } else {
+        Get.to(InstructionsPage.new);
+      }
+    } else {
+      updateNeed(editingNeedId.value, true);
+
+      PopupManager.openDraftPopup();
+      pageController.dispose();
+      Get.delete<CreateNewNeedController>();
+    }
   }
 
   void onTapPublishButton() {
-    if (walletService.isWalletConnected.value) {
-      createNewNeed();
-      PopupManager.openPublishPopup();
+    if (!isEditingNeed.value) {
+      if (walletService.isWalletConnected.value) {
+        createNewNeed(isDraft: false);
+
+        PopupManager.openPublishPopup();
+        pageController.dispose();
+        Get.delete<CreateNewNeedController>();
+      } else {
+        Get.to(InstructionsPage.new);
+      }
     } else {
-      Get.to(InstructionsPage.new);
+      updateNeed(editingNeedId.value, false);
+
+      PopupManager.openPublishPopup();
+      pageController.dispose();
+      Get.delete<CreateNewNeedController>();
     }
   }
 
@@ -106,7 +155,7 @@ class CreateNewNeedController extends GetxController {
     currentTab.value = tab;
   }
 
-  void createNewNeed() {
+  void createNewNeed({bool isDraft = true}) {
     final String areasOfInterest = selectedAreasOfInterest
         .map(
           (AreaOfInterest e) => e.title,
@@ -119,6 +168,7 @@ class CreateNewNeedController extends GetxController {
       screen4.text,
       screen3.text,
       areasOfInterest,
+      isDraft: isDraft,
       images: <String>[
         if (selectedImage.value != null) selectedImage.value!.path,
         if (selectedImage2.value != null) selectedImage2.value!.path,
@@ -135,13 +185,12 @@ class CreateNewNeedController extends GetxController {
     needService.deleteNeed(id);
   }
 
-  void updateNeed(int id) {
+  void updateNeed(int id, bool isDraft) {
     needService.updateNeed(id, <String, dynamic>{
-      'Beneficiary': userStateService.user.value.id,
-      'Title': screen1.text,
-      'Description': screen4.text,
-      'Amount': screen3.text,
-      'Status': 'draft',
+      'title': screen1.text,
+      'description': screen4.text,
+      'amount': screen3.text,
+      'status': isDraft ? 'draft' : 'published',
     });
   }
 }

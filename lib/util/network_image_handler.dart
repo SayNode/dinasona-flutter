@@ -14,8 +14,22 @@ class NetworkImageHandler extends StatelessWidget {
   final double? width;
   final BoxFit fit;
 
+  bool _isValidUrl(String url) {
+    // ignore: use_if_null_to_convert_nulls_to_bools
+    return Uri.tryParse(url)?.hasAbsolutePath == true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_isValidUrl(url)) {
+      return Image.asset(
+        'assets/images/image_unavailable.png',
+        height: height,
+        width: width,
+        fit: fit,
+      );
+    }
+
     return Image.network(
       url,
       height: height,

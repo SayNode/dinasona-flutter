@@ -30,6 +30,15 @@ class BeneficiaryHomePageController extends GetxController {
     super.onInit();
   }
 
+  Future<void> onRefresh() async {
+    try {
+      needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+      filterList();
+    } catch (_) {
+      // new beneficiaries have no needs and backend sends empty list - TODO handle this properly
+    }
+  }
+
   void onTabChange(int value) {
     switch (value) {
       case 0:
