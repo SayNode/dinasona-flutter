@@ -167,29 +167,51 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
               ),
             ),
             Gap(getRelativeHeight(20)),
-            Obx(
-              () {
-                final List<Need> effectiveNeeds =
-                    controller.needs.where((Need need) {
-                  switch (controller.selectedTab.value) {
-                    case NeedTab.all:
-                      return true;
-                    case NeedTab.ongoing:
-                      return need.status == NeedStatus.ongoing;
-                    case NeedTab.past:
-                      return need.status == NeedStatus.past;
-                  }
-                }).toList();
-                return Column(
-                  children: <Widget>[
-                    for (final Need need in effectiveNeeds)
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: getRelativeHeight(16),
-                        ),
-                        child: AlternateNeedCard(need: need),
-                      ),
-                  ],
+            FutureBuilder<List<Need>>(
+              future: controller.getNeedsForUser(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<List<Need>> needsForBeneficiary,
+              ) {
+                if (needsForBeneficiary.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (needsForBeneficiary.hasError) {
+                  return Center(
+                    child: Text(
+                      'Failed to load needs - an error occurred: ${needsForBeneficiary.error}',
+                    ),
+                  );
+                }
+
+                return Obx(
+                  () {
+                    final List<Need> effectiveNeeds =
+                        controller.needs.where((Need need) {
+                      switch (controller.selectedTab.value) {
+                        case NeedTab.all:
+                          return true;
+                        case NeedTab.ongoing:
+                          return need.status == NeedStatus.ongoing;
+                        case NeedTab.past:
+                          return need.status == NeedStatus.past;
+                      }
+                    }).toList();
+                    return Column(
+                      children: <Widget>[
+                        for (final Need need in effectiveNeeds)
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: getRelativeHeight(16),
+                            ),
+                            child: AlternateNeedCard(need: need),
+                          ),
+                      ],
+                    );
+                  },
                 );
               },
             ),

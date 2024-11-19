@@ -26,6 +26,7 @@ class Beneficiary {
     required this.dateOfBirth,
     required this.gender,
     required this.bio,
+    required this.userId,
   });
 
   factory Beneficiary.fromJson(Map<String, dynamic> json) {
@@ -47,6 +48,7 @@ class Beneficiary {
       bio: json['bio'] as String? ??
           json['description'] as String? ??
           'Empty bio',
+      userId: json['id'] as int? ?? -1,
     );
   }
   factory Beneficiary.anonymous() {
@@ -58,6 +60,7 @@ class Beneficiary {
       dateOfBirth: null,
       gender: Gender.anonymous,
       bio: 'Empty bio',
+      userId: -1,
     );
   }
 
@@ -69,4 +72,5 @@ class Beneficiary {
   DateTime? dateOfBirth;
   Gender gender;
   String bio;
+  int userId;
 }
