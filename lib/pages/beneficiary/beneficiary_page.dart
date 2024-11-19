@@ -167,11 +167,11 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
               ),
             ),
             Gap(getRelativeHeight(20)),
-            FutureBuilder<List<Need>>(
+            FutureBuilder<void>(
               future: controller.getNeedsForUser(),
               builder: (
                 BuildContext context,
-                AsyncSnapshot<List<Need>> needsForBeneficiary,
+                AsyncSnapshot<void> needsForBeneficiary,
               ) {
                 if (needsForBeneficiary.connectionState ==
                     ConnectionState.waiting) {
