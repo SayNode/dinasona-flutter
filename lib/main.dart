@@ -129,6 +129,12 @@ void main() async {
     );
     isFirstRun = await IsFirstRun.isFirstRun();
 
+    if (isFirstRun) {
+      try {
+        await Get.find<StorageService>().secure.deleteAll();
+      } catch (_) {}
+    }
+
     runApp(const MyApp());
   }, (Object error, StackTrace stack) async {
     debugPrint('Error caught by main zone');

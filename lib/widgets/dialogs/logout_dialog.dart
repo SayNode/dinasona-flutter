@@ -3,9 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../pages/choose_path_page.dart';
+import '../../service/api_service.dart';
 import '../../service/auth_service.dart';
+import '../../service/storage/secure_storage_service.dart';
+import '../../service/storage/storage_service.dart';
 import '../../service/theme_service.dart';
 import '../../service/user_state_service.dart';
+import '../../service/wallet_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -18,6 +22,10 @@ class LogoutDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
     final UserStateService userStateService = Get.find<UserStateService>();
+    final APIService apiService = Get.find<APIService>();
+    final AuthService authService = Get.find<AuthService>();
+    final SecureStorageService storageService =
+        Get.find<StorageService>().secure;
 
     return SizedBox(
       child: Padding(
@@ -52,7 +60,23 @@ class LogoutDialog extends StatelessWidget {
                   text: 'Log out'.tr,
                   textColor: theme.graphite,
                   onPressed: () async {
-                    await Get.find<AuthService>().logout();
+                    try {
+                      await Get.find<AuthService>().logout();
+                    } catch (e) {
+                      if (!e
+                          .toString()
+                          .contains('u s e r _ n o t _ f o u n d')) {
+                        throw Exception(e);
+                      } else {
+                        apiService.authenticationToken = '';
+                        // Disconnect other providers
+                        await authService.disconnectProviders();
+                        await storageService.delete('token');
+                      }
+                    }
+
+                    // Technically doesn't delete the wallet itself but the user's connection to it -> logout
+                    await Get.find<WalletService>().deleteUserWallet();
                     userStateService.clear();
                     await Get.offAll<void>(
                       () => const ChosePathPage(),
