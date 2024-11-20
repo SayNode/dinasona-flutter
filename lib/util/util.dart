@@ -6,10 +6,12 @@
 // https://saynode.ch
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
+import '../theme/typography.dart';
 
 bool getMaterialAppCalled = false;
 
@@ -50,8 +52,19 @@ void showLoadingDialog(BuildContext context) {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: Center(
-            child: CircularProgressIndicator(
-              color: theme.amberglow,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircularProgressIndicator(
+                  color: theme.amberglow,
+                ),
+                const Gap(10),
+                Text(
+                  'Security takes time,\nplease hang tight.',
+                  style: CustomTypography.fromColor(theme.amberglow).k16Reg,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         );
