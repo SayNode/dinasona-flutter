@@ -17,6 +17,7 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    Get.put(CreateNewNeedController());
 
     return CustomScaffold(
       appBarTitle: '',
@@ -39,19 +40,7 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
               number: 2,
-              text: "Press 'Create wallet'".tr,
-            ),
-            Gap(getRelativeHeight(12)),
-            NumberedInstructionsWidget(
-              number: 3,
-              text:
-                  "'Save your seed phrase': Write it down on paper \nand keep it safe—you'll need it in the future"
-                      .tr,
-            ),
-            Gap(getRelativeHeight(12)),
-            NumberedInstructionsWidget(
-              number: 4,
-              text: "Enter the '3 seed words' requested".tr,
+              text: "Press 'Add wallet'".tr,
             ),
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
@@ -62,8 +51,8 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
             ),
             const Spacer(),
             DinasonaButton(
-              text: 'Create wallet'.tr,
-              onPressed: () => controller.getToCreateWalletScreen(),
+              text: 'Add wallet'.tr,
+              onPressed: () => controller.getToWalletScreen(),
               color: theme.amberglow,
             ),
             Gap(getRelativeHeight(50)),

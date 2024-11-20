@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
 import '../../../service/need_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
+import '../../create_new_need/wallet_instructions.dart';
 
 enum NeedsTab { allNeeds, ongoing, past, draft }
 
@@ -81,7 +85,11 @@ class BeneficiaryHomePageController extends GetxController {
   }
 
   void openStoryPopup() {
-    PopupManager.openStoryPopup();
+    if (Get.find<WalletService>().isWalletConnected.value) {
+      unawaited(PopupManager.openStoryPopup());
+    } else {
+      unawaited(Get.to(InstructionsPage.new));
+    }
   }
 
   void selectTab(NeedsTab tab) {

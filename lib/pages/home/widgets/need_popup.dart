@@ -214,7 +214,9 @@ class NeedPopup extends GetView<NeedPopupController> {
           if (Get.find<WalletService>().balanceInUserCurrency < need.amount)
             Center(
               child: Text(
-                'Not enough balance in your wallet'.tr,
+                Get.find<WalletService>().isWalletConnected.value
+                    ? 'Not enough balance in your wallet'.tr
+                    : 'Please connect your wallet to donate'.tr,
               ),
             ),
         ],
