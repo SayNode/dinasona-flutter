@@ -183,6 +183,16 @@ class NeedService extends GetxService {
         'NeedService.createNewNeed() called...',
       );
 
+      final int needAmountInSatoshi =
+          ((await Get.find<CurrencyConversionService>()
+                      .convertUserCurrencyToBitcoin(double.parse(amount))) *
+                  100000000)
+              .toInt();
+      final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
+        'Need invoice ::client_invoice',
+        needAmountInSatoshi,
+      );
+
       const String url = '/need/create/';
 
       final http.Response response = await apiService.multipartFilePost(
@@ -193,6 +203,7 @@ class NeedService extends GetxService {
           'description': description,
           'amount': amount,
           'area_of_interest': areaOfInterest,
+          'bolt11Invoice': bolt11Invoice,
           'status': isDraft ? 'draft' : 'published',
         },
       );
@@ -200,32 +211,10 @@ class NeedService extends GetxService {
         final Map<String, dynamic> need = Map<String, dynamic>.from(
           jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
         );
+
         Get.find<LoggerService>().log(
           'NeedService.createNewNeed() - created new need',
         );
-        try {
-          // Beneficiary comes back as an int ??
-          need['beneficiary'] = null;
-          final Need parsedNeed = Need.fromJson(need);
-          final int needAmountInSatoshi =
-              ((await Get.find<CurrencyConversionService>()
-                          .convertUserCurrencyToBitcoin(double.parse(amount))) *
-                      100000000)
-                  .toInt();
-          final String bolt11Invoice =
-              await Get.find<BreezService>().createInvoice(
-            'Need invoice ::${parsedNeed.id}',
-            needAmountInSatoshi,
-          );
-
-          await updateNeed(parsedNeed.id, <String, dynamic>{
-            'bolt11Invoice': bolt11Invoice,
-          });
-        } catch (e) {
-          throw Exception(
-            'Failed to add bolt11Invoice to new need - got status code ${response.statusCode}',
-          );
-        }
 
         return need;
       } else {

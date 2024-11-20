@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../model/need.dart';
+import '../../../service/breez_service.dart';
+import '../../../service/currency_conversion_service.dart';
 import '../../../service/need_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
@@ -76,43 +79,43 @@ class CreateNewNeedController extends GetxController {
     }
   }
 
-  void onTapdraftButton() {
+  Future<void> onTapdraftButton() async {
     if (!isEditingNeed.value) {
       if (walletService.isWalletConnected.value) {
         createNewNeed();
 
-        PopupManager.openDraftPopup();
+        await PopupManager.openDraftPopup();
         pageController.dispose();
-        Get.delete<CreateNewNeedController>();
+        unawaited(Get.delete<CreateNewNeedController>());
       } else {
-        Get.to(InstructionsPage.new);
+        unawaited(Get.to(InstructionsPage.new));
       }
     } else {
-      updateNeed(editingNeedId.value, true);
+      await updateNeed(editingNeedId.value, true);
 
-      PopupManager.openDraftPopup();
+      unawaited(PopupManager.openDraftPopup());
       pageController.dispose();
-      Get.delete<CreateNewNeedController>();
+      unawaited(Get.delete<CreateNewNeedController>());
     }
   }
 
-  void onTapPublishButton() {
+  Future<void> onTapPublishButton() async {
     if (!isEditingNeed.value) {
       if (walletService.isWalletConnected.value) {
         createNewNeed(isDraft: false);
 
-        PopupManager.openPublishPopup();
+        unawaited(PopupManager.openPublishPopup());
         pageController.dispose();
-        Get.delete<CreateNewNeedController>();
+        unawaited(Get.delete<CreateNewNeedController>());
       } else {
-        Get.to(InstructionsPage.new);
+        unawaited(Get.to(InstructionsPage.new));
       }
     } else {
-      updateNeed(editingNeedId.value, false);
+      await updateNeed(editingNeedId.value, false);
 
-      PopupManager.openPublishPopup();
+      unawaited(PopupManager.openPublishPopup());
       pageController.dispose();
-      Get.delete<CreateNewNeedController>();
+      unawaited(Get.delete<CreateNewNeedController>());
     }
   }
 
@@ -185,11 +188,22 @@ class CreateNewNeedController extends GetxController {
     needService.deleteNeed(id);
   }
 
-  void updateNeed(int id, bool isDraft) {
-    needService.updateNeed(id, <String, dynamic>{
+  Future<void> updateNeed(int id, bool isDraft) async {
+    final int needAmountInSatoshi =
+        ((await Get.find<CurrencyConversionService>()
+                    .convertUserCurrencyToBitcoin(double.parse(screen3.text))) *
+                100000000)
+            .toInt();
+    final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
+      'Need invoice ::client_invoice',
+      needAmountInSatoshi,
+    );
+
+    await needService.updateNeed(id, <String, dynamic>{
       'title': screen1.text,
       'description': screen4.text,
       'amount': screen3.text,
+      'bolt11Invoice': bolt11Invoice,
       'status': isDraft ? 'draft' : 'published',
     });
   }
