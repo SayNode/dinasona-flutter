@@ -7,6 +7,7 @@ import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../model/need.dart';
 import '../../../service/api_service.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
@@ -110,6 +111,8 @@ class SendPaymentController extends GetxController {
             'Invoice has expired or has already been paid'.tr;
       } else if (e.toString().contains('selfTransferNotSupported')) {
         sendBTCPaymentError.value = 'Self transfer is not supported'.tr;
+      } else if (e.toString().contains('insufficientFunds')) {
+        sendBTCPaymentError.value = 'Insufficient balance'.tr;
       } else {
         sendBTCPaymentError.value = 'Invoice is invalid'.tr;
       }
@@ -226,21 +229,65 @@ class SendPaymentController extends GetxController {
     }
   }
 
-  Future<void> sendPaymentWithFee() async {
-    if (Get.context != null) {
-      showLoadingDialog(Get.context!);
+  Future<void> sendPaymentWithFee({Need? needForDonationObject}) async {
+    bool canStartPayment = false;
+
+    // Create a donation object for the backend
+    if (needForDonationObject != null) {
+      try {
+        final http.Response createDonationResponse =
+            await createDonationObject(needForDonationObject);
+
+        if (createDonationResponse.statusCode != 201) {
+          // ignore: avoid_dynamic_calls
+          if (jsonDecode(createDonationResponse.body)['message'] ==
+              'Donation already exists for this need') {
+            await PopupManager.donationErrorPopup(
+              'Donation already exists for this need'.tr,
+            );
+            canStartPayment = false;
+          } else {
+            await PopupManager.donationErrorPopup(
+              'Donation could not be created. Please try again later.'.tr,
+            );
+            canStartPayment = false;
+          }
+        } else {
+          canStartPayment = true;
+        }
+      } catch (e) {
+        await PopupManager.donationErrorPopup(
+          'Donation could not be created. Please try again later.'.tr,
+        );
+        canStartPayment = false;
+      }
     }
 
-    mainTransactionWentThrough.value = false;
-    final dynamic mainTransactionPaymentResponse =
-        await sendBitcoin(preparedSendResponse: preparedMainTransation);
+    if (canStartPayment) {
+      if (Get.context != null) {
+        showLoadingDialog(Get.context!);
+      }
 
-    if (mainTransactionPaymentResponse is SendPaymentResponse) {
-      if (mainTransactionPaymentResponse.payment.status ==
-              PaymentState.failed ||
-          mainTransactionPaymentResponse.payment.status ==
-              PaymentState.timedOut) {
-        sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+      // Pay the beneficiary invoice
+      mainTransactionWentThrough.value = false;
+      final dynamic mainTransactionPaymentResponse =
+          await sendBitcoin(preparedSendResponse: preparedMainTransation);
+
+      if (mainTransactionPaymentResponse is SendPaymentResponse) {
+        if (mainTransactionPaymentResponse.payment.status ==
+                PaymentState.failed ||
+            mainTransactionPaymentResponse.payment.status ==
+                PaymentState.timedOut) {
+          sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+
+          if (Get.context != null) {
+            hideLoadingDialog(Get.context!);
+          }
+
+          return;
+        }
+      } else {
+        sendBTCPaymentError.value = mainTransactionPaymentResponse.toString();
 
         if (Get.context != null) {
           hideLoadingDialog(Get.context!);
@@ -248,52 +295,44 @@ class SendPaymentController extends GetxController {
 
         return;
       }
-    } else {
-      sendBTCPaymentError.value = mainTransactionPaymentResponse.toString();
+
+      // Currently can't do two transactions simultaneously
+      // Therefore we wait for the main transaction
+      await waitForTransactionCompletion();
+
+      final dynamic sayNodeFeeTransactionPaymentResponse =
+          await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
+
+      if (sayNodeFeeTransactionPaymentResponse is SendPaymentResponse) {
+        if (sayNodeFeeTransactionPaymentResponse.payment.status ==
+                PaymentState.failed ||
+            sayNodeFeeTransactionPaymentResponse.payment.status ==
+                PaymentState.timedOut) {
+          sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+
+          if (Get.context != null) {
+            hideLoadingDialog(Get.context!);
+          }
+
+          return;
+        } else {
+          Future<void>.delayed(
+            const Duration(milliseconds: 1000),
+            PopupManager.openContributionPopup,
+          );
+          await Get.find<WalletService>().getTransactions();
+          await Get.find<WalletService>().getBalanceInUserCurrency();
+
+          Get.back<void>();
+        }
+      } else {
+        sendBTCPaymentError.value =
+            sayNodeFeeTransactionPaymentResponse.toString();
+      }
 
       if (Get.context != null) {
         hideLoadingDialog(Get.context!);
       }
-
-      return;
-    }
-
-    // Currently can't do two transactions simultaneously
-    // Therefore we wait for the main transaction
-    await waitForTransactionCompletion();
-
-    final dynamic sayNodeFeeTransactionPaymentResponse =
-        await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
-
-    if (sayNodeFeeTransactionPaymentResponse is SendPaymentResponse) {
-      if (sayNodeFeeTransactionPaymentResponse.payment.status ==
-              PaymentState.failed ||
-          sayNodeFeeTransactionPaymentResponse.payment.status ==
-              PaymentState.timedOut) {
-        sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
-
-        if (Get.context != null) {
-          hideLoadingDialog(Get.context!);
-        }
-
-        return;
-      } else {
-        Future<void>.delayed(
-          const Duration(milliseconds: 1000),
-          PopupManager.openContributionPopup,
-        );
-        await Get.find<WalletService>().getTransactions();
-        await Get.find<WalletService>().getBalanceInUserCurrency();
-
-        Get.back<void>();
-      }
-    } else {
-      sendBTCPaymentError.value =
-          sayNodeFeeTransactionPaymentResponse.toString();
-    }
-
-    if (Get.context != null) {
-      hideLoadingDialog(Get.context!);
     }
   }
 
@@ -312,6 +351,44 @@ class SendPaymentController extends GetxController {
       sendBTCPaymentError.value = 'Insufficient outgoing balance'.tr;
       loggerService.log('Error sending payment: $e');
       return 'Invoice already paid or expired';
+    }
+  }
+
+  Future<http.Response> createDonationObject(Need need) async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/donation/create/').toString();
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              'Bearer ${apiService.authenticationToken}',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(<String, Object>{
+          'need': need.id.toString(),
+          'amount': need.amount, // This can be int or double
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        loggerService.log(
+          'Donation object for need with id ${need.id} created successfully',
+        );
+      } else {
+        loggerService.log(
+          'Failed to create donation object for need with id ${need.id}. Got status code: ${response.statusCode}, ${response.body}',
+        );
+      }
+      return response;
+    } catch (e) {
+      loggerService.log(
+        'Error creating donation object for need with id ${need.id}: $e',
+      );
+      throw Exception(
+        'Error creating donation object for need with id ${need.id}: $e',
+      );
     }
   }
 }
