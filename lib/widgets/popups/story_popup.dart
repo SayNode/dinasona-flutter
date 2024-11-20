@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -41,7 +43,7 @@ class StoryPopup extends StatelessWidget {
             Gap(getRelativeHeight(10)),
             InkWell(
               onTap: () {
-                Get.off<void>(() => const PersonalDetailsPage());
+                unawaited(Get.off<void>(() => const PersonalDetailsPage()));
               },
               child: Container(
                 alignment: Alignment.center,

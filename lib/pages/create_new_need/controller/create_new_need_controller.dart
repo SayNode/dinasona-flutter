@@ -179,7 +179,7 @@ class CreateNewNeedController extends GetxController {
     );
   }
 
-  void getToCreateWalletScreen() {
+  void getToWalletScreen() {
     Get.back();
     beneficiaryRootController.changeTabIndex(2);
   }
