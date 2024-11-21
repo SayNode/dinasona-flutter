@@ -22,7 +22,6 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
   @override
   Widget build(BuildContext context) {
     Get.put(MyNeedPopupController(need: need));
-    print('MyNeedPopup ${need.status}');
     final CustomTheme theme = Get.put(ThemeService()).theme;
     return UpwardPopup(
       title: '',
