@@ -101,18 +101,12 @@ class CreateNewNeedController extends GetxController {
 
   Future<void> onTapPublishButton() async {
     if (!isEditingNeed.value) {
-      if (walletService.isWalletConnected.value) {
-        createNewNeed(isDraft: false);
-
-        unawaited(PopupManager.openPublishPopup());
-        pageController.dispose();
-        unawaited(Get.delete<CreateNewNeedController>());
-      } else {
-        unawaited(Get.to(InstructionsPage.new));
-      }
+      createNewNeed(isDraft: false);
+      unawaited(PopupManager.openPublishPopup());
+      pageController.dispose();
+      unawaited(Get.delete<CreateNewNeedController>());
     } else {
       await updateNeed(editingNeedId.value, false);
-
       unawaited(PopupManager.openPublishPopup());
       pageController.dispose();
       unawaited(Get.delete<CreateNewNeedController>());
