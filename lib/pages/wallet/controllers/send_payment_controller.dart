@@ -61,48 +61,54 @@ class SendPaymentController extends GetxController {
       sendPaymentTransactionFee.value = tmpTransactionfee;
 
       // SayNode fee calculation
-      final double saynodeVariableFeeInUserCurrency =
-          await currencyConversionService.convertBitcoinToUserCurrency(
-        double.parse(invoiceAmountBTC.value) * 0.01,
-      );
+      if (!Constants.devMode) {
+        final double saynodeVariableFeeInUserCurrency =
+            await currencyConversionService.convertBitcoinToUserCurrency(
+          double.parse(invoiceAmountBTC.value) * 0.01,
+        );
 
-      final double saynodeVariableFeeInCHF =
-          (await currencyConversionService.fetchFiatCHFRate()) *
-              saynodeVariableFeeInUserCurrency;
+        final double saynodeVariableFeeInCHF =
+            (await currencyConversionService.fetchFiatCHFRate()) *
+                saynodeVariableFeeInUserCurrency;
 
-      final double breezMinimumTransactionAmountInCHF =
-          (await currencyConversionService.fetchFiatCHFRate()) *
-              (await currencyConversionService
-                  .convertBitcoinToUserCurrency(0.00001));
+        final double breezMinimumTransactionAmountInCHF =
+            (await currencyConversionService.fetchFiatCHFRate()) *
+                (await currencyConversionService
+                    .convertBitcoinToUserCurrency(0.00001));
 
-      if (saynodeVariableFeeInCHF >= 0.5 &&
-          saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
-        sendPaymentSayNodeFee.value =
-            ((double.parse(invoiceAmountBTC.value) * 100000000) * 0.01).toInt();
-      } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
-        sendPaymentSayNodeFee.value = 1000;
-      } else {
-        sendPaymentSayNodeFee.value =
-            ((await currencyConversionService.convertUserCurrencyToBitcoin(
-                      0.5 /
-                          (await currencyConversionService.fetchFiatCHFRate()),
-                    )) *
-                    100000000)
-                .toInt();
+        if (saynodeVariableFeeInCHF >= 0.5 &&
+            saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
+          sendPaymentSayNodeFee.value =
+              ((double.parse(invoiceAmountBTC.value) * 100000000) * 0.01)
+                  .toInt();
+        } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
+          sendPaymentSayNodeFee.value = 1000;
+        } else {
+          sendPaymentSayNodeFee.value = ((await currencyConversionService
+                      .convertUserCurrencyToBitcoin(
+                    0.5 / (await currencyConversionService.fetchFiatCHFRate()),
+                  )) *
+                  100000000)
+              .toInt();
+        }
+
+        // Prepare SayNode fee transaction
+        final String sayNodeFeeInvoice = await getSayNodeFeeInvoice(
+          sendPaymentSayNodeFee.value.toDouble(),
+          // Need id is static for now - might change this in the future to create payment statistics
+          999,
+        );
+        preparedSayNodeTransaction =
+            await breezService.prepareSendingTransaction(sayNodeFeeInvoice);
       }
 
-      // Prepare SayNode fee transaction
-      final String sayNodeFeeInvoice = await getSayNodeFeeInvoice(
-        sendPaymentSayNodeFee.value.toDouble(),
-        // TODO julien when implementing donations
-        999,
-      );
-      preparedSayNodeTransaction =
-          await breezService.prepareSendingTransaction(sayNodeFeeInvoice);
-
       // Transaction fees are the sum of the Main transaction fee and the SayNode transaction fee
-      sendPaymentTransactionFee.value =
-          tmpTransactionfee + preparedSayNodeTransaction.feesSat.toInt();
+      if (!Constants.devMode) {
+        sendPaymentTransactionFee.value =
+            tmpTransactionfee + preparedSayNodeTransaction.feesSat.toInt();
+      } else {
+        sendPaymentTransactionFee.value = tmpTransactionfee;
+      }
     } catch (e) {
       // Invalid invoice provided
       loggerService.log('Error getting invoice: $e');
@@ -261,6 +267,8 @@ class SendPaymentController extends GetxController {
         );
         canStartPayment = false;
       }
+    } else {
+      canStartPayment = true;
     }
 
     if (canStartPayment) {
@@ -300,34 +308,46 @@ class SendPaymentController extends GetxController {
       // Therefore we wait for the main transaction
       await waitForTransactionCompletion();
 
-      final dynamic sayNodeFeeTransactionPaymentResponse =
-          await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
+      if (!Constants.devMode) {
+        // Pay the SayNode fee
+        final dynamic sayNodeFeeTransactionPaymentResponse =
+            await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
 
-      if (sayNodeFeeTransactionPaymentResponse is SendPaymentResponse) {
-        if (sayNodeFeeTransactionPaymentResponse.payment.status ==
-                PaymentState.failed ||
-            sayNodeFeeTransactionPaymentResponse.payment.status ==
-                PaymentState.timedOut) {
-          sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+        if (sayNodeFeeTransactionPaymentResponse is SendPaymentResponse) {
+          if (sayNodeFeeTransactionPaymentResponse.payment.status ==
+                  PaymentState.failed ||
+              sayNodeFeeTransactionPaymentResponse.payment.status ==
+                  PaymentState.timedOut) {
+            sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
 
-          if (Get.context != null) {
-            hideLoadingDialog(Get.context!);
+            if (Get.context != null) {
+              hideLoadingDialog(Get.context!);
+            }
+
+            return;
+          } else {
+            Future<void>.delayed(
+              const Duration(milliseconds: 1000),
+              PopupManager.openContributionPopup,
+            );
+            await Get.find<WalletService>().getTransactions();
+            await Get.find<WalletService>().getBalanceInUserCurrency();
+
+            Get.back<void>();
           }
-
-          return;
         } else {
-          Future<void>.delayed(
-            const Duration(milliseconds: 1000),
-            PopupManager.openContributionPopup,
-          );
-          await Get.find<WalletService>().getTransactions();
-          await Get.find<WalletService>().getBalanceInUserCurrency();
-
-          Get.back<void>();
+          sendBTCPaymentError.value =
+              sayNodeFeeTransactionPaymentResponse.toString();
         }
       } else {
-        sendBTCPaymentError.value =
-            sayNodeFeeTransactionPaymentResponse.toString();
+        Future<void>.delayed(
+          const Duration(milliseconds: 1000),
+          PopupManager.openContributionPopup,
+        );
+        await Get.find<WalletService>().getTransactions();
+        await Get.find<WalletService>().getBalanceInUserCurrency();
+
+        Get.back<void>();
       }
 
       if (Get.context != null) {
