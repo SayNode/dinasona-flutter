@@ -22,6 +22,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
   @override
   Widget build(BuildContext context) {
     Get.put(MyNeedPopupController(need: need));
+    print('MyNeedPopup ${need.status}');
     final CustomTheme theme = Get.put(ThemeService()).theme;
     return UpwardPopup(
       title: '',
@@ -248,7 +249,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Published 4 days ago',
+                  'Published ${controller.publishedDate()}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
@@ -263,7 +264,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Donated 12 Fer 2024',
+                  'Donated ${controller.donatedDate()}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
