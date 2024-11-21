@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../pages/root/controllers/beneficiary_root_controller.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
@@ -41,7 +42,12 @@ void showPopup({bool isBeneficiary = false}) {
           const SizedBox(height: 10),
           DinasonaButton(
             text: !isBeneficiary ? 'Start donating'.tr : 'Share your story'.tr,
-            onPressed: Get.back<void>,
+            onPressed: !isBeneficiary
+                ? Get.back<void>
+                : () {
+                    Get.back<void>();
+                    Get.find<BeneficiaryRootController>().changeTabIndex(1);
+                  },
           ),
         ],
       ),
