@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '../pages/create_new_need/create_new_need.dart';
+import '../pages/create_new_need/wallet_instructions.dart';
 import '../pages/home/beneficary_home_page.dart';
 import '../pages/settings/beneficiary/pages/beneficiary_settings_page.dart';
 import '../pages/wallet/wallet_page.dart';
 import '../service/theme_service.dart';
+import '../service/wallet_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 
@@ -47,7 +49,12 @@ enum BeneficaryItem {
       case BeneficaryItem.home:
         return const BeneficiaryHomePage();
       case BeneficaryItem.add:
-        return const CreateNewNeed();
+        // Check if wallet is initialized
+        if (Get.find<WalletService>().isWalletConnected.value) {
+          return const CreateNewNeed();
+        } else {
+          return const InstructionsPage();
+        }
       case BeneficaryItem.wallet:
         return const WalletPage();
       case BeneficaryItem.profile:
