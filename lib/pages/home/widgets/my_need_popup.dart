@@ -248,7 +248,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Published 4 days ago',
+                  'Published ${controller.publishedDate()}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
@@ -263,7 +263,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Donated 12 Fer 2024',
+                  'Donated ${controller.donatedDate()}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
