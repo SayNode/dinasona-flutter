@@ -36,13 +36,16 @@ class BeneficiarySettingsPage
                 location: 'Location Placeholder',
               ),
               const Gap(12),
-              HelpedRecievedWidget(
-                peopleHelped:
-                    controller.beneficiaryStatistics.totalPeopleDonated,
-                amountDonated: controller
-                    .beneficiaryStatistics.totalAmountDonated
-                    .toDouble(),
-                needsClosed: controller.beneficiaryStatistics.totalNeedsClosed,
+              Obx(
+                () => HelpedRecievedWidget(
+                  peopleHelped:
+                      controller.beneficiaryStatistics.totalPeopleDonated,
+                  amountDonated: controller
+                      .beneficiaryStatistics.totalAmountDonated
+                      .toDouble(),
+                  needsClosed:
+                      controller.beneficiaryStatistics.totalNeedsClosed,
+                ),
               ),
               const Gap(16),
               SettingsBar(
