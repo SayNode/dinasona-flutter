@@ -103,12 +103,10 @@ class UserStateService extends GetxService {
         ),
       );
       if (response.statusCode == 200) {
-        beneficiaryStatistics.value = BeneficiaryStatistics.fromJson(
-          jsonEncode(
-            (response.data as Map<String, dynamic>)['result']
-                as Map<String, dynamic>,
-          ),
-        );
+        final List<dynamic> indexedMap = response.data as List<dynamic>;
+        final Map<String, dynamic> wantedMap =
+            indexedMap[0] as Map<String, dynamic>;
+        beneficiaryStatistics.value = BeneficiaryStatistics.fromMap(wantedMap);
       } else {
         logger.log(
           'Failed to fetch beneficiary statistics: StatusCode: ${response.statusCode}, ${response.data}',
