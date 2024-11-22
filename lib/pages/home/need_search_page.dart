@@ -46,7 +46,9 @@ class NeedSearchPage extends GetView<NeedSearchPageController> {
             Obx(
               () => Column(
                 children: <Widget>[
-                  for (final Need need in controller.needs)
+                  for (final Need need in controller.needs.where(
+                    (Need need) => need.status != NeedStatus.draft,
+                  ))
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: getRelativeHeight(16),
