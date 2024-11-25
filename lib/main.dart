@@ -150,6 +150,7 @@ void main() async {
           ? const DonorRootPage()
           : const BeneficiaryRootPage();
     }
+    Get.put<ThemeService>(ThemeService()).themeData;
 
     runApp(MyApp(initialPage: initialPage));
   }, (Object error, StackTrace stack) async {

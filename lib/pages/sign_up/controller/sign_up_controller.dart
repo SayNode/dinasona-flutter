@@ -23,7 +23,7 @@ class SignupController extends GetxController {
   RxString error = ''.obs;
   final Rx<GlobalKey<FormState>> registrationFormKey =
       GlobalKey<FormState>().obs;
-  RxString chosenCurrency = ''.obs;
+  
   RxBool isCreateAccountButtonActive = false.obs;
   RxBool isEmailFieldEmpty = false.obs;
   RxBool isPasswordFieldEmpty = false.obs;

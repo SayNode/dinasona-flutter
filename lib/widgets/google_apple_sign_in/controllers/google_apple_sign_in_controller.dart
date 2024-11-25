@@ -28,13 +28,13 @@ class GoogleAppleSignInController {
     if (loginResult.success) {
       await userStateService.init();
       if (loginResult.result['is_signup'] as bool) {
+        unawaited(Get.to(() => const ChosePathPage()));
+      } else {
         if (userStateService.user.value.isDonor) {
           unawaited(Get.to(() => const DonorRootPage()));
         } else {
           unawaited(Get.to(() => const BeneficiaryRootPage()));
         }
-      } else {
-        unawaited(Get.to(() => const ChosePathPage()));
       }
     } else {
       if (loginResult.status == -1) {
