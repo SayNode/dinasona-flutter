@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -72,7 +74,8 @@ class BeneficiaryPersonalDetailsController extends GetxController {
         'gender': gender.toLowerCase() == 'male' ? 0 : 1,
       },
     );
-
+    userStateService.user.refresh();
     loading.value = false;
+    Get.back();
   }
 }

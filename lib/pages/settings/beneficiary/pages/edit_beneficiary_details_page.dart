@@ -200,6 +200,7 @@ class EditBeneficiaryPage
                     hintStyle:
                         CustomTypography.fromColor(theme.graphite).k16Reg,
                     maxLines: 5,
+                    keyboardType: TextInputType.text,
                   ),
                   const Gap(25),
                   Obx(
