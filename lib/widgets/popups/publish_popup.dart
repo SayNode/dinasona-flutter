@@ -54,7 +54,8 @@ class PublishPopup extends StatelessWidget {
                   await Get.find<BeneficiaryHomePageController>().onRefresh();
                   Get.find<BeneficiaryRootController>().changeTabIndex(0);
                   unawaited(
-                      Get.offAll<void>(() => const BeneficiaryRootPage()));
+                    Get.offAll<void>(() => const BeneficiaryRootPage()),
+                  );
                 },
                 child: Container(
                   alignment: Alignment.center,
