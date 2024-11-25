@@ -60,23 +60,20 @@ class UserStateService extends GetxService {
   }
 
   Future<void> fetchDonorStatistics() async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/donation/donor/stats/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/donation/donor/stats/').toString();
     try {
       final dio_import.Response<dynamic> response = await dio_import.Dio().get(
         url,
         options: dio_import.Options(
           headers: <String, dynamic>{
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
+            HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           },
         ),
       );
       if (response.statusCode == 200) {
         donorStatistics.value = DonorStatistics.fromJson(
           jsonEncode(
-            (response.data as Map<String, dynamic>)['result']
-                as Map<String, dynamic>,
+            (response.data as Map<String, dynamic>)['result'] as Map<String, dynamic>,
           ),
         );
       } else {
@@ -90,22 +87,19 @@ class UserStateService extends GetxService {
   }
 
   Future<void> fetchBeneficiaryStatistics() async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/beneficiary/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/beneficiary/').toString();
     try {
       final dio_import.Response<dynamic> response = await dio_import.Dio().get(
         url,
         options: dio_import.Options(
           headers: <String, dynamic>{
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
+            HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           },
         ),
       );
       if (response.statusCode == 200) {
         final List<dynamic> indexedMap = response.data as List<dynamic>;
-        final Map<String, dynamic> wantedMap =
-            indexedMap[0] as Map<String, dynamic>;
+        final Map<String, dynamic> wantedMap = indexedMap[0] as Map<String, dynamic>;
         beneficiaryStatistics.value = BeneficiaryStatistics.fromMap(wantedMap);
       } else {
         logger.log(
@@ -132,14 +126,12 @@ class UserStateService extends GetxService {
         url,
         options: dio_import.Options(
           headers: <String, dynamic>{
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
+            HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           },
         ),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> decodedResponse =
-            response.data as Map<String, dynamic>;
+        final Map<String, dynamic> decodedResponse = response.data as Map<String, dynamic>;
         // ignore: always_specify_types
         final userJson =
             // ignore: avoid_dynamic_calls
@@ -166,15 +158,13 @@ class UserStateService extends GetxService {
 
   Future<void> fetchBeneficiaryInfo() async {
     await fetchUserInfo();
-    final String url =
-        Uri.https(Constants.apiDomain, '/beneficiary/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/beneficiary/').toString();
     try {
       final dio_import.Response<dynamic> response = await dio_import.Dio().get(
         url,
         options: dio_import.Options(
           headers: <String, dynamic>{
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
+            HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           },
         ),
       );
@@ -196,15 +186,13 @@ class UserStateService extends GetxService {
   }
 
   Future<void> createBeneficiaryInstance() async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/beneficiary/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/beneficiary/').toString();
 
     try {
       final http.Response response = await http.post(
         Uri.parse(url),
         headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              'Bearer ${apiService.authenticationToken}',
+          HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: '{}',
@@ -225,23 +213,20 @@ class UserStateService extends GetxService {
   }
 
   Future<void> updateUserInfo(Map<String, dynamic> updatedUser) async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/user-info/update/').toString();
 
     try {
       final http.Response response = await http.patch(
         Uri.parse(url),
         headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              'Bearer ${apiService.authenticationToken}',
+          HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(updatedUser),
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> decodedResponse =
-            jsonDecode(response.body) as Map<String, dynamic>;
+        final Map<String, dynamic> decodedResponse = jsonDecode(response.body) as Map<String, dynamic>;
         // ignore: always_specify_types
         final userJson =
             // ignore: avoid_dynamic_calls
@@ -268,15 +253,13 @@ class UserStateService extends GetxService {
   Future<void> updateBeneficiaryInfo(
     Map<String, dynamic> beneficiaryUpdatedFields,
   ) async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/beneficiary/update/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/beneficiary/update/').toString();
 
     try {
       final http.Response response = await http.patch(
         Uri.parse(url),
         headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              'Bearer ${apiService.authenticationToken}',
+          HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(beneficiaryUpdatedFields),
@@ -284,8 +267,7 @@ class UserStateService extends GetxService {
 
       if (response.statusCode == 200) {
         user.value.beneficiary = Beneficiary.fromJson(
-          ((jsonDecode(response.body) as Map<String, dynamic>)['result'])
-              as Map<String, dynamic>,
+          ((jsonDecode(response.body) as Map<String, dynamic>)['result']) as Map<String, dynamic>,
         );
         logger.log(response.body);
       } else {
@@ -301,16 +283,13 @@ class UserStateService extends GetxService {
   Future<bool> updateUserAvatar({
     required File file,
   }) async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/user-info/update/').toString();
     try {
-      final dio_import.MultipartFile multipartFile =
-          await dio_import.MultipartFile.fromFile(
+      final dio_import.MultipartFile multipartFile = await dio_import.MultipartFile.fromFile(
         file.path,
         contentType: MediaType('image', 'jpg'),
       );
-      final dio_import.FormData formData =
-          dio_import.FormData.fromMap(<String, dynamic>{
+      final dio_import.FormData formData = dio_import.FormData.fromMap(<String, dynamic>{
         'avatar': multipartFile,
       });
       final dio_import.Response<dynamic> response = await dio_import.Dio(
@@ -325,8 +304,7 @@ class UserStateService extends GetxService {
         options: dio_import.Options(
           headers: <String, dynamic>{
             HttpHeaders.contentTypeHeader: 'multipart/form-data',
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
+            HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           },
         ),
       );
@@ -349,16 +327,13 @@ class UserStateService extends GetxService {
   Future<bool> updateBeneficiaryImage({
     required File file,
   }) async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/beneficiary/update/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/beneficiary/update/').toString();
     try {
-      final dio_import.MultipartFile multipartFile =
-          await dio_import.MultipartFile.fromFile(
+      final dio_import.MultipartFile multipartFile = await dio_import.MultipartFile.fromFile(
         file.path,
         contentType: MediaType('image', 'jpg'),
       );
-      final dio_import.FormData formData =
-          dio_import.FormData.fromMap(<String, dynamic>{
+      final dio_import.FormData formData = dio_import.FormData.fromMap(<String, dynamic>{
         'image': multipartFile,
       });
       final dio_import.Response<dynamic> response = await dio_import.Dio(
@@ -373,8 +348,7 @@ class UserStateService extends GetxService {
         options: dio_import.Options(
           headers: <String, dynamic>{
             HttpHeaders.contentTypeHeader: 'multipart/form-data',
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
+            HttpHeaders.authorizationHeader: 'Bearer ${apiService.authenticationToken}',
           },
         ),
       );
@@ -396,8 +370,7 @@ class UserStateService extends GetxService {
 
   Future<bool> updatePushNotificationToken() async {
     logger.log('AuthService - starting update notification token');
-    final String url =
-        Uri.https(Constants.apiDomain, '/user-info/update/').toString();
+    final String url = Uri.https(Constants.apiDomain, '/user-info/update/').toString();
     final http.Response response = await apiService.patch(
       url,
       contentType: 'application/json',

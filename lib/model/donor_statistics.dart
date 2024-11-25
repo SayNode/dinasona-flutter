@@ -2,10 +2,10 @@
 import 'dart:convert';
 
 class DonorStatistics {
-  //TODO: chek if the fields are correct or if some need to be double instead of int
   double totalAmountDonated;
   int totalCountriesDonatedTo;
   int totalBeneficiariesDonatedTo;
+
   DonorStatistics({
     required this.totalAmountDonated,
     required this.totalCountriesDonatedTo,
@@ -19,37 +19,34 @@ class DonorStatistics {
   }) {
     return DonorStatistics(
       totalAmountDonated: totalAmountDonated ?? this.totalAmountDonated,
-      totalCountriesDonatedTo:
-          totalCountriesDonatedTo ?? this.totalCountriesDonatedTo,
-      totalBeneficiariesDonatedTo:
-          totalBeneficiariesDonatedTo ?? this.totalBeneficiariesDonatedTo,
+      totalCountriesDonatedTo: totalCountriesDonatedTo ?? this.totalCountriesDonatedTo,
+      totalBeneficiariesDonatedTo: totalBeneficiariesDonatedTo ?? this.totalBeneficiariesDonatedTo,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'total_amount_donated': totalAmountDonated,
-      'total_beneficiaries_donated_to': totalCountriesDonatedTo,
-      'total_countries_donated_to': totalBeneficiariesDonatedTo,
+      'total_countries_donated_to': totalCountriesDonatedTo,
+      'total_beneficiaries_donated_to': totalBeneficiariesDonatedTo,
     };
   }
 
   factory DonorStatistics.fromMap(Map<String, dynamic> map) {
     return DonorStatistics(
-      totalAmountDonated: map['total_amount_donated'] as double? ?? 0.0,
-      totalCountriesDonatedTo:
-          map['total_beneficiaries_donated_to'] as int? ?? -1,
-      totalBeneficiariesDonatedTo:
-          map['total_countries_donated_to'] as int? ?? -1,
+      // Safely parse total_amount_donated as double
+      totalAmountDonated: map['total_amount_donated'] != null ? double.tryParse(map['total_amount_donated'].toString()) ?? 0.0 : 0.0,
+      // Correctly map total_countries_donated_to
+      totalCountriesDonatedTo: map['total_countries_donated_to'] as int? ?? 0,
+      // Correctly map total_beneficiaries_donated_to
+      totalBeneficiariesDonatedTo: map['total_beneficiaries_donated_to'] as int? ?? 0,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DonorStatistics.fromJson(String source) =>
-      DonorStatistics.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DonorStatistics.fromJson(String source) => DonorStatistics.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() =>
-      'DonorStatistics(totalAmountDonated: $totalAmountDonated, totalCountriesDonatedTo: $totalCountriesDonatedTo, totalBeneficiariesDonatedTo: $totalBeneficiariesDonatedTo)';
+  String toString() => 'DonorStatistics(totalAmountDonated: $totalAmountDonated, totalCountriesDonatedTo: $totalCountriesDonatedTo, totalBeneficiariesDonatedTo: $totalBeneficiariesDonatedTo)';
 }
