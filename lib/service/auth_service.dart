@@ -7,12 +7,14 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../base/auth_service_base.dart';
 import '../model/auth_response.dart';
+import '../widgets/html_dbug.dart';
 
 class AuthService extends AuthServiceBase {
   // Add your custom code here
@@ -48,6 +50,8 @@ class AuthService extends AuthServiceBase {
           omitBearerToken: true,
           contentType: 'application/json',
         );
+        print(response.body);
+        Get.to(HtmlDebug(res: response.body));
 
         final AuthResponse authResult = AuthResponse.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>,
@@ -56,7 +60,6 @@ class AuthService extends AuthServiceBase {
           try {
             /// Save the token
             apiService.authenticationToken = authResult.accessToken;
-
             await storageService.writeString(
               'token',
               authResult.accessToken,
@@ -90,6 +93,7 @@ class AuthService extends AuthServiceBase {
       );
     } catch (e) {
       // Other error occurred
+
       throw Exception('Catched an error while logging in with Google: $e');
     }
   }
