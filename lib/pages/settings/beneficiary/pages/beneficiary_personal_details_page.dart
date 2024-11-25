@@ -28,8 +28,7 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () async {
-            await userStateService.fetchBeneficiaryInfo();
-            await Get.off<void>(() => const EditBeneficiaryPage());
+            await Get.to<void>(() => const EditBeneficiaryPage());
           },
           child: Text(
             'Edit'.tr,
@@ -55,22 +54,22 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
                 Gap(getRelativeHeight(42)),
                 const AvatarWidget(),
                 Gap(getRelativeHeight(42)),
-                Text(
-                  userStateService.user.value.name.isEmpty
-                      ? 'Name placeholder'.tr
-                      : userStateService.user.value.name,
-                  style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+                Obx(
+                  () => Text(
+                    userStateService.user.value.name.isEmpty ? 'Name placeholder'.tr : userStateService.user.value.name,
+                    style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+                  ),
                 ),
                 const Gap(12),
                 Row(
                   children: <Widget>[
                     Icon(Symbols.location_on, color: theme.graphite),
                     const Gap(6),
-                    Text(
-                      userStateService.user.value.beneficiary.location.isEmpty
-                          ? 'location placeholder'.tr
-                          : userStateService.user.value.beneficiary.location,
-                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                    Obx(
+                      () => Text(
+                        userStateService.user.value.beneficiary.location.isEmpty ? 'location placeholder'.tr : userStateService.user.value.beneficiary.location,
+                        style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                      ),
                     ),
                   ],
                 ),
@@ -79,11 +78,11 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
                   children: <Widget>[
                     Icon(Symbols.mail, color: theme.graphite),
                     const Gap(6),
-                    Text(
-                      userStateService.user.value.email.isEmpty
-                          ? 'email placeholder'.tr
-                          : userStateService.user.value.email,
-                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                    Obx(
+                      () => Text(
+                        userStateService.user.value.email.isEmpty ? 'email placeholder'.tr : userStateService.user.value.email,
+                        style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                      ),
                     ),
                   ],
                 ),
@@ -92,15 +91,15 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
                   children: <Widget>[
                     Icon(Symbols.male, color: theme.graphite),
                     const Gap(6),
-                    Text(
-                      userStateService.user.value.beneficiary.gender ==
-                              Gender.anonymous
-                          ? 'gender placeholder'.tr
-                          : userStateService.user.value.beneficiary.gender ==
-                                  Gender.male
-                              ? 'Male'.tr
-                              : 'Female'.tr,
-                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                    Obx(
+                      () => Text(
+                        userStateService.user.value.beneficiary.gender == Gender.anonymous
+                            ? 'gender placeholder'.tr
+                            : userStateService.user.value.beneficiary.gender == Gender.male
+                                ? 'Male'.tr
+                                : 'Female'.tr,
+                        style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                      ),
                     ),
                   ],
                 ),
@@ -109,26 +108,26 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
                   children: <Widget>[
                     Icon(Symbols.location_on, color: theme.graphite),
                     const Gap(6),
-                    Text(
-                      userStateService.user.value.beneficiary.dateOfBirth ==
-                              null
-                          ? 'Birthday placeholder'.tr
-                          : dateFormat.format(
-                              userStateService
-                                  .user.value.beneficiary.dateOfBirth!,
-                            ),
-                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                    Obx(
+                      () => Text(
+                        userStateService.user.value.beneficiary.dateOfBirth == null
+                            ? 'Birthday placeholder'.tr
+                            : dateFormat.format(
+                                userStateService.user.value.beneficiary.dateOfBirth!,
+                              ),
+                        style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                      ),
                     ),
                   ],
                 ),
                 const Gap(12),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    userStateService.user.value.beneficiary.bio.isEmpty
-                        ? 'Description placeholder'.tr
-                        : userStateService.user.value.beneficiary.bio,
-                    style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                  child: Obx(
+                    () => Text(
+                      userStateService.user.value.beneficiary.bio.isEmpty ? 'Description placeholder'.tr : userStateService.user.value.beneficiary.bio,
+                      style: CustomTypography.fromColor(theme.graphite).k16Reg,
+                    ),
                   ),
                 ),
               ],

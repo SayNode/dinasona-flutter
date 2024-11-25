@@ -8,8 +8,7 @@ import '../../../../util/popup_manager.dart';
 class BeneficiarySettingsPageController extends GetxController {
   final UserStateService _userStateService = Get.find<UserStateService>();
 
-  BeneficiaryStatistics get beneficiaryStatistics =>
-      _userStateService.beneficiaryStatistics.value;
+  BeneficiaryStatistics get beneficiaryStatistics => _userStateService.beneficiaryStatistics.value;
 
   User get user => _userStateService.user.value;
 

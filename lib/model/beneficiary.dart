@@ -32,7 +32,7 @@ class Beneficiary {
   factory Beneficiary.fromJson(Map<String, dynamic> json) {
     return Beneficiary(
       name: json['name'] as String? ?? 'Anonymous',
-      location: json['location'] as String? ?? json['city'] as String? ?? '',
+      location: json['city'] as String? ?? '',
       email: json['email'] as String? ?? 'Email hidden',
       photoUrl: json['photo_url'] as String? ?? '',
       dateOfBirth: json['date_of_birth'] == null
@@ -40,12 +40,8 @@ class Beneficiary {
           : format.parse(
               json['date_of_birth'] as String,
             ),
-      gender: (json['gender'] == null)
-          ? Gender.anonymous
-          : (json['gender'] as int == 0 ? Gender.male : Gender.female),
-      bio: json['bio'] as String? ??
-          json['description'] as String? ??
-          'Empty bio',
+      gender: (json['gender'] == null) ? Gender.anonymous : (json['gender'] as int == 0 ? Gender.male : Gender.female),
+      bio: json['bio'] as String? ?? json['description'] as String? ?? 'Empty bio',
       userId: json['id'] as int? ?? -1,
     );
   }

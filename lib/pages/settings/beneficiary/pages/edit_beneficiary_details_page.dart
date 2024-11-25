@@ -15,8 +15,7 @@ import '../../../../widgets/dinasona_button.dart';
 import '../../../../widgets/dinasona_textfield.dart';
 import '../controllers/beneficiary_personal_details_controller.dart';
 
-class EditBeneficiaryPage
-    extends GetView<BeneficiaryPersonalDetailsController> {
+class EditBeneficiaryPage extends GetView<BeneficiaryPersonalDetailsController> {
   const EditBeneficiaryPage({super.key});
 
   @override
@@ -53,8 +52,7 @@ class EditBeneficiaryPage
                   ),
                   const Gap(12),
                   Text(
-                    'Share key details to personalize your experience. Your information helps us connect you with the right support.'
-                        .tr,
+                    'Share key details to personalize your experience. Your information helps us connect you with the right support.'.tr,
                     style: CustomTypography.fromColor(theme.graphite).k16Reg,
                   ),
                   Gap(getRelativeHeight(42)),
@@ -63,10 +61,8 @@ class EditBeneficiaryPage
                   DinasonaTextField(
                     hintText: 'Full name'.tr,
                     controller: controller.nameController,
-                    textStyle:
-                        CustomTypography.fromColor(theme.shadowed).k16Reg,
-                    hintStyle:
-                        CustomTypography.fromColor(theme.graphite).k16Reg,
+                    textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                    hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
                   ),
                   const Gap(6),
                   Row(
@@ -89,20 +85,14 @@ class EditBeneficiaryPage
                             child: DropdownButtonFormField<String>(
                               hint: Text(
                                 'Gender',
-                                style:
-                                    CustomTypography.fromColor(theme.graphite)
-                                        .k16Reg,
+                                style: CustomTypography.fromColor(theme.graphite).k16Reg,
                               ),
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                               ),
-                              value: userStateService
-                                          .user.value.beneficiary.gender ==
-                                      Gender.male
+                              value: userStateService.user.value.beneficiary.gender == Gender.male
                                   ? 'Male'
-                                  : userStateService
-                                              .user.value.beneficiary.gender ==
-                                          Gender.female
+                                  : userStateService.user.value.beneficiary.gender == Gender.female
                                       ? 'Female'
                                       : null,
                               items: <String>[
@@ -143,37 +133,25 @@ class EditBeneficiaryPage
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: TextFormField(
-                              style: CustomTypography.fromColor(theme.shadowed)
-                                  .k16Reg,
-                              controller: controller
-                                  .birthdayController, // Assume you have a controller for birthday
+                              style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                              controller: controller.birthdayController, // Assume you have a controller for birthday
                               decoration: InputDecoration(
                                 hintText: 'Birthday'.tr,
-                                hintStyle:
-                                    CustomTypography.fromColor(theme.graphite)
-                                        .k16Reg,
+                                hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
                                 border: InputBorder.none,
                                 // Match the styling with DinasonaTextFields
                               ),
                               readOnly: true, // To prevent manual editing
                               onTap: () async {
-                                final DateTime? pickedDate =
-                                    await showDatePicker(
+                                final DateTime? pickedDate = await showDatePicker(
                                   context: context,
-                                  initialDate: Get.find<UserStateService>()
-                                          .user
-                                          .value
-                                          .beneficiary
-                                          .dateOfBirth ??
-                                      DateTime(1960),
+                                  initialDate: Get.find<UserStateService>().user.value.beneficiary.dateOfBirth ?? DateTime(1960),
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime.now(),
                                 );
                                 if (pickedDate != null) {
                                   // Format and set the date in controller
-                                  controller.birthdayController.text =
-                                      DateFormat('yyyy-MM-dd')
-                                          .format(pickedDate);
+                                  controller.birthdayController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
                             ),
@@ -186,19 +164,15 @@ class EditBeneficiaryPage
                   DinasonaTextField(
                     hintText: 'Location'.tr,
                     controller: controller.locationController,
-                    textStyle:
-                        CustomTypography.fromColor(theme.shadowed).k16Reg,
-                    hintStyle:
-                        CustomTypography.fromColor(theme.graphite).k16Reg,
+                    textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                    hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
                   ),
                   const Gap(6),
                   DinasonaTextField(
                     hintText: 'Description'.tr,
                     controller: controller.descriptionController,
-                    textStyle:
-                        CustomTypography.fromColor(theme.shadowed).k16Reg,
-                    hintStyle:
-                        CustomTypography.fromColor(theme.graphite).k16Reg,
+                    textStyle: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                    hintStyle: CustomTypography.fromColor(theme.graphite).k16Reg,
                     maxLines: 5,
                   ),
                   const Gap(25),

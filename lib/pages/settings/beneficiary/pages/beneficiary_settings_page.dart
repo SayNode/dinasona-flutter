@@ -16,8 +16,7 @@ import '../controllers/beneficiary_settings_page_controller.dart';
 import '../widgets/help_recieved_widget.dart';
 import 'beneficiary_personal_details_page.dart';
 
-class BeneficiarySettingsPage
-    extends GetView<BeneficiarySettingsPageController> {
+class BeneficiarySettingsPage extends GetView<BeneficiarySettingsPageController> {
   const BeneficiarySettingsPage({super.key});
 
   @override
@@ -33,18 +32,14 @@ class BeneficiarySettingsPage
               const Gap(20),
               ProfileWidget(
                 name: controller.user.name,
-                location: 'Location Placeholder',
+                location: controller.user.beneficiary.location,
               ),
               const Gap(12),
               Obx(
                 () => HelpedRecievedWidget(
-                  peopleHelped:
-                      controller.beneficiaryStatistics.totalPeopleDonated,
-                  amountDonated: controller
-                      .beneficiaryStatistics.totalAmountDonated
-                      .toDouble(),
-                  needsClosed:
-                      controller.beneficiaryStatistics.totalNeedsClosed,
+                  peopleHelped: controller.beneficiaryStatistics.totalPeopleDonated,
+                  amountDonated: controller.beneficiaryStatistics.totalAmountDonated.toDouble(),
+                  needsClosed: controller.beneficiaryStatistics.totalNeedsClosed,
                 ),
               ),
               const Gap(16),
