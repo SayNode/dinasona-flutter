@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-import '../../../../service/user_state_service.dart';
 import '../../about_page.dart';
 import '../../change_password_page.dart';
 import '../../contact_us_page.dart';
@@ -16,7 +13,8 @@ import '../controllers/beneficiary_settings_page_controller.dart';
 import '../widgets/help_recieved_widget.dart';
 import 'beneficiary_personal_details_page.dart';
 
-class BeneficiarySettingsPage extends GetView<BeneficiarySettingsPageController> {
+class BeneficiarySettingsPage
+    extends GetView<BeneficiarySettingsPageController> {
   const BeneficiarySettingsPage({super.key});
 
   @override
@@ -30,26 +28,29 @@ class BeneficiarySettingsPage extends GetView<BeneficiarySettingsPageController>
           child: Column(
             children: <Widget>[
               const Gap(20),
-              ProfileWidget(
-                name: controller.user.name,
-                location: controller.user.beneficiary.location,
+              Obx(
+                () => ProfileWidget(
+                  name: controller.user.name,
+                  location: controller.user.beneficiary.location,
+                ),
               ),
               const Gap(12),
               Obx(
                 () => HelpedRecievedWidget(
-                  peopleHelped: controller.beneficiaryStatistics.totalPeopleDonated,
-                  amountDonated: controller.beneficiaryStatistics.totalAmountDonated.toDouble(),
-                  needsClosed: controller.beneficiaryStatistics.totalNeedsClosed,
+                  peopleHelped:
+                      controller.beneficiaryStatistics.totalPeopleDonated,
+                  amountDonated: controller
+                      .beneficiaryStatistics.totalAmountDonated
+                      .toDouble(),
+                  needsClosed:
+                      controller.beneficiaryStatistics.totalNeedsClosed,
                 ),
               ),
               const Gap(16),
               SettingsBar(
                 icon: Symbols.person,
                 title: 'Personal details'.tr,
-                onTap: () async {
-                  await Get.find<UserStateService>().fetchBeneficiaryInfo();
-                  unawaited(Get.to(BeneficiaryPersonalDetailsPage.new));
-                },
+                onTap: () => Get.to(BeneficiaryPersonalDetailsPage.new),
               ),
               const Gap(6),
               SettingsBar(

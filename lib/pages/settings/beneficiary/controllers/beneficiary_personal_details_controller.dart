@@ -24,7 +24,8 @@ class BeneficiaryPersonalDetailsController extends GetxController {
     nameController.text = userStateService.user.value.name;
     locationController.text = userStateService.user.value.beneficiary.location;
     if (userStateService.user.value.beneficiary.dateOfBirth != null) {
-      birthdayController.text = dateFormat.format(userStateService.user.value.beneficiary.dateOfBirth!);
+      birthdayController.text = dateFormat
+          .format(userStateService.user.value.beneficiary.dateOfBirth!);
     }
     descriptionController.text = userStateService.user.value.beneficiary.bio;
 
@@ -43,7 +44,11 @@ class BeneficiaryPersonalDetailsController extends GetxController {
   }
 
   void checkInputs() {
-    if (nameController.text.isNotEmpty && locationController.text.isNotEmpty && birthdayController.text.isNotEmpty && descriptionController.text.isNotEmpty && gender.value.isNotEmpty) {
+    if (nameController.text.isNotEmpty &&
+        locationController.text.isNotEmpty &&
+        birthdayController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty &&
+        gender.value.isNotEmpty) {
       isFormValid.value = true;
     } else {
       isFormValid.value = false;

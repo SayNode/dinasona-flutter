@@ -40,8 +40,12 @@ class Beneficiary {
           : format.parse(
               json['date_of_birth'] as String,
             ),
-      gender: (json['gender'] == null) ? Gender.anonymous : (json['gender'] as int == 0 ? Gender.male : Gender.female),
-      bio: json['bio'] as String? ?? json['description'] as String? ?? 'Empty bio',
+      gender: (json['gender'] == null)
+          ? Gender.anonymous
+          : (json['gender'] as int == 0 ? Gender.male : Gender.female),
+      bio: json['bio'] as String? ??
+          json['description'] as String? ??
+          'Empty bio',
       userId: json['id'] as int? ?? -1,
     );
   }

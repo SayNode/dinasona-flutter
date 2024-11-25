@@ -8,7 +8,8 @@ import '../../../../util/popup_manager.dart';
 class BeneficiarySettingsPageController extends GetxController {
   final UserStateService _userStateService = Get.find<UserStateService>();
 
-  BeneficiaryStatistics get beneficiaryStatistics => _userStateService.beneficiaryStatistics.value;
+  BeneficiaryStatistics get beneficiaryStatistics =>
+      _userStateService.beneficiaryStatistics.value;
 
   User get user => _userStateService.user.value;
 
@@ -26,6 +27,7 @@ class BeneficiarySettingsPageController extends GetxController {
     // Fetch the latest user information
     await _userStateService.fetchBeneficiaryInfo();
     // Update the UI if necessary
+    _userStateService.user.refresh();
     update();
   }
 }
