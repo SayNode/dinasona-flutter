@@ -25,10 +25,12 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
         onRefresh: () => controller.onRefresh(),
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: getRelativeHeight(16)),
-          children: [
+          children: <Widget>[
             Gap(getRelativeHeight(20)),
             Text(
-              controller.userNameForGreeting.value.isNotEmpty ? '${controller.getGreetingMessage()}, ${controller.userNameForGreeting.value}' : controller.getGreetingMessage(),
+              controller.userNameForGreeting.value.isNotEmpty
+                  ? '${controller.getGreetingMessage()}, ${controller.userNameForGreeting.value}'
+                  : controller.getGreetingMessage(),
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
             const Gap(20),
@@ -67,7 +69,8 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
                   Expanded(
                     child: TabHeaderWidget(
                       text: 'All (${controller.needs.length})'.tr,
-                      selected: controller.currentTab.value == NeedsTab.allNeeds,
+                      selected:
+                          controller.currentTab.value == NeedsTab.allNeeds,
                       onTap: () => controller.selectTab(NeedsTab.allNeeds),
                     ),
                   ),
@@ -96,7 +99,8 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
               ),
             ),
             SizedBox(
-              height: 400, // Add fixed height for PageView or ensure it’s scrollable
+              height:
+                  400, // Add fixed height for PageView or ensure it’s scrollable
               child: PageView(
                 controller: controller.pageController,
                 onPageChanged: controller.onTabChange,

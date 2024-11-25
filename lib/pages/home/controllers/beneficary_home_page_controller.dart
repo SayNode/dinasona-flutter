@@ -20,7 +20,8 @@ class BeneficiaryHomePageController extends GetxController {
   RxList<Need> pastNeeds = <Need>[].obs;
   Rx<NeedsTab> currentTab = NeedsTab.allNeeds.obs;
   UserStateService userStateService = Get.find<UserStateService>();
-  final RxString userNameForGreeting = Get.find<UserStateService>().user.value.name.split(' ')[0].obs;
+  final RxString userNameForGreeting =
+      Get.find<UserStateService>().user.value.name.split(' ')[0].obs;
 
   @override
   Future<void> onInit() async {
@@ -41,7 +42,8 @@ class BeneficiaryHomePageController extends GetxController {
     try {
       needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
       await userStateService.fetchUserInfo();
-      userNameForGreeting.value = userStateService.user.value.name.split(' ')[0];
+      userNameForGreeting.value =
+          userStateService.user.value.name.split(' ')[0];
       filterList();
       update();
     } catch (_) {
@@ -79,7 +81,8 @@ class BeneficiaryHomePageController extends GetxController {
     draftNeeds.clear();
     pastNeeds.clear();
     for (final Need need in needs) {
-      if (need.status == NeedStatus.ongoing || need.status == NeedStatus.published) {
+      if (need.status == NeedStatus.ongoing ||
+          need.status == NeedStatus.published) {
         onGoingNeeds.add(need);
       } else if (need.status == NeedStatus.draft) {
         draftNeeds.add(need);

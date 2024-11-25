@@ -19,8 +19,10 @@ class DonorStatistics {
   }) {
     return DonorStatistics(
       totalAmountDonated: totalAmountDonated ?? this.totalAmountDonated,
-      totalCountriesDonatedTo: totalCountriesDonatedTo ?? this.totalCountriesDonatedTo,
-      totalBeneficiariesDonatedTo: totalBeneficiariesDonatedTo ?? this.totalBeneficiariesDonatedTo,
+      totalCountriesDonatedTo:
+          totalCountriesDonatedTo ?? this.totalCountriesDonatedTo,
+      totalBeneficiariesDonatedTo:
+          totalBeneficiariesDonatedTo ?? this.totalBeneficiariesDonatedTo,
     );
   }
 
@@ -35,18 +37,23 @@ class DonorStatistics {
   factory DonorStatistics.fromMap(Map<String, dynamic> map) {
     return DonorStatistics(
       // Safely parse total_amount_donated as double
-      totalAmountDonated: map['total_amount_donated'] != null ? double.tryParse(map['total_amount_donated'].toString()) ?? 0.0 : 0.0,
+      totalAmountDonated: map['total_amount_donated'] != null
+          ? double.tryParse(map['total_amount_donated'].toString()) ?? 0.0
+          : 0.0,
       // Correctly map total_countries_donated_to
       totalCountriesDonatedTo: map['total_countries_donated_to'] as int? ?? 0,
       // Correctly map total_beneficiaries_donated_to
-      totalBeneficiariesDonatedTo: map['total_beneficiaries_donated_to'] as int? ?? 0,
+      totalBeneficiariesDonatedTo:
+          map['total_beneficiaries_donated_to'] as int? ?? 0,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DonorStatistics.fromJson(String source) => DonorStatistics.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DonorStatistics.fromJson(String source) =>
+      DonorStatistics.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'DonorStatistics(totalAmountDonated: $totalAmountDonated, totalCountriesDonatedTo: $totalCountriesDonatedTo, totalBeneficiariesDonatedTo: $totalBeneficiariesDonatedTo)';
+  String toString() =>
+      'DonorStatistics(totalAmountDonated: $totalAmountDonated, totalCountriesDonatedTo: $totalCountriesDonatedTo, totalBeneficiariesDonatedTo: $totalBeneficiariesDonatedTo)';
 }

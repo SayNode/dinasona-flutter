@@ -34,7 +34,8 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
                 ),
                 const Gap(12),
                 PeopleHelpedWidget(
-                  peopleHelped: controller.donorStatistics.totalBeneficiariesDonatedTo,
+                  peopleHelped:
+                      controller.donorStatistics.totalBeneficiariesDonatedTo,
                   countries: controller.donorStatistics.totalCountriesDonatedTo,
                 ),
                 const Gap(16),
