@@ -56,6 +56,7 @@ class AuthService extends AuthServiceBase {
           try {
             /// Save the token
             apiService.authenticationToken = authResult.accessToken;
+
             await storageService.writeString(
               'token',
               authResult.accessToken,

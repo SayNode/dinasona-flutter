@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "265595937590-o0nl73ne1d5j3p19ct4cvtm1oltt1hb8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.dinasona.dinasona",
+            "certificate_hash": "5ca3170c35e8d677595907c8dfab2a1386fab88f"
+          }
+        },
+        {
           "client_id": "265595937590-tv2fuv907fp5juthhas5gskallrv2um8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

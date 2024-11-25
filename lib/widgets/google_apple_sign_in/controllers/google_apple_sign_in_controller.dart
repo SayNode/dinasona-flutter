@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
+import '../../../pages/choose_path_page.dart';
 import '../../../pages/error/error_page.dart';
 import '../../../pages/root/beneficiary_root_page.dart';
 import '../../../pages/root/donor_root_page.dart';
@@ -22,27 +23,19 @@ class GoogleAppleSignInController {
   ) async {
     loadingGoogle.value = true;
     error.value = '';
+    final UserStateService userStateService = Get.find<UserStateService>();
     final AuthResponse loginResult = await authService.googleSignIn();
     if (loginResult.success) {
-      await Get.find<UserStateService>().init();
-      if (isRegistration) {
-        await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
-          'is_donor': !isBeneficiary,
-        });
+      await userStateService.init();
+      if (loginResult.result['is_signup'] as bool) {
+        if (userStateService.user.value.isDonor) {
+          unawaited(Get.to(() => const DonorRootPage()));
+        } else {
+          unawaited(Get.to(() => const BeneficiaryRootPage()));
+        }
+      } else {
+        unawaited(Get.to(() => const ChosePathPage()));
       }
-
-      if (isBeneficiary) {
-        // Change this to a dynamic country code
-        await Get.find<UserStateService>().createBeneficiaryInstance();
-      }
-
-      unawaited(
-        Get.to(
-          () => Get.find<UserStateService>().user.value.isDonor
-              ? const DonorRootPage()
-              : const BeneficiaryRootPage(),
-        ),
-      );
     } else {
       if (loginResult.status == -1) {
         loadingGoogle.value = false;

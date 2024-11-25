@@ -77,9 +77,7 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                                   languages[index]['code']!;
 
                               Get.to<void>(
-                                () => const SignupPage(
-                                  isBeneficiary: true,
-                                ),
+                                () => const SignupPage(),
                               );
                             },
                             child: Padding(

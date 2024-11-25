@@ -8,7 +8,7 @@
                 "--dart-define",
                 "API_URL=dev.devdinasona.ch",
                 "--dart-define",
-                "BREEZ_API_KEY=",
+                "BREEZ_API_KEY=MIIBezCCAS2gAwIBAgIHPXLR6z2wwzAFBgMrZXAwEDEOMAwGA1UEAxMFQnJlZXowHhcNMjQxMDIyMTgzMjI5WhcNMzQxMDIwMTgzMjI5WjA4MR4wHAYDVQQKExVTYXlOb2RlIE9wZXJhdGlvbnMgQUcxFjAUBgNVBAMTDUp1bGllbiBXaWRtZXIwKjAFBgMrZXADIQDQg/XL3yA8HKIgyimHU/Qbpxy0tvzris1fDUtEs6ldd6N+MHwwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFNo5o+5ea0sNMlW/75VgGJCv2AcJMB8GA1UdIwQYMBaAFN6q1pJW843ndJIW/Ey2ILJrKJhrMBwGA1UdEQQVMBOBEWp1bGllbkBzYXlub2RlLmNoMAUGAytlcANBAEc/+AbV3sV4kjYHbPtA/scB+I9Z+0U8urdoC7BW4H77+c/VQzekscULOMgSQEO/gS6AMaHwGXkyA/UovkmM3Qw=",
             ]
         },
     ]
