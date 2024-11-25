@@ -2,10 +2,10 @@
 import 'dart:convert';
 
 class DonorStatistics {
-  //TODO: chek if the fields are correct or if some need to be double instead of int
   double totalAmountDonated;
   int totalCountriesDonatedTo;
   int totalBeneficiariesDonatedTo;
+
   DonorStatistics({
     required this.totalAmountDonated,
     required this.totalCountriesDonatedTo,
@@ -29,18 +29,22 @@ class DonorStatistics {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'total_amount_donated': totalAmountDonated,
-      'total_beneficiaries_donated_to': totalCountriesDonatedTo,
-      'total_countries_donated_to': totalBeneficiariesDonatedTo,
+      'total_countries_donated_to': totalCountriesDonatedTo,
+      'total_beneficiaries_donated_to': totalBeneficiariesDonatedTo,
     };
   }
 
   factory DonorStatistics.fromMap(Map<String, dynamic> map) {
     return DonorStatistics(
-      totalAmountDonated: map['total_amount_donated'] as double? ?? 0.0,
-      totalCountriesDonatedTo:
-          map['total_beneficiaries_donated_to'] as int? ?? -1,
+      // Safely parse total_amount_donated as double
+      totalAmountDonated: map['total_amount_donated'] != null
+          ? double.tryParse(map['total_amount_donated'].toString()) ?? 0.0
+          : 0.0,
+      // Correctly map total_countries_donated_to
+      totalCountriesDonatedTo: map['total_countries_donated_to'] as int? ?? 0,
+      // Correctly map total_beneficiaries_donated_to
       totalBeneficiariesDonatedTo:
-          map['total_countries_donated_to'] as int? ?? -1,
+          map['total_beneficiaries_donated_to'] as int? ?? 0,
     );
   }
 

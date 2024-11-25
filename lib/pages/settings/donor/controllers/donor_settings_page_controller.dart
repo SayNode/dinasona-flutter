@@ -12,6 +12,15 @@ class DonorSettingsPageController extends GetxController {
   DonorStatistics get donorStatistics =>
       _userStateService.donorStatistics.value;
 
+  Future<void> refreshPage() async {
+    // Fetch the latest beneficiary statistics
+    await _userStateService.fetchDonorStatistics();
+    // Fetch the latest user information
+    await _userStateService.fetchUserInfo();
+    // Update the UI if necessary
+    update();
+  }
+
   void logout() {
     PopupManager.openLogoutPopup();
   }

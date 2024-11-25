@@ -24,63 +24,72 @@ class BeneficiarySettingsPage
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const Gap(20),
-            ProfileWidget(
-              name: controller.user.name,
-              location: 'Location Placeholder',
-            ),
-            const Gap(12),
-            HelpedRecievedWidget(
-              peopleHelped: controller.beneficiaryStatistics.totalPeopleDonated,
-              amountDonated: controller.beneficiaryStatistics.totalAmountDonated
-                  .toDouble(),
-              needsClosed: controller.beneficiaryStatistics.totalNeedsClosed,
-            ),
-            const Gap(16),
-            SettingsBar(
-              icon: Symbols.person,
-              title: 'Personal details'.tr,
-              onTap: () async {
-                await Get.find<UserStateService>().fetchBeneficiaryInfo();
-                unawaited(Get.to(BeneficiaryPersonalDetailsPage.new));
-              },
-            ),
-            const Gap(6),
-            SettingsBar(
-              icon: Symbols.password,
-              title: 'Change password'.tr,
-              onTap: () => Get.to(() => const ChangePasswordPage()),
-            ),
-            const Gap(6),
-            SettingsBar(
-              icon: Symbols.contact_support,
-              title: 'Contact us'.tr,
-              onTap: () => Get.to(() => const ContactUsPage()),
-            ),
-            const Gap(6),
-            const Gap(6),
-            SettingsBar(
-              icon: Symbols.globe_asia,
-              title: 'About Dinasona'.tr,
-              onTap: () => Get.to(() => const AboutPage()),
-            ),
-            const Gap(6),
-            SettingsBar(
-              icon: Symbols.logout,
-              title: 'Log out'.tr,
-              onTap: controller.logout,
-            ),
-            const Gap(6),
-            SettingsBar(
-              icon: Symbols.delete,
-              title: 'Delete account'.tr,
-              onTap: controller.deleteAccount,
-            ),
-            const FooterWidget(),
-          ],
+      child: RefreshIndicator(
+        onRefresh: () => controller.refreshPage(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: <Widget>[
+              const Gap(20),
+              ProfileWidget(
+                name: controller.user.name,
+                location: 'Location Placeholder',
+              ),
+              const Gap(12),
+              Obx(
+                () => HelpedRecievedWidget(
+                  peopleHelped:
+                      controller.beneficiaryStatistics.totalPeopleDonated,
+                  amountDonated: controller
+                      .beneficiaryStatistics.totalAmountDonated
+                      .toDouble(),
+                  needsClosed:
+                      controller.beneficiaryStatistics.totalNeedsClosed,
+                ),
+              ),
+              const Gap(16),
+              SettingsBar(
+                icon: Symbols.person,
+                title: 'Personal details'.tr,
+                onTap: () async {
+                  await Get.find<UserStateService>().fetchBeneficiaryInfo();
+                  unawaited(Get.to(BeneficiaryPersonalDetailsPage.new));
+                },
+              ),
+              const Gap(6),
+              SettingsBar(
+                icon: Symbols.password,
+                title: 'Change password'.tr,
+                onTap: () => Get.to(() => const ChangePasswordPage()),
+              ),
+              const Gap(6),
+              SettingsBar(
+                icon: Symbols.contact_support,
+                title: 'Contact us'.tr,
+                onTap: () => Get.to(() => const ContactUsPage()),
+              ),
+              const Gap(6),
+              const Gap(6),
+              SettingsBar(
+                icon: Symbols.globe_asia,
+                title: 'About Dinasona'.tr,
+                onTap: () => Get.to(() => const AboutPage()),
+              ),
+              const Gap(6),
+              SettingsBar(
+                icon: Symbols.logout,
+                title: 'Log out'.tr,
+                onTap: controller.logout,
+              ),
+              const Gap(6),
+              SettingsBar(
+                icon: Symbols.delete,
+                title: 'Delete account'.tr,
+                onTap: controller.deleteAccount,
+              ),
+              const FooterWidget(),
+            ],
+          ),
         ),
       ),
     );

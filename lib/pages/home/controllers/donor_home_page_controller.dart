@@ -30,6 +30,12 @@ class DonorHomePageController extends GetxController {
     super.onInit();
   }
 
+  Future<void> refreshPage() async {
+    needs.value = await Get.find<NeedService>()
+        .getPublishedNeedsMatchingAreasOfInterest(defaultAreasOfInterest);
+    update();
+  }
+
   Future<void> openExploreMore({Widget? child}) async {
     final List<AreaOfInterest>? fields =
         await PopupManager.openSelectAreasOfInterestPopup(
