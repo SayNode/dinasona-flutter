@@ -26,6 +26,7 @@ class CreateNewNeedController extends GetxController {
   TextEditingController screen4 = TextEditingController();
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
+  bool isloading = false;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
   WalletService walletService = Get.find<WalletService>();
   NeedService needService = Get.find<NeedService>();
@@ -47,27 +48,6 @@ class CreateNewNeedController extends GetxController {
     screen3.addListener(() {
       isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
     });
-
-    try {
-      pageController.dispose();
-    } catch (_) {}
-    pageController = PageController();
-  }
-
-  @override
-  void onClose() {
-    try {
-      pageController.dispose();
-    } catch (_) {}
-    super.onClose();
-  }
-
-  void initializePageController() {
-    try {
-      pageController.dispose();
-    } catch (_) {}
-
-    pageController = PageController();
   }
 
   Future<void> pickImage(ImageSource source, Rx<File?> image) async {
@@ -80,37 +60,29 @@ class CreateNewNeedController extends GetxController {
   }
 
   Future<void> onTapdraftButton() async {
+    if (isloading) return;
+    isloading = true;
     if (!isEditingNeed.value) {
       if (walletService.isWalletConnected.value) {
-        createNewNeed();
-
-        await PopupManager.openDraftPopup();
-        pageController.dispose();
-        unawaited(Get.delete<CreateNewNeedController>());
+        await createNewNeed();
       } else {
         unawaited(Get.to(InstructionsPage.new));
       }
     } else {
       await updateNeed(editingNeedId.value, true);
-
-      unawaited(PopupManager.openDraftPopup());
-      pageController.dispose();
-      unawaited(Get.delete<CreateNewNeedController>());
     }
+    unawaited(PopupManager.openDraftPopup());
   }
 
   Future<void> onTapPublishButton() async {
+    if (isloading) return;
+    isloading = true;
     if (!isEditingNeed.value) {
-      createNewNeed(isDraft: false);
-      unawaited(PopupManager.openPublishPopup());
-      pageController.dispose();
-      unawaited(Get.delete<CreateNewNeedController>());
+      await createNewNeed(isDraft: false);
     } else {
       await updateNeed(editingNeedId.value, false);
-      unawaited(PopupManager.openPublishPopup());
-      pageController.dispose();
-      unawaited(Get.delete<CreateNewNeedController>());
     }
+    unawaited(PopupManager.openPublishPopup());
   }
 
   Future<void> openCurrency({Widget? child}) async {
@@ -152,7 +124,7 @@ class CreateNewNeedController extends GetxController {
     currentTab.value = tab;
   }
 
-  void createNewNeed({bool isDraft = true}) {
+  Future<void> createNewNeed({bool isDraft = true}) async {
     final String areasOfInterest = selectedAreasOfInterest
         .map(
           (AreaOfInterest e) => e.title,
@@ -160,7 +132,7 @@ class CreateNewNeedController extends GetxController {
         .toString()
         .replaceAll('(', '')
         .replaceAll(')', '');
-    needService.createNewNeed(
+    await needService.createNewNeed(
       screen1.text,
       screen4.text,
       screen3.text,
