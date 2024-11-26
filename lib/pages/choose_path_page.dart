@@ -5,8 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../service/localization_controller.dart';
-import '../service/storage/shared_storage_service.dart';
 import '../service/theme_service.dart';
 import '../service/user_state_service.dart';
 import '../theme/theme.dart';
@@ -104,8 +102,6 @@ class ChoosePathPage extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () async {
-                  final SharedStorageService storageService = Get.find();
-                  const String chosenCurrency = '';
                   unawaited(
                     showDialog(
                       context: context,
@@ -126,9 +122,6 @@ class ChoosePathPage extends StatelessWidget {
                     'is_donor': false,
                   });
                   await Get.find<UserStateService>().createBeneficiaryInstance();
-
-                  final LocalizationController localizationController = Get.find<LocalizationController>();
-                  final bool savedLanguage = await storageService.containsKey('language');
 
                   unawaited(Get.to(() => const ChooseLanguagePage()));
                 },
