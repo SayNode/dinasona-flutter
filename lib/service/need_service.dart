@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio_import;
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/need.dart';
@@ -13,8 +14,6 @@ import 'api_service.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
 import 'logger_service.dart';
-import 'dart:developer';
-
 import 'user_state_service.dart';
 
 class NeedService extends GetxService {
@@ -47,7 +46,7 @@ class NeedService extends GetxService {
     }
   }
 
-  Future<List<Need>> getDonatehistory() async {
+  Future<List<Need>> getDonateHistory() async {
     try {
       final http.Response response = await apiService.get('/donation/donor');
 
@@ -57,9 +56,14 @@ class NeedService extends GetxService {
           jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>,
         );
         Get.find<LoggerService>().log(
-          'NeedService.getDonatehistory() - got ${needList.length} needs',
+          'NeedService.getDonateHistory() - got ${needList.length} needs',
         );
-        return needList.map(Need.fromJson).toList();
+        return needList
+            .map(
+              (Map<String, dynamic> need) =>
+                  Need.fromJson(need['need'] as Map<String, dynamic>),
+            )
+            .toList();
       } else {
         throw Exception(
           'Failed to load donate needs - got status code ${response.statusCode}',
