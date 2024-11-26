@@ -28,7 +28,7 @@ class GoogleAppleSignInController {
     if (loginResult.success) {
       await userStateService.init();
       if (loginResult.result['is_signup'] as bool) {
-        unawaited(Get.to(() => const ChosePathPage()));
+        unawaited(Get.to(() => const ChoosePathPage()));
       } else {
         if (userStateService.user.value.isDonor) {
           unawaited(Get.to(() => const DonorRootPage()));

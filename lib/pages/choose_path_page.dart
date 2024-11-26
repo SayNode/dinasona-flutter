@@ -5,8 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../service/localization_controller.dart';
-import '../service/storage/shared_storage_service.dart';
 import '../service/theme_service.dart';
 import '../service/user_state_service.dart';
 import '../theme/theme.dart';
@@ -14,12 +12,11 @@ import '../theme/typography.dart';
 import '../util/util.dart';
 import '../widgets/custom_scaffold.dart';
 import '../widgets/dinasona_popup.dart';
-import 'root/beneficiary_root_page.dart';
 import 'root/donor_root_page.dart';
 import 'sign_up/donor_and_beneficiary/choose_language_page.dart';
 
-class ChosePathPage extends StatelessWidget {
-  const ChosePathPage({super.key});
+class ChoosePathPage extends StatelessWidget {
+  const ChoosePathPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +107,6 @@ class ChosePathPage extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () async {
-                  final SharedStorageService storageService = Get.find();
-                  const String chosenCurrency = '';
                   unawaited(
                     showDialog(
                       context: context,
@@ -135,36 +130,7 @@ class ChosePathPage extends StatelessWidget {
                   await Get.find<UserStateService>()
                       .createBeneficiaryInstance();
 
-                  final LocalizationController localizationController =
-                      Get.find<LocalizationController>();
-                  final bool savedLanguage =
-                      await storageService.containsKey('language');
-                  if (!savedLanguage) {
-                    if (localizationController.defaulLanguage ||
-                        chosenCurrency.isEmpty) {
-                      unawaited(Get.to(() => const ChooseLanguagePage()));
-                    } else {
-                      Get.close(1);
-
-                      showPopup(isBeneficiary: true);
-
-                      unawaited(
-                        Get.offAll(
-                          () => const BeneficiaryRootPage(),
-                        ),
-                      );
-                    }
-                  } else {
-                    Get.close(1);
-
-                    showPopup(isBeneficiary: true);
-
-                    unawaited(
-                      Get.offAll(
-                        () => const BeneficiaryRootPage(),
-                      ),
-                    );
-                  }
+                  unawaited(Get.to(() => const ChooseLanguagePage()));
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(

@@ -23,14 +23,14 @@ class SignupController extends GetxController {
   RxString error = ''.obs;
   final Rx<GlobalKey<FormState>> registrationFormKey =
       GlobalKey<FormState>().obs;
-  
   RxBool isCreateAccountButtonActive = false.obs;
   RxBool isEmailFieldEmpty = false.obs;
   RxBool isPasswordFieldEmpty = false.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+
     password.addListener(() {
       isPasswordFieldEmpty.value = password.text.isNotEmpty.obs.value;
       isCreateAccountButtonActive.value =
@@ -62,7 +62,7 @@ class SignupController extends GetxController {
           await Get.find<UserStateService>().init();
           password.clear();
           email.clear();
-          unawaited(Get.to(() => const ChosePathPage()));
+          unawaited(Get.to(() => const ChoosePathPage()));
         } else {
           try {
             registrationFormKey.value.currentState!.validate();
