@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -14,28 +13,12 @@ import '../../../widgets/dinasona_textfield.dart';
 import '../../../widgets/google_apple_sign_in/google_apple_sign_in.dart';
 import '../../login/donor_and_beneficiary/login_page.dart';
 import '../controller/sign_up_controller.dart';
-import 'choose_language_page.dart';
 
 class SignupPage extends GetView<SignupController> {
-  const SignupPage({
-    this.isBeneficiary = false,
-    this.savedLanguage = false,
-    super.key,
-  });
-  final bool isBeneficiary;
-  final bool savedLanguage;
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LocalizationController localizationController =
-        Get.find<LocalizationController>();
-    if (isBeneficiary && !savedLanguage) {
-      if (localizationController.defaulLanguage ||
-          controller.chosenCurrency.isEmpty) {
-        return const ChooseLanguagePage();
-      }
-    }
-
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     final Size screenSize = MediaQuery.of(context).size;
     return CustomScaffold(
@@ -81,15 +64,15 @@ class SignupPage extends GetView<SignupController> {
                     style: CustomTypography.fromColor(dinasonaTheme.shadowed)
                         .k36Bold,
                   ),
-                  Text(
-                    !isBeneficiary
-                        ? "Your account is the key to sharing kindness. Let's begin your impact journey!"
-                            .tr
-                        : "Create an account to start receiving help from generous individuals. We're here to support you on your journey."
-                            .tr,
-                    style: CustomTypography.fromColor(dinasonaTheme.shadowed)
-                        .k16Reg,
-                  ),
+                  // Text(
+                  //   !beneficiary
+                  //       ? "Your account is the key to sharing kindness. Let's begin your impact journey!"
+                  //           .tr
+                  //       : "Create an account to start receiving help from generous individuals. We're here to support you on your journey."
+                  //           .tr,
+                  //   style: CustomTypography.fromColor(dinasonaTheme.shadowed)
+                  //       .k16Reg,
+                  // ),
                   SizedBox(
                     height: getRelativeHeight(30),
                   ),
@@ -160,9 +143,7 @@ class SignupPage extends GetView<SignupController> {
                           DinasonaButton(
                             text: 'Create an account'.tr,
                             loading: controller.loading.value,
-                            onPressed: () => controller.signUpSubmit(
-                              isBeneficiary: isBeneficiary,
-                            ),
+                            onPressed: controller.signUpSubmit,
                             color: dinasonaTheme.ferngreen,
                             locked:
                                 !controller.isCreateAccountButtonActive.value,
@@ -185,8 +166,8 @@ class SignupPage extends GetView<SignupController> {
                     ],
                   ),
                   SizedBox(height: getRelativeHeight(40)),
-                  GoogleAppleSignIn(
-                    isBeneficiary: isBeneficiary,
+                  const GoogleAppleSignIn(
+                    isBeneficiary: true,
                     isRegistration: true,
                   ),
                   Center(
@@ -209,8 +190,7 @@ class SignupPage extends GetView<SignupController> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Get.to<void>(
-                                    () =>
-                                        LoginPage(isBeneficiary: isBeneficiary),
+                                    LoginPage.new,
                                   );
                                 },
                             ),

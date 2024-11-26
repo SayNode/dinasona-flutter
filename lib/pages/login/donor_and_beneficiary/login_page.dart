@@ -206,9 +206,7 @@ class LoginPage extends GetView<LoginController> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Get.to<void>(
-                                    () => SignupPage(
-                                      isBeneficiary: isBeneficiary,
-                                    ),
+                                    SignupPage.new,
                                   );
                                 },
                             ),

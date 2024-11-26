@@ -7,9 +7,7 @@ import '../../../model/auth_response.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
-import '../../../widgets/dinasona_popup.dart';
-import '../../root/beneficiary_root_page.dart';
-import '../../root/donor_root_page.dart';
+import '../../choose_path_page.dart';
 
 class SignupController extends GetxController {
   //Services
@@ -25,7 +23,7 @@ class SignupController extends GetxController {
   RxString error = ''.obs;
   final Rx<GlobalKey<FormState>> registrationFormKey =
       GlobalKey<FormState>().obs;
-  RxString chosenCurrency = ''.obs;
+  
   RxBool isCreateAccountButtonActive = false.obs;
   RxBool isEmailFieldEmpty = false.obs;
   RxBool isPasswordFieldEmpty = false.obs;
@@ -49,7 +47,7 @@ class SignupController extends GetxController {
     showPassword.value = !showPassword.value;
   }
 
-  Future<void> signUpSubmit({bool isBeneficiary = false}) async {
+  Future<void> signUpSubmit() async {
     loading.value = true;
     error.value = '';
     if (email.text.isEmail) {
@@ -61,7 +59,10 @@ class SignupController extends GetxController {
           biometrics: false,
         );
         if (registrationResult.success) {
-          await proceed(isBeneficiary);
+          await Get.find<UserStateService>().init();
+          password.clear();
+          email.clear();
+          unawaited(Get.to(() => const ChosePathPage()));
         } else {
           try {
             registrationFormKey.value.currentState!.validate();
@@ -92,26 +93,5 @@ class SignupController extends GetxController {
       error.value = 'Invalid email address'.tr;
     }
     loading.value = false;
-  }
-
-  Future<void> proceed(bool isBeneficiary) async {
-    await Get.find<UserStateService>().init();
-    await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
-      'is_donor': !isBeneficiary,
-    });
-
-    if (isBeneficiary) {
-      await Get.find<UserStateService>().createBeneficiaryInstance();
-    }
-
-    password.clear();
-    email.clear();
-    showPopup(isBeneficiary: isBeneficiary);
-    unawaited(
-      Get.offAll(
-        () =>
-            isBeneficiary ? const BeneficiaryRootPage() : const DonorRootPage(),
-      ),
-    );
   }
 }

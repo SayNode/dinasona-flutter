@@ -14,7 +14,7 @@ import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
-import '../../choose_path_page.dart';
+import '../../login/donor_and_beneficiary/login_page.dart';
 import 'bullet_point_widget.dart';
 
 class DeleteAccountBottomSheet extends StatelessWidget {
@@ -142,7 +142,7 @@ class DeleteAccountBottomSheet extends StatelessWidget {
               userStateService.clear();
               await Get.find<SharedStorageService>().delete('language');
               await Get.offAll<void>(
-                () => const ChosePathPage(),
+                () => const LoginPage(),
                 transition: Transition.upToDown,
               );
             },

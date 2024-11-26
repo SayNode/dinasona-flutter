@@ -10,16 +10,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:is_first_run/is_first_run.dart';
-import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 
 import './util/constants.dart';
 import 'firebase_options.dart';
+import 'model/auth_response.dart';
 import 'model/message.dart';
-import 'pages/choose_path_page.dart';
 import 'pages/error/error_page.dart';
+import 'pages/login/donor_and_beneficiary/login_page.dart';
+import 'pages/root/beneficiary_root_page.dart';
+import 'pages/root/donor_root_page.dart';
 import 'service/auth_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
@@ -28,6 +31,7 @@ import 'service/messaging_service.dart';
 import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
 import 'service/user_state_service.dart';
+import 'service/wallet_service.dart';
 import 'util/util.dart';
 
 bool isFirstRun = false;
@@ -135,7 +139,20 @@ void main() async {
       } catch (_) {}
     }
 
-    runApp(const MyApp());
+    final AuthService authService = Get.find<AuthService>();
+    Widget initialPage = const LoginPage();
+
+    final AuthResponse response = await authService.silentLogin();
+    if (response.success) {
+      await Get.find<WalletService>().connectToWalletAfterSignIn();
+
+      initialPage = Get.find<UserStateService>().user.value.isDonor
+          ? const DonorRootPage()
+          : const BeneficiaryRootPage();
+    }
+    Get.put<ThemeService>(ThemeService()).themeData;
+
+    runApp(MyApp(initialPage: initialPage));
   }, (Object error, StackTrace stack) async {
     debugPrint('Error caught by main zone');
     debugPrint(error.toString());
@@ -153,7 +170,8 @@ Future<void> initializeServices() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({required this.initialPage, super.key});
+  final Widget initialPage;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -167,13 +185,8 @@ class MyApp extends StatelessWidget {
               Messages(languages: localizationController.translations),
           debugShowCheckedModeBanner: Constants.devMode,
           title: 'dinasona',
+          home: initialPage,
           initialRoute: '/',
-          getPages: <GetPage<void>>[
-            GetPage<void>(
-              name: '/',
-              page: ChosePathPage.new,
-            ),
-          ],
           theme: Get.put<ThemeService>(ThemeService()).themeData,
         );
         //End MaterialApp

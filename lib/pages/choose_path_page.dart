@@ -5,30 +5,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../model/auth_response.dart';
-import '../service/auth_service.dart';
+import '../service/localization_controller.dart';
 import '../service/storage/shared_storage_service.dart';
 import '../service/theme_service.dart';
 import '../service/user_state_service.dart';
-import '../service/wallet_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/util.dart';
 import '../widgets/custom_scaffold.dart';
+import '../widgets/dinasona_popup.dart';
 import 'root/beneficiary_root_page.dart';
 import 'root/donor_root_page.dart';
 import 'sign_up/donor_and_beneficiary/choose_language_page.dart';
-import 'sign_up/donor_and_beneficiary/sign_up_page.dart';
 
 class ChosePathPage extends StatelessWidget {
   const ChosePathPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SharedStorageService storageService = Get.find();
     final ThemeService service = Get.find();
     final CustomTheme diasonaTheme = service.theme;
-    final AuthService authService = Get.find();
     return CustomScaffold(
       padding: true,
       body: Column(
@@ -41,25 +37,34 @@ class ChosePathPage extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () async {
-                  final AuthResponse response = await authService.silentLogin();
-                  if (response.success) {
-                    await Get.find<WalletService>()
-                        .connectToWalletAfterSignIn();
-
-                    unawaited(
-                      Get.off<void>(
-                        () => Get.find<UserStateService>().user.value.isDonor
-                            ? const DonorRootPage()
-                            : const BeneficiaryRootPage(),
-                      ),
-                    );
-                  } else {
-                    unawaited(
-                      Get.to<void>(
-                        () => const SignupPage(),
-                      ),
-                    );
-                  }
+                  //setup donor
+                  unawaited(
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const AlertDialog(
+                          content: Row(
+                            children: <Widget>[
+                              CircularProgressIndicator(),
+                              SizedBox(width: 20),
+                              Text('Creating donor account...'),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                  await Get.find<UserStateService>()
+                      .updateUserInfo(<String, dynamic>{
+                    'is_donor': true,
+                  });
+                  Get.close(1);
+                  showPopup();
+                  unawaited(
+                    Get.offAll(
+                      () => const DonorRootPage(),
+                    ),
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -105,30 +110,58 @@ class ChosePathPage extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(24),
                 onTap: () async {
-                  final AuthResponse response = await authService.silentLogin();
-                  if (response.success) {
-                    await Get.find<WalletService>()
-                        .connectToWalletAfterSignIn();
+                  final SharedStorageService storageService = Get.find();
+                  const String chosenCurrency = '';
+                  unawaited(
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const AlertDialog(
+                          content: Row(
+                            children: <Widget>[
+                              CircularProgressIndicator(),
+                              SizedBox(width: 20),
+                              Text('Creating beneficiary account...'),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                  await Get.find<UserStateService>()
+                      .updateUserInfo(<String, dynamic>{
+                    'is_donor': false,
+                  });
+                  await Get.find<UserStateService>()
+                      .createBeneficiaryInstance();
 
-                    unawaited(
-                      Get.off<void>(
-                        () => Get.find<UserStateService>().user.value.isDonor
-                            ? const DonorRootPage()
-                            : const BeneficiaryRootPage(),
-                      ),
-                    );
+                  final LocalizationController localizationController =
+                      Get.find<LocalizationController>();
+                  final bool savedLanguage =
+                      await storageService.containsKey('language');
+                  if (!savedLanguage) {
+                    if (localizationController.defaulLanguage ||
+                        chosenCurrency.isEmpty) {
+                      unawaited(Get.to(() => const ChooseLanguagePage()));
+                    } else {
+                      Get.close(1);
+
+                      showPopup(isBeneficiary: true);
+
+                      unawaited(
+                        Get.offAll(
+                          () => const BeneficiaryRootPage(),
+                        ),
+                      );
+                    }
                   } else {
-                    final bool savedLanguage =
-                        await storageService.containsKey('language');
+                    Get.close(1);
+
+                    showPopup(isBeneficiary: true);
 
                     unawaited(
-                      Get.to<void>(
-                        savedLanguage
-                            ? () => const SignupPage(
-                                  savedLanguage: true,
-                                  isBeneficiary: true,
-                                )
-                            : () => const ChooseLanguagePage(),
+                      Get.offAll(
+                        () => const BeneficiaryRootPage(),
                       ),
                     );
                   }

@@ -89,6 +89,7 @@ class AuthService extends AuthServiceBase {
       );
     } catch (e) {
       // Other error occurred
+
       throw Exception('Catched an error while logging in with Google: $e');
     }
   }

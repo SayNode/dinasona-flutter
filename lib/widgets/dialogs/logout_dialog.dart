@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../pages/choose_path_page.dart';
+import '../../pages/login/donor_and_beneficiary/login_page.dart';
 import '../../service/api_service.dart';
 import '../../service/auth_service.dart';
 import '../../service/storage/secure_storage_service.dart';
@@ -79,7 +79,7 @@ class LogoutDialog extends StatelessWidget {
                     await Get.find<WalletService>().deleteUserWallet();
                     userStateService.clear();
                     await Get.offAll<void>(
-                      () => const ChosePathPage(),
+                      () => const LoginPage(),
                       transition: Transition.upToDown,
                     );
                   },

@@ -3,14 +3,11 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../theme/theme.dart';
 import 'localization_controller.dart';
 import 'logger_service.dart';
-import 'theme_service.dart';
 
 class CurrencyConversionService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
-  final CustomTheme theme = Get.put(ThemeService()).theme;
   final LocalizationController localizationController =
       Get.find<LocalizationController>();
   bool snackBarDebouncing = false;
