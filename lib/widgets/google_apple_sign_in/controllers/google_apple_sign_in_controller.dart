@@ -74,7 +74,9 @@ class GoogleAppleSignInController {
 
       unawaited(
         Get.to(
-          () => Get.find<UserStateService>().user.value.isDonor ? const DonorRootPage() : const BeneficiaryRootPage(),
+          () => Get.find<UserStateService>().user.value.isDonor
+              ? const DonorRootPage()
+              : const BeneficiaryRootPage(),
         ),
       );
     } else {

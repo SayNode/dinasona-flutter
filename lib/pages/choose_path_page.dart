@@ -51,7 +51,8 @@ class ChoosePathPage extends StatelessWidget {
                       },
                     ),
                   );
-                  await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
+                  await Get.find<UserStateService>()
+                      .updateUserInfo(<String, dynamic>{
                     'is_donor': true,
                   });
                   Get.close(1);
@@ -72,11 +73,15 @@ class ChoosePathPage extends StatelessWidget {
                       Gap(getRelativeHeight(20)),
                       Text(
                         'Donate now',
-                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k36Bold,
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k36Bold,
                       ),
                       Text(
                         'Support those in need by contributing money to help improve their lives.',
-                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k16SemiBold,
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k16SemiBold,
                         textAlign: TextAlign.center,
                       ),
                       Gap(getRelativeHeight(20)),
@@ -118,10 +123,12 @@ class ChoosePathPage extends StatelessWidget {
                       },
                     ),
                   );
-                  await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
+                  await Get.find<UserStateService>()
+                      .updateUserInfo(<String, dynamic>{
                     'is_donor': false,
                   });
-                  await Get.find<UserStateService>().createBeneficiaryInstance();
+                  await Get.find<UserStateService>()
+                      .createBeneficiaryInstance();
 
                   unawaited(Get.to(() => const ChooseLanguagePage()));
                 },
@@ -135,11 +142,15 @@ class ChoosePathPage extends StatelessWidget {
                       Gap(getRelativeHeight(20)),
                       Text(
                         'Get help',
-                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k36Bold,
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k36Bold,
                       ),
                       Text(
                         'Receive financial assistance and support to overcome your challenges..',
-                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k16SemiBold,
+                        style:
+                            CustomTypography.fromColor(diasonaTheme.moonstone)
+                                .k16SemiBold,
                         textAlign: TextAlign.center,
                       ),
                       Gap(getRelativeHeight(20)),

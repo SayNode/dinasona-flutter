@@ -31,7 +31,7 @@ class BeneficiarySettingsPage
               Obx(
                 () => ProfileWidget(
                   name: controller.user.name,
-                  location: controller.user.beneficiary.location,
+                  location: controller.user.beneficiary.country,
                 ),
               ),
               const Gap(12),

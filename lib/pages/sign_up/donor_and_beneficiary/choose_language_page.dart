@@ -19,7 +19,8 @@ class ChooseLanguagePage extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
-    final LocalizationController localizationController = Get.find<LocalizationController>();
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
 
     return CustomScaffold(
       body: SingleChildScrollView(
@@ -33,13 +34,15 @@ class ChooseLanguagePage extends GetView<SignupController> {
               children: <Widget>[
                 Text(
                   'Choose language'.tr,
-                  style: CustomTypography.fromColor(dinasonaTheme.shadowed).k36Bold,
+                  style: CustomTypography.fromColor(dinasonaTheme.shadowed)
+                      .k36Bold,
                 ),
                 Material(
                   color: dinasonaTheme.moonstone,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: localizationController.supportedLanguageList.length,
+                    itemCount:
+                        localizationController.supportedLanguageList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         width: double.infinity,
@@ -55,7 +58,8 @@ class ChooseLanguagePage extends GetView<SignupController> {
                             borderRadius: BorderRadius.circular(10),
                             onTap: () async {
                               await localizationController.changeLanguage(
-                                localizationController.supportedLanguageList[index],
+                                localizationController
+                                    .supportedLanguageList[index],
                               );
                               unawaited(
                                 Get.to<void>(
@@ -65,7 +69,8 @@ class ChooseLanguagePage extends GetView<SignupController> {
                             },
                             child: Center(
                               child: Text(
-                                localizationController.supportedLanguageList[index].languageName,
+                                localizationController
+                                    .supportedLanguageList[index].languageName,
                                 style: CustomTypography.fromColor(
                                   dinasonaTheme.shadowed,
                                 ).k16Reg,
