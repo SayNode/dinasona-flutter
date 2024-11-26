@@ -62,7 +62,10 @@ class SelectAreasOfInterestPopup
                             expand: false,
                             text: 'Reset'.tr,
                             customElevation: 0,
-                            onPressed: Get.back,
+                            onPressed: () {
+                              controller.selectedAreasOfInterest.clear();
+                              controller.count.value = 0;
+                            },
                             padding: EdgeInsets.all(getRelativeHeight(10)),
                             color: LightColor.moonstone,
                             textColor: LightColor.graphite,
