@@ -27,6 +27,7 @@ class BeneficiarySettingsPageController extends GetxController {
     // Fetch the latest user information
     await _userStateService.fetchBeneficiaryInfo();
     // Update the UI if necessary
+    _userStateService.user.refresh();
     update();
   }
 }

@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-import '../../../../service/user_state_service.dart';
 import '../../about_page.dart';
 import '../../change_password_page.dart';
 import '../../contact_us_page.dart';
@@ -31,9 +28,11 @@ class BeneficiarySettingsPage
           child: Column(
             children: <Widget>[
               const Gap(20),
-              ProfileWidget(
-                name: controller.user.name,
-                location: 'Location Placeholder',
+              Obx(
+                () => ProfileWidget(
+                  name: controller.user.name,
+                  location: controller.user.beneficiary.location,
+                ),
               ),
               const Gap(12),
               Obx(
@@ -51,10 +50,7 @@ class BeneficiarySettingsPage
               SettingsBar(
                 icon: Symbols.person,
                 title: 'Personal details'.tr,
-                onTap: () async {
-                  await Get.find<UserStateService>().fetchBeneficiaryInfo();
-                  unawaited(Get.to(BeneficiaryPersonalDetailsPage.new));
-                },
+                onTap: () => Get.to(BeneficiaryPersonalDetailsPage.new),
               ),
               const Gap(6),
               SettingsBar(
