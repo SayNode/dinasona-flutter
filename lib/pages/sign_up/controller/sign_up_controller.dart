@@ -21,9 +21,8 @@ class SignupController extends GetxController {
   final TextEditingController email = TextEditingController();
   RxBool loading = false.obs;
   RxString error = ''.obs;
-  final Rx<GlobalKey<FormState>> registrationFormKey =
-      GlobalKey<FormState>().obs;
-  
+  final Rx<GlobalKey<FormState>> registrationFormKey = GlobalKey<FormState>().obs;
+
   RxBool isCreateAccountButtonActive = false.obs;
   RxBool isEmailFieldEmpty = false.obs;
   RxBool isPasswordFieldEmpty = false.obs;
@@ -33,13 +32,11 @@ class SignupController extends GetxController {
     super.onInit();
     password.addListener(() {
       isPasswordFieldEmpty.value = password.text.isNotEmpty.obs.value;
-      isCreateAccountButtonActive.value =
-          isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
+      isCreateAccountButtonActive.value = isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
     });
     email.addListener(() {
       isEmailFieldEmpty.value = email.text.isNotEmpty.obs.value;
-      isCreateAccountButtonActive.value =
-          isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
+      isCreateAccountButtonActive.value = isPasswordFieldEmpty.value && isEmailFieldEmpty.value;
     });
   }
 
@@ -62,12 +59,11 @@ class SignupController extends GetxController {
           await Get.find<UserStateService>().init();
           password.clear();
           email.clear();
-          unawaited(Get.to(() => const ChosePathPage()));
+          unawaited(Get.to(() => const ChoosePathPage()));
         } else {
           try {
             registrationFormKey.value.currentState!.validate();
-            final Map<String, dynamic> errorMap =
-                registrationResult.result['error'] as Map<String, dynamic>;
+            final Map<String, dynamic> errorMap = registrationResult.result['error'] as Map<String, dynamic>;
             if (errorMap.isNotEmpty) {
               if (errorMap.containsKey('email')) {
                 error.value =
@@ -85,9 +81,7 @@ class SignupController extends GetxController {
           }
         }
       } else {
-        error.value =
-            'Password is too weak. Your password should contain: a minimum of 8 characters\nat least 1 lower case character\nat least 1 upper case character\nat least 1 special character.'
-                .tr;
+        error.value = 'Password is too weak. Your password should contain: a minimum of 8 characters\nat least 1 lower case character\nat least 1 upper case character\nat least 1 special character.'.tr;
       }
     } else {
       error.value = 'Invalid email address'.tr;

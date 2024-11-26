@@ -14,12 +14,11 @@ import '../theme/typography.dart';
 import '../util/util.dart';
 import '../widgets/custom_scaffold.dart';
 import '../widgets/dinasona_popup.dart';
-import 'root/beneficiary_root_page.dart';
 import 'root/donor_root_page.dart';
 import 'sign_up/donor_and_beneficiary/choose_language_page.dart';
 
-class ChosePathPage extends StatelessWidget {
-  const ChosePathPage({super.key});
+class ChoosePathPage extends StatelessWidget {
+  const ChoosePathPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +53,7 @@ class ChosePathPage extends StatelessWidget {
                       },
                     ),
                   );
-                  await Get.find<UserStateService>()
-                      .updateUserInfo(<String, dynamic>{
+                  await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
                     'is_donor': true,
                   });
                   Get.close(1);
@@ -76,15 +74,11 @@ class ChosePathPage extends StatelessWidget {
                       Gap(getRelativeHeight(20)),
                       Text(
                         'Donate now',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k36Bold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k36Bold,
                       ),
                       Text(
                         'Support those in need by contributing money to help improve their lives.',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k16SemiBold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k16SemiBold,
                         textAlign: TextAlign.center,
                       ),
                       Gap(getRelativeHeight(20)),
@@ -128,43 +122,15 @@ class ChosePathPage extends StatelessWidget {
                       },
                     ),
                   );
-                  await Get.find<UserStateService>()
-                      .updateUserInfo(<String, dynamic>{
+                  await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
                     'is_donor': false,
                   });
-                  await Get.find<UserStateService>()
-                      .createBeneficiaryInstance();
+                  await Get.find<UserStateService>().createBeneficiaryInstance();
 
-                  final LocalizationController localizationController =
-                      Get.find<LocalizationController>();
-                  final bool savedLanguage =
-                      await storageService.containsKey('language');
-                  if (!savedLanguage) {
-                    if (localizationController.defaulLanguage ||
-                        chosenCurrency.isEmpty) {
-                      unawaited(Get.to(() => const ChooseLanguagePage()));
-                    } else {
-                      Get.close(1);
+                  final LocalizationController localizationController = Get.find<LocalizationController>();
+                  final bool savedLanguage = await storageService.containsKey('language');
 
-                      showPopup(isBeneficiary: true);
-
-                      unawaited(
-                        Get.offAll(
-                          () => const BeneficiaryRootPage(),
-                        ),
-                      );
-                    }
-                  } else {
-                    Get.close(1);
-
-                    showPopup(isBeneficiary: true);
-
-                    unawaited(
-                      Get.offAll(
-                        () => const BeneficiaryRootPage(),
-                      ),
-                    );
-                  }
+                  unawaited(Get.to(() => const ChooseLanguagePage()));
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -176,15 +142,11 @@ class ChosePathPage extends StatelessWidget {
                       Gap(getRelativeHeight(20)),
                       Text(
                         'Get help',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k36Bold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k36Bold,
                       ),
                       Text(
                         'Receive financial assistance and support to overcome your challenges..',
-                        style:
-                            CustomTypography.fromColor(diasonaTheme.moonstone)
-                                .k16SemiBold,
+                        style: CustomTypography.fromColor(diasonaTheme.moonstone).k16SemiBold,
                         textAlign: TextAlign.center,
                       ),
                       Gap(getRelativeHeight(20)),
