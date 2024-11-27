@@ -57,7 +57,7 @@ class LoginController extends GetxController {
     if (email.text.isEmail) {
       if (password.text.isNotEmpty) {
         final AuthResponse loginResult =
-            await authService.login(email.text, password.text);
+            await authService.login(email.text.toLowerCase(), password.text);
         if (loginResult.success) {
           await Get.find<UserStateService>().init();
           await Get.find<UserStateService>().fetchUserInfo();
