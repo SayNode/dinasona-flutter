@@ -39,6 +39,7 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
               number: 1,
               text: isDonation
                   ? 'To donate and support people, you first need to set up a wallet.'
+                      .tr
                   : 'To publish a need and receive support, you first \nneed to set up a wallet.'
                       .tr,
             ),
