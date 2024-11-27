@@ -53,7 +53,7 @@ class SignupController extends GetxController {
     if (email.text.isEmail) {
       if (determinePasswordStrength(password.value.text) >= 3) {
         final AuthResponse registrationResult = await authService.registration(
-          email.text,
+          email.text.toLowerCase(),
           password.text,
           '',
           biometrics: false,

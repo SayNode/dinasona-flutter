@@ -10,9 +10,9 @@ import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/dinasona_textfield.dart';
 import '../../../widgets/header_subheader.dart';
-import 'controller/forgot_password_controller.dart';
+import 'controller/enter_new_password_controller.dart';
 
-class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
+class EnterNewPasswordPage extends GetView<EnterNewPasswordController> {
   const EnterNewPasswordPage({super.key});
 
   @override
@@ -55,6 +55,9 @@ class EnterNewPasswordPage extends GetView<ForgotPasswordController> {
                   ),
                   obscureText: !controller.showPassword.value,
                   controller: controller.newPasswordController,
+                  onChanged: (String value) {
+                    controller.updateMatch();
+                  },
                 ),
               ),
               Gap(getRelativeHeight(30)),
