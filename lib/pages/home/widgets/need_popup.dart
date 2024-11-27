@@ -206,8 +206,7 @@ class NeedPopup extends GetView<NeedPopupController> {
             ),
             child: DinasonaButton(
               text: 'Donate now'.tr,
-              locked: need.status == NeedStatus.past ||
-                  Get.find<WalletService>().balanceInUserCurrency < need.amount,
+              locked: controller.isLocket(),
               onPressed: () => controller.donate(need),
             ),
           ),
@@ -219,6 +218,20 @@ class NeedPopup extends GetView<NeedPopupController> {
                     : 'Please connect your wallet to donate'.tr,
               ),
             ),
+          if (Get.find<WalletService>().isWalletConnected.value == false)
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: Text(
+                  'Please connect your wallet to donate'.tr,
+                  style: CustomTypography.fromColor(
+                    theme.graphite,
+                  ).k16Reg,
+                ),
+              ),
+            )
+          else
+            const SizedBox(),
         ],
       ),
     );
