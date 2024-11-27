@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
 import '../../../pages/choose_path_page.dart';
-import '../../../pages/error/error_page.dart';
+import '../../../pages/login/controller/login_controller.dart';
 import '../../../pages/root/beneficiary_root_page.dart';
 import '../../../pages/root/donor_root_page.dart';
+import '../../../pages/sign_up/controller/sign_up_controller.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 
@@ -37,12 +38,12 @@ class GoogleAppleSignInController {
         }
       }
     } else {
-      if (loginResult.status == -1) {
+      if (loginResult.success == false) {
+        Get.find<SignupController>().error.value = loginResult.message;
+        Get.find<LoginController>().error.value = loginResult.message;
         loadingGoogle.value = false;
-        return 'Google sign in cancelled';
+        return loginResult.message;
       }
-      //TODO: Handle error
-      unawaited(Get.to(() => const ErrorPage(error: 'Google sign in failed')));
     }
     loadingGoogle.value = false;
     return error.value;
@@ -80,14 +81,12 @@ class GoogleAppleSignInController {
         ),
       );
     } else {
-      if (loginResult.status == -1) {
+      if (loginResult.success == false) {
+        Get.find<SignupController>().error.value = loginResult.message;
+        Get.find<LoginController>().error.value = loginResult.message;
         loadingApple.value = false;
-        return 'Apple sign in cancelled';
+        return loginResult.message;
       }
-      //TODO: Handle error
-      unawaited(
-        Get.to(() => const ErrorPage(error: 'Apple sign in failed')),
-      );
     }
     loadingApple.value = false;
     return error.value;
