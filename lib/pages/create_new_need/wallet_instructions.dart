@@ -12,7 +12,11 @@ import '../../widgets/dinasona_button.dart';
 import 'controller/create_new_need_controller.dart';
 
 class InstructionsPage extends GetView<CreateNewNeedController> {
-  const InstructionsPage({super.key});
+  const InstructionsPage({
+    required this.isDonation,
+    super.key,
+  });
+  final bool isDonation;
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +31,34 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
           children: <Widget>[
             Gap(getRelativeHeight(15)),
             Text(
-              'Set up Instructions'.tr,
+              'Set up your wallet'.tr,
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
             Gap(getRelativeHeight(15)),
             NumberedInstructionsWidget(
               number: 1,
-              text:
-                  'To publish a need and receive support, you first \nneed to set up a wallet.'
+              text: isDonation
+                  ? 'To donate and support people, you first need to set up a wallet.'
+                      .tr
+                  : 'To publish a need and receive support, you first \nneed to set up a wallet.'
                       .tr,
             ),
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
               number: 2,
-              text: "Press 'Add wallet'".tr,
+              text: "Press 'Create wallet'".tr,
+            ),
+            Gap(getRelativeHeight(12)),
+            NumberedInstructionsWidget(
+              number: 3,
+              text:
+                  "'Save your seed phrase:' Write it down on paper \nand keep it safe—you'll need it in the future"
+                      .tr,
+            ),
+            Gap(getRelativeHeight(12)),
+            NumberedInstructionsWidget(
+              number: 4,
+              text: "Enter the '3 seed words' requested".tr,
             ),
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
@@ -51,7 +69,7 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
             ),
             const Spacer(),
             DinasonaButton(
-              text: 'Add wallet'.tr,
+              text: 'Create wallet'.tr,
               onPressed: () => controller.getToWalletScreen(),
               color: theme.amberglow,
             ),

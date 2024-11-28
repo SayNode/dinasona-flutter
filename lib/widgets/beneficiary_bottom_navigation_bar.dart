@@ -53,7 +53,9 @@ enum BeneficaryItem {
         if (Get.find<WalletService>().isWalletConnected.value) {
           return const CreateNewNeed();
         } else {
-          return const InstructionsPage();
+          return const InstructionsPage(
+            isDonation: false,
+          );
         }
       case BeneficaryItem.wallet:
         return const WalletPage();
