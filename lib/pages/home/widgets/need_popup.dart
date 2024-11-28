@@ -211,27 +211,19 @@ class NeedPopup extends GetView<NeedPopupController> {
             ),
           ),
           if (Get.find<WalletService>().balanceInUserCurrency < need.amount)
-            Center(
-              child: Text(
-                Get.find<WalletService>().isWalletConnected.value
-                    ? 'Not enough balance in your wallet'.tr
-                    : 'Please connect your wallet to donate'.tr,
-              ),
-            ),
-          if (Get.find<WalletService>().isWalletConnected.value == false)
             Padding(
               padding: const EdgeInsets.all(8),
               child: Center(
                 child: Text(
-                  'Please connect your wallet to donate'.tr,
+                  Get.find<WalletService>().isWalletConnected.value
+                      ? 'Not enough balance in your wallet'.tr
+                      : 'Please connect your wallet to donate!'.tr,
                   style: CustomTypography.fromColor(
                     theme.graphite,
                   ).k16Reg,
                 ),
               ),
-            )
-          else
-            const SizedBox(),
+            ),
         ],
       ),
     );

@@ -50,25 +50,19 @@ class NeedCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Center(
-                        child: GestureDetector(
-                          onTap: () => Get.to<void>(
-                            () =>
-                                BeneficiaryPage(beneficiary: need.beneficiary),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(128),
-                            child: Stack(
-                              children: <Widget>[
-                                if (need.beneficiary.photoUrl == null)
-                                  const Icon(Icons.person)
-                                else
-                                  NetworkImageHandler(
-                                    url: need.beneficiary.photoUrl!,
-                                    height: getRelativeHeight(52),
-                                    width: getRelativeHeight(52),
-                                  ),
-                              ],
-                            ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(128),
+                          child: Stack(
+                            children: <Widget>[
+                              if (need.beneficiary.photoUrl == null)
+                                const Icon(Icons.person)
+                              else
+                                NetworkImageHandler(
+                                  url: need.beneficiary.photoUrl!,
+                                  height: getRelativeHeight(52),
+                                  width: getRelativeHeight(52),
+                                ),
+                            ],
                           ),
                         ),
                       ),
@@ -78,15 +72,22 @@ class NeedCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                              need.beneficiary.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: CustomTypography.fromColor(
-                                need.status == NeedStatus.past
-                                    ? theme.graphite
-                                    : theme.shadowed,
-                              ).k16SemiBold,
+                            GestureDetector(
+                              onTap: () => Get.to<void>(
+                                () => BeneficiaryPage(
+                                  beneficiary: need.beneficiary,
+                                ),
+                              ),
+                              child: Text(
+                                need.beneficiary.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: CustomTypography.fromColor(
+                                  need.status == NeedStatus.past
+                                      ? theme.graphite
+                                      : theme.shadowed,
+                                ).k16SemiBold,
+                              ),
                             ),
                             Text(
                               need.beneficiary.location,
