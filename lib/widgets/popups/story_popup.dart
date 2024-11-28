@@ -54,7 +54,7 @@ class StoryPopup extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  'Share my story',
+                  'Share my story'.tr,
                   style:
                       CustomTypography.fromColor(theme.moonstone).k16SemiBold,
                 ),
