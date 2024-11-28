@@ -1,6 +1,7 @@
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -101,7 +102,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
           ),
           style: CustomTypography.fromColor(theme.shadowed).k16Reg,
         ),
-        const Spacer(),
+        Gap(getRelativeHeight(16)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -139,7 +140,22 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
             ),
           ],
         ),
-        Gap(getRelativeHeight(30)),
+        const Spacer(),
+        GestureDetector(
+          onTap: () => controller.helpPage(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset('assets/images/logos/question_mark.svg'),
+              Gap(getRelativeWidth(6)),
+              Text(
+                'How to use my donation'.tr,
+                style: CustomTypography.fromColor(theme.shadowed).k16SemiBold,
+              ),
+            ],
+          ),
+        ),
+        Gap(getRelativeHeight(35)),
       ],
     );
   }
