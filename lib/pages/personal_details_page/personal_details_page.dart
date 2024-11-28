@@ -19,12 +19,13 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
   @override
   Widget build(BuildContext context) {
     Get.put(PersonalDetailsController());
-    final CustomTheme diasonaTheme = Get.find<ThemeService>().theme;
+    final CustomTheme dinasonaTheme = Get.find<ThemeService>().theme;
     final double gap = getRelativeHeight(12);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: CustomScaffold(
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
@@ -38,7 +39,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Personal details'.tr,
-                    style: CustomTypography.fromColor(diasonaTheme.shadowed)
+                    style: CustomTypography.fromColor(dinasonaTheme.shadowed)
                         .k24Bold,
                   ),
                 ),
@@ -47,7 +48,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                   'Share key details to personalize your experience. Your information helps us connect you with the right support.'
                       .tr,
                   style:
-                      CustomTypography.fromColor(diasonaTheme.graphite).k16Reg,
+                      CustomTypography.fromColor(dinasonaTheme.graphite).k16Reg,
                 ),
                 SizedBox(height: gap),
                 Form(
@@ -59,7 +60,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                           width: getRelativeWidth(106),
                           height: getRelativeWidth(106),
                           decoration: BoxDecoration(
-                            border: Border.all(color: diasonaTheme.graphite),
+                            border: Border.all(color: dinasonaTheme.graphite),
                             shape: BoxShape.circle,
                             image: controller.userStateService.user.value.avatar
                                     .isNotEmpty
@@ -116,17 +117,17 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 border:
-                                    Border.all(color: diasonaTheme.graphite),
+                                    Border.all(color: dinasonaTheme.graphite),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: DropdownButtonFormField<Gender>(
                                 isExpanded: true,
                                 value: controller.selectedGender,
                                 style: CustomTypography.fromColor(
-                                  diasonaTheme.shadowed,
+                                  dinasonaTheme.shadowed,
                                 ).k16Reg,
                                 borderRadius: BorderRadius.circular(16),
-                                dropdownColor: diasonaTheme.moonstone,
+                                dropdownColor: dinasonaTheme.moonstone,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(16),
@@ -158,8 +159,10 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                                             controller
                                                                 .selectedGender
                                                                 .name
-                                                        ? diasonaTheme.ferngreen
-                                                        : diasonaTheme.shadowed,
+                                                        ? dinasonaTheme
+                                                            .ferngreen
+                                                        : dinasonaTheme
+                                                            .shadowed,
                                                   ).k16Reg,
                                                 ),
                                               ),
@@ -168,8 +171,8 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                                 color: gender.name ==
                                                         controller
                                                             .selectedGender.name
-                                                    ? diasonaTheme.ferngreen
-                                                    : diasonaTheme.shadowed,
+                                                    ? dinasonaTheme.ferngreen
+                                                    : dinasonaTheme.shadowed,
                                               ),
                                             ],
                                           ),
@@ -215,7 +218,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: diasonaTheme.graphite),
+                          border: Border.all(color: dinasonaTheme.graphite),
                         ),
                         child: Column(
                           children: <Widget>[
@@ -239,14 +242,14 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                 DinasonaButton(
                   text: 'Continue',
                   onPressed: controller.submit,
-                  color: diasonaTheme.amberglow,
+                  color: dinasonaTheme.amberglow,
                 ),
                 SizedBox(height: gap),
                 TextButton(
                   onPressed: () => controller.skip(),
                   child: Text(
                     'Skip',
-                    style: CustomTypography.fromColor(diasonaTheme.ferngreen)
+                    style: CustomTypography.fromColor(dinasonaTheme.ferngreen)
                         .k16Reg,
                   ),
                 ),
