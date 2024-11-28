@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
 import '../../../service/auth_service.dart';
+import '../../../util/password.dart';
 
 class ChangePasswordController extends GetxController {
   final TextEditingController currentPasswordController =
@@ -33,72 +34,78 @@ class ChangePasswordController extends GetxController {
     errorTextCurrentPassword.value = null;
     errorTextNewPassword.value = null;
     errorTextConfirmPassword.value = null;
-    if (validPassword.value) {
-      final AuthResponse response = await _authService.changePassword(
-        currentPassword: currentPasswordController.text,
-        newPassword: newPasswordController.text,
-        confirmNewPassword: confirmPasswordController.text,
-      );
+    if (determinePasswordStrength(newPasswordController.value.text) >= 3) {
+      if (validPassword.value) {
+        final AuthResponse response = await _authService.changePassword(
+          currentPassword: currentPasswordController.text,
+          newPassword: newPasswordController.text,
+          confirmNewPassword: confirmPasswordController.text,
+        );
 
-      if (response.success) {
-        Get.back();
-      } else {
-        final Map<String, dynamic> message =
-            response.result['error'] as Map<String, dynamic>;
-        if (message['old_password'] != null) {
-          final List<String> errorList =
-              (message['old_password'] as List<dynamic>)
-                  .map((dynamic item) => item.toString())
-                  .toList();
-          bool firstError = true;
-          for (final String error in errorList) {
-            if (firstError) {
-              firstError = false;
-              errorTextCurrentPassword.value = error;
-            } else {
-              errorTextCurrentPassword.value =
-                  '${errorTextCurrentPassword.value!}\n$error';
+        if (response.success) {
+          Get.back();
+        } else {
+          final Map<String, dynamic> message =
+              response.result['error'] as Map<String, dynamic>;
+          if (message['old_password'] != null) {
+            final List<String> errorList =
+                (message['old_password'] as List<dynamic>)
+                    .map((dynamic item) => item.toString())
+                    .toList();
+            bool firstError = true;
+            for (final String error in errorList) {
+              if (firstError) {
+                firstError = false;
+                errorTextCurrentPassword.value = error;
+              } else {
+                errorTextCurrentPassword.value =
+                    '${errorTextCurrentPassword.value!}\n$error';
+              }
             }
           }
-        }
-        if (message['new_password1'] != null) {
-          final List<String> errorList =
-              (message['new_password1'] as List<dynamic>)
-                  .map((dynamic item) => item.toString())
-                  .toList();
-          bool firstError = true;
-          for (final String error in errorList) {
-            if (firstError) {
-              firstError = false;
-              errorTextNewPassword.value = error;
-            } else {
-              errorTextNewPassword.value =
-                  '${errorTextNewPassword.value!}\n$error';
+          if (message['new_password1'] != null) {
+            final List<String> errorList =
+                (message['new_password1'] as List<dynamic>)
+                    .map((dynamic item) => item.toString())
+                    .toList();
+            bool firstError = true;
+            for (final String error in errorList) {
+              if (firstError) {
+                firstError = false;
+                errorTextNewPassword.value = error;
+              } else {
+                errorTextNewPassword.value =
+                    '${errorTextNewPassword.value!}\n$error';
+              }
             }
           }
-        }
-        if (message['new_password2'] != null) {
-          final List<String> errorList =
-              (message['new_password2'] as List<dynamic>)
-                  .map((dynamic item) => item.toString())
-                  .toList();
-          bool firstError = true;
-          for (final String error in errorList) {
-            if (firstError) {
-              firstError = false;
-              errorTextConfirmPassword.value = error;
-            } else {
-              errorTextConfirmPassword.value =
-                  '${errorTextConfirmPassword.value!}\n$error';
+          if (message['new_password2'] != null) {
+            final List<String> errorList =
+                (message['new_password2'] as List<dynamic>)
+                    .map((dynamic item) => item.toString())
+                    .toList();
+            bool firstError = true;
+            for (final String error in errorList) {
+              if (firstError) {
+                firstError = false;
+                errorTextConfirmPassword.value = error;
+              } else {
+                errorTextConfirmPassword.value =
+                    '${errorTextConfirmPassword.value!}\n$error';
+              }
             }
           }
-        }
-        if (errorTextNewPassword.value == null &&
-            errorTextCurrentPassword.value == null &&
-            errorTextConfirmPassword.value == null) {
-          errorTextConfirmPassword.value = 'An error occurred';
+          if (errorTextNewPassword.value == null &&
+              errorTextCurrentPassword.value == null &&
+              errorTextConfirmPassword.value == null) {
+            errorTextConfirmPassword.value = 'An error occurred';
+          }
         }
       }
+    } else {
+      errorTextConfirmPassword.value =
+          'Password too weak! Your password should contain: a minimum of 8 characters at least 1 lower case character, at least 1 upper case character and at least 1 special character.'
+              .tr;
     }
   }
 }
