@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../pages/home/controllers/beneficary_home_page_controller.dart';
+import '../../pages/root/beneficiary_root_page.dart';
+import '../../pages/root/controllers/beneficiary_root_controller.dart';
 import '../../service/theme_service.dart';
+import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -14,6 +20,7 @@ class DraftPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
+    final UserStateService userStateService = Get.find<UserStateService>();
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -39,8 +46,17 @@ class DraftPopup extends StatelessWidget {
             ),
             Gap(getRelativeHeight(10)),
             InkWell(
-              //todo: change this later
-              onTap: Get.back,
+              onTap: () async {
+                await userStateService.fetchUserInfo();
+                await userStateService.fetchBeneficiaryInfo();
+                await Get.find<BeneficiaryHomePageController>().onRefresh();
+                Get.find<BeneficiaryRootController>().changeTabIndex(0);
+                unawaited(Get.off<void>(() => const BeneficiaryRootPage()));
+                // ignore: use_if_null_to_convert_nulls_to_bools
+                if (Get.isDialogOpen == true) {
+                  Get.back();
+                }
+              },
               child: Container(
                 alignment: Alignment.center,
                 width: double.infinity,

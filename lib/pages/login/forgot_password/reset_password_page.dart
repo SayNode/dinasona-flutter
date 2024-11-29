@@ -113,9 +113,7 @@ class ResetPasswordPage extends GetView<ForgotPasswordController> {
                         ? () => Get.find<UserStateService>().user.value.isDonor
                             ? Get.to<void>(const SignupPage())
                             : Get.to<void>(
-                                const SignupPage(
-                                  isBeneficiary: true,
-                                ),
+                                const SignupPage(),
                               )
                         : onTap,
                   ),

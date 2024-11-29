@@ -7,6 +7,7 @@ import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
 import '../../../service/logger_service.dart';
 import '../../../util/util.dart';
+import '../../help_payment_page/help_payment_page.dart';
 
 class ReceivePaymentController extends GetxController {
   final LoggerService loggerService = Get.find<LoggerService>();
@@ -91,5 +92,9 @@ class ReceivePaymentController extends GetxController {
 
       _isDebouncing = false;
     });
+  }
+
+  void helpPage() {
+    Get.to<void>(HelpPaymentPage.new);
   }
 }

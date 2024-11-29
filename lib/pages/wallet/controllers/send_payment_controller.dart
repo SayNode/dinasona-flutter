@@ -7,6 +7,7 @@ import 'package:flutter_breez_liquid/flutter_breez_liquid.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../model/need.dart';
 import '../../../service/api_service.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
@@ -60,52 +61,64 @@ class SendPaymentController extends GetxController {
       sendPaymentTransactionFee.value = tmpTransactionfee;
 
       // SayNode fee calculation
-      final double saynodeVariableFeeInUserCurrency =
-          await currencyConversionService.convertBitcoinToUserCurrency(
-        double.parse(invoiceAmountBTC.value) * 0.01,
-      );
+      if (!Constants.devMode) {
+        final double saynodeVariableFeeInUserCurrency =
+            await currencyConversionService.convertBitcoinToUserCurrency(
+          double.parse(invoiceAmountBTC.value) * 0.01,
+        );
 
-      final double saynodeVariableFeeInCHF =
-          (await currencyConversionService.fetchFiatCHFRate()) *
-              saynodeVariableFeeInUserCurrency;
+        final double saynodeVariableFeeInCHF =
+            (await currencyConversionService.fetchFiatCHFRate()) *
+                saynodeVariableFeeInUserCurrency;
 
-      final double breezMinimumTransactionAmountInCHF =
-          (await currencyConversionService.fetchFiatCHFRate()) *
-              (await currencyConversionService
-                  .convertBitcoinToUserCurrency(0.00001));
+        final double breezMinimumTransactionAmountInCHF =
+            (await currencyConversionService.fetchFiatCHFRate()) *
+                (await currencyConversionService
+                    .convertBitcoinToUserCurrency(0.00001));
 
-      if (saynodeVariableFeeInCHF >= 0.5 &&
-          saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
-        sendPaymentSayNodeFee.value =
-            ((double.parse(invoiceAmountBTC.value) * 100000000) * 0.01).toInt();
-      } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
-        sendPaymentSayNodeFee.value = 1000;
-      } else {
-        sendPaymentSayNodeFee.value =
-            ((await currencyConversionService.convertUserCurrencyToBitcoin(
-                      0.5 /
-                          (await currencyConversionService.fetchFiatCHFRate()),
-                    )) *
-                    100000000)
-                .toInt();
+        if (saynodeVariableFeeInCHF >= 0.5 &&
+            saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
+          sendPaymentSayNodeFee.value =
+              ((double.parse(invoiceAmountBTC.value) * 100000000) * 0.01)
+                  .toInt();
+        } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
+          sendPaymentSayNodeFee.value = 1000;
+        } else {
+          sendPaymentSayNodeFee.value = ((await currencyConversionService
+                      .convertUserCurrencyToBitcoin(
+                    0.5 / (await currencyConversionService.fetchFiatCHFRate()),
+                  )) *
+                  100000000)
+              .toInt();
+        }
+
+        // Prepare SayNode fee transaction
+        final String sayNodeFeeInvoice = await getSayNodeFeeInvoice(
+          sendPaymentSayNodeFee.value.toDouble(),
+          // Need id is static for now - might change this in the future to create payment statistics
+          999,
+        );
+        preparedSayNodeTransaction =
+            await breezService.prepareSendingTransaction(sayNodeFeeInvoice);
       }
 
-      // Prepare SayNode fee transaction
-      final String sayNodeFeeInvoice = await getSayNodeFeeInvoice(
-        sendPaymentSayNodeFee.value.toDouble(),
-      );
-      preparedSayNodeTransaction =
-          await breezService.prepareSendingTransaction(sayNodeFeeInvoice);
-
       // Transaction fees are the sum of the Main transaction fee and the SayNode transaction fee
-      sendPaymentTransactionFee.value =
-          tmpTransactionfee + preparedSayNodeTransaction.feesSat.toInt();
+      if (!Constants.devMode) {
+        sendPaymentTransactionFee.value =
+            tmpTransactionfee + preparedSayNodeTransaction.feesSat.toInt();
+      } else {
+        sendPaymentTransactionFee.value = tmpTransactionfee;
+      }
     } catch (e) {
       // Invalid invoice provided
       loggerService.log('Error getting invoice: $e');
       if (e.toString().contains('Invoice has expired')) {
         sendBTCPaymentError.value =
             'Invoice has expired or has already been paid'.tr;
+      } else if (e.toString().contains('selfTransferNotSupported')) {
+        sendBTCPaymentError.value = 'Self transfer is not supported'.tr;
+      } else if (e.toString().contains('insufficientFunds')) {
+        sendBTCPaymentError.value = 'Insufficient balance'.tr;
       } else {
         sendBTCPaymentError.value = 'Invoice is invalid'.tr;
       }
@@ -163,9 +176,9 @@ class SendPaymentController extends GetxController {
     }
   }
 
-  Future<String> getSayNodeFeeInvoice(double feeInSatoshis) async {
+  Future<String> getSayNodeFeeInvoice(double feeInSatoshis, int needId) async {
     final String url =
-        Uri.https(Constants.apiDomain, '/donation/create-invoice/').toString();
+        Uri.https(Constants.apiDomain, '/need/add_invoice/').toString();
     try {
       final http.Response response = await http.post(
         Uri.parse(url),
@@ -174,8 +187,9 @@ class SendPaymentController extends GetxController {
               'Bearer ${apiService.authenticationToken}',
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, double>{
+        body: jsonEncode(<String, dynamic>{
           'value': feeInSatoshis,
+          'description': 'SayNode fee invoice ::$needId',
         }),
       );
       if (response.statusCode == 200) {
@@ -221,57 +235,110 @@ class SendPaymentController extends GetxController {
     }
   }
 
-  Future<void> sendPaymentWithFee() async {
-    if (Get.context != null) {
-      showLoadingDialog(Get.context!);
-    }
+  Future<void> sendPaymentWithFee({Need? needForDonationObject}) async {
+    bool canStartPayment = false;
 
-    mainTransactionWentThrough.value = false;
-    final dynamic mainTransactionPaymentResponse =
-        await sendBitcoin(preparedSendResponse: preparedMainTransation);
+    // Create a donation object for the backend
+    if (needForDonationObject != null) {
+      try {
+        final http.Response createDonationResponse =
+            await createDonationObject(needForDonationObject);
 
-    if (mainTransactionPaymentResponse is SendPaymentResponse) {
-      if (mainTransactionPaymentResponse.payment.status ==
-              PaymentState.failed ||
-          mainTransactionPaymentResponse.payment.status ==
-              PaymentState.timedOut) {
-        sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
-
-        if (Get.context != null) {
-          hideLoadingDialog(Get.context!);
+        if (createDonationResponse.statusCode != 201) {
+          // ignore: avoid_dynamic_calls
+          if (jsonDecode(createDonationResponse.body)['message'] ==
+              'Donation already exists for this need') {
+            await PopupManager.donationErrorPopup(
+              'Donation already exists for this need'.tr,
+            );
+            canStartPayment = false;
+          } else {
+            await PopupManager.donationErrorPopup(
+              'Donation could not be created. Please try again later.'.tr,
+            );
+            canStartPayment = false;
+          }
+        } else {
+          canStartPayment = true;
         }
-
-        return;
+      } catch (e) {
+        await PopupManager.donationErrorPopup(
+          'Donation could not be created. Please try again later.'.tr,
+        );
+        canStartPayment = false;
       }
     } else {
-      sendBTCPaymentError.value = mainTransactionPaymentResponse.toString();
-
-      if (Get.context != null) {
-        hideLoadingDialog(Get.context!);
-      }
-
-      return;
+      canStartPayment = true;
     }
 
-    // Currently can't do two transactions simultaneously
-    // Therefore we wait for the main transaction
-    await waitForTransactionCompletion();
+    if (canStartPayment) {
+      if (Get.context != null) {
+        showLoadingDialog(Get.context!);
+      }
 
-    final dynamic sayNodeFeeTransactionPaymentResponse =
-        await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
+      // Pay the beneficiary invoice
+      mainTransactionWentThrough.value = false;
+      final dynamic mainTransactionPaymentResponse =
+          await sendBitcoin(preparedSendResponse: preparedMainTransation);
 
-    if (sayNodeFeeTransactionPaymentResponse is SendPaymentResponse) {
-      if (sayNodeFeeTransactionPaymentResponse.payment.status ==
-              PaymentState.failed ||
-          sayNodeFeeTransactionPaymentResponse.payment.status ==
-              PaymentState.timedOut) {
-        sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+      if (mainTransactionPaymentResponse is SendPaymentResponse) {
+        if (mainTransactionPaymentResponse.payment.status ==
+                PaymentState.failed ||
+            mainTransactionPaymentResponse.payment.status ==
+                PaymentState.timedOut) {
+          sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+
+          if (Get.context != null) {
+            hideLoadingDialog(Get.context!);
+          }
+
+          return;
+        }
+      } else {
+        sendBTCPaymentError.value = mainTransactionPaymentResponse.toString();
 
         if (Get.context != null) {
           hideLoadingDialog(Get.context!);
         }
 
         return;
+      }
+
+      // Currently can't do two transactions simultaneously
+      // Therefore we wait for the main transaction
+      await waitForTransactionCompletion();
+
+      if (!Constants.devMode) {
+        // Pay the SayNode fee
+        final dynamic sayNodeFeeTransactionPaymentResponse =
+            await sendBitcoin(preparedSendResponse: preparedSayNodeTransaction);
+
+        if (sayNodeFeeTransactionPaymentResponse is SendPaymentResponse) {
+          if (sayNodeFeeTransactionPaymentResponse.payment.status ==
+                  PaymentState.failed ||
+              sayNodeFeeTransactionPaymentResponse.payment.status ==
+                  PaymentState.timedOut) {
+            sendBTCPaymentError.value = 'Payment failed. Please try again.'.tr;
+
+            if (Get.context != null) {
+              hideLoadingDialog(Get.context!);
+            }
+
+            return;
+          } else {
+            Future<void>.delayed(
+              const Duration(milliseconds: 1000),
+              PopupManager.openContributionPopup,
+            );
+            await Get.find<WalletService>().getTransactions();
+            await Get.find<WalletService>().getBalanceInUserCurrency();
+
+            Get.back<void>();
+          }
+        } else {
+          sendBTCPaymentError.value =
+              sayNodeFeeTransactionPaymentResponse.toString();
+        }
       } else {
         Future<void>.delayed(
           const Duration(milliseconds: 1000),
@@ -282,13 +349,10 @@ class SendPaymentController extends GetxController {
 
         Get.back<void>();
       }
-    } else {
-      sendBTCPaymentError.value =
-          sayNodeFeeTransactionPaymentResponse.toString();
-    }
 
-    if (Get.context != null) {
-      hideLoadingDialog(Get.context!);
+      if (Get.context != null) {
+        hideLoadingDialog(Get.context!);
+      }
     }
   }
 
@@ -307,6 +371,44 @@ class SendPaymentController extends GetxController {
       sendBTCPaymentError.value = 'Insufficient outgoing balance'.tr;
       loggerService.log('Error sending payment: $e');
       return 'Invoice already paid or expired';
+    }
+  }
+
+  Future<http.Response> createDonationObject(Need need) async {
+    final String url =
+        Uri.https(Constants.apiDomain, '/donation/create/').toString();
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              'Bearer ${apiService.authenticationToken}',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(<String, Object>{
+          'need': need.id.toString(),
+          'amount': need.amount, // This can be int or double
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        loggerService.log(
+          'Donation object for need with id ${need.id} created successfully',
+        );
+      } else {
+        loggerService.log(
+          'Failed to create donation object for need with id ${need.id}. Got status code: ${response.statusCode}, ${response.body}',
+        );
+      }
+      return response;
+    } catch (e) {
+      loggerService.log(
+        'Error creating donation object for need with id ${need.id}: $e',
+      );
+      throw Exception(
+        'Error creating donation object for need with id ${need.id}: $e',
+      );
     }
   }
 }

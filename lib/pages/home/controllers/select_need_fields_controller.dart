@@ -19,15 +19,20 @@ class SelectAreasOfInterestController extends GetxController {
     selectedAreasOfInterest.addAll(initialSelectedDonationFields);
     amountOfneeds = await needService.getAmoutOfNeeds();
     loading.value = false;
+    count.value = selectedAreasOfInterest.fold<int>(
+      0,
+      (int previousValue, AreaOfInterest element) =>
+          previousValue + (amountOfneeds[element.title] ?? 0),
+    );
     super.onInit();
   }
 
   void seeNeeds(AreaOfInterest field) {
-    selectedAreasOfInterest.contains(field)
-        ? selectedAreasOfInterest.remove(field)
-        : selectedAreasOfInterest.add(field);
-    count.value = 0;
-    for (final AreaOfInterest field in selectedAreasOfInterest) {
+    if (selectedAreasOfInterest.contains(field)) {
+      selectedAreasOfInterest.remove(field);
+      count.value -= amountOfneeds[field.title] ?? 0;
+    } else {
+      selectedAreasOfInterest.add(field);
       count.value += amountOfneeds[field.title] ?? 0;
     }
   }

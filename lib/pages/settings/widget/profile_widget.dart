@@ -40,9 +40,9 @@ class ProfileWidget extends StatelessWidget {
             ),
             Obx(
               () => Text(
-                userStateService.user.value.country.isEmpty
+                userStateService.user.value.beneficiary.country.isEmpty
                     ? 'Unknown'.tr
-                    : userStateService.user.value.country,
+                    : userStateService.user.value.beneficiary.country,
                 style: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
             ),

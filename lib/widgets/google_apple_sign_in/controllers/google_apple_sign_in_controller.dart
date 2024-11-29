@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
-import '../../../pages/error/error_page.dart';
+import '../../../pages/choose_path_page.dart';
+import '../../../pages/login/controller/login_controller.dart';
 import '../../../pages/root/beneficiary_root_page.dart';
 import '../../../pages/root/donor_root_page.dart';
+import '../../../pages/sign_up/controller/sign_up_controller.dart';
 import '../../../service/auth_service.dart';
 import '../../../service/user_state_service.dart';
 
@@ -22,25 +24,26 @@ class GoogleAppleSignInController {
   ) async {
     loadingGoogle.value = true;
     error.value = '';
+    final UserStateService userStateService = Get.find<UserStateService>();
     final AuthResponse loginResult = await authService.googleSignIn();
     if (loginResult.success) {
-      await Get.find<UserStateService>().init();
-      if (isRegistration) {
-        await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
-          'is_donor': !isBeneficiary,
-        });
+      await userStateService.init();
+      if (loginResult.result['is_signup'] as bool) {
+        unawaited(Get.to(() => const ChoosePathPage()));
+      } else {
+        if (userStateService.user.value.isDonor) {
+          unawaited(Get.to(() => const DonorRootPage()));
+        } else {
+          unawaited(Get.to(() => const BeneficiaryRootPage()));
+        }
       }
-
-      unawaited(
-        Get.to(
-          () => Get.find<UserStateService>().user.value.isDonor
-              ? const DonorRootPage()
-              : const BeneficiaryRootPage(),
-        ),
-      );
     } else {
-      //TODO: Handle error
-      unawaited(Get.to(() => const ErrorPage(error: 'Google sign in failed')));
+      if (loginResult.success == false) {
+        Get.find<SignupController>().error.value = loginResult.message;
+        Get.find<LoginController>().error.value = loginResult.message;
+        loadingGoogle.value = false;
+        return loginResult.message;
+      }
     }
     loadingGoogle.value = false;
     return error.value;
@@ -65,6 +68,11 @@ class GoogleAppleSignInController {
         });
       }
 
+      if (isBeneficiary) {
+        // Change this to a dynamic country code
+        await Get.find<UserStateService>().createBeneficiaryInstance();
+      }
+
       unawaited(
         Get.to(
           () => Get.find<UserStateService>().user.value.isDonor
@@ -73,10 +81,12 @@ class GoogleAppleSignInController {
         ),
       );
     } else {
-      //TODO: Handle error
-      unawaited(
-        Get.to(() => const ErrorPage(error: 'Apple sign in failed')),
-      );
+      if (loginResult.success == false) {
+        Get.find<SignupController>().error.value = loginResult.message;
+        Get.find<LoginController>().error.value = loginResult.message;
+        loadingApple.value = false;
+        return loginResult.message;
+      }
     }
     loadingApple.value = false;
     return error.value;

@@ -1,14 +1,12 @@
-import 'dart:convert';
-import 'dart:io';
+import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../model/need.dart';
 import '../../../service/api_service.dart';
 import '../../../service/logger_service.dart';
-import '../../../util/constants.dart';
-import '../../../util/popup_manager.dart';
+import '../../../service/wallet_service.dart';
+import '../../wallet/send_bitcoin_page.dart';
 
 class NeedPopupController extends GetxController {
   NeedPopupController({required this.need});
@@ -16,66 +14,24 @@ class NeedPopupController extends GetxController {
   final APIService apiService = Get.find<APIService>();
   final LoggerService logger = Get.find<LoggerService>();
 
-  Future<void> donate(Need need) async {
-    try {
-      final http.Response createDonationResponse =
-          await createDonationObject(need);
-
-      if (createDonationResponse.statusCode != 201) {
-        // ignore: avoid_dynamic_calls
-        if (jsonDecode(createDonationResponse.body)['message'] ==
-            'Donation already exists for this need') {
-          await PopupManager.donationErrorPopup(
-            'Donation already exists for this need'.tr,
-          );
-        } else {
-          await PopupManager.donationErrorPopup(
-            'Donation could not be created. Please try again later.'.tr,
-          );
-        }
-      }
-      // ignore: empty_catches
-    } catch (e) {
-      await PopupManager.donationErrorPopup(
-        'Donation could not be created. Please try again later.'.tr,
-      );
+  bool isLocket() {
+    if (need.status == NeedStatus.past ||
+        Get.find<WalletService>().balanceInUserCurrency < need.amount ||
+        Get.find<WalletService>().isWalletConnected.value == false) {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  Future<http.Response> createDonationObject(Need need) async {
-    final String url =
-        Uri.https(Constants.apiDomain, '/donation/create/').toString();
-
-    try {
-      final http.Response response = await http.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              'Bearer ${apiService.authenticationToken}',
-        },
-        body: <String, dynamic>{
-          'need': need.id.toString(),
-          'amount': need.amount.toString(),
-        },
-      );
-
-      if (response.statusCode == 201) {
-        logger.log(
-          'Donation object for need with id ${need.id} created successfully',
-        );
-      } else {
-        logger.log(
-          'Failed to create donation object for need with id ${need.id}. Got status code: ${response.statusCode}, ${response.body}',
-        );
-      }
-      return response;
-    } catch (e) {
-      logger.log(
-        'Error creating donation object for need with id ${need.id}: $e',
-      );
-      throw Exception(
-        'Error creating donation object for need with id ${need.id}: $e',
-      );
-    }
+  Future<void> donate(Need need) async {
+    unawaited(
+      Get.off<void>(
+        () => SendBitcoinPage(
+          bolt11FromDonation: need.bolt11invoice,
+          need: need,
+        ),
+      ),
+    );
   }
 }

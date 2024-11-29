@@ -21,6 +21,10 @@ class SharedStorageService extends GetxService
     _prefs = await SharedPreferences.getInstance();
   }
 
+  Future<bool> containsKey(String key) async {
+    return _prefs.containsKey(key);
+  }
+
   @override
   Future<void> writeString(String key, String value) async {
     await _prefs.setString(key, value);

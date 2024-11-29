@@ -10,7 +10,7 @@ import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
 import '../../beneficiary/beneficiary_page.dart';
-import '../../create_new_need/create_new_need.dart';
+import '../../edit_need/edit_need_page.dart';
 import '../controllers/my_need_popup_controller.dart';
 import 'need_field_chip.dart';
 
@@ -221,7 +221,9 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                   DinasonaButton(
                     text: 'Edit your need'.tr,
                     onPressed: () => Get.to<void>(
-                      const CreateNewNeed(),
+                      EditNeedPage(
+                        need: need,
+                      ),
                     ),
                   ),
                   Gap(getRelativeHeight(20)),
@@ -246,7 +248,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Published 4 days ago',
+                  'Published ${controller.publishedDate()}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
@@ -261,7 +263,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Donated 12 Fer 2024',
+                  'Donated ${controller.donatedDate()}',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(

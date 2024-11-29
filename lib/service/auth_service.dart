@@ -7,7 +7,6 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -35,6 +34,7 @@ class AuthService extends AuthServiceBase {
       // Try to login silently
       final GoogleSignInAccount? result =
           await _googleSignIn.signInSilently() ?? await _googleSignIn.signIn();
+
       if (result != null) {
         final GoogleSignInAuthentication googleKey =
             await result.authentication;
@@ -78,16 +78,18 @@ class AuthService extends AuthServiceBase {
           throw Exception('AuthService - ${authResult.message}');
         }
       }
+
       return AuthResponse(
         result: <String, dynamic>{},
         accessToken: '',
         message:
-            "Google auth isn't working at the moment. Please try again later.",
-        status: 0,
+            "Cancelled Google Sign In. If you didn't cancel, please try again.",
+        status: -1,
         success: false,
       );
     } catch (e) {
       // Other error occurred
+
       throw Exception('Catched an error while logging in with Google: $e');
     }
   }
@@ -98,29 +100,24 @@ class AuthService extends AuthServiceBase {
     String? identityToken,
   }) async {
     try {
-      if (authorizationCode != null &&
-          identityToken != null &&
-          authorizationCode.isNotEmpty &&
-          identityToken.isNotEmpty) {
-        final AuthorizationCredentialAppleID credential =
-            await SignInWithApple.getAppleIDCredential(
-          scopes: <AppleIDAuthorizationScopes>[
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-          webAuthenticationOptions: WebAuthenticationOptions(
-            clientId: '', // TODO
-            redirectUri:
-                // For web your redirect URI needs to be the host of the "current page",
-                // while for Android you will be using the API server that redirects back into your app via a deep link
-                kIsWeb
-                    ? Uri.parse('') // TODO
-                    : Uri.parse(''), // TODO
-          ),
-        );
-        authorizationCode = credential.authorizationCode;
-        identityToken = credential.identityToken;
-      }
+      final AuthorizationCredentialAppleID credential =
+          await SignInWithApple.getAppleIDCredential(
+        scopes: <AppleIDAuthorizationScopes>[
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: '', // TODO
+          redirectUri:
+              // For web your redirect URI needs to be the host of the "current page",
+              // while for Android you will be using the API server that redirects back into your app via a deep link
+              kIsWeb
+                  ? Uri.parse('') // TODO
+                  : Uri.parse(''), // TODO
+        ),
+      );
+      authorizationCode = credential.authorizationCode;
+      identityToken = credential.identityToken;
 
       // This is the endpoint that will convert an authorization code obtained
       // via Sign in with Apple into a session in your system
@@ -156,21 +153,17 @@ class AuthService extends AuthServiceBase {
         return authResult;
       }
     } //handles the error if user cancels apple signin and stops app crashing
-    on PlatformException catch (e) {
-      if (e.code == 'cancelled') {
+    on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code == AuthorizationErrorCode.canceled) {
         // User canceled the sign in
         return AuthResponse(
           result: <String, dynamic>{},
           accessToken: '',
           message: 'Sign in cancelled',
-          status: 0,
+          status: -1,
           success: false,
         );
-      } else {
-        // Other authorization error occurred
-        throw Exception('Authorization error: $e');
       }
-    } on SignInWithAppleAuthorizationException catch (e) {
       // Other error occurred
       return AuthResponse(
         result: <String, dynamic>{},

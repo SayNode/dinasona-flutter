@@ -85,11 +85,14 @@ class CustomScaffold extends StatelessWidget {
                 child: body,
               ),
             ),
-            Container(
-              color: theme.moonstone,
-              height: MediaQuery.of(Get.context!).viewPadding.bottom,
-              width: double.infinity,
-            ),
+            if (bottomNavigationBar == null)
+              Container(
+                color: theme.moonstone,
+                height: MediaQuery.of(Get.context!).viewPadding.bottom,
+                width: double.infinity,
+              )
+            else
+              Container(),
           ],
         ),
         backgroundColor: theme.moonstone,

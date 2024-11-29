@@ -60,42 +60,43 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
           ),
         ),
         SizedBox(height: getRelativeHeight(10)),
-        ElevatedButton(
-          onPressed: () =>
-              controller.appleSignInPressed(isBeneficiary, isRegistration),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: theme.moonstone,
-            padding: EdgeInsets.all(getRelativeWidth(15)),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(getRelativeHeight(20)),
-              side: BorderSide(color: theme.shadowed),
+        if (GetPlatform.isIOS)
+          ElevatedButton(
+            onPressed: () =>
+                controller.appleSignInPressed(isBeneficiary, isRegistration),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: theme.moonstone,
+              padding: EdgeInsets.all(getRelativeWidth(15)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(getRelativeHeight(20)),
+                side: BorderSide(color: theme.shadowed),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset('assets/images/logos/apple_logo.svg'),
+                SizedBox(width: getRelativeWidth(20)),
+                Text(
+                  'Continue with Apple'.tr,
+                  style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                ),
+                Obx(
+                  () => controller.loadingApple.value
+                      ? Container(
+                          margin: EdgeInsets.only(left: getRelativeWidth(20)),
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: theme.graphite,
+                          ),
+                        )
+                      : Container(),
+                ),
+              ],
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset('assets/images/logos/apple_logo.svg'),
-              SizedBox(width: getRelativeWidth(20)),
-              Text(
-                'Continue with Apple'.tr,
-                style: CustomTypography.fromColor(theme.shadowed).k16Reg,
-              ),
-              Obx(
-                () => controller.loadingApple.value
-                    ? Container(
-                        margin: EdgeInsets.only(left: getRelativeWidth(20)),
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: theme.graphite,
-                        ),
-                      )
-                    : Container(),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }

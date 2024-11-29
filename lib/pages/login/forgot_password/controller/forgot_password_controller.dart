@@ -57,7 +57,7 @@ class ForgotPasswordController extends GetxController {
     );
 
     final AuthResponse authResponse =
-        await authService.resetPassword(emailController.text);
+        await authService.resetPassword(emailController.text.toLowerCase());
     emailIsSent.value = authResponse.success;
 
     if (emailIsSent.value) {
@@ -77,7 +77,7 @@ class ForgotPasswordController extends GetxController {
     codeIsInValid.value = !(await authService.verifyCode(recoveryCode)).success;
 
     if (!codeIsInValid.value) {
-      unawaited(Get.to<void>(const EnterNewPasswordPage()));
+      unawaited(Get.offAll<void>(() => const EnterNewPasswordPage()));
     }
   }
 

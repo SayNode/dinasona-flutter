@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
 import '../../../service/need_service.dart';
+import '../../../service/user_state_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
+import '../../create_new_need/wallet_instructions.dart';
 
 enum NeedsTab { allNeeds, ongoing, past, draft }
 
@@ -14,6 +19,9 @@ class BeneficiaryHomePageController extends GetxController {
   RxList<Need> draftNeeds = <Need>[].obs;
   RxList<Need> pastNeeds = <Need>[].obs;
   Rx<NeedsTab> currentTab = NeedsTab.allNeeds.obs;
+  UserStateService userStateService = Get.find<UserStateService>();
+  final RxString userNameForGreeting =
+      Get.find<UserStateService>().user.value.name.split(' ')[0].obs;
 
   @override
   Future<void> onInit() async {
@@ -21,9 +29,26 @@ class BeneficiaryHomePageController extends GetxController {
 
     //Get.find<UserStateService>().fetchUserInfo();
     //print(Get.find<UserStateService>().user.value);
-    needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+    try {
+      needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+    } catch (_) {
+      // new beneficiaries have no needs and backend sends empty list - TODO handle this properly
+    }
     filterList();
     super.onInit();
+  }
+
+  Future<void> onRefresh() async {
+    try {
+      needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+      await userStateService.fetchUserInfo();
+      userNameForGreeting.value =
+          userStateService.user.value.name.split(' ')[0];
+      filterList();
+      update();
+    } catch (_) {
+      // new beneficiaries have no needs and backend sends empty list - TODO handle this properly
+    }
   }
 
   void onTabChange(int value) {
@@ -68,7 +93,11 @@ class BeneficiaryHomePageController extends GetxController {
   }
 
   void openStoryPopup() {
-    PopupManager.openStoryPopup();
+    if (Get.find<WalletService>().isWalletConnected.value) {
+      unawaited(PopupManager.openStoryPopup());
+    } else {
+      unawaited(Get.to(InstructionsPage.new));
+    }
   }
 
   void selectTab(NeedsTab tab) {

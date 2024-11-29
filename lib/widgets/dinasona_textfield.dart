@@ -181,7 +181,7 @@ class DinasonaTextField extends StatelessWidget {
           ),
           if (errorText != null)
             SizedBox(
-              height: getRelativeHeight(16),
+              height: getRelativeHeight(60),
               child: Text(
                 errorText!,
                 style: TextStyle(

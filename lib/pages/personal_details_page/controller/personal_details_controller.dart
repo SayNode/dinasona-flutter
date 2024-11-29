@@ -1,13 +1,13 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
-import '../../create_new_need/create_new_need.dart';
+import '../../root/controllers/beneficiary_root_controller.dart';
 
 enum Gender {
   male('Male', Icons.male),
@@ -35,6 +35,30 @@ class PersonalDetailsController extends GetxController {
     _selectedGender.value = value;
   }
 
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+  BeneficiaryRootController beneficiaryRootController =
+      Get.find<BeneficiaryRootController>();
+  final UserStateService userStateService = Get.find<UserStateService>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    fullNameController.text = userState.user.value.name;
+    emailController.text = userState.user.value.email;
+    if (userState.user.value.beneficiary.dateOfBirth != null) {
+      dateOfBirthController.value = dateFormat.format(
+        userStateService.user.value.beneficiary.dateOfBirth!,
+      );
+    }
+    if (userState.user.value.beneficiary.location.isNotEmpty) {
+      locationController.text = userState.user.value.beneficiary.location;
+    }
+    if (userState.user.value.beneficiary.bio.isNotEmpty) {
+      descriptionTextController.text = userState.user.value.beneficiary.bio;
+    }
+  }
+
   Future<void> selectDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
       context: context,
@@ -54,8 +78,8 @@ class PersonalDetailsController extends GetxController {
       },
     );
     if (selectedDate != null) {
-      final DateTime dateOfBirth = selectedDate.toLocal();
-      dateOfBirthController.value = dateOfBirth.toString().split(' ')[0];
+      final String dateOfBirth = DateFormat('yyyy-MM-dd').format(selectedDate);
+      dateOfBirthController.value = dateOfBirth;
     }
   }
 
@@ -65,20 +89,39 @@ class PersonalDetailsController extends GetxController {
 
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
-      await userState.updateAvatar(file: selectedImage.value!);
+      await userState.updateUserAvatar(file: selectedImage.value!);
+
+      if (!userState.user.value.isDonor) {
+        await userState.updateBeneficiaryImage(file: selectedImage.value!);
+      }
     }
   }
 
-  void submit() {
-    // TODO implement submit
-    Get.to<void>(() => const CreateNewNeed());
-    log('Image: ${selectedImage.value?.path}');
-    log('Full Name: ${fullNameController.text}');
-    log('Email: ${emailController.text}');
-    log('Gender: ${_selectedGender.value.text}');
-    log('Date of Birth: ${dateOfBirthController.value}');
-    log('Location: ${locationController.text}');
-    log('Description: ${descriptionTextController.text}');
+  Future<void> submit() async {
+    await userStateService.updateUserInfo(
+      <String, dynamic>{
+        'name': fullNameController.text,
+        // 'email': emailController.text,
+      },
+    );
+    await userStateService.updateBeneficiaryInfo(
+      <String, dynamic>{
+        'name': fullNameController.text,
+        'city': locationController.text,
+        'email': userStateService.user.value.email,
+        'date_of_birth': dateOfBirthController.value,
+        'description': descriptionTextController.text,
+        'gender': _selectedGender.value.text.toLowerCase() == 'male' ? 0 : 1,
+      },
+    );
+
+    Get.back();
+    beneficiaryRootController.changeTabIndex(1);
+  }
+
+  void skip() {
+    Get.back();
+    beneficiaryRootController.changeTabIndex(1);
   }
 
   @override

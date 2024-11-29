@@ -65,10 +65,17 @@ class Need {
     required this.areasOfInterest,
     required this.images,
     required this.status,
+    required this.bolt11invoice,
     required this.id,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Need.fromJson(Map<String, dynamic> json) {
+    final DateTime utcTime =
+        DateTime.parse(json['created_at'] as String? ?? '');
+    final DateTime utcTime2 =
+        DateTime.parse(json['updated_at'] as String? ?? '');
     return Need(
       title: json['title'] as String? ?? '',
       description: json['description'] as String? ?? '',
@@ -91,7 +98,10 @@ class Need {
       status: json['status'] == null
           ? NeedStatus.draft
           : _statusFromString(json['status'] as String),
+      bolt11invoice: json['bolt11Invoice'] as String? ?? '',
       id: json['id'] as int? ?? 0,
+      createdAt: utcTime.toLocal(), // Automatically converts UTC to local time
+      updatedAt: utcTime2.toLocal(), // Automatically converts UTC to local time
     );
   }
 
@@ -115,5 +125,8 @@ class Need {
   final List<AreaOfInterest> areasOfInterest;
   final List<String> images;
   final NeedStatus status;
+  final String bolt11invoice;
   final int id;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 }

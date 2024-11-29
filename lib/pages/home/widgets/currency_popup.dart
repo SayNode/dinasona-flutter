@@ -26,54 +26,54 @@ class CurrencyPopup extends GetView<CurrencyController> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Material(
           color: theme.moonstone,
-          child: Expanded(
-            child: Column(
-              children: <Widget>[
-                DinasonaTextField(
-                  prefix: Icon(
-                    Icons.search,
-                    color: theme.graphite,
-                    size: getRelativeHeight(24),
-                  ),
-                  hintText: 'Type a currency',
-                  controller: controller.searchController,
-                  backgroundColor: theme.silvershine,
-                  borderColor: theme.silvershine,
+          child: Column(
+            children: <Widget>[
+              DinasonaTextField(
+                prefix: Icon(
+                  Icons.search,
+                  color: theme.graphite,
+                  size: getRelativeHeight(24),
                 ),
-                Gap(getRelativeHeight(20)),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Your recent currencies'.tr,
-                      style: CustomTypography.fromColor(
-                        theme.shadowed,
-                      ).k14Reg,
-                    ),
+                hintText: 'Type a currency',
+                controller: controller.searchController,
+                backgroundColor: theme.silvershine,
+                borderColor: theme.silvershine,
+              ),
+              Gap(getRelativeHeight(20)),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Your recent currencies'.tr,
+                    style: CustomTypography.fromColor(
+                      theme.shadowed,
+                    ).k14Reg,
                   ),
                 ),
-                CurrencyTileWidget(
-                  imageUrl: controller.chosenCurrency.value.imageUrl,
-                  code: controller.chosenCurrency.value.code,
-                  name: controller.chosenCurrency.value.name,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'All currencies'.tr,
-                      style: CustomTypography.fromColor(
-                        theme.shadowed,
-                      ).k14Reg,
-                    ),
+              ),
+              CurrencyTileWidget(
+                imageUrl: controller.chosenCurrency.value.imageUrl,
+                code: controller.chosenCurrency.value.code,
+                name: controller.chosenCurrency.value.name,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'All currencies'.tr,
+                    style: CustomTypography.fromColor(
+                      theme.shadowed,
+                    ).k14Reg,
                   ),
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
+              ),
+              SizedBox(
+                height: getRelativeHeight(350),
+                child: ListView.builder(
                   itemCount: controller.currency.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
@@ -95,8 +95,8 @@ class CurrencyPopup extends GetView<CurrencyController> {
                     );
                   },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

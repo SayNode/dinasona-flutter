@@ -20,4 +20,14 @@ class BeneficiarySettingsPageController extends GetxController {
   void deleteAccount() {
     PopupManager.openDeleteAccountPopup();
   }
+
+  Future<void> refreshPage() async {
+    // Fetch the latest beneficiary statistics
+    await _userStateService.fetchBeneficiaryStatistics();
+    // Fetch the latest user information
+    await _userStateService.fetchBeneficiaryInfo();
+    // Update the UI if necessary
+    _userStateService.user.refresh();
+    update();
+  }
 }

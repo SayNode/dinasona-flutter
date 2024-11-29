@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../service/api_service.dart';
 import '../../../service/auth_service.dart';
+import '../../../service/storage/secure_storage_service.dart';
+import '../../../service/storage/shared_storage_service.dart';
+import '../../../service/storage/storage_service.dart';
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
-import '../../choose_path_page.dart';
+import '../../login/donor_and_beneficiary/login_page.dart';
 import 'bullet_point_widget.dart';
 
 class DeleteAccountBottomSheet extends StatelessWidget {
@@ -19,6 +24,10 @@ class DeleteAccountBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.find<ThemeService>().theme;
     final UserStateService userStateService = Get.find<UserStateService>();
+    final APIService apiService = Get.find<APIService>();
+    final AuthService authService = Get.find<AuthService>();
+    final SecureStorageService storageService =
+        Get.find<StorageService>().secure;
     return Container(
       padding: const EdgeInsets.all(16),
 
@@ -116,10 +125,24 @@ class DeleteAccountBottomSheet extends StatelessWidget {
             color: theme.amberglow,
             text: 'Delete my account'.tr,
             onPressed: () async {
-              await Get.find<AuthService>().deleteUser();
+              try {
+                await Get.find<AuthService>().deleteUser();
+              } catch (e) {
+                if (!e.toString().contains('u s e r _ n o t _ f o u n d')) {
+                  throw Exception(e);
+                } else {
+                  apiService.authenticationToken = '';
+                  await storageService.delete('token');
+                  // Disconnect other providers
+                  await authService.disconnectProviders();
+                }
+              }
+
+              await Get.find<WalletService>().deleteUserWallet();
               userStateService.clear();
+              await Get.find<SharedStorageService>().delete('language');
               await Get.offAll<void>(
-                () => const ChosePathPage(),
+                () => const LoginPage(),
                 transition: Transition.upToDown,
               );
             },

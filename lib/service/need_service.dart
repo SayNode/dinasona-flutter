@@ -1,17 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio_import;
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/need.dart';
+import '../pages/home/controllers/beneficary_home_page_controller.dart';
 import '../util/constants.dart';
 import 'api_service.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
 import 'logger_service.dart';
-import 'dart:developer';
+import 'user_state_service.dart';
 
 class NeedService extends GetxService {
   APIService apiService = Get.find<APIService>();
@@ -43,7 +46,7 @@ class NeedService extends GetxService {
     }
   }
 
-  Future<List<Need>> getDonatehistory() async {
+  Future<List<Need>> getDonateHistory() async {
     try {
       final http.Response response = await apiService.get('/donation/donor');
 
@@ -53,9 +56,14 @@ class NeedService extends GetxService {
           jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>,
         );
         Get.find<LoggerService>().log(
-          'NeedService.getDonatehistory() - got ${needList.length} needs',
+          'NeedService.getDonateHistory() - got ${needList.length} needs',
         );
-        return needList.map(Need.fromJson).toList();
+        return needList
+            .map(
+              (Map<String, dynamic> need) =>
+                  Need.fromJson(need['need'] as Map<String, dynamic>),
+            )
+            .toList();
       } else {
         throw Exception(
           'Failed to load donate needs - got status code ${response.statusCode}',
@@ -171,11 +179,22 @@ class NeedService extends GetxService {
     String description,
     String amount,
     String areaOfInterest, {
+    bool isDraft = true,
     List<String> images = const <String>[],
   }) async {
     try {
       Get.find<LoggerService>().log(
         'NeedService.createNewNeed() called...',
+      );
+
+      final int needAmountInSatoshi =
+          ((await Get.find<CurrencyConversionService>()
+                      .convertUserCurrencyToBitcoin(double.parse(amount))) *
+                  100000000)
+              .toInt();
+      final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
+        'Need invoice ::client_invoice',
+        needAmountInSatoshi,
       );
 
       const String url = '/need/create/';
@@ -188,38 +207,18 @@ class NeedService extends GetxService {
           'description': description,
           'amount': amount,
           'area_of_interest': areaOfInterest,
+          'bolt11Invoice': bolt11Invoice,
+          'status': isDraft ? 'draft' : 'published',
         },
       );
       if (response.statusCode == 201) {
         final Map<String, dynamic> need = Map<String, dynamic>.from(
           jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
         );
+
         Get.find<LoggerService>().log(
           'NeedService.createNewNeed() - created new need',
         );
-        try {
-          // Beneficiary comes back as an int ??
-          need['beneficiary'] = null;
-          final Need parsedNeed = Need.fromJson(need);
-          final int needAmountInSatoshi =
-              ((await Get.find<CurrencyConversionService>()
-                          .convertUserCurrencyToBitcoin(double.parse(amount))) *
-                      100000000)
-                  .toInt();
-          final String bolt11Invoice =
-              await Get.find<BreezService>().createInvoice(
-            'Need invoice ::${parsedNeed.id}',
-            needAmountInSatoshi,
-          );
-
-          await updateNeed(parsedNeed.id, <String, dynamic>{
-            'bolt11Invoice': bolt11Invoice,
-          });
-        } catch (e) {
-          throw Exception(
-            'Failed to add bolt11Invoice to new need - got status code ${response.statusCode}',
-          );
-        }
 
         return need;
       } else {
@@ -292,12 +291,17 @@ class NeedService extends GetxService {
       );
 
       final http.Response response = await apiService.delete(
-        '/need/delete/$id',
+        '/need/delete/$id/',
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         Get.find<LoggerService>().log(
           'NeedService.deleteNeed() - deleted need',
         );
+
+        await Get.find<UserStateService>().fetchUserInfo();
+        await Get.find<UserStateService>().fetchBeneficiaryInfo();
+        await Get.find<BeneficiaryHomePageController>().onRefresh();
+        Get.back<void>();
       } else {
         throw Exception(
           'Failed to delete need - got status code ${response.statusCode}',

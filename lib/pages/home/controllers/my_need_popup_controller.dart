@@ -17,4 +17,43 @@ class MyNeedPopupController extends GetxController {
   void deleteNeed(int id) {
     needService.deleteNeed(id);
   }
+
+  String publishedDate() {
+    final DateTime now = DateTime.now();
+    final DateTime createdAt = need.createdAt;
+    final Duration difference = now.difference(createdAt);
+    if (difference.inDays == 0) {
+      return 'Today';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else {
+      return '${difference.inDays} days ago';
+    }
+  }
+
+  String donatedDate() {
+    final String day = need.updatedAt.day.toString();
+    final String month = need.updatedAt.month.toString();
+    final String year = need.updatedAt.year.toString();
+
+    // Determine the day suffix
+    String daySuffix(int day) {
+      if (day >= 11 && day <= 13) {
+        return 'th';
+      }
+      switch (day % 10) {
+        case 1:
+          return 'st';
+        case 2:
+          return 'nd';
+        case 3:
+          return 'rd';
+        default:
+          return 'th';
+      }
+    }
+
+    final String suffix = daySuffix(need.updatedAt.day);
+    return '$day$suffix $month $year';
+  }
 }

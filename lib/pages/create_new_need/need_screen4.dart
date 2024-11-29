@@ -36,6 +36,7 @@ class NeedScreen4 extends GetView<CreateNewNeedController> {
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: TextField(
+                textInputAction: TextInputAction.done,
                 controller: controller.screen4,
                 minLines: 20,
                 maxLines: 20,

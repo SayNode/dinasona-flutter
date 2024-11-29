@@ -57,13 +57,17 @@ class LoginController extends GetxController {
     if (email.text.isEmail) {
       if (password.text.isNotEmpty) {
         final AuthResponse loginResult =
-            await authService.login(email.text, password.text);
+            await authService.login(email.text.toLowerCase(), password.text);
         if (loginResult.success) {
           await Get.find<UserStateService>().init();
+          await Get.find<UserStateService>().fetchUserInfo();
+          if (!Get.find<UserStateService>().user.value.isDonor) {
+            await Get.find<UserStateService>().fetchBeneficiaryInfo();
+          }
           password.clear();
           email.clear();
           unawaited(
-            Get.to<void>(
+            Get.offAll<void>(
               () => Get.find<UserStateService>().user.value.isDonor
                   ? const DonorRootPage()
                   : const BeneficiaryRootPage(),

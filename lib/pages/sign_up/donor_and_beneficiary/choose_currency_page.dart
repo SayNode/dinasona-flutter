@@ -5,8 +5,8 @@ import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../widgets/custom_scaffold.dart';
+import '../../root/beneficiary_root_page.dart';
 import '../controller/sign_up_controller.dart';
-import 'sign_up_page.dart';
 
 class ChooseCurrencyPage extends GetView<SignupController> {
   const ChooseCurrencyPage({
@@ -73,13 +73,10 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(10),
                             onTap: () {
-                              controller.chosenCurrency.value =
-                                  languages[index]['code']!;
+                              // Save selected currency
 
                               Get.to<void>(
-                                () => const SignupPage(
-                                  isBeneficiary: true,
-                                ),
+                                () => const BeneficiaryRootPage(),
                               );
                             },
                             child: Padding(

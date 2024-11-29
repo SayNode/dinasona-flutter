@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,9 +6,14 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../model/need.dart';
+import '../../../service/breez_service.dart';
+import '../../../service/currency_conversion_service.dart';
 import '../../../service/need_service.dart';
 import '../../../service/user_state_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
+import '../../root/controllers/beneficiary_root_controller.dart';
+import '../wallet_instructions.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
 
@@ -20,14 +26,18 @@ class CreateNewNeedController extends GetxController {
   TextEditingController screen4 = TextEditingController();
   RxBool isScreen1ButtonActive = false.obs;
   RxBool isScreen3ButtonActive = false.obs;
+  bool isloading = false;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
-
+  WalletService walletService = Get.find<WalletService>();
   NeedService needService = Get.find<NeedService>();
   UserStateService userStateService = Get.find<UserStateService>();
   final int descriptionMaxLenth = 300;
-
+  BeneficiaryRootController beneficiaryRootController =
+      Get.find<BeneficiaryRootController>();
   final Rx<File?> selectedImage = Rx<File?>(null);
   final Rx<File?> selectedImage2 = Rx<File?>(null);
+  final RxBool isEditingNeed = false.obs;
+  final RxInt editingNeedId = 0.obs;
 
   @override
   void onInit() {
@@ -49,14 +59,30 @@ class CreateNewNeedController extends GetxController {
     }
   }
 
-  void onTapdraftButton() {
-    createNewNeed();
-    PopupManager.openDraftPopup();
+  Future<void> onTapdraftButton() async {
+    if (isloading) return;
+    isloading = true;
+    if (!isEditingNeed.value) {
+      if (walletService.isWalletConnected.value) {
+        await createNewNeed();
+      } else {
+        unawaited(Get.to(InstructionsPage.new));
+      }
+    } else {
+      await updateNeed(editingNeedId.value, true);
+    }
+    unawaited(PopupManager.openDraftPopup());
   }
 
-  void onTapPublishButton() {
-    createNewNeed();
-    PopupManager.openPublishPopup();
+  Future<void> onTapPublishButton() async {
+    if (isloading) return;
+    isloading = true;
+    if (!isEditingNeed.value) {
+      await createNewNeed(isDraft: false);
+    } else {
+      await updateNeed(editingNeedId.value, false);
+    }
+    unawaited(PopupManager.openPublishPopup());
   }
 
   Future<void> openCurrency({Widget? child}) async {
@@ -98,7 +124,7 @@ class CreateNewNeedController extends GetxController {
     currentTab.value = tab;
   }
 
-  void createNewNeed() {
+  Future<void> createNewNeed({bool isDraft = true}) async {
     final String areasOfInterest = selectedAreasOfInterest
         .map(
           (AreaOfInterest e) => e.title,
@@ -106,11 +132,12 @@ class CreateNewNeedController extends GetxController {
         .toString()
         .replaceAll('(', '')
         .replaceAll(')', '');
-    needService.createNewNeed(
+    await needService.createNewNeed(
       screen1.text,
       screen4.text,
       screen3.text,
       areasOfInterest,
+      isDraft: isDraft,
       images: <String>[
         if (selectedImage.value != null) selectedImage.value!.path,
         if (selectedImage2.value != null) selectedImage2.value!.path,
@@ -118,17 +145,32 @@ class CreateNewNeedController extends GetxController {
     );
   }
 
+  void getToWalletScreen() {
+    Get.back();
+    beneficiaryRootController.changeTabIndex(2);
+  }
+
   void deleteNeed(int id) {
     needService.deleteNeed(id);
   }
 
-  void updateNeed(int id) {
-    needService.updateNeed(id, <String, dynamic>{
-      'Beneficiary': userStateService.user.value.id,
-      'Title': screen1.text,
-      'Description': screen4.text,
-      'Amount': screen3.text,
-      'Status': 'draft',
+  Future<void> updateNeed(int id, bool isDraft) async {
+    final int needAmountInSatoshi =
+        ((await Get.find<CurrencyConversionService>()
+                    .convertUserCurrencyToBitcoin(double.parse(screen3.text))) *
+                100000000)
+            .toInt();
+    final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
+      'Need invoice ::client_invoice',
+      needAmountInSatoshi,
+    );
+
+    await needService.updateNeed(id, <String, dynamic>{
+      'title': screen1.text,
+      'description': screen4.text,
+      'amount': screen3.text,
+      'bolt11Invoice': bolt11Invoice,
+      'status': isDraft ? 'draft' : 'published',
     });
   }
 }

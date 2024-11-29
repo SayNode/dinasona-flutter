@@ -32,6 +32,7 @@ class PopupManager {
 
   static Future<void> openPublishPopup() async {
     await openCustomPopup<void>(
+      dismissible: false,
       const PublishPopup(),
     );
   }

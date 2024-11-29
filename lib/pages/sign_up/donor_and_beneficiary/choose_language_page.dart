@@ -19,7 +19,6 @@ class ChooseLanguagePage extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
-    Get.put(SignupController());
     final LocalizationController localizationController =
         Get.find<LocalizationController>();
 

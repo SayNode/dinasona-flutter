@@ -8,8 +8,7 @@ class DonatePageController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    // TODO - Get donations made by the user from backend
-    needsFulfilled.value = await Get.find<NeedService>().getDonatehistory();
+    needsFulfilled.value = await Get.find<NeedService>().getDonateHistory();
     super.onInit();
   }
 }

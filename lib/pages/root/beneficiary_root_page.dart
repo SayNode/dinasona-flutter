@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../widgets/custom_scaffold.dart';
 import 'package:get/get.dart';
 
+import '../../../widgets/custom_scaffold.dart';
 import '../../widgets/beneficiary_bottom_navigation_bar.dart';
 import 'controllers/beneficiary_root_controller.dart';
 
