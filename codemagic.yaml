@@ -7,7 +7,7 @@ workflows:
       android_signing:
         - dinasona_android_keystore # <- modify this to your keystore reference
       groups:
-        - backend_keys 
+        - backend_keys
         - google_credentials # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
       vars:
         PACKAGE_NAME: "org.dinasona.dinasona" # <-- Put your package name here
@@ -24,7 +24,7 @@ workflows:
       - name: Generating release notes with git commits
         script: |
           git fetch --all --tags
-          prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
+          prev_tag=$(git for-each-ref --sort=-creatordate --format '%(objectname)' refs/tags | sed -n 2p)
           notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up local.properties
@@ -39,10 +39,10 @@ workflows:
           BUILD_NUMBER=$(($PROJECT_BUILD_NUMBER + 1))
           flutter build appbundle --release \
             --no-tree-shake-icons \
-            --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
+            --build-name=1.0.$BUILD_NUMBER \
             --build-number=$BUILD_NUMBER \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
-            --dart-define=API_URL=$API_URL_DEV \
+            --dart-define=API_URL=$API_URL_DEV
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/mapping.txt
@@ -66,23 +66,24 @@ workflows:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
         submit_as_draft: true
+
   ios-workflow:
     name: Development iOS Workflow
     instance_type: mac_mini_m1
     max_build_duration: 60
     integrations:
-      app_store_connect: SayNode CI/CD # <- put here the team label key (can find this in codemagic)
+      app_store_connect: SayNode CI/CD # <- put here the team label key (can find this in Codemagic)
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: org.dinasona.dinasona # <- put bundle identifier here // io.codemagic.flutteryaml
+        bundle_identifier: org.dinasona.dinasona # <- put bundle identifier here
       groups:
-        - backend_keys 
+        - backend_keys
       vars:
         APP_ID: 6505065670 # <-- Put your APP ID here
         CM_CLONE_DEPTH: 5
       flutter: stable
-      xcode: latest # <-- set to specific version e.g. 14.3, 15.0 to avoid unexpected updates.
+      xcode: latest # <-- set to specific version e.g., 14.3, 15.0 to avoid unexpected updates.
       cocoapods: default
     triggering:
       events:
@@ -91,9 +92,9 @@ workflows:
         - pattern: '*-dev'
     scripts:
       - name: Generating release notes with git commits
-        script: | 
+        script: |
           git fetch --all --tags
-          prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
+          prev_tag=$(git for-each-ref --sort=-creatordate --format '%(objectname)' refs/tags | sed -n 2p)
           notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up code signing settings on Xcode project
@@ -102,23 +103,30 @@ workflows:
       - name: Get Flutter packages
         script: |
           flutter packages pub get
-      - name: Flutter build ipa and automatic versioning
-        script:  |
-          npm install -g firebase-tools
+      - name: Install FlutterFire CLI
+        script: |
           dart pub global activate flutterfire_cli
+      - name: Flutter build ipa and automatic versioning
+        script: |
+          npm install -g firebase-tools
           flutter clean
           flutter pub get
           cd ios
           pod repo update
           pod update
-          appversion = $PROJECT_BUILD_NUMBER
+          appversion=$PROJECT_BUILD_NUMBER
           echo "version from store ${appversion}"
+          cd ..
           flutter build ipa --release \
             --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$(($PROJECT_BUILD_NUMBER + 1)) \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
             --dart-define=API_URL=$API_URL_DEV \
             --export-options-plist=/Users/builder/export_options.plist
+      - name: Upload Crashlytics Symbols
+        script: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          flutterfire upload-crashlytics-symbols --platform=ios --apple-project-path=ios
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
@@ -140,11 +148,7 @@ workflows:
           failure: true
       app_store_connect:
         auth: integration
-        # Configuration related to TestFlight (optional)
-        # Note: This action is performed during post-processing.
         submit_to_testflight: true
-        # Configuration related to App Store (optional)
-        # Note: This action is performed during post-processing.
         submit_to_app_store: false
 
   ########################################
@@ -178,7 +182,7 @@ workflows:
       - name: Generating release notes with git commits
         script: |
           git fetch --all --tags
-          prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
+          prev_tag=$(git for-each-ref --sort=-creatordate --format '%(objectname)' refs/tags | sed -n 2p)
           notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up local.properties
@@ -192,10 +196,10 @@ workflows:
         script: |
           BUILD_NUMBER=$(($PROJECT_BUILD_NUMBER + 1))
           flutter build appbundle --release \
-            --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
+            --build-name=1.0.$BUILD_NUMBER \
             --build-number=$BUILD_NUMBER \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
-            --dart-define=API_URL=$API_URL_PROD \
+            --dart-define=API_URL=$API_URL_PROD
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/mapping.txt
@@ -219,6 +223,7 @@ workflows:
         credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
         submit_as_draft: true
+
   ios-workflow-production:
     name: Production iOS Workflow
     instance_type: mac_mini_m1
@@ -228,14 +233,14 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: org.dinasona.dinasona # <- put bundle identifier here // io.codemagic.flutteryaml
+        bundle_identifier: org.dinasona.dinasona # <- put bundle identifier here
       groups:
         - backend_keys
       vars:
         APP_ID: 6505065670 # <-- Put your APP ID here
         CM_CLONE_DEPTH: 5
       flutter: stable
-      xcode: latest # <-- set to specific version e.g. 14.3, 15.0 to avoid unexpected updates.
+      xcode: latest # <-- set to specific version e.g., 14.3, 15.0 to avoid unexpected updates.
       cocoapods: default
     triggering:
       events:
@@ -246,7 +251,7 @@ workflows:
       - name: Generating release notes with git commits
         script: |
           git fetch --all --tags
-          prev_tag=$(git for-each-ref --sort=-creatordate  --format '%(objectname)' refs/tags | sed -n 2p )
+          prev_tag=$(git for-each-ref --sort=-creatordate --format '%(objectname)' refs/tags | sed -n 2p)
           notes+=$(git log --pretty=format:"%s" "$prev_tag"..HEAD)
           echo "$notes" | tee release_notes.txt
       - name: Set up code signing settings on Xcode project
@@ -255,6 +260,9 @@ workflows:
       - name: Get Flutter packages
         script: |
           flutter packages pub get
+      - name: Install FlutterFire CLI
+        script: |
+          dart pub global activate flutterfire_cli
       - name: Flutter build ipa and automatic versioning
         script: |
           flutter clean
@@ -262,12 +270,17 @@ workflows:
           cd ios
           pod repo update
           pod update
+          cd ..
           flutter build ipa --release \
             --build-name=1.0.$(($PROJECT_BUILD_NUMBER + 1)) \
             --build-number=$(($PROJECT_BUILD_NUMBER + 1)) \
             --dart-define=BREEZ_API_KEY=$BREEZ_API_KEY_CODEMAGIC \
             --dart-define=API_URL=$API_URL_PROD \
             --export-options-plist=/Users/builder/export_options.plist
+      - name: Upload Crashlytics Symbols
+        script: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          flutterfire upload-crashlytics-symbols --platform=ios --apple-project-path=ios
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
@@ -291,4 +304,3 @@ workflows:
         auth: integration
         submit_to_testflight: true
         submit_to_app_store: false
-
