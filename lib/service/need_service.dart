@@ -186,7 +186,6 @@ class NeedService extends GetxService {
       Get.find<LoggerService>().log(
         'NeedService.createNewNeed() called...',
       );
-
       final int needAmountInSatoshi =
           ((await Get.find<CurrencyConversionService>()
                       .convertUserCurrencyToBitcoin(double.parse(amount))) *
@@ -196,7 +195,6 @@ class NeedService extends GetxService {
         'Need invoice ::client_invoice',
         needAmountInSatoshi,
       );
-
       const String url = '/need/create/';
 
       final http.Response response = await apiService.multipartFilePost(

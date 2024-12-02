@@ -66,7 +66,13 @@ class CreateNewNeedController extends GetxController {
       if (walletService.isWalletConnected.value) {
         await createNewNeed();
       } else {
-        unawaited(Get.to(InstructionsPage.new));
+        unawaited(
+          Get.to(
+            const InstructionsPage(
+              isDonation: false,
+            ),
+          ),
+        );
       }
     } else {
       await updateNeed(editingNeedId.value, true);

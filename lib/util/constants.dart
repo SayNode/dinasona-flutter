@@ -11,14 +11,15 @@ class Constants {
   static const String apiDomain = String.fromEnvironment('API_URL');
   static const String notificationDeliveryServiceEndpoint =
       'https://webhook.site/382617b1-a72c-4de4-ba08-5ca192a65dcc?needId=123&donationId=123';
-  static liquid_sdk.LiquidNetwork networkType = apiDomain.contains('dev')
-      ? liquid_sdk.LiquidNetwork.testnet
-      : liquid_sdk.LiquidNetwork.mainnet;
+  static liquid_sdk.LiquidNetwork networkType =
+      const String.fromEnvironment('API_URL').contains('dev.devdinasona.ch')
+          ? liquid_sdk.LiquidNetwork.testnet
+          : liquid_sdk.LiquidNetwork.mainnet;
   static const String breezAPIKey = String.fromEnvironment('BREEZ_API_KEY');
   static const String greenlightClientKey =
       String.fromEnvironment('GREENLIGHT_CLIENT_KEY');
   static const String greenlightClientCertificate =
       String.fromEnvironment('GREENLIGHT_CLIENT_CERTIFICATE');
   static const String apiKey = String.fromEnvironment('DATABASE_API_KEY');
-  static bool get devMode => apiDomain.contains('dev');
+  static bool get devMode => apiDomain.contains('dev.devdinasona.ch');
 }
