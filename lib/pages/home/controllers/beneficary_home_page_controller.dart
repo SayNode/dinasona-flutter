@@ -96,7 +96,13 @@ class BeneficiaryHomePageController extends GetxController {
     if (Get.find<WalletService>().isWalletConnected.value) {
       unawaited(PopupManager.openStoryPopup());
     } else {
-      unawaited(Get.to(InstructionsPage.new));
+      unawaited(
+        Get.to(
+          const InstructionsPage(
+            isDonation: false,
+          ),
+        ),
+      );
     }
   }
 
