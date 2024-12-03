@@ -360,6 +360,7 @@ class SendPaymentController extends GetxController {
     PrepareSendResponse? preparedSendResponse,
     String? bolt11Invoice,
   }) async {
+    print('test sending btc ${bolt11Invoice}');
     try {
       final dynamic paymentResponse = await breezService.sendPayment(
         preparedSendData: preparedSendResponse,

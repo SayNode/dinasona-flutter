@@ -60,7 +60,7 @@ class WalletService extends GetxService {
       }
 
       amountSentInUserCurrency.value =
-          double.parse(amountSentInUserCurrency.toStringAsFixed(3));
+          double.parse(amountSentInUserCurrency.toStringAsFixed(2));
 
       _transactionAmounts.add(
         await currencyConversionService.convertSatoshiToUserCurrency(
