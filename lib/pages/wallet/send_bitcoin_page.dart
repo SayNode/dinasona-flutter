@@ -230,8 +230,9 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
                 onPressed: () {
                   if (need != null) {
                     controller.sendPaymentWithFee(needForDonationObject: need);
+                  } else {
+                    controller.sendPaymentWithFee();
                   }
-                  controller.sendPaymentWithFee();
                 },
                 locked: controller.bolt11Invoice.value == '' ||
                     controller.feesCalculated.value == false,
