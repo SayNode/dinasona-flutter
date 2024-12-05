@@ -18,6 +18,7 @@ import '../wallet_instructions.dart';
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
 
 class CreateNewNeedController extends GetxController {
+  CreateNewNeedController({this.need});
   RxInt currentPage = 0.obs;
   Rx<NeedsTab> currentTab = NeedsTab.screen1.obs;
   PageController pageController = PageController();
@@ -39,6 +40,8 @@ class CreateNewNeedController extends GetxController {
   final RxBool isEditingNeed = false.obs;
   final RxInt editingNeedId = 0.obs;
 
+  Need? need;
+
   @override
   void onInit() {
     super.onInit();
@@ -48,6 +51,19 @@ class CreateNewNeedController extends GetxController {
     screen3.addListener(() {
       isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
     });
+
+    isEditingNeed.value = need != null;
+    if (need != null) {
+      editingNeedId.value = need!.id;
+
+      final String tmpAmount = need!.amount == need!.amount.toInt()
+          ? need!.amount.toInt().toString()
+          : need!.amount.toString();
+
+      screen1.text = need!.title;
+      screen3.text = tmpAmount;
+      screen4.text = need!.description;
+    }
   }
 
   Future<void> pickImage(ImageSource source, Rx<File?> image) async {
@@ -152,7 +168,6 @@ class CreateNewNeedController extends GetxController {
   }
 
   void getToWalletScreen() {
-    Get.back();
     beneficiaryRootController.changeTabIndex(2);
   }
 
