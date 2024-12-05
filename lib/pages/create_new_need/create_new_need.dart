@@ -23,21 +23,7 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    Get.put(CreateNewNeedController());
-
-    // If wanted in the future edit to be able to edit current areas of interest and photos
-    controller.isEditingNeed.value = need != null;
-    if (need != null) {
-      controller.editingNeedId.value = need!.id;
-
-      final String tmpAmount = need!.amount == need!.amount.toInt()
-          ? need!.amount.toInt().toString()
-          : need!.amount.toString();
-
-      controller.screen1.text = need!.title;
-      controller.screen3.text = tmpAmount;
-      controller.screen4.text = need!.description;
-    }
+    Get.put(CreateNewNeedController(need: need));
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque, // Ensure gestures pass through
