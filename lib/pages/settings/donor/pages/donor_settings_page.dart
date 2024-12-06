@@ -29,8 +29,15 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
               children: <Widget>[
                 const Gap(20),
                 ProfileWidget(
-                  name: controller.user.name,
-                  location: 'Location Placeholder',
+                  name: controller.user.name.isNotEmpty
+                      ? controller.user.name.split(' ').map((String part) {
+                          return part[0].toUpperCase() + part.substring(1);
+                        }).join(' ')
+                      : '',
+                  location: controller.user.country.isNotEmpty
+                      ? controller.user.country[0].toUpperCase() +
+                          controller.user.country.substring(1)
+                      : '',
                 ),
                 const Gap(12),
                 PeopleHelpedWidget(
