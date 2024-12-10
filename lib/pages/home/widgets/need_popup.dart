@@ -12,6 +12,7 @@ import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
 import '../../beneficiary/beneficiary_page.dart';
+import '../../create_new_need/wallet_instructions.dart';
 import '../controllers/need_popup_controller.dart';
 import 'need_field_chip.dart';
 
@@ -214,14 +215,37 @@ class NeedPopup extends GetView<NeedPopupController> {
             Padding(
               padding: const EdgeInsets.all(8),
               child: Center(
-                child: Text(
-                  Get.find<WalletService>().isWalletConnected.value
-                      ? 'Not enough balance in your wallet'.tr
-                      : 'Please connect your wallet to donate!'.tr,
-                  style: CustomTypography.fromColor(
-                    theme.graphite,
-                  ).k16Reg,
-                ),
+                child: Get.find<WalletService>().isWalletConnected.value
+                    ? Text(
+                        'Not enough balance in your wallet'.tr,
+                        style: CustomTypography.fromColor(
+                          theme.graphite,
+                        ).k16Reg,
+                      )
+                    : TextButton(
+                        onPressed: () {
+                          Get.to(
+                            const InstructionsPage(
+                              isDonation: true,
+                            ),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: getRelativeWidth(8),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          foregroundColor: theme.graphite,
+                        ),
+                        child: Text(
+                          'Please connect a wallet to donate!'.tr,
+                          style: CustomTypography.fromColor(
+                            theme.graphite,
+                          ).k16Reg.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
+                        ),
+                      ),
               ),
             ),
         ],

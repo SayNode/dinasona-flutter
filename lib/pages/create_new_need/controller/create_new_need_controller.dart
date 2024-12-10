@@ -13,6 +13,7 @@ import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
 import '../../../util/popup_manager.dart';
 import '../../root/controllers/beneficiary_root_controller.dart';
+import '../../root/controllers/donor_root_page_controller.dart';
 import '../wallet_instructions.dart';
 
 enum NeedsTab { screen1, screen2, screen3, screen4, screen5 }
@@ -35,6 +36,7 @@ class CreateNewNeedController extends GetxController {
   final int descriptionMaxLenth = 300;
   BeneficiaryRootController beneficiaryRootController =
       Get.find<BeneficiaryRootController>();
+  DonorRootController donorRootController = Get.find<DonorRootController>();
   final Rx<File?> selectedImage = Rx<File?>(null);
   final Rx<File?> selectedImage2 = Rx<File?>(null);
   final RxBool isEditingNeed = false.obs;
@@ -168,7 +170,14 @@ class CreateNewNeedController extends GetxController {
   }
 
   void getToWalletScreen() {
-    beneficiaryRootController.changeTabIndex(2);
+    // Donor needs to Get.back() twice to get to the wallet screen
+    if (userStateService.user.value.isDonor) {
+      donorRootController.changeTabIndex(2);
+      Get.back();
+    } else {
+      beneficiaryRootController.changeTabIndex(2);
+    }
+    Get.back();
   }
 
   void deleteNeed(int id) {
