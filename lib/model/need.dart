@@ -88,20 +88,17 @@ class Need {
               .map((dynamic e) => AreaOfInterest.values[(e as int) - 1])
               .toList()
           : <AreaOfInterest>[],
-      images: <String>[],
-      /*(json['image'] as List<dynamic>)
-          .where(
-            (dynamic e) => e != null,
-          )
-          .map((dynamic e) => e as String)
-          .toList(),*/
+      images: (json['images'] is List &&
+              (json['images'] as List<dynamic>).isNotEmpty)
+          ? List<String>.from(json['images'] as List<dynamic>)
+          : <String>[],
       status: json['status'] == null
           ? NeedStatus.draft
           : _statusFromString(json['status'] as String),
       bolt11invoice: json['bolt11Invoice'] as String? ?? '',
       id: json['id'] as int? ?? 0,
-      createdAt: utcTime.toLocal(), // Automatically converts UTC to local time
-      updatedAt: utcTime2.toLocal(), // Automatically converts UTC to local time
+      createdAt: utcTime.toLocal(),
+      updatedAt: utcTime2.toLocal(),
     );
   }
 
