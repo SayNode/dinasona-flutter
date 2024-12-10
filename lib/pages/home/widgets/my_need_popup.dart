@@ -23,6 +23,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
   Widget build(BuildContext context) {
     Get.put(MyNeedPopupController(need: need));
     final CustomTheme theme = Get.put(ThemeService()).theme;
+
     return UpwardPopup(
       title: '',
       onClose: Get.back,
@@ -185,6 +186,27 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                           child: Image.network(
                             url,
                             fit: BoxFit.cover,
+                            loadingBuilder: (
+                              BuildContext context,
+                              Widget child,
+                              ImageChunkEvent? loadingProgress,
+                            ) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    theme.ferngreen,
+                                  ),
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
