@@ -31,45 +31,44 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
           children: <Widget>[
             Gap(getRelativeHeight(15)),
             Text(
-              'Set up your wallet'.tr,
+              'Set up Instructions'.tr,
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
             Gap(getRelativeHeight(15)),
             NumberedInstructionsWidget(
               number: 1,
               text: isDonation
-                  ? 'To donate and support people, you first need to set up a wallet.'
+                  ? 'To donate and support people, you first need to add a wallet by creating or importing a wallet.'
                       .tr
-                  : 'To publish a need and receive support, you first \nneed to set up a wallet.'
+                  : 'To publish a need and receive support, you first \nneed to add a wallet by creating or importing a wallet.'
                       .tr,
             ),
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
               number: 2,
-              text: "Press 'Create wallet'".tr,
+              text:
+                  'Enter your existing seedphrase or save your new seed phrase to gain access to your wallet.'
+                      .tr,
             ),
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
               number: 3,
               text:
-                  "'Save your seed phrase:' Write it down on paper \nand keep it safe—you'll need it in the future"
+                  'If you are setting up a new wallet, enter the 3 seed words requested. For importing a wallet add your existing seed phrase consisting of 12 words.'
                       .tr,
             ),
             Gap(getRelativeHeight(12)),
             NumberedInstructionsWidget(
               number: 4,
-              text: "Enter the '3 seed words' requested".tr,
-            ),
-            Gap(getRelativeHeight(12)),
-            NumberedInstructionsWidget(
-              number: 5,
-              text:
-                  'Once your wallet is set up, you can publish a need, and someone will support you financially.'
+              text: isDonation
+                  ? 'Once your wallet is set up, you can donate to a need and support someone financially.'
+                      .tr
+                  : 'Once your wallet is set up, you can publish a need, someone will support you financially.'
                       .tr,
             ),
             const Spacer(),
             DinasonaButton(
-              text: 'Create wallet'.tr,
+              text: 'Add wallet'.tr,
               onPressed: () => controller.getToWalletScreen(),
               color: theme.amberglow,
             ),
