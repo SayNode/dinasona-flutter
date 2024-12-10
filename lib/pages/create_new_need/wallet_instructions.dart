@@ -31,7 +31,7 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
           children: <Widget>[
             Gap(getRelativeHeight(15)),
             Text(
-              'Set up Instructions'.tr,
+              'Set up your wallet'.tr,
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
             Gap(getRelativeHeight(15)),
