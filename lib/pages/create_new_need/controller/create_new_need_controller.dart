@@ -61,11 +61,19 @@ class CreateNewNeedController extends GetxController {
       final String tmpAmount = need!.amount == need!.amount.toInt()
           ? need!.amount.toInt().toString()
           : need!.amount.toString();
-
+      selectedAreasOfInterest.value = need!.areasOfInterest;
       screen1.text = need!.title;
       screen3.text = tmpAmount;
       screen4.text = need!.description;
     }
+  }
+
+  @override
+  void onClose() {
+    screen1.dispose();
+    screen3.dispose();
+    screen4.dispose();
+    super.onClose();
   }
 
   Future<void> pickImage(ImageSource source, Rx<File?> image) async {
@@ -96,6 +104,7 @@ class CreateNewNeedController extends GetxController {
       await updateNeed(editingNeedId.value, true);
     }
     unawaited(PopupManager.openDraftPopup());
+    await Get.delete<CreateNewNeedController>();
   }
 
   Future<void> onTapPublishButton() async {
@@ -107,6 +116,7 @@ class CreateNewNeedController extends GetxController {
       await updateNeed(editingNeedId.value, false);
     }
     unawaited(PopupManager.openPublishPopup());
+    await Get.delete<CreateNewNeedController>();
   }
 
   Future<void> openCurrency({Widget? child}) async {
