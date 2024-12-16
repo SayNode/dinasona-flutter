@@ -7,7 +7,7 @@ import '../../../widgets/beneficiary_bottom_navigation_bar.dart';
 
 class BeneficiaryRootController extends GetxController {
   final RxInt tabIndex = 0.obs;
-  final List<Widget> body =
+  List<Widget> get body =>
       BeneficaryItem.values.map((BeneficaryItem e) => e.page).toList();
   final RxString country = ''.obs;
   final UserStateService userStateService = Get.find<UserStateService>();
