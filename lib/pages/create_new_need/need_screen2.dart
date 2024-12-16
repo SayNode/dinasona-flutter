@@ -47,7 +47,6 @@ class NeedScreen2 extends GetView<CreateNewNeedController> {
                 showBackIcon: true,
                 text: 'Back'.tr,
                 onPressed: () => controller.selectTab(NeedsTab.screen1),
-                locked: controller.selectedAreasOfInterest.isEmpty,
               ),
               const Gap(10),
               Expanded(

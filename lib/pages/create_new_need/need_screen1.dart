@@ -34,7 +34,9 @@ class NeedScreen1 extends GetView<CreateNewNeedController> {
           () => DinasonaButton(
             text: 'Continue'.tr,
             onPressed: () => controller.selectTab(NeedsTab.screen2),
-            locked: !controller.isScreen1ButtonActive.value,
+            locked: controller.initialized ?? false
+                ? !controller.isScreen1ButtonActive.value
+                : true,
           ),
         ),
         Gap(getRelativeHeight(20)),

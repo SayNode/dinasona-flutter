@@ -41,6 +41,7 @@ class CreateNewNeedController extends GetxController {
   final Rx<File?> selectedImage2 = Rx<File?>(null);
   final RxBool isEditingNeed = false.obs;
   final RxInt editingNeedId = 0.obs;
+  final RxBool canSaveNewNeed = true.obs;
 
   Need? need;
 
@@ -54,6 +55,11 @@ class CreateNewNeedController extends GetxController {
       isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
     });
 
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    pageController = PageController();
+
     isEditingNeed.value = need != null;
     if (need != null) {
       editingNeedId.value = need!.id;
@@ -66,6 +72,21 @@ class CreateNewNeedController extends GetxController {
       screen3.text = tmpAmount;
       screen4.text = need!.description;
     }
+  }
+
+  @override
+  void onClose() {
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    super.onClose();
+  }
+
+  void initializePageController() {
+    try {
+      pageController.dispose();
+    } catch (_) {}
+    pageController = PageController();
   }
 
   Future<void> pickImage(ImageSource source, Rx<File?> image) async {
@@ -96,6 +117,9 @@ class CreateNewNeedController extends GetxController {
       await updateNeed(editingNeedId.value, true);
     }
     unawaited(PopupManager.openDraftPopup());
+    pageController.dispose();
+    unawaited(Get.delete<CreateNewNeedController>());
+    onClose();
   }
 
   Future<void> onTapPublishButton() async {
@@ -107,6 +131,9 @@ class CreateNewNeedController extends GetxController {
       await updateNeed(editingNeedId.value, false);
     }
     unawaited(PopupManager.openPublishPopup());
+    pageController.dispose();
+    unawaited(Get.delete<CreateNewNeedController>());
+    onClose();
   }
 
   Future<void> openCurrency({Widget? child}) async {
@@ -178,6 +205,7 @@ class CreateNewNeedController extends GetxController {
       beneficiaryRootController.changeTabIndex(2);
     }
     Get.back();
+    onClose();
   }
 
   void deleteNeed(int id) {

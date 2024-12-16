@@ -51,16 +51,28 @@ class NeedScreen5 extends GetView<CreateNewNeedController> {
         const Spacer(),
         Row(
           children: <Widget>[
-            DinasonaButton(
-              expand: false,
-              text: 'Save as draft'.tr,
-              onPressed: controller.onTapdraftButton,
+            Obx(
+              () => DinasonaButton(
+                expand: false,
+                text: 'Save as draft'.tr,
+                locked: !controller.canSaveNewNeed.value,
+                onPressed: () {
+                  controller.canSaveNewNeed.value = false;
+                  controller.onTapdraftButton();
+                },
+              ),
             ),
             const Gap(10),
             Expanded(
-              child: DinasonaButton(
-                text: 'Publish'.tr,
-                onPressed: controller.onTapPublishButton,
+              child: Obx(
+                () => DinasonaButton(
+                  text: 'Publish'.tr,
+                  locked: !controller.canSaveNewNeed.value,
+                  onPressed: () {
+                    controller.canSaveNewNeed.value = false;
+                    controller.onTapPublishButton();
+                  },
+                ),
               ),
             ),
           ],
