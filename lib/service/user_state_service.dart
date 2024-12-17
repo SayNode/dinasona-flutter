@@ -141,14 +141,18 @@ class UserStateService extends GetxService {
         final Map<String, dynamic> decodedResponse =
             response.data as Map<String, dynamic>;
         // ignore: always_specify_types
-        final userJson =
+        final Map<String, dynamic>? userJson =
             // ignore: avoid_dynamic_calls
-            decodedResponse['user'] ?? decodedResponse['result']?['user'];
+            (decodedResponse['user'] ?? decodedResponse['result']?['user'])
+                as Map<String, dynamic>?;
 
         if (userJson != null) {
           // ignore: avoid_dynamic_calls
-          userJson['beneficiary'] = Beneficiary.anonymous();
-          user.value = User.fromJson(userJson as Map<String, dynamic>);
+          if (userJson['beneficiary'] == null) {
+            userJson['beneficiary'] = Beneficiary.anonymous();
+          }
+
+          user.value = User.fromJson(userJson);
         } else {
           logger.log(
             'Failed to update user info: StatusCode: ${response.statusCode}, ${response.data}',
