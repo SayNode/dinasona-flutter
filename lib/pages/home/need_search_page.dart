@@ -47,7 +47,9 @@ class NeedSearchPage extends GetView<NeedSearchPageController> {
               () => Column(
                 children: <Widget>[
                   for (final Need need in controller.needs.where(
-                    (Need need) => need.status != NeedStatus.draft,
+                    (Need need) =>
+                        need.status != NeedStatus.draft &&
+                        need.status != NeedStatus.past,
                   ))
                     Padding(
                       padding: EdgeInsets.only(
