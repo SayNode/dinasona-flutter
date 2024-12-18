@@ -20,6 +20,8 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
     final CurrencyController currencyController = Get.put(CurrencyController());
+    final CreateNewNeedController controller =
+        Get.put(CreateNewNeedController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -52,7 +54,7 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             InkWell(
-              onTap: () => controller.openCurrency(),
+              onTap: controller.openCurrency,
               child: Text(
                 'Change currency',
                 style: CustomTypography.fromColor(theme.graphite).k16SemiBold,
@@ -71,7 +73,10 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
                 showBackIcon: true,
                 text: 'Back'.tr,
                 onPressed: () => controller.selectTab(NeedsTab.screen2),
-                locked: !controller.isScreen3ButtonActive.value,
+                // ignore: avoid_bool_literals_in_conditional_expressions
+                locked: controller.initialized
+                    ? !controller.isScreen1ButtonActive.value
+                    : true,
               ),
               const Gap(10),
               Expanded(

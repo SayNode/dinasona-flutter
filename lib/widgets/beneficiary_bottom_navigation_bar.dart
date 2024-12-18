@@ -51,7 +51,7 @@ enum BeneficaryItem {
       case BeneficaryItem.add:
         // Check if wallet is initialized
         if (Get.find<WalletService>().isWalletConnected.value) {
-          return const CreateNewNeed();
+          return CreateNewNeed(key: UniqueKey());
         } else {
           return const InstructionsPage(
             isDonation: false,

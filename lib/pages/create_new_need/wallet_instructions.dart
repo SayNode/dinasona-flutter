@@ -21,7 +21,8 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    Get.put(CreateNewNeedController());
+    final CreateNewNeedController controller =
+        Get.put(CreateNewNeedController(), tag: UniqueKey().toString());
 
     return CustomScaffold(
       appBarTitle: '',
@@ -69,7 +70,7 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
             const Spacer(),
             DinasonaButton(
               text: 'Add wallet'.tr,
-              onPressed: () => controller.getToWalletScreen(),
+              onPressed: controller.getToWalletScreen,
               color: theme.amberglow,
             ),
             Gap(getRelativeHeight(50)),
