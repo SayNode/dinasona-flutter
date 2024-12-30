@@ -18,10 +18,7 @@ class GoogleAppleSignInController {
 
   final AuthService authService = Get.put(AuthService());
 
-  Future<String> googleSignInPressed(
-    bool isBeneficiary,
-    bool isRegistration,
-  ) async {
+  Future<String> googleSignInPressed() async {
     loadingGoogle.value = true;
     error.value = '';
     final UserStateService userStateService = Get.find<UserStateService>();

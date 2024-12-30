@@ -24,8 +24,7 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
     return Column(
       children: <Widget>[
         ElevatedButton(
-          onPressed: () =>
-              controller.googleSignInPressed(isBeneficiary, isRegistration),
+          onPressed: () => controller.googleSignInPressed(),
           style: ElevatedButton.styleFrom(
             backgroundColor: theme.moonstone,
             padding: EdgeInsets.all(getRelativeWidth(15)),
