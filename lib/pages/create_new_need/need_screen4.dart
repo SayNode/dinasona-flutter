@@ -30,7 +30,7 @@ class NeedScreen4 extends GetView<CreateNewNeedController> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: theme.shadowed.withOpacity(0.5),
+                color: theme.shadowed.withAlpha(128),
               ),
             ),
             child: Padding(

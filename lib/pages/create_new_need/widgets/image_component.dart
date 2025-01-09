@@ -30,7 +30,7 @@ class ImageComponentWidget extends StatelessWidget {
           // color: theme.shadowed.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: theme.shadowed.withOpacity(0.3),
+            color: theme.shadowed.withAlpha(77),
           ),
           image: file == null
               ? null

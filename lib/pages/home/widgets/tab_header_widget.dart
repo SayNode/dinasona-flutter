@@ -23,7 +23,7 @@ class TabHeaderWidget extends StatelessWidget {
     final CustomTheme theme = service.theme;
     final Size screenSize = MediaQuery.of(context).size;
     return Material(
-      color: selected ? theme.ferngreen.withOpacity(0.1) : Colors.transparent,
+      color: selected ? theme.ferngreen.withAlpha(26) : Colors.transparent,
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(10),
       ),
@@ -51,7 +51,7 @@ class TabHeaderWidget extends StatelessWidget {
                 child: Divider(
                   color: selected
                       ? theme.ferngreen
-                      : theme.graphite.withOpacity(0.5),
+                      : theme.graphite.withAlpha(128),
                   thickness: 2,
                   height: 1,
                 ),

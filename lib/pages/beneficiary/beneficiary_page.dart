@@ -51,7 +51,7 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                     ),
                   ),
                   Material(
-                    color: theme.shadowed.withOpacity(0.2),
+                    color: theme.shadowed.withAlpha(51),
                     shape: const CircleBorder(),
                     child: InkWell(
                       customBorder: const CircleBorder(),
