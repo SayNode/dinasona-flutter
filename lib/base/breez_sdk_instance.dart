@@ -126,7 +126,9 @@ class BreezSDKLiquid {
   ) async {
     final liquid_sdk.PrepareSendResponse prepareSendResponse =
         await _instance!.prepareSendPayment(
-      req: liquid_sdk.PrepareSendRequest(destination: bolt11Invoice),
+      req: liquid_sdk.PrepareSendRequest(
+        destination: bolt11Invoice,
+      ),
     );
 
     return prepareSendResponse;

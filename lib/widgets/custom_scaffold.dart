@@ -12,6 +12,7 @@ import '../service/logger_service.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
+import '../util/constants.dart';
 import '../util/util.dart';
 
 class CustomScaffold extends StatelessWidget {
@@ -97,14 +98,16 @@ class CustomScaffold extends StatelessWidget {
         ),
         backgroundColor: theme.moonstone,
         bottomNavigationBar: bottomNavigationBar,
-        floatingActionButton: FloatingActionButton(
-          heroTag: null,
-          onPressed: () {
-            Get.find<LoggerService>().show();
-          },
-          backgroundColor: Colors.red,
-          child: const Icon(Icons.logo_dev_rounded),
-        ),
+        floatingActionButton: Constants.devMode
+            ? FloatingActionButton(
+                heroTag: null,
+                onPressed: () {
+                  Get.find<LoggerService>().show();
+                },
+                backgroundColor: Colors.red,
+                child: const Icon(Icons.logo_dev_rounded),
+              )
+            : null,
       ),
     );
   }

@@ -29,7 +29,6 @@ class Password {
           text.value = 'weak';
           color = Colors.red;
           this.strength = strength;
-          break;
       }
     }
   }
