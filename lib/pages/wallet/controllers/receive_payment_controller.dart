@@ -54,7 +54,12 @@ class ReceivePaymentController extends GetxController {
       invoiceIsGenerated.value = true;
     } catch (e) {
       if (e.toString().contains('amountOutOfRange')) {
-        error.value = 'Amount is over or below outgoing balance limit';
+        error.value =
+            'The amount exceeds or falls below the available outgoing or incoming balance limit'
+                .tr;
+      } else {
+        loggerService.log('Error creating invoice: $e');
+        error.value = 'Error creating invoice'.tr;
       }
       invoiceIsGenerated.value = false;
     }
@@ -122,7 +127,8 @@ class ReceivePaymentController extends GetxController {
     if (receiveUserCurrencyAmount < receivingLimitsInSatoshi.minUserCurrency ||
         receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {
       error.value =
-          'Amount must be between ${Get.find<LocalizationController>().selectedCurrency['sign'] ?? r'$'} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency['sign'] ?? r'$'} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}';
+          'Amount must be between ${Get.find<LocalizationController>().selectedCurrency['sign'] ?? r'$'} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency['sign'] ?? r'$'} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}'
+              .tr;
     } else {
       error.value = '';
     }
