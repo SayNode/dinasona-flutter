@@ -50,6 +50,8 @@ abstract class BreezBaseService extends GetxService {
     }
   }
 
+  // Set limits based on available ingoing and outgoing balance
+  // Add small spread to the limits to avoid currency conversion inconsistencies between coingecko and breez
   Future<void> _getSendReceiveLimits() async {
     final liquid_sdk.LightningPaymentLimitsResponse liquidSendReceiveLimits =
         await breezSDKLiquid.getSendReceiveLimits();
