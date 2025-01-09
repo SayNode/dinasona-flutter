@@ -5,12 +5,20 @@ import 'package:flutter_breez_liquid/flutter_breez_liquid.dart' as liquid_sdk;
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../model/liquid_limits.dart';
+import '../service/currency_conversion_service.dart';
 import '../util/constants.dart';
 import 'breez_sdk_instance.dart';
 
 abstract class BreezBaseService extends GetxService {
   BreezSDKLiquid breezSDKLiquid = BreezSDKLiquid();
-  //breezSDKLiquid.
+  CurrencyConversionService currencyConversionService =
+      Get.find<CurrencyConversionService>();
+  LiquidLimitsUserCurrency liquidSendReceiveLimitsInUserCurrency =
+      LiquidLimitsUserCurrency(
+    send: LiquidLimitUserCurrency(minUserCurrency: 0, maxUserCurrency: 0),
+    receive: LiquidLimitUserCurrency(minUserCurrency: 0, maxUserCurrency: 0),
+  );
 
   Future<dynamic> connectToLiquid(String seedPhrase) async {
     try {
@@ -35,10 +43,43 @@ abstract class BreezBaseService extends GetxService {
           liquid_sdk.ConnectRequest(mnemonic: seedPhrase, config: fullConfig);
 
       await breezSDKLiquid.connect(req: connectRequest);
+      unawaited(_getSendReceiveLimits());
     } catch (e) {
       // ignore: only_throw_errors
       throw 'Error connecting to liquid: $e';
     }
+  }
+
+  Future<void> _getSendReceiveLimits() async {
+    final liquid_sdk.LightningPaymentLimitsResponse liquidSendReceiveLimits =
+        await breezSDKLiquid.getSendReceiveLimits();
+
+    liquidSendReceiveLimitsInUserCurrency = LiquidLimitsUserCurrency(
+      send: LiquidLimitUserCurrency(
+        minUserCurrency:
+            await currencyConversionService.convertBitcoinToUserCurrency(
+                  liquidSendReceiveLimits.send.minSat.toDouble() / 100000000,
+                ) *
+                1.04,
+        maxUserCurrency:
+            await currencyConversionService.convertBitcoinToUserCurrency(
+                  liquidSendReceiveLimits.send.maxSat.toDouble() / 100000000,
+                ) *
+                0.96,
+      ),
+      receive: LiquidLimitUserCurrency(
+        minUserCurrency:
+            await currencyConversionService.convertBitcoinToUserCurrency(
+                  liquidSendReceiveLimits.receive.minSat.toDouble() / 100000000,
+                ) *
+                1.04,
+        maxUserCurrency:
+            await currencyConversionService.convertBitcoinToUserCurrency(
+                  liquidSendReceiveLimits.receive.maxSat.toDouble() / 100000000,
+                ) *
+                0.96,
+      ),
+    );
   }
 
   Future<void> disconnectFromLiquid() async {
@@ -53,6 +94,7 @@ abstract class BreezBaseService extends GetxService {
 
   Future<int> getBalanceInSatoshis() async {
     final int balance = await breezSDKLiquid.getBalanceInSatoshis();
+    unawaited(_getSendReceiveLimits());
 
     return balance;
   }
@@ -79,11 +121,12 @@ abstract class BreezBaseService extends GetxService {
   }
 
   Future<String> createInvoice(String description, int amountInSatoshi) async {
+    unawaited(_getSendReceiveLimits());
+
     final String bolt11Invoice = await breezSDKLiquid.createInvoice(
       description: description,
       amountInSatoshi: amountInSatoshi,
     );
-
     return bolt11Invoice;
   }
 
@@ -99,6 +142,8 @@ abstract class BreezBaseService extends GetxService {
     liquid_sdk.PrepareSendResponse? preparedSendData,
     String? bolt11Invoice,
   }) async {
+    unawaited(_getSendReceiveLimits());
+
     final dynamic sendPaymentResponse = await breezSDKLiquid.sendPayment(
       bolt11: bolt11Invoice,
       preparedSendData: preparedSendData,

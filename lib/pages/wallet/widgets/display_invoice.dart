@@ -21,7 +21,7 @@ class DisplayInvoice extends GetView<ReceivePaymentController> {
     return Column(
       children: <Widget>[
         Text(
-          '${controller.sendBTCInputBTC.text} BTC',
+          '${controller.receiveBTCInputBTC.text} BTC',
           style: CustomTypography.fromColor(theme.amberglow).k24Bold,
         ),
         Obx(
