@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -25,7 +26,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             AutoSizeTextField(
-              controller: controller.sendBTCInputBTC,
+              controller: controller.receiveBTCInputBTC,
               fullwidth: false,
               cursorColor: theme.amberglow,
               keyboardType:
@@ -58,7 +59,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             AutoSizeTextField(
-              controller: controller.sendBTCInputUserCurrency,
+              controller: controller.receiveBTCInputUserCurrency,
               fullwidth: false,
               cursorColor: theme.shadowed,
               keyboardType:
@@ -72,7 +73,8 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
               ),
             ),
             Text(
-              r'$',
+              Get.find<LocalizationController>().selectedCurrency['sign'] ??
+                  r'$',
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
           ],
@@ -103,6 +105,13 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
           style: CustomTypography.fromColor(theme.shadowed).k16Reg,
         ),
         Gap(getRelativeHeight(16)),
+        Obx(
+          () => Text(
+            controller.error.value,
+            style: CustomTypography.fromColor(theme.inferno).k16Reg,
+          ),
+        ),
+        const Spacer(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -111,8 +120,8 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
                 text: 'Reset'.tr,
                 textColor: theme.amberglow,
                 onPressed: () {
-                  controller.sendBTCInputUserCurrency.text = '0.0';
-                  controller.sendBTCInputBTC.text = '0.0';
+                  controller.receiveBTCInputUserCurrency.text = '0.0';
+                  controller.receiveBTCInputBTC.text = '0.0';
                   controller.userInvoiceMessage.text = '';
                 },
                 color: theme.moonstone,
@@ -130,9 +139,10 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
                   },
                   locked: () {
                     final double? parsedValue = double.tryParse(
-                      controller.sendBTCUserCurrencyInputCheck.value,
+                      controller.receiveBTCUserCurrencyInputCheck.value,
                     );
-                    return parsedValue == null || parsedValue < 1;
+                    return parsedValue == null ||
+                        controller.error.value.isNotEmpty;
                   }(),
                   color: theme.amberglow,
                 ),
@@ -140,7 +150,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
             ),
           ],
         ),
-        const Spacer(),
+        Gap(getRelativeHeight(16)),
         GestureDetector(
           onTap: () => controller.helpPage(),
           child: Row(
@@ -155,7 +165,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
             ],
           ),
         ),
-        Gap(getRelativeHeight(35)),
+        Gap(getRelativeHeight(20)),
       ],
     );
   }

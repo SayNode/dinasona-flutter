@@ -89,6 +89,11 @@ class BreezSDKLiquid {
     //final BigInt receiveFeesSat = prepareResponse.feesSat;
   }
 
+  Future<liquid_sdk.LightningPaymentLimitsResponse>
+      getSendReceiveLimits() async {
+    return _instance!.fetchLightningLimits();
+  }
+
   Future<String> createInvoice({
     required String description,
     required int amountInSatoshi,

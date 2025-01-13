@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../model/liquid_limits.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
+import '../../../service/localization_controller.dart';
 import '../../../service/logger_service.dart';
 import '../../../util/util.dart';
 import '../../help_payment_page/help_payment_page.dart';
@@ -17,21 +19,22 @@ class ReceivePaymentController extends GetxController {
   RxBool invoiceIsGenerated = false.obs;
   RxString createdInvoiceBolt11 = ''.obs;
   TextEditingController userInvoiceMessage = TextEditingController();
-  final TextEditingController sendBTCInputBTC =
+  final TextEditingController receiveBTCInputBTC =
       TextEditingController(text: '0.0');
-  RxString sendBTCUserCurrencyInputCheck = '0.0'.obs;
-  final TextEditingController sendBTCInputUserCurrency =
+  RxString receiveBTCUserCurrencyInputCheck = '0.0'.obs;
+  final TextEditingController receiveBTCInputUserCurrency =
       TextEditingController(text: '0.0');
+  final RxString error = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    sendBTCInputBTC.addListener(
+    receiveBTCInputBTC.addListener(
       () => _onPaymentChangedHandleDebounce(
         true,
       ),
     );
-    sendBTCInputUserCurrency.addListener(
+    receiveBTCInputUserCurrency.addListener(
       () => _onPaymentChangedHandleDebounce(
         false,
       ),
@@ -43,55 +46,92 @@ class ReceivePaymentController extends GetxController {
       showLoadingDialog(Get.context!);
     }
 
-    createdInvoiceBolt11.value = await breezService.createInvoice(
-      '${userInvoiceMessage.text} ::$needId',
-      (double.parse(sendBTCInputBTC.text) * 100000000).round(),
-    );
+    try {
+      createdInvoiceBolt11.value = await breezService.createInvoice(
+        '${userInvoiceMessage.text} ::$needId',
+        (double.parse(receiveBTCInputBTC.text) * 100000000).round(),
+      );
+      invoiceIsGenerated.value = true;
+    } catch (e) {
+      if (e.toString().contains('amountOutOfRange')) {
+        error.value =
+            'The amount exceeds or falls below the available outgoing or incoming balance limit'
+                .tr;
+      } else {
+        loggerService.log('Error creating invoice: $e');
+        error.value = 'Error creating invoice'.tr;
+      }
+      invoiceIsGenerated.value = false;
+    }
 
     if (Get.context != null) {
       hideLoadingDialog(Get.context!);
     }
-
-    invoiceIsGenerated.value = true;
   }
 
   void _onPaymentChangedHandleDebounce(
     bool isBTCInput,
   ) {
-    sendBTCUserCurrencyInputCheck.value = sendBTCInputUserCurrency.text;
-    if (_isDebouncing) return;
+    receiveBTCUserCurrencyInputCheck.value = receiveBTCInputUserCurrency.text;
+    if (_isDebouncing) {
+      checkLiquidLimits();
+      return;
+    }
 
     if (_debounce.isActive) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 800), () async {
-      final String controllerText =
-          isBTCInput ? sendBTCInputBTC.text : sendBTCInputUserCurrency.text;
+      final String controllerText = isBTCInput
+          ? receiveBTCInputBTC.text
+          : receiveBTCInputUserCurrency.text;
 
       _isDebouncing = true;
-
       if (controllerText == '0' ||
           controllerText.isEmpty ||
           controllerText == '0.0') {
         if (isBTCInput) {
-          sendBTCInputUserCurrency.text = '0.0';
+          receiveBTCInputUserCurrency.text = '0.0';
         } else {
-          sendBTCInputBTC.text = '0.0';
+          receiveBTCInputBTC.text = '0.0';
         }
       } else {
         final double otherValue = double.parse(controllerText);
         if (isBTCInput) {
-          sendBTCInputUserCurrency.text =
+          receiveBTCInputUserCurrency.text =
               (await Get.find<CurrencyConversionService>()
                       .convertBitcoinToUserCurrency(otherValue))
                   .toString();
         } else {
-          sendBTCInputBTC.text = (await Get.find<CurrencyConversionService>()
+          receiveBTCInputBTC.text = (await Get.find<CurrencyConversionService>()
                   .convertUserCurrencyToBitcoin(otherValue))
               .toString();
         }
+
+        checkLiquidLimits();
       }
 
       _isDebouncing = false;
     });
+  }
+
+  void checkLiquidLimits() {
+    if (receiveBTCInputUserCurrency.text == '0' ||
+        receiveBTCInputUserCurrency.text.isEmpty ||
+        receiveBTCInputUserCurrency.text == '0.0') {
+      return;
+    }
+    final LiquidLimitUserCurrency receivingLimitsInSatoshi =
+        breezService.liquidSendReceiveLimitsInUserCurrency.receive;
+    final double receiveUserCurrencyAmount =
+        double.parse(receiveBTCInputUserCurrency.text) + 0.01;
+
+    if (receiveUserCurrencyAmount < receivingLimitsInSatoshi.minUserCurrency ||
+        receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {
+      error.value =
+          'Amount must be between ${Get.find<LocalizationController>().selectedCurrency['sign'] ?? r'$'} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency['sign'] ?? r'$'} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}'
+              .tr;
+    } else {
+      error.value = '';
+    }
   }
 
   void helpPage() {
