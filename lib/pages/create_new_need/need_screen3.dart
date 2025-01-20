@@ -4,13 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../service/localization_controller.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
-import '../home/controllers/currency_controller.dart';
 import 'controller/create_new_need_controller.dart';
 
 class NeedScreen3 extends GetView<CreateNewNeedController> {
@@ -19,7 +19,8 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    final CurrencyController currencyController = Get.put(CurrencyController());
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
     final CreateNewNeedController controller =
         Get.put(CreateNewNeedController());
     return Column(
@@ -40,12 +41,10 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           ],
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Obx(
-              () => Text(
-                currencyController.chosenCurrency.value.code,
-                textAlign: TextAlign.center,
-                style: CustomTypography.fromColor(theme.shadowed).k14Reg,
-              ),
+            child: Text(
+              localizationController.selectedCurrency['code'] ?? 'usd',
+              textAlign: TextAlign.center,
+              style: CustomTypography.fromColor(theme.shadowed).k14Reg,
             ),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -21,7 +22,11 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(MyNeedPopupController(need: need));
+    Get
+      ..delete<MyNeedPopupController>()
+      ..put(MyNeedPopupController(need: need));
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
 
     return UpwardPopup(
@@ -106,14 +111,19 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                   ),
                   Gap(getRelativeWidth(16)),
                   Center(
-                    child: Text(
-                      '${need.amount}\$',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: CustomTypography.fromColor(
-                        theme.shadowed,
-                      ).kInter20Bold,
-                    ),
+                    child: Obx(() {
+                      if (controller.isLoadingCurrency.value) {
+                        return const CircularProgressIndicator();
+                      }
+                      return Text(
+                        '${localizationController.selectedCurrency['sign']} ${controller.needAmountInUserCurrency.value.toStringAsFixed(1)}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: CustomTypography.fromColor(
+                          theme.shadowed,
+                        ).kInter20Bold,
+                      );
+                    }),
                   ),
                 ],
               ),

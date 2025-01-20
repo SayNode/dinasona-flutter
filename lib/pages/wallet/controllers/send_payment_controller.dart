@@ -66,13 +66,14 @@ class SendPaymentController extends GetxController {
             await currencyConversionService.convertBitcoinToUserCurrency(
           double.parse(invoiceAmountBTC.value) * 0.01,
         );
+        final double userTargetCurrencyRate =
+            await currencyConversionService.fetchUserTargetCurrencyRate('chf');
 
         final double saynodeVariableFeeInCHF =
-            (await currencyConversionService.fetchFiatCHFRate()) *
-                saynodeVariableFeeInUserCurrency;
+            userTargetCurrencyRate * saynodeVariableFeeInUserCurrency;
 
         final double breezMinimumTransactionAmountInCHF =
-            (await currencyConversionService.fetchFiatCHFRate()) *
+            userTargetCurrencyRate *
                 (await currencyConversionService
                     .convertBitcoinToUserCurrency(0.00001));
 
@@ -84,12 +85,12 @@ class SendPaymentController extends GetxController {
         } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
           sendPaymentSayNodeFee.value = 1000;
         } else {
-          sendPaymentSayNodeFee.value = ((await currencyConversionService
-                      .convertUserCurrencyToBitcoin(
-                    0.5 / (await currencyConversionService.fetchFiatCHFRate()),
-                  )) *
-                  100000000)
-              .toInt();
+          sendPaymentSayNodeFee.value =
+              ((await currencyConversionService.convertUserCurrencyToBitcoin(
+                        0.5 / userTargetCurrencyRate,
+                      )) *
+                      100000000)
+                  .toInt();
         }
 
         // Prepare SayNode fee transaction

@@ -1,17 +1,36 @@
 import 'package:get/get.dart';
 
 import '../../../model/need.dart';
+import '../../../service/currency_conversion_service.dart';
 import '../../../service/need_service.dart';
 
 class MyNeedPopupController extends GetxController {
   MyNeedPopupController({required this.need});
   NeedService needService = Get.find<NeedService>();
+  final CurrencyConversionService currencyConversionService =
+      Get.find<CurrencyConversionService>();
   final Need need;
+  final RxDouble needAmountInUserCurrency = 0.0.obs;
+  final RxBool isLoadingCurrency = true.obs;
   void editNeed(Need need) {
     // needService.updateNeed(
     //   need.id,
 
     // );
+  }
+
+  @override
+  Future<dynamic> onInit() async {
+    isLoadingCurrency.value = true;
+    super.onInit();
+
+    final double userTargetCurrencyRate =
+        await currencyConversionService.fetchUserTargetCurrencyRate('usd');
+    needAmountInUserCurrency.value = need.amount * userTargetCurrencyRate;
+
+    print('test2 123 ${need.amount * userTargetCurrencyRate}');
+
+    isLoadingCurrency.value = false;
   }
 
   void deleteNeed(int id) {

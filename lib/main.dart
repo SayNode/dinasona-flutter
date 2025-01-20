@@ -32,6 +32,7 @@ import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
 import 'service/user_state_service.dart';
 import 'service/wallet_service.dart';
+import 'theme/color.dart';
 import 'util/util.dart';
 
 bool isFirstRun = false;
@@ -187,7 +188,17 @@ class MyApp extends StatelessWidget {
           title: 'dinasona',
           home: initialPage,
           initialRoute: '/',
-          theme: Get.put<ThemeService>(ThemeService()).themeData,
+          theme: Get.put<ThemeService>(ThemeService()).themeData.copyWith(
+                colorScheme: const ColorScheme.light(
+                  primary: LightColor.ferngreen,
+                  secondary: LightColor.amberglow,
+                  error: LightColor.inferno,
+                ),
+                progressIndicatorTheme: const ProgressIndicatorThemeData(
+                  color: LightColor.ferngreen,
+                  linearTrackColor: LightColor.graphite,
+                ),
+              ),
         );
         //End MaterialApp
       },

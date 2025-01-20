@@ -74,7 +74,7 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                             borderRadius: BorderRadius.circular(10),
                             onTap: () {
                               // Save selected currency
-
+                              //TODO julien
                               Get.to<void>(
                                 () => const BeneficiaryRootPage(),
                               );

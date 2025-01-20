@@ -18,12 +18,16 @@ class LocalizationController extends GetxController implements GetxService {
   final StorageService storageService = Get.find<StorageService>();
   bool defaulLanguage = true;
   bool defaultCurrencie = true;
-
+  // todo Julien
   Map<String, String> selectedCurrency = <String, String>{
-    'name': 'Swiss Frank',
+    /* 'name': 'Swiss Frank',
     'code': 'CHF',
     'sign': 'CHF',
-    'image': 'assets/images/switzerland.png',
+    'image': 'assets/images/switzerland.png', */
+    'name': 'Australian Dollar',
+    'code': 'AUD',
+    'sign': r'AU$',
+    'image': 'assets/images/australia.png',
   };
 
   final List<Map<String, String>> supportedCurrencies = <Map<String, String>>[

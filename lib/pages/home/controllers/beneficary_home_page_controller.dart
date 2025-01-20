@@ -41,6 +41,7 @@ class BeneficiaryHomePageController extends GetxController {
   Future<void> onRefresh() async {
     try {
       needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
+
       await userStateService.fetchUserInfo();
       userNameForGreeting.value =
           userStateService.user.value.name.split(' ')[0];

@@ -77,6 +77,7 @@ class LogoutDialog extends StatelessWidget {
 
                     // Technically doesn't delete the wallet itself but the user's connection to it -> logout
                     await Get.find<WalletService>().deleteUserWallet();
+                    Get.find<WalletService>().isWalletConnected.value = false;
                     userStateService.clear();
                     await Get.offAll<void>(
                       () => const LoginPage(),

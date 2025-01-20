@@ -79,9 +79,7 @@ class PopupManager {
     );
   }
 
-  static Future<List<AreaOfInterest>?> openCurrencyPopup(
-    List<AreaOfInterest> initialSelectedAreasOfInterest,
-  ) async {
+  static Future<List<AreaOfInterest>?> openCurrencyPopup() async {
     return Get.dialog<List<AreaOfInterest>>(
       const CurrencyPopup(),
     );
