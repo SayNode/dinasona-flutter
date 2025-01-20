@@ -19,7 +19,7 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       required this.graphite,
       required this.snowfall,
       required this.colorScheme,
-      required this.progressIndicatorTheme});
+      required this.progressIndicatorTheme,});
 
   final Color amberglow;
 

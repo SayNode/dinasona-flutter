@@ -20,8 +20,6 @@ class NeedCardController extends GetxController {
     final double userTargetCurrencyRate =
         await currencyConversionService.fetchUserTargetCurrencyRate('usd');
     needAmountInUserCurrency.value = need.amount * userTargetCurrencyRate;
-    update();
-    print('test 12322345345 ${need.amount * userTargetCurrencyRate}');
     isLoadingCurrency.value = false;
   }
 }

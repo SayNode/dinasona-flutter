@@ -28,8 +28,6 @@ class MyNeedPopupController extends GetxController {
         await currencyConversionService.fetchUserTargetCurrencyRate('usd');
     needAmountInUserCurrency.value = need.amount * userTargetCurrencyRate;
 
-    print('test2 123 ${need.amount * userTargetCurrencyRate}');
-
     isLoadingCurrency.value = false;
   }
 

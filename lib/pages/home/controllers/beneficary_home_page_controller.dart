@@ -27,8 +27,6 @@ class BeneficiaryHomePageController extends GetxController {
   Future<void> onInit() async {
     // TODO
 
-    //Get.find<UserStateService>().fetchUserInfo();
-    //print(Get.find<UserStateService>().user.value);
     try {
       needs.value = await Get.find<NeedService>().getBeneficiaryNeeds();
     } catch (_) {

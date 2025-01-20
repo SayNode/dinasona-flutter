@@ -27,8 +27,9 @@ class NeedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.delete<NeedCardController>(tag: 'controller_needCard_${need.id}');
     final NeedCardController controller = Get.put(
-        NeedCardController(need: need),
-        tag: 'controller_needCard_${need.id}');
+      NeedCardController(need: need),
+      tag: 'controller_needCard_${need.id}',
+    );
     final LocalizationController localizationController =
         Get.find<LocalizationController>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
@@ -147,7 +148,6 @@ class NeedCard extends StatelessWidget {
                       else
                         Center(
                           child: Obx(() {
-                            print('test ${need.title} ${need.amount}');
                             if (controller.isLoadingCurrency.value) {
                               return const CircularProgressIndicator();
                             }

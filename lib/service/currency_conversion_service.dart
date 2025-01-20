@@ -130,7 +130,6 @@ class CurrencyConversionService extends GetxService {
     http.Response response = http.Response('', 999);
 
     try {
-      print('test $currencyConversionRateDebouncingSecond');
       if (!currencyConversionRateDebouncingSecond) {
         currencyConversionRateDebouncingSecond = true;
 
@@ -140,7 +139,7 @@ class CurrencyConversionService extends GetxService {
             'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
           ),
         );
-        print('test $response');
+
         Future<void>.delayed(const Duration(milliseconds: 2000), () {
           currencyConversionRateDebouncingSecond = false;
         });
