@@ -12,22 +12,39 @@ class CurrencyConversionService extends GetxService {
       Get.find<LocalizationController>();
   bool snackBarDebouncing = false;
   bool currencyConversionRateDebouncing = false;
+  bool currencyConversionRateDebouncingSecond = false;
   double conversionRateBTCUserCurrency = 0;
-  double conversionRateFiatCHF = 0;
+  double conversionRateUserTargetCurrency = 0;
+  double conversionRateBTCvsUSD = 0;
 
-  Future<double> fetchFiatCHFRate() async {
+  @override
+  void onInit() {
+    fetchUserTargetCurrencyRate('usd');
+    super.onInit();
+  }
+
+  // Coingecko provides the most allowed requests per minute for the free plan
+  // only works with crypto though - workaround:
+  // 1. get the conversion rate from the user currency to bitcoin
+  // 2. get the conversion rate from bitcoin to the target currency
+  // 3. divide the conversion rate from the user currency to bitcoin by the
+  //    conversion rate from bitcoin to the target currency
+  Future<double> fetchUserTargetCurrencyRate(String targetCurrencyCode) async {
     http.Response response = http.Response('', 999);
+    final String targetCurrencyCodeClean = targetCurrencyCode.toLowerCase();
+    final String userCurrencyCodeClean =
+        localizationController.selectedCurrency.value.code.toLowerCase();
 
-    if (localizationController.selectedCurrency['code']?.toLowerCase() ==
-        'chf') {
+    if (userCurrencyCodeClean == targetCurrencyCodeClean) {
       return 1;
     }
+
     try {
       if (!currencyConversionRateDebouncing) {
         currencyConversionRateDebouncing = true;
         response = await http.get(
           Uri.parse(
-            'https://api.coingecko.com/api/v3/simple/price?ids=${localizationController.selectedCurrency['code'] ?? 'usd'}&vs_currencies=chf',
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=$userCurrencyCodeClean,$targetCurrencyCodeClean',
           ),
         );
         Future<void>.delayed(const Duration(milliseconds: 2000), () {
@@ -35,21 +52,25 @@ class CurrencyConversionService extends GetxService {
         });
       }
       if (response.statusCode == 999) {
-        return conversionRateFiatCHF;
+        return conversionRateUserTargetCurrency;
       }
       if (response.statusCode == 200) {
         // ignore: always_specify_types
         final data = json.decode(response.body);
-        // ignore: avoid_dynamic_calls, join_return_with_assignment
-        conversionRateFiatCHF = double.parse(
+
+        final double userCurrencyToBTC = double.parse(
           // ignore: avoid_dynamic_calls
-          data[localizationController.selectedCurrency['code'] ?? 'usd']['chf']
-              .toString(),
+          data['bitcoin'][userCurrencyCodeClean].toString(),
+        );
+        final double targetCurrencyToBTC = double.parse(
+          // ignore: avoid_dynamic_calls
+          data['bitcoin'][targetCurrencyCodeClean].toString(),
         );
 
-        return conversionRateFiatCHF;
+        return conversionRateUserTargetCurrency =
+            userCurrencyToBTC / targetCurrencyToBTC;
       } else if (response.statusCode == 429) {
-        return conversionRateFiatCHF;
+        return conversionRateUserTargetCurrency;
       } else {
         throw Exception(
           'Failed to load conversion rate with status code: ${response.statusCode}',
@@ -70,7 +91,7 @@ class CurrencyConversionService extends GetxService {
         response = await http.get(
           Uri.parse(
             // TODO replace with the correct currency
-            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency['code'] ?? 'usd'}',
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency.value.code.toLowerCase()}',
           ),
         );
 
@@ -87,14 +108,55 @@ class CurrencyConversionService extends GetxService {
         // ignore: avoid_dynamic_calls, join_return_with_assignment
         conversionRateBTCUserCurrency = double.parse(
           // ignore: avoid_dynamic_calls
-          data['bitcoin'][localizationController.selectedCurrency['code']
-                      ?.toLowerCase() ??
-                  'usd']
+          data['bitcoin'][localizationController.selectedCurrency.value.code
+                  .toLowerCase()]
               .toString(),
         );
         return conversionRateBTCUserCurrency;
       } else if (response.statusCode == 429) {
         return conversionRateBTCUserCurrency;
+      } else {
+        throw Exception(
+          'Failed to load conversion rate with status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Failed to load conversion rate: $e');
+    }
+  }
+
+  Future<double> fetchConversionRateBTCvsUSD() async {
+    http.Response response = http.Response('', 999);
+
+    try {
+      if (!currencyConversionRateDebouncingSecond) {
+        currencyConversionRateDebouncingSecond = true;
+
+        response = await http.get(
+          Uri.parse(
+            // TODO replace with the correct currency
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
+          ),
+        );
+
+        Future<void>.delayed(const Duration(milliseconds: 2000), () {
+          currencyConversionRateDebouncingSecond = false;
+        });
+      }
+      if (response.statusCode == 999) {
+        return conversionRateBTCvsUSD;
+      }
+      if (response.statusCode == 200) {
+        // ignore: always_specify_types
+        final data = json.decode(response.body);
+        // ignore: avoid_dynamic_calls, join_return_with_assignment
+        conversionRateBTCvsUSD = double.parse(
+          // ignore: avoid_dynamic_calls
+          data['bitcoin']['usd'].toString(),
+        );
+        return conversionRateBTCvsUSD;
+      } else if (response.statusCode == 429) {
+        return conversionRateBTCvsUSD;
       } else {
         throw Exception(
           'Failed to load conversion rate with status code: ${response.statusCode}',

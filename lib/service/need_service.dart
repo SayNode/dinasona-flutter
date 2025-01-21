@@ -177,7 +177,7 @@ class NeedService extends GetxService {
   Future<Map<String, dynamic>> createNewNeed(
     String title,
     String description,
-    String amount,
+    double amountInUSD,
     String areaOfInterest, {
     bool isDraft = true,
     List<String> images = const <String>[],
@@ -186,11 +186,12 @@ class NeedService extends GetxService {
       Get.find<LoggerService>().log(
         'NeedService.createNewNeed() called...',
       );
+      final double currencyRateBTCvsUSD =
+          await Get.find<CurrencyConversionService>()
+              .fetchConversionRateBTCvsUSD();
+
       final int needAmountInSatoshi =
-          ((await Get.find<CurrencyConversionService>()
-                      .convertUserCurrencyToBitcoin(double.parse(amount))) *
-                  100000000)
-              .toInt();
+          (((1 / currencyRateBTCvsUSD) * amountInUSD) * 100000000).round();
       final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
         'Need invoice ::client_invoice',
         needAmountInSatoshi,
@@ -203,12 +204,13 @@ class NeedService extends GetxService {
         body: <String, dynamic>{
           'title': title,
           'description': description,
-          'amount': amount,
+          'amount': amountInUSD.toStringAsFixed(2),
           'area_of_interest': areaOfInterest,
           'bolt11Invoice': bolt11Invoice,
           'status': isDraft ? 'draft' : 'published',
         },
       );
+
       if (response.statusCode == 201) {
         final Map<String, dynamic> need = Map<String, dynamic>.from(
           jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,

@@ -3,13 +3,15 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../model/need.dart';
+import '../service/localization_controller.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/popup_manager.dart';
 import '../util/util.dart';
+import 'controller/alternate_need_card_controller.dart';
 
-class AlternateNeedCard extends StatelessWidget {
+class AlternateNeedCard extends GetView<AlternateNeedCardController> {
   const AlternateNeedCard({
     required this.need,
     super.key,
@@ -20,6 +22,13 @@ class AlternateNeedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
+    final AlternateNeedCardController controller = Get.put(
+      AlternateNeedCardController(need: need),
+      tag: 'controller_alternateNeedCard_${need.id}',
+    );
+
     return SizedBox(
       height: getRelativeHeight(200),
       child: Material(
@@ -72,14 +81,19 @@ class AlternateNeedCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Center(
-                      child: Text(
-                        '${need.amount}\$',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: CustomTypography.fromColor(
-                          theme.shadowed,
-                        ).kInter20Bold,
-                      ),
+                      child: Obx(() {
+                        if (controller.isLoadingCurrency.value) {
+                          return const CircularProgressIndicator();
+                        }
+                        return Text(
+                          '${localizationController.selectedCurrency.value.sign} ${controller.needAmountInUserCurrency.value.toStringAsFixed(1)}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: CustomTypography.fromColor(
+                            theme.shadowed,
+                          ).kInter20Bold,
+                        );
+                      }),
                     ),
                     Gap(getRelativeWidth(16)),
                     VerticalDivider(

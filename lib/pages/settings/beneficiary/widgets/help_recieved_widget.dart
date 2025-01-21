@@ -41,12 +41,12 @@ class HelpedRecievedWidget extends StatelessWidget {
               Obx(
                 () => Get.find<WalletService>().isWalletConnected.value
                     ? Text(
-                        '${Get.find<LocalizationController>().selectedCurrency['sign']} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(3))}',
+                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(3))}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k36Bold,
                       )
                     : Text(
-                        '${Get.find<LocalizationController>().selectedCurrency['sign']} 0.0',
+                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} 0.0',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k36Bold,
                       ),

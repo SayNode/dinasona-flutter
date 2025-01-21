@@ -26,6 +26,7 @@ class User {
         firstLogin = json['is_first_login'] as bool? ?? true,
         aboutMe = json['about_me'] as String? ?? '',
         isDonor = json['is_donor'] as bool? ?? false,
+        currency = json['currency'] as String? ?? '',
         country = json['country'] as String? ?? '';
 
   int id = -1;
@@ -37,6 +38,7 @@ class User {
   bool firstLogin = true;
   String aboutMe = '';
   bool isDonor = false;
+  String currency = '';
   String country = '';
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -48,6 +50,7 @@ class User {
         'firstLogin': firstLogin,
         'about_me': aboutMe,
         'is_donor': isDonor,
+        'currency': currency,
         'country': country,
       };
 
@@ -61,6 +64,7 @@ class User {
     bool? firstLogin,
     String? aboutMe,
     bool? isDonor,
+    String? currency,
     String? country,
   }) {
     return User()
@@ -72,6 +76,7 @@ class User {
       ..firstLogin = firstLogin ?? this.firstLogin
       ..aboutMe = aboutMe ?? this.aboutMe
       ..isDonor = isDonor ?? this.isDonor
+      ..currency = currency ?? this.currency
       ..country = country ?? this.country;
   }
 }

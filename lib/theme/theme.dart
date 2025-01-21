@@ -18,6 +18,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     required this.silvershine,
     required this.graphite,
     required this.snowfall,
+    required this.colorScheme,
+    required this.progressIndicatorTheme,
   });
 
   final Color amberglow;
@@ -36,6 +38,10 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
 
   final Color snowfall;
 
+  final ColorScheme colorScheme;
+
+  final ProgressIndicatorThemeData progressIndicatorTheme;
+
   @override
   CustomTheme copyWith({
     Color? amberglow,
@@ -46,6 +52,8 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     Color? silvershine,
     Color? graphite,
     Color? snowfall,
+    ColorScheme? colorScheme,
+    ProgressIndicatorThemeData? progressIndicatorTheme,
   }) {
     return CustomTheme(
       amberglow: amberglow ?? this.amberglow,
@@ -56,6 +64,9 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
       silvershine: silvershine ?? this.silvershine,
       graphite: graphite ?? this.graphite,
       snowfall: snowfall ?? this.snowfall,
+      colorScheme: colorScheme ?? this.colorScheme,
+      progressIndicatorTheme:
+          progressIndicatorTheme ?? this.progressIndicatorTheme,
     );
   }
 
@@ -69,6 +80,15 @@ class CustomTheme extends ThemeExtension<CustomTheme> {
     silvershine: LightColor.silvershine,
     graphite: LightColor.graphite,
     snowfall: LightColor.snowfall,
+    colorScheme: ColorScheme.light(
+      primary: LightColor.ferngreen,
+      secondary: LightColor.amberglow,
+      error: LightColor.inferno,
+    ),
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: LightColor.ferngreen,
+      linearTrackColor: LightColor.graphite,
+    ),
   );
 
   @override

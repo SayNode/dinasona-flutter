@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -17,6 +18,8 @@ class CurrencyPopup extends GetView<CurrencyController> {
   @override
   Widget build(BuildContext context) {
     Get.put(CurrencyController());
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
     return UpwardPopup(
       title: 'Choose currency'.tr,
@@ -54,9 +57,9 @@ class CurrencyPopup extends GetView<CurrencyController> {
                 ),
               ),
               CurrencyTileWidget(
-                imageUrl: controller.chosenCurrency.value.imageUrl,
-                code: controller.chosenCurrency.value.code,
-                name: controller.chosenCurrency.value.name,
+                imageUrl: localizationController.selectedCurrency.value.image,
+                sign: localizationController.selectedCurrency.value.sign,
+                name: localizationController.selectedCurrency.value.name,
               ),
               Padding(
                 padding:
@@ -83,12 +86,13 @@ class CurrencyPopup extends GetView<CurrencyController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: CurrencyTileWidget(
-                        imageUrl: controller.currency[index].imageUrl,
-                        code: controller.currency[index].code,
+                        imageUrl: controller.currency[index].image,
+                        sign: controller.currency[index].sign,
                         name: controller.currency[index].name,
                         onTap: () {
-                          controller.chosenCurrency.value =
-                              controller.currency[index];
+                          controller.changeUserCurrency(
+                            controller.currency[index].code,
+                          );
                           Get.back();
                         },
                       ),

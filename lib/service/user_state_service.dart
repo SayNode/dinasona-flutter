@@ -137,6 +137,7 @@ class UserStateService extends GetxService {
           },
         ),
       );
+
       if (response.statusCode == 200) {
         final Map<String, dynamic> decodedResponse =
             response.data as Map<String, dynamic>;

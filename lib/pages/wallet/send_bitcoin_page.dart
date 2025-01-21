@@ -86,7 +86,7 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
             Gap(getRelativeHeight(10)),
             Obx(
               () => Text(
-                '${controller.invoiceAmountUserCurrency.value} ${Get.find<LocalizationController>().selectedCurrency['sign']}',
+                '${controller.invoiceAmountUserCurrency.value} ${Get.find<LocalizationController>().selectedCurrency.value.sign}',
                 style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               ),
             ),

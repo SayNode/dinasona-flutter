@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 
 import '../model/need.dart';
 import '../pages/beneficiary/beneficiary_page.dart';
+import '../service/localization_controller.dart';
 import '../service/theme_service.dart';
 import '../theme/theme.dart';
 import '../theme/typography.dart';
 import '../util/network_image_handler.dart';
 import '../util/popup_manager.dart';
 import '../util/util.dart';
+import 'controller/need_card_controller.dart';
 
 class NeedCard extends StatelessWidget {
   const NeedCard({
@@ -23,7 +25,15 @@ class NeedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.delete<NeedCardController>(tag: 'controller_needCard_${need.id}');
+    final NeedCardController controller = Get.put(
+      NeedCardController(need: need),
+      tag: 'controller_needCard_${need.id}',
+    );
+    final LocalizationController localizationController =
+        Get.find<LocalizationController>();
     final CustomTheme theme = Get.put(ThemeService()).theme;
+
     return Container(
       margin: EdgeInsets.only(bottom: getRelativeHeight(10)),
       child: Material(
@@ -137,16 +147,19 @@ class NeedCard extends StatelessWidget {
                         )
                       else
                         Center(
-                          child: Text(
-                            '${need.amount}\$',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: CustomTypography.fromColor(
-                              need.status == NeedStatus.past
-                                  ? theme.graphite
-                                  : theme.shadowed,
-                            ).kInter20Bold,
-                          ),
+                          child: Obx(() {
+                            if (controller.isLoadingCurrency.value) {
+                              return const CircularProgressIndicator();
+                            }
+                            return Text(
+                              '${localizationController.selectedCurrency.value.sign} ${controller.needAmountInUserCurrency.value.toStringAsFixed(1)}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: CustomTypography.fromColor(
+                                theme.shadowed,
+                              ).kInter20Bold,
+                            );
+                          }),
                         ),
                     ],
                   ),

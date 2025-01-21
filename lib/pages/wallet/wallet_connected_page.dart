@@ -20,10 +20,22 @@ class WalletConnectedPage extends GetView<WalletPageController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
+    final WalletService walletService = Get.find<WalletService>();
 
-    controller
-      ..getBalanceInUserCurrency()
-      ..getTransactions();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await controller.getBalanceInUserCurrency();
+      await controller.getTransactions();
+
+      // If the amount of transactions is high it might take 1 - 2 seconds
+      // this "retry" is here to make sure the user sees the transactions / balance
+      // If it takes longer than 3 seconds, the user will need to manually refresh
+      // There is no way to know if the user has transactions or not or if it just hasn't loaded yet
+      if (walletService.balanceInUserCurrency.value == 0) {
+        await Future<void>.delayed(const Duration(milliseconds: 3333));
+        await controller.getBalanceInUserCurrency();
+        await controller.getTransactions();
+      }
+    });
 
     controller.showWalletOptions.value = false;
 

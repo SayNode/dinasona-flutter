@@ -46,7 +46,7 @@ class CreateNewNeedController extends GetxController {
   Need? need;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     screen1.addListener(() {
       isScreen1ButtonActive.value = screen1.text.isNotEmpty.obs.value;
@@ -68,8 +68,15 @@ class CreateNewNeedController extends GetxController {
           ? need!.amount.toInt().toString()
           : need!.amount.toString();
 
+      final double userUSDCurrencyRate = 1 /
+          await Get.find<CurrencyConversionService>()
+              .fetchUserTargetCurrencyRate(
+            'usd',
+          );
+
       screen1.text = need!.title;
-      screen3.text = tmpAmount;
+      screen3.text =
+          (double.parse(tmpAmount) / userUSDCurrencyRate).toStringAsFixed(2);
       screen4.text = need!.description;
     }
   }
@@ -137,12 +144,7 @@ class CreateNewNeedController extends GetxController {
   }
 
   Future<void> openCurrency({Widget? child}) async {
-    final List<AreaOfInterest>? temp = await PopupManager.openCurrencyPopup(
-      selectedAreasOfInterest,
-    );
-    if (temp != null) {
-      selectedAreasOfInterest.value = temp;
-    }
+    await PopupManager.openCurrencyPopup();
   }
 
   void onSelectAreaOfInterest(AreaOfInterest field) {
@@ -175,6 +177,8 @@ class CreateNewNeedController extends GetxController {
     currentTab.value = tab;
   }
 
+  // Need amounts are always saved in USD
+  // The frontend will convert it back to the user's currency
   Future<void> createNewNeed({bool isDraft = true}) async {
     final String areasOfInterest = selectedAreasOfInterest
         .map(
@@ -183,10 +187,18 @@ class CreateNewNeedController extends GetxController {
         .toString()
         .replaceAll('(', '')
         .replaceAll(')', '');
+
+    final double userUSDCurrencyRate = 1 /
+        await Get.find<CurrencyConversionService>().fetchUserTargetCurrencyRate(
+          'usd',
+        );
+    final double needAmountInUSD =
+        double.parse(screen3.text) * userUSDCurrencyRate;
+
     await needService.createNewNeed(
       screen1.text,
       screen4.text,
-      screen3.text,
+      needAmountInUSD,
       areasOfInterest,
       isDraft: isDraft,
       images: <String>[
@@ -201,10 +213,20 @@ class CreateNewNeedController extends GetxController {
     if (userStateService.user.value.isDonor) {
       donorRootController.changeTabIndex(2);
       Get.back();
+
+      if (Get.currentRoute.contains('DIALOG')) {
+        // Get back a third time because the user is in a dialog
+        // This is the case when the donor clicks on a category -> popup -> add wallet screen
+        Get.back();
+      }
     } else {
       beneficiaryRootController.changeTabIndex(2);
     }
-    Get.back();
+
+    if (!Get.currentRoute.contains('BeneficiaryRootPage')) {
+      Get.back();
+    }
+
     onClose();
   }
 
@@ -213,11 +235,20 @@ class CreateNewNeedController extends GetxController {
   }
 
   Future<void> updateNeed(int id, bool isDraft) async {
+    final double userUSDCurrencyRate = 1 /
+        await Get.find<CurrencyConversionService>().fetchUserTargetCurrencyRate(
+          'usd',
+        );
+    final double needAmountInUSD =
+        double.parse(screen3.text) * userUSDCurrencyRate;
+
+    final double currencyRateBTCvsUSD =
+        await Get.find<CurrencyConversionService>()
+            .fetchConversionRateBTCvsUSD();
+
     final int needAmountInSatoshi =
-        ((await Get.find<CurrencyConversionService>()
-                    .convertUserCurrencyToBitcoin(double.parse(screen3.text))) *
-                100000000)
-            .toInt();
+        (((1 / currencyRateBTCvsUSD) * needAmountInUSD) * 100000000).round();
+
     final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
       'Need invoice ::client_invoice',
       needAmountInSatoshi,
@@ -226,7 +257,7 @@ class CreateNewNeedController extends GetxController {
     await needService.updateNeed(id, <String, dynamic>{
       'title': screen1.text,
       'description': screen4.text,
-      'amount': screen3.text,
+      'amount': needAmountInUSD.toStringAsFixed(2),
       'bolt11Invoice': bolt11Invoice,
       'status': isDraft ? 'draft' : 'published',
     });
