@@ -21,10 +21,10 @@ class LocalizationController extends GetxController implements GetxService {
   bool defaulLanguage = true;
   bool defaultCurrencie = true;
   Rx<CurrencyModel> selectedCurrency = CurrencyModel(
-    name: 'Australian Dollar',
-    code: 'AUD',
-    sign: r'AU$',
-    image: 'assets/images/australia.png',
+    name: 'Swiss Frank',
+    code: 'CHF',
+    sign: 'CHF',
+    image: 'assets/images/switzerland.png',
   ).obs;
 
   final List<CurrencyModel> supportedCurrencies = <CurrencyModel>[
