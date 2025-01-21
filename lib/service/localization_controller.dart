@@ -14,12 +14,12 @@ import 'package:get/get.dart';
 import '../model/currency_model.dart';
 import '../model/language_model.dart';
 import 'storage/storage_service.dart';
+import 'user_state_service.dart';
 
 class LocalizationController extends GetxController implements GetxService {
   final StorageService storageService = Get.find<StorageService>();
   bool defaulLanguage = true;
   bool defaultCurrencie = true;
-  // todo Julien
   Rx<CurrencyModel> selectedCurrency = CurrencyModel(
     name: 'Australian Dollar',
     code: 'AUD',
@@ -53,6 +53,15 @@ class LocalizationController extends GetxController implements GetxService {
       image: 'assets/images/canada.png',
     ),
   ];
+
+  Future<void> getUserCurrencyFromBackend() async {
+    await Get.find<UserStateService>().fetchUserInfo();
+    selectedCurrency.value = supportedCurrencies.firstWhere(
+      (CurrencyModel element) =>
+          element.code.toLowerCase() ==
+          Get.find<UserStateService>().user.value.currency.toLowerCase(),
+    );
+  }
 
   Map<String, Map<String, String>> translations =
       <String, Map<String, String>>{};

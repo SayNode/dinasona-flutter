@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../model/auth_response.dart';
+import '../../../model/currency_model.dart';
 import '../../../service/auth_service.dart';
+import '../../../service/localization_controller.dart';
 import '../../../service/user_state_service.dart';
 import '../../../util/password.dart';
 import '../../choose_path_page.dart';
@@ -45,6 +47,17 @@ class SignupController extends GetxController {
 
   void setShowPassword() {
     showPassword.value = !showPassword.value;
+  }
+
+  Future<void> saveUserCurrency(String currencyCode) async {
+    Get.find<LocalizationController>().selectedCurrency.value =
+        Get.find<LocalizationController>().supportedCurrencies.firstWhere(
+              (CurrencyModel element) => element.code == currencyCode,
+            );
+
+    await userStateService.updateUserInfo(<String, String>{
+      'currency': currencyCode,
+    });
   }
 
   Future<void> signUpSubmit() async {

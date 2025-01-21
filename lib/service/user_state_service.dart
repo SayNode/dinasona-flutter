@@ -20,6 +20,7 @@ import '../model/donor_statistics.dart';
 import '../model/user.dart';
 import '../util/constants.dart';
 import 'api_service.dart';
+import 'localization_controller.dart';
 import 'logger_service.dart';
 
 class UserStateService extends GetxService {
@@ -51,6 +52,7 @@ class UserStateService extends GetxService {
         await fetchBeneficiaryStatistics();
         //await fetchUserNeeds();
       }
+      await Get.find<LocalizationController>().getUserCurrencyFromBackend();
     }
     _hasBeenInitialized = true;
   }
@@ -137,6 +139,7 @@ class UserStateService extends GetxService {
           },
         ),
       );
+
       if (response.statusCode == 200) {
         final Map<String, dynamic> decodedResponse =
             response.data as Map<String, dynamic>;

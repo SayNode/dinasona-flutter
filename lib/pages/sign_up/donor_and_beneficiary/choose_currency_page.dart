@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../model/currency_model.dart';
+import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
@@ -17,28 +21,8 @@ class ChooseCurrencyPage extends GetView<SignupController> {
   Widget build(BuildContext context) {
     final CustomTheme dinasonaTheme = Get.put(ThemeService()).theme;
     Get.put(SignupController());
-    final List<Map<String, String>> languages = <Map<String, String>>[
-      <String, String>{
-        'name': 'Swiss Frank',
-        'code': 'CHF',
-        'image': 'assets/images/switzerland.png',
-      },
-      <String, String>{
-        'name': 'Australian Dollar',
-        'code': 'AUD',
-        'image': 'assets/images/australia.png',
-      },
-      <String, String>{
-        'name': 'British Pound',
-        'code': 'GBP',
-        'image': 'assets/images/great_britain.png',
-      },
-      <String, String>{
-        'name': 'Canadian Dollar',
-        'code': 'CAD',
-        'image': 'assets/images/canada.png',
-      }
-    ];
+    final List<CurrencyModel> currencies =
+        Get.find<LocalizationController>().supportedCurrencies;
 
     return CustomScaffold(
       body: SingleChildScrollView(
@@ -59,7 +43,7 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                   color: dinasonaTheme.moonstone,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: languages.length,
+                    itemCount: currencies.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         width: double.infinity,
@@ -72,11 +56,13 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                           borderRadius: BorderRadius.circular(10),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(10),
-                            onTap: () {
-                              // Save selected currency
-                              //TODO julien
-                              Get.to<void>(
-                                () => const BeneficiaryRootPage(),
+                            onTap: () async {
+                              await controller
+                                  .saveUserCurrency(currencies[index].code);
+                              unawaited(
+                                Get.to<void>(
+                                  () => const BeneficiaryRootPage(),
+                                ),
                               );
                             },
                             child: Padding(
@@ -89,7 +75,7 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                                   CircleAvatar(
                                     radius: 24,
                                     backgroundImage:
-                                        AssetImage(languages[index]['image']!),
+                                        AssetImage(currencies[index].image),
                                   ),
                                   const SizedBox(width: 15),
                                   Column(
@@ -97,13 +83,13 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        languages[index]['name']!,
+                                        currencies[index].name,
                                         style: CustomTypography.fromColor(
                                           dinasonaTheme.shadowed,
                                         ).k16Reg,
                                       ),
                                       Text(
-                                        languages[index]['code']!,
+                                        currencies[index].sign,
                                         style: CustomTypography.fromColor(
                                           dinasonaTheme.shadowed,
                                         ).k16Reg,

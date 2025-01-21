@@ -91,7 +91,7 @@ class CurrencyConversionService extends GetxService {
         response = await http.get(
           Uri.parse(
             // TODO replace with the correct currency
-            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency.value.sign}',
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${localizationController.selectedCurrency.value.code.toLowerCase()}',
           ),
         );
 
@@ -108,7 +108,7 @@ class CurrencyConversionService extends GetxService {
         // ignore: avoid_dynamic_calls, join_return_with_assignment
         conversionRateBTCUserCurrency = double.parse(
           // ignore: avoid_dynamic_calls
-          data['bitcoin'][localizationController.selectedCurrency.value.sign
+          data['bitcoin'][localizationController.selectedCurrency.value.code
                   .toLowerCase()]
               .toString(),
         );

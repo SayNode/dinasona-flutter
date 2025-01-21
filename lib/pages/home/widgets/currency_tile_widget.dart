@@ -10,7 +10,7 @@ import '../../../util/util.dart';
 class CurrencyTileWidget extends StatelessWidget {
   const CurrencyTileWidget({
     required this.imageUrl,
-    required this.code,
+    required this.sign,
     required this.name,
     super.key,
     this.onTap,
@@ -18,7 +18,7 @@ class CurrencyTileWidget extends StatelessWidget {
 
   final void Function()? onTap;
   final String imageUrl;
-  final String code;
+  final String sign;
   final String name;
 
   @override
@@ -45,7 +45,7 @@ class CurrencyTileWidget extends StatelessWidget {
               ),
               const SizedBox(width: 15),
               Text(
-                code,
+                sign,
                 style: CustomTypography.fromColor(
                   theme.shadowed,
                 ).k16Reg,
