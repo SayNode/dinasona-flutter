@@ -54,7 +54,7 @@ class CurrencyPopup extends GetView<CurrencyController> {
                 ),
               ),
               CurrencyTileWidget(
-                imageUrl: controller.chosenCurrency.value.imageUrl,
+                imageUrl: controller.chosenCurrency.value.image,
                 code: controller.chosenCurrency.value.code,
                 name: controller.chosenCurrency.value.name,
               ),
@@ -83,7 +83,7 @@ class CurrencyPopup extends GetView<CurrencyController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: CurrencyTileWidget(
-                        imageUrl: controller.currency[index].imageUrl,
+                        imageUrl: controller.currency[index].image,
                         code: controller.currency[index].code,
                         name: controller.currency[index].name,
                         onTap: () {

@@ -152,7 +152,7 @@ class NeedCard extends StatelessWidget {
                               return const CircularProgressIndicator();
                             }
                             return Text(
-                              '${localizationController.selectedCurrency['sign']} ${controller.needAmountInUserCurrency.value.toStringAsFixed(1)}',
+                              '${localizationController.selectedCurrency.value.sign} ${controller.needAmountInUserCurrency.value.toStringAsFixed(1)}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(

@@ -1,0 +1,25 @@
+import 'package:get/get.dart';
+
+import '../../model/need.dart';
+import '../../service/currency_conversion_service.dart';
+
+class AlternateNeedCardController extends GetxController {
+  AlternateNeedCardController({required this.need});
+  final CurrencyConversionService currencyConversionService =
+      Get.find<CurrencyConversionService>();
+  final Need need;
+  final RxDouble needAmountInUserCurrency = 0.0.obs;
+  final RxBool isLoadingCurrency = true.obs;
+
+  @override
+  Future<dynamic> onInit() async {
+    isLoadingCurrency.value = true;
+    super.onInit();
+
+    final double userTargetCurrencyRate =
+        await currencyConversionService.fetchUserTargetCurrencyRate('usd');
+    needAmountInUserCurrency.value = need.amount * userTargetCurrencyRate;
+
+    isLoadingCurrency.value = false;
+  }
+}

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../model/currency_model.dart';
 import '../model/language_model.dart';
 import 'storage/storage_service.dart';
 
@@ -19,42 +20,38 @@ class LocalizationController extends GetxController implements GetxService {
   bool defaulLanguage = true;
   bool defaultCurrencie = true;
   // todo Julien
-  Map<String, String> selectedCurrency = <String, String>{
-    /* 'name': 'Swiss Frank',
-    'code': 'CHF',
-    'sign': 'CHF',
-    'image': 'assets/images/switzerland.png', */
-    'name': 'Australian Dollar',
-    'code': 'AUD',
-    'sign': r'AU$',
-    'image': 'assets/images/australia.png',
-  };
+  Rx<CurrencyModel> selectedCurrency = CurrencyModel(
+    name: 'Australian Dollar',
+    code: 'AUD',
+    sign: r'AU$',
+    image: 'assets/images/australia.png',
+  ).obs;
 
-  final List<Map<String, String>> supportedCurrencies = <Map<String, String>>[
-    <String, String>{
-      'name': 'Swiss Frank',
-      'code': 'CHF',
-      'sign': 'CHF',
-      'image': 'assets/images/switzerland.png',
-    },
-    <String, String>{
-      'name': 'Australian Dollar',
-      'code': 'AUD',
-      'sign': r'AU$',
-      'image': 'assets/images/australia.png',
-    },
-    <String, String>{
-      'name': 'British Pound',
-      'code': 'GBP',
-      'sign': '£',
-      'image': 'assets/images/great_britain.png',
-    },
-    <String, String>{
-      'name': 'Canadian Dollar',
-      'code': 'CAD',
-      'sign': r'CA$',
-      'image': 'assets/images/canada.png',
-    }
+  final List<CurrencyModel> supportedCurrencies = <CurrencyModel>[
+    CurrencyModel(
+      name: 'Australian Dollar',
+      code: 'AUD',
+      sign: r'AU$',
+      image: 'assets/images/australia.png',
+    ),
+    CurrencyModel(
+      name: 'Swiss Frank',
+      code: 'CHF',
+      sign: 'CHF',
+      image: 'assets/images/switzerland.png',
+    ),
+    CurrencyModel(
+      name: 'British Pound',
+      code: 'GBP',
+      sign: '£',
+      image: 'assets/images/great_britain.png',
+    ),
+    CurrencyModel(
+      name: 'Canadian Dollar',
+      code: 'CAD',
+      sign: r'CA$',
+      image: 'assets/images/canada.png',
+    ),
   ];
 
   Map<String, Map<String, String>> translations =

@@ -73,8 +73,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
               ),
             ),
             Text(
-              Get.find<LocalizationController>().selectedCurrency['sign'] ??
-                  r'$',
+              Get.find<LocalizationController>().selectedCurrency.value.sign,
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
             ),
           ],

@@ -1,11 +1,13 @@
 class CurrencyModel {
   CurrencyModel({
-    required this.imageUrl,
+    required this.image,
     required this.name,
     required this.code,
+    required this.sign,
   });
 
-  String imageUrl;
+  String image;
   String name;
   String code;
+  String sign;
 }

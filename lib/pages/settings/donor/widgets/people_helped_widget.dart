@@ -39,12 +39,12 @@ class PeopleHelpedWidget extends StatelessWidget {
               Obx(
                 () => Get.find<WalletService>().isWalletConnected.value
                     ? Text(
-                        '${Get.find<LocalizationController>().selectedCurrency['sign']} ${Get.find<WalletService>().amountSentInUserCurrency.value}',
+                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} ${Get.find<WalletService>().amountSentInUserCurrency.value}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k36Bold,
                       )
                     : Text(
-                        '${Get.find<LocalizationController>().selectedCurrency['sign']} 0.0',
+                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} 0.0',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k36Bold,
                       ),

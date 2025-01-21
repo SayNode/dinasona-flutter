@@ -42,7 +42,7 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(
-              localizationController.selectedCurrency['code'] ?? 'usd',
+              localizationController.selectedCurrency.value.sign,
               textAlign: TextAlign.center,
               style: CustomTypography.fromColor(theme.shadowed).k14Reg,
             ),
