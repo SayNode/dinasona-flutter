@@ -6,7 +6,7 @@
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
-                "API_URL=prod.devdinasona.ch",
+                "API_URL=dev.devdinasona.ch",
                 "--dart-define",
                 "BREEZ_API_KEY=",
             ]
