@@ -135,9 +135,12 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
               ],
             ),
             Gap(getRelativeHeight(20)),
-            Text(
-              beneficiary.bio,
-              style: CustomTypography.fromColor(theme.graphite).k16Reg,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                beneficiary.bio,
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
+              ),
             ),
             Gap(getRelativeHeight(40)),
             Align(
