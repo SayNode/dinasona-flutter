@@ -34,7 +34,8 @@ class NetworkService extends GetxService {
     }
   }
 
-  Future<void> init() async {
+  @override
+  void onInit() {
     try {
       isConnectedToInternet.bindStream(
         flutterNetworkConnectivity.getInternetAvailabilityStream(),
