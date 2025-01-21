@@ -56,11 +56,18 @@ class LocalizationController extends GetxController implements GetxService {
 
   Future<void> getUserCurrencyFromBackend() async {
     await Get.find<UserStateService>().fetchUserInfo();
-    selectedCurrency.value = supportedCurrencies.firstWhere(
-      (CurrencyModel element) =>
-          element.code.toLowerCase() ==
-          Get.find<UserStateService>().user.value.currency.toLowerCase(),
-    );
+    final String savedCurrency =
+        Get.find<UserStateService>().user.value.currency.toLowerCase();
+
+    if (savedCurrency == '') {
+      await Get.find<UserStateService>().updateUserInfo(<String, String>{
+        'currency': selectedCurrency.value.code.toLowerCase(),
+      });
+    } else {
+      selectedCurrency.value = supportedCurrencies.firstWhere(
+        (CurrencyModel element) => element.code.toLowerCase() == savedCurrency,
+      );
+    }
   }
 
   Map<String, Map<String, String>> translations =

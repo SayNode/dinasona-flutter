@@ -147,6 +147,7 @@ void main() async {
     final AuthResponse response = await authService.silentLogin();
     if (response.success) {
       await Get.find<WalletService>().connectToWalletAfterSignIn();
+      await Get.find<LocalizationController>().getUserCurrencyFromBackend();
 
       initialPage = Get.find<UserStateService>().user.value.isDonor
           ? const DonorRootPage()
