@@ -9,17 +9,18 @@ import 'package:flutter/material.dart';
 import 'color.dart';
 
 class CustomTheme extends ThemeExtension<CustomTheme> {
-  const CustomTheme(
-      {required this.amberglow,
-      required this.ferngreen,
-      required this.moonstone,
-      required this.shadowed,
-      required this.inferno,
-      required this.silvershine,
-      required this.graphite,
-      required this.snowfall,
-      required this.colorScheme,
-      required this.progressIndicatorTheme,});
+  const CustomTheme({
+    required this.amberglow,
+    required this.ferngreen,
+    required this.moonstone,
+    required this.shadowed,
+    required this.inferno,
+    required this.silvershine,
+    required this.graphite,
+    required this.snowfall,
+    required this.colorScheme,
+    required this.progressIndicatorTheme,
+  });
 
   final Color amberglow;
 
