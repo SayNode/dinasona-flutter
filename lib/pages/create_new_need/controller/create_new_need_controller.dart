@@ -213,6 +213,7 @@ class CreateNewNeedController extends GetxController {
     if (userStateService.user.value.isDonor) {
       donorRootController.changeTabIndex(2);
       Get.back();
+
       if (Get.currentRoute.contains('DIALOG')) {
         // Get back a third time because the user is in a dialog
         // This is the case when the donor clicks on a category -> popup -> add wallet screen
@@ -221,7 +222,11 @@ class CreateNewNeedController extends GetxController {
     } else {
       beneficiaryRootController.changeTabIndex(2);
     }
-    Get.back();
+
+    if (!Get.currentRoute.contains('BeneficiaryRootPage')) {
+      Get.back();
+    }
+
     onClose();
   }
 
