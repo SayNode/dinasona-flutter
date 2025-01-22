@@ -64,7 +64,11 @@ class CreateNewNeedController extends GetxController {
               !inboundError.value.isNotEmpty;
     });
 
-    await Get.find<BreezService>().getBalanceInSatoshis();
+    try {
+      await Get.find<BreezService>().getBalanceInSatoshis();
+    } catch (_) {
+      // No wallet connected -> Is handled
+    }
 
     try {
       pageController.dispose();
@@ -113,7 +117,8 @@ class CreateNewNeedController extends GetxController {
     receivingLimitsInSatoshi =
         Get.find<BreezService>().liquidSendReceiveLimitsInUserCurrency.receive;
 
-    if (receiveUserCurrencyAmount < receivingLimitsInSatoshi.minUserCurrency ||
+    if (receiveUserCurrencyAmount <
+            receivingLimitsInSatoshi.minUserCurrency - 0.01 ||
         receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {
       inboundError.value =
           'Amount must be between ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}'

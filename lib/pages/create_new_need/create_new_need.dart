@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../model/need.dart';
+import '../../service/logger_service.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
@@ -55,14 +56,19 @@ class CreateNewNeed extends GetView<CreateNewNeedController> {
                       GestureDetector(
                         onTap: () {
                           // Navigate to the tapped page
-                          controller.pageController.animateToPage(
-                            i,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                          // Update the current page and tab
-                          controller.currentPage.value = i;
-                          controller.currentTab.value = NeedsTab.values[i];
+                          try {
+                            controller.pageController.animateToPage(
+                              i,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                            // Update the current page and tab
+                            controller.currentPage.value = i;
+                            controller.currentTab.value = NeedsTab.values[i];
+                          } catch (error) {
+                            Get.find<LoggerService>()
+                                .log('Error navigating to page: $error');
+                          }
                         },
                         child: ProgressBar(
                           selected: controller.currentPage.value == i,

@@ -124,7 +124,8 @@ class ReceivePaymentController extends GetxController {
     final double receiveUserCurrencyAmount =
         double.parse(receiveBTCInputUserCurrency.text);
 
-    if (receiveUserCurrencyAmount < receivingLimitsInSatoshi.minUserCurrency ||
+    if (receiveUserCurrencyAmount <
+            receivingLimitsInSatoshi.minUserCurrency - 0.01 ||
         receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {
       error.value =
           'Amount must be between ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}'

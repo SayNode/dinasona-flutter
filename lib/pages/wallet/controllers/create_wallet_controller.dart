@@ -39,15 +39,22 @@ class CreateWalletController extends GetxController {
       <RxString>[''.obs, ''.obs, ''.obs].obs;
 
   void onSeedPhraseTap(String word) {
-    if (seedPhraseTapIndex.value == 0) {
-      seedConfirmationInputs[0].value = word;
-      seedPhraseTapIndex.value++;
-    } else if (seedPhraseTapIndex.value == 1) {
-      seedConfirmationInputs[1].value = word;
-      seedPhraseTapIndex.value++;
-    } else if (seedPhraseTapIndex.value == 2) {
-      seedConfirmationInputs[2].value = word;
-      seedPhraseTapIndex.value = 0;
+    if (seedConfirmationInputs.any(
+          (RxString element) => element.value.isEmpty,
+        ) &&
+        !seedConfirmationInputs.any(
+          (RxString element) => element.value == word,
+        )) {
+      if (seedPhraseTapIndex.value == 0) {
+        seedConfirmationInputs[0].value = word;
+        seedPhraseTapIndex.value++;
+      } else if (seedPhraseTapIndex.value == 1) {
+        seedConfirmationInputs[1].value = word;
+        seedPhraseTapIndex.value++;
+      } else if (seedPhraseTapIndex.value == 2) {
+        seedConfirmationInputs[2].value = word;
+        seedPhraseTapIndex.value = 0;
+      }
     }
   }
 

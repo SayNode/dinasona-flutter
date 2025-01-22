@@ -9,6 +9,7 @@ import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
+import '../../../util/no_leading_zero_textformatter.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../controllers/receive_payment_controller.dart';
@@ -33,6 +34,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                NoLeadingZeroFormatter(),
               ],
               style: CustomTypography.fromColor(theme.amberglow).k24Bold,
               decoration: const InputDecoration(
@@ -66,6 +68,7 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                NoLeadingZeroFormatter(),
               ],
               style: CustomTypography.fromColor(theme.shadowed).k24Bold,
               decoration: const InputDecoration(
