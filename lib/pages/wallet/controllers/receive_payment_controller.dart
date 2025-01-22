@@ -122,7 +122,7 @@ class ReceivePaymentController extends GetxController {
     final LiquidLimitUserCurrency receivingLimitsInSatoshi =
         breezService.liquidSendReceiveLimitsInUserCurrency.receive;
     final double receiveUserCurrencyAmount =
-        double.parse(receiveBTCInputUserCurrency.text) + 0.01;
+        double.parse(receiveBTCInputUserCurrency.text);
 
     if (receiveUserCurrencyAmount < receivingLimitsInSatoshi.minUserCurrency ||
         receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {

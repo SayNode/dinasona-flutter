@@ -43,7 +43,7 @@ abstract class BreezBaseService extends GetxService {
           liquid_sdk.ConnectRequest(mnemonic: seedPhrase, config: fullConfig);
 
       await breezSDKLiquid.connect(req: connectRequest);
-      unawaited(_getSendReceiveLimits());
+      await _getSendReceiveLimits();
     } catch (e) {
       // ignore: only_throw_errors
       throw 'Error connecting to liquid: $e';

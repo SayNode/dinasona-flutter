@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../model/liquid_limits.dart';
 import '../../../model/need.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
+import '../../../service/localization_controller.dart';
 import '../../../service/need_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
+import '../../../util/constants.dart';
 import '../../../util/popup_manager.dart';
 import '../../root/controllers/beneficiary_root_controller.dart';
 import '../../root/controllers/donor_root_page_controller.dart';
@@ -42,6 +45,10 @@ class CreateNewNeedController extends GetxController {
   final RxBool isEditingNeed = false.obs;
   final RxInt editingNeedId = 0.obs;
   final RxBool canSaveNewNeed = true.obs;
+  final RxString inboundError = ''.obs;
+
+  LiquidLimitUserCurrency receivingLimitsInSatoshi =
+      LiquidLimitUserCurrency(minUserCurrency: 0, maxUserCurrency: 0);
 
   Need? need;
 
@@ -52,8 +59,13 @@ class CreateNewNeedController extends GetxController {
       isScreen1ButtonActive.value = screen1.text.isNotEmpty.obs.value;
     });
     screen3.addListener(() {
-      isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
+      checkInboundOutboundLimit();
+      isScreen3ButtonActive.value =
+          double.parse(screen3.text == '' ? '0' : screen3.text) > 0 &&
+              !inboundError.value.isNotEmpty;
     });
+
+    await Get.find<BreezService>().getBalanceInSatoshis();
 
     try {
       pageController.dispose();
@@ -87,6 +99,29 @@ class CreateNewNeedController extends GetxController {
       pageController.dispose();
     } catch (_) {}
     super.onClose();
+  }
+
+  void checkInboundOutboundLimit() {
+    final double receiveUserCurrencyAmount =
+        double.parse(screen3.text == '' ? '0' : screen3.text);
+
+    if (receiveUserCurrencyAmount <= 0) {
+      inboundError.value = '';
+      return;
+    }
+
+    // Load inbound liquid limits
+    receivingLimitsInSatoshi =
+        Get.find<BreezService>().liquidSendReceiveLimitsInUserCurrency.receive;
+
+    if (receiveUserCurrencyAmount < receivingLimitsInSatoshi.minUserCurrency ||
+        receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {
+      inboundError.value =
+          'Amount must be between ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}'
+              .tr;
+    } else {
+      inboundError.value = '';
+    }
   }
 
   void initializePageController() {

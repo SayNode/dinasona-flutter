@@ -65,6 +65,14 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
             SvgPicture.asset('assets/images/question_mark.svg'),
           ],
         ),
+        Obx(
+          () => controller.inboundError.isNotEmpty
+              ? Text(
+                  controller.inboundError.value,
+                  style: CustomTypography.fromColor(theme.inferno).k14Reg,
+                )
+              : const SizedBox(),
+        ),
         const Spacer(),
         Obx(
           () => Row(
