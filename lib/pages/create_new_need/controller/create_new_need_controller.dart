@@ -65,12 +65,6 @@ class CreateNewNeedController extends GetxController {
     });
 
     try {
-      await Get.find<BreezService>().getBalanceInSatoshis();
-    } catch (_) {
-      // No wallet connected -> Is handled
-    }
-
-    try {
       pageController.dispose();
     } catch (_) {}
     pageController = PageController();
@@ -93,6 +87,12 @@ class CreateNewNeedController extends GetxController {
       screen3.text =
           (double.parse(tmpAmount) / userUSDCurrencyRate).toStringAsFixed(2);
       screen4.text = need!.description;
+    }
+
+    try {
+      await Get.find<BreezService>().getBalanceInSatoshis();
+    } catch (_) {
+      // No wallet connected -> Is handled
     }
   }
 
