@@ -84,7 +84,8 @@ class CurrencyConversionService extends GetxService {
   Future<double> fetchConversionRateBTCUserCurrency() async {
     http.Response response = http.Response('', 999);
     print(
-        'test3 ${localizationController.selectedCurrency.value.code.toLowerCase()}');
+      'test3 ${localizationController.selectedCurrency.value.code.toLowerCase()}',
+    );
     try {
       if (!currencyConversionRateDebouncing) {
         currencyConversionRateDebouncing = true;
