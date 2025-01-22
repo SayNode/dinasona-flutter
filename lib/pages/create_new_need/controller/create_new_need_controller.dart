@@ -10,6 +10,7 @@ import '../../../model/need.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
 import '../../../service/localization_controller.dart';
+import '../../../service/logger_service.dart';
 import '../../../service/need_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
@@ -210,10 +211,14 @@ class CreateNewNeedController extends GetxController {
   }
 
   void selectTab(NeedsTab tab) {
-    pageController.jumpToPage(
-      tab.index,
-    );
-    currentTab.value = tab;
+    try {
+      pageController.jumpToPage(
+        tab.index,
+      );
+      currentTab.value = tab;
+    } catch (e) {
+      Get.find<LoggerService>().log('Error selecting tab: $e');
+    }
   }
 
   // Need amounts are always saved in USD
