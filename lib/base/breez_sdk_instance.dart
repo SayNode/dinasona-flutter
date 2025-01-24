@@ -21,12 +21,21 @@ class BreezSDKLiquid {
 
   liquid_sdk.BindingLiquidSdk? get instance => _instance;
 
+  RxBool initialSyncDone = false.obs;
+  bool hasManuallyDisconnectedStream = false;
+
+  Future<void> waitForInitialSync() async {
+    if (initialSyncDone.value || hasManuallyDisconnectedStream) {
+      return;
+    }
+    await initialSyncDone.stream.firstWhere((bool done) => done == true);
+  }
+
   Future<void> connect({
     required liquid_sdk.ConnectRequest req,
   }) async {
     try {
       _instance = await liquid_sdk.connect(req: req);
-
       //_initializeEventsStream();
       //_subscribeToSdkStreams();
 
@@ -53,6 +62,8 @@ class BreezSDKLiquid {
     _instance!.disconnect();
     //_unsubscribeFromSdkStreams();
     unsubscribeFromEventStream();
+    initialSyncDone.value = false;
+    hasManuallyDisconnectedStream = true;
     _instance = null;
   }
 
@@ -307,6 +318,8 @@ class BreezSDKLiquid {
           loggerService.log(
             '$streamPrintPrefix Synchronized',
           );
+          print('test Synchronized');
+          initialSyncDone.value = true;
         }
         await _fetchWalletData();
       },
