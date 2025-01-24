@@ -123,7 +123,7 @@ class WalletService extends GetxService {
         await getTransactions();
         isWalletConnected.value = true;
       } catch (e) {
-        Get.find<LoggerService>().log('Error connecting to node: $e');
+        Get.find<LoggerService>().log('Error connecting to liquid: $e');
       }
     }
   }
