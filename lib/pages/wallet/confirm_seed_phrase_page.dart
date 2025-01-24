@@ -81,9 +81,11 @@ class ConfirmSeedPhrasePage extends GetView<CreateWalletController> {
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(15),
                           child: InkWell(
-                            onTap: () => controller.onSeedPhraseTap(
-                              controller.mixedSeedPhrase[index * 3],
-                            ),
+                            onTap: () {
+                              controller.onSeedPhraseTap(
+                                controller.mixedSeedPhrase[index * 3],
+                              );
+                            },
                             borderRadius: BorderRadius.circular(15),
                             child: Container(
                               alignment: Alignment.center,

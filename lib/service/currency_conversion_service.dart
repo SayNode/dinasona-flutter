@@ -83,7 +83,6 @@ class CurrencyConversionService extends GetxService {
 
   Future<double> fetchConversionRateBTCUserCurrency() async {
     http.Response response = http.Response('', 999);
-
     try {
       if (!currencyConversionRateDebouncing) {
         currencyConversionRateDebouncing = true;

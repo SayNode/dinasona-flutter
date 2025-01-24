@@ -8,6 +8,7 @@ import '../../service/localization_controller.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
+import '../../util/no_leading_zero_textformatter.dart';
 import '../../util/util.dart';
 import '../../widgets/dinasona_button.dart';
 import '../../widgets/dinasona_textfield.dart';
@@ -36,8 +37,7 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
           controller: controller.screen3,
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-            FilteringTextInputFormatter.digitsOnly,
+            NoLeadingZeroFormatter(),
           ],
           suffixIcon: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -64,6 +64,14 @@ class NeedScreen3 extends GetView<CreateNewNeedController> {
             Gap(getRelativeWidth(5)),
             SvgPicture.asset('assets/images/question_mark.svg'),
           ],
+        ),
+        Obx(
+          () => controller.inboundError.isNotEmpty
+              ? Text(
+                  controller.inboundError.value,
+                  style: CustomTypography.fromColor(theme.inferno).k14Reg,
+                )
+              : const SizedBox(),
         ),
         const Spacer(),
         Obx(

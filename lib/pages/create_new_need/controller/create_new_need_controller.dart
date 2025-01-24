@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../model/liquid_limits.dart';
 import '../../../model/need.dart';
 import '../../../service/breez_service.dart';
 import '../../../service/currency_conversion_service.dart';
+import '../../../service/localization_controller.dart';
+import '../../../service/logger_service.dart';
 import '../../../service/need_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../../service/wallet_service.dart';
@@ -42,6 +45,10 @@ class CreateNewNeedController extends GetxController {
   final RxBool isEditingNeed = false.obs;
   final RxInt editingNeedId = 0.obs;
   final RxBool canSaveNewNeed = true.obs;
+  final RxString inboundError = ''.obs;
+
+  LiquidLimitUserCurrency receivingLimitsInSatoshi =
+      LiquidLimitUserCurrency(minUserCurrency: 0, maxUserCurrency: 0);
 
   Need? need;
 
@@ -52,7 +59,10 @@ class CreateNewNeedController extends GetxController {
       isScreen1ButtonActive.value = screen1.text.isNotEmpty.obs.value;
     });
     screen3.addListener(() {
-      isScreen3ButtonActive.value = screen3.text.isNotEmpty.obs.value;
+      checkInboundOutboundLimit();
+      isScreen3ButtonActive.value =
+          double.parse(screen3.text == '' ? '0' : screen3.text) > 0 &&
+              !inboundError.value.isNotEmpty;
     });
 
     try {
@@ -79,6 +89,12 @@ class CreateNewNeedController extends GetxController {
           (double.parse(tmpAmount) / userUSDCurrencyRate).toStringAsFixed(2);
       screen4.text = need!.description;
     }
+
+    try {
+      await Get.find<BreezService>().getBalanceInSatoshis();
+    } catch (_) {
+      // No wallet connected -> Is handled
+    }
   }
 
   @override
@@ -87,6 +103,30 @@ class CreateNewNeedController extends GetxController {
       pageController.dispose();
     } catch (_) {}
     super.onClose();
+  }
+
+  void checkInboundOutboundLimit() {
+    final double receiveUserCurrencyAmount =
+        double.parse(screen3.text == '' ? '0' : screen3.text);
+
+    if (receiveUserCurrencyAmount <= 0) {
+      inboundError.value = '';
+      return;
+    }
+
+    // Load inbound liquid limits
+    receivingLimitsInSatoshi =
+        Get.find<BreezService>().liquidSendReceiveLimitsInUserCurrency.receive;
+
+    if (receiveUserCurrencyAmount <
+            receivingLimitsInSatoshi.minUserCurrency - 0.01 ||
+        receiveUserCurrencyAmount > receivingLimitsInSatoshi.maxUserCurrency) {
+      inboundError.value =
+          'Amount must be between ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.minUserCurrency.toStringAsFixed(2)} and ${Get.find<LocalizationController>().selectedCurrency.value.sign} ${receivingLimitsInSatoshi.maxUserCurrency.toStringAsFixed(2)}'
+              .tr;
+    } else {
+      inboundError.value = '';
+    }
   }
 
   void initializePageController() {
@@ -171,10 +211,14 @@ class CreateNewNeedController extends GetxController {
   }
 
   void selectTab(NeedsTab tab) {
-    pageController.jumpToPage(
-      tab.index,
-    );
-    currentTab.value = tab;
+    try {
+      pageController.jumpToPage(
+        tab.index,
+      );
+      currentTab.value = tab;
+    } catch (e) {
+      Get.find<LoggerService>().log('Error selecting tab: $e');
+    }
   }
 
   // Need amounts are always saved in USD

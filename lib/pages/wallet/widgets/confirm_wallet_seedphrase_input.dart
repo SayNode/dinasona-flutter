@@ -26,7 +26,15 @@ class ConfirmWalletSeedphraseInput extends GetView<CreateWalletController> {
       child: GestureDetector(
         onTap: () {
           controller.seedConfirmationInputs[confirmationIndex].value = '';
-          controller.seedPhraseTapIndex.value = confirmationIndex;
+          if (!controller.seedConfirmationInputs
+              .any((RxString element) => element.value.isNotEmpty)) {
+            controller.seedPhraseTapIndex.value = 0;
+          } else if (controller.seedConfirmationInputs[1].value == '' &&
+              controller.seedConfirmationInputs[2].value == '') {
+            controller.seedPhraseTapIndex.value = 1;
+          } else {
+            controller.seedPhraseTapIndex.value = confirmationIndex;
+          }
         },
         child: Container(
           margin: EdgeInsets.all(getRelativeWidth(5)),
