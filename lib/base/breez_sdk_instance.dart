@@ -318,7 +318,7 @@ class BreezSDKLiquid {
           loggerService.log(
             '$streamPrintPrefix Synchronized',
           );
-          print('test Synchronized');
+
           initialSyncDone.value = true;
         }
         await _fetchWalletData();
