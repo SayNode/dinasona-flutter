@@ -76,7 +76,6 @@ class CurrencyConversionService extends GetxService {
         conversionRates.value.CHFvsUSR = 1 / conversionRates.value.USRvsCHF;
         conversionRates.value.printAllRates();
       } else if (response.statusCode == 429 || response.statusCode == 999) {
-        print('test 123');
         return;
       } else {
         throw Exception(
