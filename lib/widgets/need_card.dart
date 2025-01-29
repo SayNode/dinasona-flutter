@@ -42,7 +42,10 @@ class NeedCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: theme.snowfall,
+            color: need.status == NeedStatus.past
+                ? theme.ferngreen
+                : theme.snowfall,
+            width: need.status == NeedStatus.past ? 2 : 1,
           ),
         ),
         child: InkWell(

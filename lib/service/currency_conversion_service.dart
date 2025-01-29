@@ -67,8 +67,9 @@ class CurrencyConversionService extends GetxService {
           data['bitcoin'][targetCurrencyCodeClean].toString(),
         );
 
-        return conversionRateUserTargetCurrency =
-            userCurrencyToBTC / targetCurrencyToBTC;
+        return conversionRateUserTargetCurrency = double.parse(
+          (userCurrencyToBTC / targetCurrencyToBTC).toStringAsFixed(4),
+        );
       } else if (response.statusCode == 429) {
         return conversionRateUserTargetCurrency;
       } else {
@@ -106,11 +107,14 @@ class CurrencyConversionService extends GetxService {
         final data = json.decode(response.body);
         // ignore: avoid_dynamic_calls, join_return_with_assignment
         conversionRateBTCUserCurrency = double.parse(
-          // ignore: avoid_dynamic_calls
-          data['bitcoin'][localizationController.selectedCurrency.value.code
-                  .toLowerCase()]
-              .toString(),
+          double.parse(
+            // ignore: avoid_dynamic_calls
+            data['bitcoin'][localizationController.selectedCurrency.value.code
+                    .toLowerCase()]
+                .toString(),
+          ).toStringAsFixed(4),
         );
+
         return conversionRateBTCUserCurrency;
       } else if (response.statusCode == 429) {
         return conversionRateBTCUserCurrency;
@@ -150,8 +154,10 @@ class CurrencyConversionService extends GetxService {
         final data = json.decode(response.body);
         // ignore: avoid_dynamic_calls, join_return_with_assignment
         conversionRateBTCvsUSD = double.parse(
-          // ignore: avoid_dynamic_calls
-          data['bitcoin']['usd'].toString(),
+          double.parse(
+            // ignore: avoid_dynamic_calls
+            data['bitcoin']['usd'].toString(),
+          ).toStringAsFixed(4),
         );
         return conversionRateBTCvsUSD;
       } else if (response.statusCode == 429) {
@@ -172,7 +178,9 @@ class CurrencyConversionService extends GetxService {
     try {
       final double rate = await fetchConversionRateBTCUserCurrency();
 
-      return amountInUserCurrency * (1 / rate);
+      return double.parse(
+        (amountInUserCurrency * (1 / rate)).toStringAsFixed(4),
+      );
     } catch (e) {
       logger.log('Failed to convert user currency to bitcoin: $e');
       return 0.0;
@@ -183,7 +191,7 @@ class CurrencyConversionService extends GetxService {
     try {
       final double rate = await fetchConversionRateBTCUserCurrency();
 
-      return amountInBitcoin * rate;
+      return double.parse((amountInBitcoin * rate).toStringAsFixed(4));
     } catch (e) {
       logger.log('Failed to convert bitcoin to user currency: $e');
       return 0.0;
@@ -193,7 +201,9 @@ class CurrencyConversionService extends GetxService {
   Future<double> convertSatoshiToUserCurrency(int amountInSatoshi) async {
     try {
       final double rate = await fetchConversionRateBTCUserCurrency();
-      return amountInSatoshi * (rate / 100000000);
+      return double.parse(
+        (amountInSatoshi * (rate / 100000000)).toStringAsFixed(4),
+      );
     } catch (e) {
       logger.log('Failed to convert satoshi to user currency: $e');
       return 0.0;

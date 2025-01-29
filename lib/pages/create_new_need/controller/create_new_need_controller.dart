@@ -58,8 +58,8 @@ class CreateNewNeedController extends GetxController {
     screen1.addListener(() {
       isScreen1ButtonActive.value = screen1.text.isNotEmpty.obs.value;
     });
-    screen3.addListener(() {
-      checkInboundOutboundLimit();
+    screen3.addListener(() async {
+      await checkInboundOutboundLimit();
       isScreen3ButtonActive.value =
           double.parse(screen3.text == '' ? '0' : screen3.text) > 0 &&
               !inboundError.value.isNotEmpty;
@@ -105,7 +105,7 @@ class CreateNewNeedController extends GetxController {
     super.onClose();
   }
 
-  void checkInboundOutboundLimit() {
+  Future<void> checkInboundOutboundLimit() async {
     final double receiveUserCurrencyAmount =
         double.parse(screen3.text == '' ? '0' : screen3.text);
 
@@ -113,6 +113,9 @@ class CreateNewNeedController extends GetxController {
       inboundError.value = '';
       return;
     }
+
+    // Fetch inbound liquid limits
+    await Get.find<BreezService>().getBalanceInSatoshis();
 
     // Load inbound liquid limits
     receivingLimitsInSatoshi =
@@ -232,10 +235,15 @@ class CreateNewNeedController extends GetxController {
         .replaceAll('(', '')
         .replaceAll(')', '');
 
-    final double userUSDCurrencyRate = 1 /
-        await Get.find<CurrencyConversionService>().fetchUserTargetCurrencyRate(
-          'usd',
-        );
+    final double userUSDCurrencyRate = double.parse(
+      (1 /
+              await Get.find<CurrencyConversionService>()
+                  .fetchUserTargetCurrencyRate(
+                'usd',
+              ))
+          .toStringAsFixed(4),
+    );
+
     final double needAmountInUSD =
         double.parse(screen3.text) * userUSDCurrencyRate;
 
@@ -290,8 +298,10 @@ class CreateNewNeedController extends GetxController {
         await Get.find<CurrencyConversionService>()
             .fetchConversionRateBTCvsUSD();
 
-    final int needAmountInSatoshi =
-        (((1 / currencyRateBTCvsUSD) * needAmountInUSD) * 100000000).round();
+    final int needAmountInSatoshi = double.parse(
+      (((1 / currencyRateBTCvsUSD) * needAmountInUSD) * 100000000)
+          .toStringAsFixed(4),
+    ).round();
 
     final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
       'Need invoice ::client_invoice',

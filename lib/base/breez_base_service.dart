@@ -99,7 +99,7 @@ abstract class BreezBaseService extends GetxService {
 
   Future<int> getBalanceInSatoshis() async {
     final int balance = await breezSDKLiquid.getBalanceInSatoshis();
-    unawaited(_getSendReceiveLimits());
+    await _getSendReceiveLimits();
 
     return balance;
   }
