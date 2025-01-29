@@ -103,12 +103,15 @@ class Need {
   }
 
   static NeedStatus _statusFromString(String status) {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'draft':
         return NeedStatus.draft;
       case 'published':
         return NeedStatus.ongoing;
+      case 'paid':
+      case 'unpaid':
       case 'closed':
+      case 'expired':
         return NeedStatus.past;
       default:
         return NeedStatus.draft;
