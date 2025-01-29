@@ -37,8 +37,9 @@ abstract class BreezBaseService extends GetxService {
         paymentTimeoutSec: defaultConfiguration.paymentTimeoutSec,
         zeroConfMinFeeRateMsat: defaultConfiguration.zeroConfMinFeeRateMsat,
         breezApiKey: Constants.breezAPIKey,
-        syncServiceUrl: '',
-        useDefaultExternalInputParsers: true,
+        syncServiceUrl: defaultConfiguration.syncServiceUrl,
+        useDefaultExternalInputParsers:
+            defaultConfiguration.useDefaultExternalInputParsers,
       );
 
       final liquid_sdk.ConnectRequest connectRequest =
