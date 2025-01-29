@@ -37,6 +37,8 @@ abstract class BreezBaseService extends GetxService {
         paymentTimeoutSec: defaultConfiguration.paymentTimeoutSec,
         zeroConfMinFeeRateMsat: defaultConfiguration.zeroConfMinFeeRateMsat,
         breezApiKey: Constants.breezAPIKey,
+        syncServiceUrl: '',
+        useDefaultExternalInputParsers: true,
       );
 
       final liquid_sdk.ConnectRequest connectRequest =
@@ -186,6 +188,8 @@ extension ConfigCopyWith on liquid_sdk.Config {
     BigInt? paymentTimeoutSec,
     int? zeroConfMinFeeRateMsat,
     String? breezApiKey,
+    String? syncServiceUrl,
+    bool? useDefaultExternalInputParsers,
   }) {
     return liquid_sdk.Config(
       liquidElectrumUrl: liquidElectrumUrl ?? this.liquidElectrumUrl,
@@ -197,6 +201,9 @@ extension ConfigCopyWith on liquid_sdk.Config {
       zeroConfMinFeeRateMsat:
           zeroConfMinFeeRateMsat ?? this.zeroConfMinFeeRateMsat,
       breezApiKey: breezApiKey ?? this.breezApiKey,
+      syncServiceUrl: syncServiceUrl ?? this.syncServiceUrl,
+      useDefaultExternalInputParsers:
+          useDefaultExternalInputParsers ?? this.useDefaultExternalInputParsers,
     );
   }
 }
