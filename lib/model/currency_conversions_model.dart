@@ -43,7 +43,6 @@ class CurrencyConversionsModel {
     // ignore: cascade_invocations
     fields.forEach((String key, double value) {
       loggerService.log('$key: ${value.toStringAsFixed(6)}');
-      print(key + ': ' + value.toStringAsFixed(6));
     });
   }
 }

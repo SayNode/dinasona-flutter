@@ -102,7 +102,7 @@ class CurrencyConversionService extends GetxService {
       return amountInSatoshi / 100000000;
     } catch (e) {
       logger.log('Failed to convert satoshi to x: $e');
-      return 0.0;
+      return 0;
     }
   }
 

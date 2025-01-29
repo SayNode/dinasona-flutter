@@ -36,6 +36,12 @@ class SendPaymentController extends GetxController {
   final RxBool feesCalculated = false.obs;
   final RxBool mainTransactionWentThrough = false.obs;
 
+  @override
+  void onInit() {
+    currencyConversionService.fetchConversionRates();
+    super.onInit();
+  }
+
   Future<void> getFees() async {
     feesCalculated.value = false;
     int tmpTransactionfee = 0;

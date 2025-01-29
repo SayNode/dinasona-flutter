@@ -24,7 +24,6 @@ import 'pages/login/donor_and_beneficiary/login_page.dart';
 import 'pages/root/beneficiary_root_page.dart';
 import 'pages/root/donor_root_page.dart';
 import 'service/auth_service.dart';
-import 'service/currency_conversion_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
 import 'service/main_bindings.dart';

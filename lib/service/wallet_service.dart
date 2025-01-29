@@ -119,6 +119,7 @@ class WalletService extends GetxService {
         await breezService.connectToLiquid(
           seedPhrase,
         );
+        await getBalanceInUserCurrency();
         await getTransactions();
         isWalletConnected.value = true;
       } catch (e) {

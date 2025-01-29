@@ -30,7 +30,9 @@ class ReceivePaymentController extends GetxController {
 
   @override
   void onInit() {
+    currencyConversionService.fetchConversionRates();
     super.onInit();
+
     receiveBTCInputBTC.addListener(
       () => _onPaymentChangedHandleDebounce(
         true,
@@ -103,7 +105,7 @@ class ReceivePaymentController extends GetxController {
                       otherValue)
                   .toString();
         } else {
-          receiveBTCInputBTC.text = receiveBTCInputUserCurrency.text =
+          receiveBTCInputBTC.text =
               (currencyConversionService.conversionRates.value.USRvsBTC *
                       otherValue)
                   .toString();
