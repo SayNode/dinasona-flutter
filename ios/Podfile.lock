@@ -20,14 +20,14 @@ PODS:
   - Firebase/Messaging (11.2.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 11.2.0)
-  - firebase_core (3.6.0):
+  - firebase_core (3.10.0):
     - Firebase/CoreOnly (= 11.2.0)
     - Flutter
-  - firebase_crashlytics (4.1.3):
+  - firebase_crashlytics (4.3.0):
     - Firebase/Crashlytics (= 11.2.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (15.1.3):
+  - firebase_messaging (15.2.0):
     - Firebase/Messaging (= 11.2.0)
     - firebase_core
     - Flutter
@@ -91,11 +91,11 @@ PODS:
     - nanopb (~> 3.30910.0)
     - PromisesSwift (~> 2.1)
   - Flutter (1.0.0)
-  - flutter_breez_liquid (0.5.0-rc3):
+  - flutter_breez_liquid (0.6.2):
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - flutter_native_splash (0.0.1):
+  - flutter_native_splash (2.4.3):
     - Flutter
   - flutter_network_connectivity (0.0.1):
     - Flutter
@@ -340,9 +340,9 @@ SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Firebase: 98e6bf5278170668a7983e12971a66b2cd57fc8c
-  firebase_core: 2bedc3136ec7c7b8561c6123ed0239387b53f2af
-  firebase_crashlytics: 37d104d457b51760b48504a93a12b3bf70995d77
-  firebase_messaging: 15d114e1a41fc31e4fbabcd48d765a19eec94a38
+  firebase_core: 5aefd8ed27ecc249c12e4b28a7e118a3b64269b3
+  firebase_crashlytics: e19478e0db41230a44730b133deaaaac2fb16980
+  firebase_messaging: 555ceb10dd16193b63ac2eac051df7e64e86485c
   FirebaseAnalytics: c36efd5710c60c17558650fa58c2066eca7e9265
   FirebaseCore: a282032ae9295c795714ded2ec9c522fc237f8da
   FirebaseCoreExtension: f1bc67a4702931a7caa097d8e4ac0a1b0d16720e
@@ -353,9 +353,9 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfigInterop: 7a7aebb9342d53913a5c890efa88e289d9e5c1bc
   FirebaseSessions: 655ff17f3cc1a635cbdc2d69b953878001f9e25b
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_breez_liquid: bddf8650ba92743c0fde6a78bdc1853b3b1ea85f
+  flutter_breez_liquid: e92f7ed47fd60e83acaffd9773f3b9da0956ab64
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
-  flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
+  flutter_native_splash: f71420956eb811e6d310720fee915f1d42852e7a
   flutter_network_connectivity: 4769b76bfc2f970ecfe3d9dbd5f23bb066f85a65
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
@@ -386,4 +386,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 986b2dbda61aa7c447f65758dbce40d87631f634
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

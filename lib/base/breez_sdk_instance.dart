@@ -187,7 +187,7 @@ class BreezSDKLiquid {
 
   Future<int> getBalanceInSatoshis() async {
     final liquid_sdk.GetInfoResponse walletInfo = await _instance!.getInfo();
-    final BigInt balanceSat = walletInfo.balanceSat;
+    final BigInt balanceSat = walletInfo.walletInfo.balanceSat;
     //final BigInt pendingSendSat = walletInfo.pendingSendSat;
     //final BigInt pendingReceiveSat = walletInfo.pendingReceiveSat;
 
