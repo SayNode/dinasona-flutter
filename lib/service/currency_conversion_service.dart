@@ -13,12 +13,12 @@ class CurrencyConversionService extends GetxService {
   final LoggerService logger = Get.find<LoggerService>();
   final LocalizationController localizationController =
       Get.find<LocalizationController>();
-  bool snackBarDebouncing = false;
+  /* bool snackBarDebouncing = false;
   bool currencyConversionRateDebouncing = false;
   bool currencyConversionRateDebouncingSecond = false;
   double conversionRateBTCUserCurrency = 0;
   double conversionRateUserTargetCurrency = 0;
-  double conversionRateBTCvsUSD = 0;
+  double conversionRateBTCvsUSD = 0; */
 
   bool conversionRatesFetchingDebouncingNew = false;
   Rx<CurrencyConversionsModel> conversionRates = CurrencyConversionsModel().obs;
@@ -88,13 +88,31 @@ class CurrencyConversionService extends GetxService {
     }
   }
 
+  int xToSatoshi(double amountInX) {
+    try {
+      return (amountInX * 100000000).toInt();
+    } catch (e) {
+      logger.log('Failed to convert x to satoshi: $e');
+      return 0;
+    }
+  }
+
+  double satoshiToX(double amountInSatoshi) {
+    try {
+      return amountInSatoshi / 100000000;
+    } catch (e) {
+      logger.log('Failed to convert satoshi to x: $e');
+      return 0.0;
+    }
+  }
+
   // Coingecko provides the most allowed requests per minute for the free plan
   // only works with crypto though - workaround:
   // 1. get the conversion rate from the user currency to bitcoin
   // 2. get the conversion rate from bitcoin to the target currency
   // 3. divide the conversion rate from the user currency to bitcoin by the
   //    conversion rate from bitcoin to the target currency
-  Future<double> fetchUserTargetCurrencyRate(String targetCurrencyCode) async {
+  /* Future<double> fetchUserTargetCurrencyRate(String targetCurrencyCode) async {
     http.Response response = http.Response('', 999);
     final String targetCurrencyCodeClean = targetCurrencyCode.toLowerCase();
     final String userCurrencyCodeClean =
@@ -274,4 +292,5 @@ class CurrencyConversionService extends GetxService {
       return 0.0;
     }
   }
+ */
 }

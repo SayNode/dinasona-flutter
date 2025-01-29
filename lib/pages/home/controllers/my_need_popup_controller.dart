@@ -24,9 +24,8 @@ class MyNeedPopupController extends GetxController {
     isLoadingCurrency.value = true;
     super.onInit();
 
-    final double userTargetCurrencyRate =
-        await currencyConversionService.fetchUserTargetCurrencyRate('usd');
-    needAmountInUserCurrency.value = need.amount * userTargetCurrencyRate;
+    needAmountInUserCurrency.value =
+        need.amount * currencyConversionService.conversionRates.value.USDvsUSR;
 
     isLoadingCurrency.value = false;
   }

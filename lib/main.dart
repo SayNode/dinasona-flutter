@@ -150,18 +150,6 @@ void main() async {
       await Get.find<LocalizationController>().getUserCurrencyFromBackend();
       await Get.find<WalletService>().connectToWalletAfterSignIn();
 
-      final CurrencyConversionService currencyConversionService =
-          Get.find<CurrencyConversionService>();
-
-      await currencyConversionService.fetchUserTargetCurrencyRate(
-        'usd',
-      );
-      await currencyConversionService.fetchConversionRateBTCUserCurrency();
-      await currencyConversionService.fetchConversionRateBTCvsUSD();
-      await currencyConversionService.fetchUserTargetCurrencyRate(
-        'chf',
-      );
-
       initialPage = Get.find<UserStateService>().user.value.isDonor
           ? const DonorRootPage()
           : const BeneficiaryRootPage();

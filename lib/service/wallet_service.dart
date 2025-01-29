@@ -54,18 +54,18 @@ class WalletService extends GetxService {
       }
       if (transaction.paymentType == PaymentType.send) {
         amountSentInUserCurrency.value +=
-            await currencyConversionService.convertSatoshiToUserCurrency(
-          transaction.amountSat.toInt(),
-        );
+            currencyConversionService.conversionRates.value.BTCvsUSR *
+                currencyConversionService
+                    .satoshiToX(transaction.amountSat.toDouble());
       }
 
       amountSentInUserCurrency.value =
           double.parse(amountSentInUserCurrency.toStringAsFixed(2));
 
       _transactionAmounts.add(
-        await currencyConversionService.convertSatoshiToUserCurrency(
-          transaction.amountSat.toInt(),
-        ),
+        currencyConversionService.conversionRates.value.BTCvsUSR *
+            currencyConversionService
+                .satoshiToX(transaction.amountSat.toDouble()),
       );
     }
 
@@ -84,10 +84,9 @@ class WalletService extends GetxService {
   Future<void> getBalanceInUserCurrency() async {
     final int balanceInSatoshis = await breezService.getBalanceInSatoshis();
 
-    // ignore: no_leading_underscores_for_local_identifiers
-    final double _balanceInUserCurrency = await currencyConversionService
-        .convertSatoshiToUserCurrency(balanceInSatoshis);
-    balanceInUserCurrency.value = _balanceInUserCurrency;
+    balanceInUserCurrency.value =
+        currencyConversionService.satoshiToX(balanceInSatoshis.toDouble()) *
+            currencyConversionService.conversionRates.value.BTCvsUSR;
   }
 
   Future<void> clearWalletEnvironment() async {

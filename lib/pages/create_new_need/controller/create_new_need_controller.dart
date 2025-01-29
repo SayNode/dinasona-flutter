@@ -33,9 +33,11 @@ class CreateNewNeedController extends GetxController {
   RxBool isScreen3ButtonActive = false.obs;
   bool isloading = false;
   RxList<AreaOfInterest> selectedAreasOfInterest = <AreaOfInterest>[].obs;
-  WalletService walletService = Get.find<WalletService>();
-  NeedService needService = Get.find<NeedService>();
-  UserStateService userStateService = Get.find<UserStateService>();
+  final WalletService walletService = Get.find<WalletService>();
+  final NeedService needService = Get.find<NeedService>();
+  final UserStateService userStateService = Get.find<UserStateService>();
+  final CurrencyConversionService currencyConversionService =
+      Get.find<CurrencyConversionService>();
   final int descriptionMaxLenth = 300;
   BeneficiaryRootController beneficiaryRootController =
       Get.find<BeneficiaryRootController>();
@@ -78,15 +80,10 @@ class CreateNewNeedController extends GetxController {
           ? need!.amount.toInt().toString()
           : need!.amount.toString();
 
-      final double userUSDCurrencyRate = 1 /
-          await Get.find<CurrencyConversionService>()
-              .fetchUserTargetCurrencyRate(
-            'usd',
-          );
-
       screen1.text = need!.title;
-      screen3.text =
-          (double.parse(tmpAmount) / userUSDCurrencyRate).toStringAsFixed(2);
+      screen3.text = (double.parse(tmpAmount) /
+              currencyConversionService.conversionRates.value.USRvsUSD)
+          .toStringAsFixed(2);
       screen4.text = need!.description;
     }
 
@@ -235,17 +232,8 @@ class CreateNewNeedController extends GetxController {
         .replaceAll('(', '')
         .replaceAll(')', '');
 
-    final double userUSDCurrencyRate = double.parse(
-      (1 /
-              await Get.find<CurrencyConversionService>()
-                  .fetchUserTargetCurrencyRate(
-                'usd',
-              ))
-          .toStringAsFixed(4),
-    );
-
-    final double needAmountInUSD =
-        double.parse(screen3.text) * userUSDCurrencyRate;
+    final double needAmountInUSD = double.parse(screen3.text) *
+        currencyConversionService.conversionRates.value.USRvsUSD;
 
     await needService.createNewNeed(
       screen1.text,
@@ -287,21 +275,13 @@ class CreateNewNeedController extends GetxController {
   }
 
   Future<void> updateNeed(int id, bool isDraft) async {
-    final double userUSDCurrencyRate = 1 /
-        await Get.find<CurrencyConversionService>().fetchUserTargetCurrencyRate(
-          'usd',
-        );
-    final double needAmountInUSD =
-        double.parse(screen3.text) * userUSDCurrencyRate;
+    final double needAmountInUSD = double.parse(screen3.text) *
+        currencyConversionService.conversionRates.value.USRvsUSD;
 
-    final double currencyRateBTCvsUSD =
-        await Get.find<CurrencyConversionService>()
-            .fetchConversionRateBTCvsUSD();
-
-    final int needAmountInSatoshi = double.parse(
-      (((1 / currencyRateBTCvsUSD) * needAmountInUSD) * 100000000)
-          .toStringAsFixed(4),
-    ).round();
+    final int needAmountInSatoshi = currencyConversionService.xToSatoshi(
+      currencyConversionService.conversionRates.value.USDvsBTC *
+          needAmountInUSD,
+    );
 
     final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
       'Need invoice ::client_invoice',

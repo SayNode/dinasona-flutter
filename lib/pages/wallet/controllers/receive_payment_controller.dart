@@ -13,7 +13,9 @@ import '../../help_payment_page/help_payment_page.dart';
 
 class ReceivePaymentController extends GetxController {
   final LoggerService loggerService = Get.find<LoggerService>();
-  BreezService breezService = Get.find<BreezService>();
+  final BreezService breezService = Get.find<BreezService>();
+  final CurrencyConversionService currencyConversionService =
+      Get.find<CurrencyConversionService>();
   bool _isDebouncing = false;
   Timer _debounce = Timer(Duration.zero, () {});
   RxBool invoiceIsGenerated = false.obs;
@@ -97,13 +99,14 @@ class ReceivePaymentController extends GetxController {
         final double otherValue = double.parse(controllerText);
         if (isBTCInput) {
           receiveBTCInputUserCurrency.text =
-              (await Get.find<CurrencyConversionService>()
-                      .convertBitcoinToUserCurrency(otherValue))
+              (currencyConversionService.conversionRates.value.BTCvsUSR *
+                      otherValue)
                   .toString();
         } else {
-          receiveBTCInputBTC.text = (await Get.find<CurrencyConversionService>()
-                  .convertUserCurrencyToBitcoin(otherValue))
-              .toString();
+          receiveBTCInputBTC.text = receiveBTCInputUserCurrency.text =
+              (currencyConversionService.conversionRates.value.USRvsBTC *
+                      otherValue)
+                  .toString();
         }
 
         checkLiquidLimits();
