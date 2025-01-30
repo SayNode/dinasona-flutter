@@ -56,7 +56,7 @@ android {
     }
 
     namespace = "org.dinasona.dinasona"
-    compileSdkVersion = 34
+    compileSdkVersion = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

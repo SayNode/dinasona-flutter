@@ -36,6 +36,12 @@ class SendPaymentController extends GetxController {
   final RxBool feesCalculated = false.obs;
   final RxBool mainTransactionWentThrough = false.obs;
 
+  @override
+  void onInit() {
+    currencyConversionService.fetchConversionRates();
+    super.onInit();
+  }
+
   Future<void> getFees() async {
     feesCalculated.value = false;
     int tmpTransactionfee = 0;
@@ -63,19 +69,17 @@ class SendPaymentController extends GetxController {
       // SayNode fee calculation
       if (!Constants.devMode) {
         final double saynodeVariableFeeInUserCurrency =
-            await currencyConversionService.convertBitcoinToUserCurrency(
-          double.parse(invoiceAmountBTC.value) * 0.01,
-        );
-        final double userTargetCurrencyRate =
-            await currencyConversionService.fetchUserTargetCurrencyRate('chf');
+            currencyConversionService.conversionRates.value.BTCvsUSR *
+                (double.parse(invoiceAmountBTC.value) * 0.01);
 
         final double saynodeVariableFeeInCHF =
-            userTargetCurrencyRate * saynodeVariableFeeInUserCurrency;
+            currencyConversionService.conversionRates.value.USRvsCHF *
+                saynodeVariableFeeInUserCurrency;
 
         final double breezMinimumTransactionAmountInCHF =
-            userTargetCurrencyRate *
-                (await currencyConversionService
-                    .convertBitcoinToUserCurrency(0.00001));
+            currencyConversionService.conversionRates.value.USRvsCHF *
+                (currencyConversionService.conversionRates.value.BTCvsUSR *
+                    0.00001);
 
         if (saynodeVariableFeeInCHF >= 0.5 &&
             saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
@@ -85,12 +89,12 @@ class SendPaymentController extends GetxController {
         } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
           sendPaymentSayNodeFee.value = 1000;
         } else {
-          sendPaymentSayNodeFee.value =
-              ((await currencyConversionService.convertUserCurrencyToBitcoin(
-                        0.5 / userTargetCurrencyRate,
-                      )) *
-                      100000000)
-                  .toInt();
+          // todo julien
+          sendPaymentSayNodeFee.value = currencyConversionService.xToSatoshi(
+            currencyConversionService.conversionRates.value.USRvsBTC *
+                (0.5 /
+                    currencyConversionService.conversionRates.value.USRvsCHF),
+          );
         }
 
         // Prepare SayNode fee transaction
@@ -147,12 +151,12 @@ class SendPaymentController extends GetxController {
       }
 
       invoiceAmountBTC.value = btcAmount.toString();
-      invoiceAmountUserCurrency.value =
-          (await Get.find<CurrencyConversionService>()
-                  .convertBitcoinToUserCurrency(
-        btcAmount,
-      ))
-              .toString();
+      invoiceAmountUserCurrency.value = (Get.find<CurrencyConversionService>()
+                  .conversionRates
+                  .value
+                  .BTCvsUSR *
+              btcAmount)
+          .toString();
 
       return <String, double>{
         'btc': btcAmount,

@@ -186,14 +186,12 @@ class NeedService extends GetxService {
       Get.find<LoggerService>().log(
         'NeedService.createNewNeed() called...',
       );
-      final double currencyRateBTCvsUSD =
-          await Get.find<CurrencyConversionService>()
-              .fetchConversionRateBTCvsUSD();
+      final CurrencyConversionService currencyConversionService =
+          Get.find<CurrencyConversionService>();
 
-      final int needAmountInSatoshi = double.parse(
-        (((1 / currencyRateBTCvsUSD) * amountInUSD) * 100000000)
-            .toStringAsFixed(4),
-      ).round();
+      final int needAmountInSatoshi = currencyConversionService.xToSatoshi(
+        amountInUSD * currencyConversionService.conversionRates.value.USDvsBTC,
+      );
       final String bolt11Invoice = await Get.find<BreezService>().createInvoice(
         'Need invoice ::client_invoice',
         needAmountInSatoshi,

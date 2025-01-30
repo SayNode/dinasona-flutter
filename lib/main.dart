@@ -24,7 +24,6 @@ import 'pages/login/donor_and_beneficiary/login_page.dart';
 import 'pages/root/beneficiary_root_page.dart';
 import 'pages/root/donor_root_page.dart';
 import 'service/auth_service.dart';
-import 'service/currency_conversion_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
 import 'service/main_bindings.dart';
@@ -149,18 +148,6 @@ void main() async {
     if (response.success) {
       await Get.find<LocalizationController>().getUserCurrencyFromBackend();
       await Get.find<WalletService>().connectToWalletAfterSignIn();
-
-      final CurrencyConversionService currencyConversionService =
-          Get.find<CurrencyConversionService>();
-
-      await currencyConversionService.fetchUserTargetCurrencyRate(
-        'usd',
-      );
-      await currencyConversionService.fetchConversionRateBTCUserCurrency();
-      await currencyConversionService.fetchConversionRateBTCvsUSD();
-      await currencyConversionService.fetchUserTargetCurrencyRate(
-        'chf',
-      );
 
       initialPage = Get.find<UserStateService>().user.value.isDonor
           ? const DonorRootPage()

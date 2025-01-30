@@ -65,26 +65,30 @@ abstract class BreezBaseService extends GetxService {
     liquidSendReceiveLimitsInUserCurrency = LiquidLimitsUserCurrency(
       send: LiquidLimitUserCurrency(
         minUserCurrency:
-            await currencyConversionService.convertBitcoinToUserCurrency(
-                  liquidSendReceiveLimits.send.minSat.toDouble() / 100000000,
-                ) *
+            (currencyConversionService.conversionRates.value.BTCvsUSR *
+                    currencyConversionService.satoshiToX(
+                      liquidSendReceiveLimits.send.minSat.toDouble(),
+                    )) *
                 1.04,
         maxUserCurrency:
-            await currencyConversionService.convertBitcoinToUserCurrency(
-                  liquidSendReceiveLimits.send.maxSat.toDouble() / 100000000,
-                ) *
+            (currencyConversionService.conversionRates.value.BTCvsUSR *
+                    currencyConversionService.satoshiToX(
+                      liquidSendReceiveLimits.send.maxSat.toDouble(),
+                    )) *
                 0.96,
       ),
       receive: LiquidLimitUserCurrency(
         minUserCurrency:
-            await currencyConversionService.convertBitcoinToUserCurrency(
-                  liquidSendReceiveLimits.receive.minSat.toDouble() / 100000000,
-                ) *
+            (currencyConversionService.conversionRates.value.BTCvsUSR *
+                    currencyConversionService.satoshiToX(
+                      liquidSendReceiveLimits.receive.minSat.toDouble(),
+                    )) *
                 1.04,
         maxUserCurrency:
-            await currencyConversionService.convertBitcoinToUserCurrency(
-                  liquidSendReceiveLimits.receive.maxSat.toDouble() / 100000000,
-                ) *
+            (currencyConversionService.conversionRates.value.BTCvsUSR *
+                    currencyConversionService.satoshiToX(
+                      liquidSendReceiveLimits.receive.maxSat.toDouble(),
+                    )) *
                 0.96,
       ),
     );
