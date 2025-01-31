@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../service/theme_service.dart';
 import '../service/user_state_service.dart';
@@ -40,11 +42,19 @@ class ChoosePathPage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return const AlertDialog(
-                          content: Row(
+                          content: Column(
                             children: <Widget>[
                               CircularProgressIndicator(),
                               SizedBox(width: 20),
-                              Text('Creating donor account...'),
+                              Flexible(
+                                child: AutoSizeText(
+                                  'Creating donor account...',
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  minFontSize: 8,
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -112,17 +122,27 @@ class ChoosePathPage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return const AlertDialog(
-                          content: Row(
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               CircularProgressIndicator(),
                               SizedBox(width: 20),
-                              Text('Creating beneficiary account...'),
+                              Flexible(
+                                child: AutoSizeText(
+                                  'Creating beneficiary account...',
+                                  softWrap: true,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  minFontSize: 8,
+                                ),
+                              ),
                             ],
                           ),
                         );
                       },
                     ),
                   );
+
                   await Get.find<UserStateService>()
                       .updateUserInfo(<String, dynamic>{
                     'is_donor': false,
