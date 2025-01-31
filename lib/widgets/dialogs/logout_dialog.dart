@@ -50,51 +50,106 @@ class LogoutDialog extends StatelessWidget {
               style: CustomTypography.fromColor(theme.graphite).k16Reg,
             ),
             Gap(getRelativeHeight(10)),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                DinasonaButton(
-                  expand: false,
-                  color: theme.silvershine,
-                  text: 'Log out'.tr,
-                  textColor: theme.graphite,
-                  onPressed: () async {
-                    try {
-                      await Get.find<AuthService>().logout();
-                    } catch (e) {
-                      if (!e
-                          .toString()
-                          .contains('u s e r _ n o t _ f o u n d')) {
-                        throw Exception(e);
-                      } else {
-                        apiService.authenticationToken = '';
-                        // Disconnect other providers
-                        await authService.disconnectProviders();
-                        await storageService.delete('token');
-                      }
-                    }
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                if (constraints.maxWidth < 300) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      DinasonaButton(
+                        color: theme.silvershine,
+                        text: 'Log out'.tr,
+                        textColor: theme.graphite,
+                        onPressed: () async {
+                          try {
+                            await Get.find<AuthService>().logout();
+                          } catch (e) {
+                            if (!e
+                                .toString()
+                                .contains('u s e r _ n o t _ f o u n d')) {
+                              throw Exception(e);
+                            } else {
+                              apiService.authenticationToken = '';
+                              // Disconnect other providers
+                              await authService.disconnectProviders();
+                              await storageService.delete('token');
+                            }
+                          }
 
-                    // Technically doesn't delete the wallet itself but the user's connection to it -> logout
-                    await Get.find<WalletService>().deleteUserWallet();
-                    Get.find<WalletService>().isWalletConnected.value = false;
-                    userStateService.clear();
-                    await Get.offAll<void>(
-                      () => const LoginPage(),
-                      transition: Transition.upToDown,
-                    );
-                  },
-                  padding: EdgeInsets.all(getRelativeWidth(14)),
-                ),
-                Gap(getRelativeWidth(30)),
-                DinasonaButton(
-                  expand: false,
-                  color: theme.amberglow,
-                  text: 'Cancel'.tr,
-                  onPressed: () => Get.back<void>(),
-                  padding: EdgeInsets.all(getRelativeWidth(14)),
-                ),
-              ],
+                          // Technically doesn't delete the wallet itself but the user's connection to it -> logout
+                          await Get.find<WalletService>().deleteUserWallet();
+                          Get.find<WalletService>().isWalletConnected.value =
+                              false;
+                          userStateService.clear();
+                          await Get.offAll<void>(
+                            () => const LoginPage(),
+                            transition: Transition.upToDown,
+                          );
+                        },
+                        padding: EdgeInsets.all(getRelativeWidth(14)),
+                      ),
+                      Gap(getRelativeWidth(10)),
+                      DinasonaButton(
+                        color: theme.amberglow,
+                        text: 'Cancel'.tr,
+                        onPressed: () => Get.back<void>(),
+                        padding: EdgeInsets.all(getRelativeWidth(14)),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: DinasonaButton(
+                          expand: false,
+                          color: theme.silvershine,
+                          text: 'Log out'.tr,
+                          textColor: theme.graphite,
+                          onPressed: () async {
+                            try {
+                              await Get.find<AuthService>().logout();
+                            } catch (e) {
+                              if (!e
+                                  .toString()
+                                  .contains('u s e r _ n o t _ f o u n d')) {
+                                throw Exception(e);
+                              } else {
+                                apiService.authenticationToken = '';
+                                // Disconnect other providers
+                                await authService.disconnectProviders();
+                                await storageService.delete('token');
+                              }
+                            }
+
+                            // Technically doesn't delete the wallet itself but the user's connection to it -> logout
+                            await Get.find<WalletService>().deleteUserWallet();
+                            Get.find<WalletService>().isWalletConnected.value =
+                                false;
+                            userStateService.clear();
+                            await Get.offAll<void>(
+                              () => const LoginPage(),
+                              transition: Transition.upToDown,
+                            );
+                          },
+                          padding: EdgeInsets.all(getRelativeWidth(14)),
+                        ),
+                      ),
+                      Gap(getRelativeWidth(10)),
+                      Expanded(
+                        child: DinasonaButton(
+                          expand: false,
+                          color: theme.amberglow,
+                          text: 'Cancel'.tr,
+                          onPressed: () => Get.back<void>(),
+                          padding: EdgeInsets.all(getRelativeWidth(14)),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
             ),
           ],
         ),
