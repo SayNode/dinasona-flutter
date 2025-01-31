@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -41,17 +40,16 @@ class ChoosePathPage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return const AlertDialog(
-                          content: Column(
+                          content: Row(
                             children: <Widget>[
                               CircularProgressIndicator(),
                               SizedBox(width: 20),
                               Flexible(
-                                child: AutoSizeText(
+                                child: Text(
                                   'Creating donor account...',
                                   softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  minFontSize: 8,
                                 ),
                               ),
                             ],
@@ -121,18 +119,17 @@ class ChoosePathPage extends StatelessWidget {
                       context: context,
                       builder: (BuildContext context) {
                         return const AlertDialog(
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CircularProgressIndicator(),
                               SizedBox(width: 20),
                               Flexible(
-                                child: AutoSizeText(
+                                child: Text(
                                   'Creating beneficiary account...',
                                   softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  minFontSize: 8,
                                 ),
                               ),
                             ],
@@ -141,7 +138,6 @@ class ChoosePathPage extends StatelessWidget {
                       },
                     ),
                   );
-
                   await Get.find<UserStateService>()
                       .updateUserInfo(<String, dynamic>{
                     'is_donor': false,
