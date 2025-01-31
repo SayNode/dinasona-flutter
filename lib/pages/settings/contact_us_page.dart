@@ -25,29 +25,31 @@ class ContactUsPage extends GetView<ContactUsController> {
       child: CustomScaffold(
         appBarTitle: 'Contact Us'.tr,
         padding: true,
-        body: Column(
-          children: <Widget>[
-            Text(
-              "We're here to help! Please share your questions, feedback, or concerns with us."
-                  .tr,
-              style: CustomTypography.fromColor(theme.graphite).k16Reg,
-            ),
-            const Gap(42),
-            DinasonaTextField(
-              hintText: 'Type your message here...'.tr,
-              controller: controller.formController,
-              maxLines: 18,
-            ),
-            const Spacer(),
-            Obx(
-              () => DinasonaButton(
-                text: 'Send'.tr,
-                onPressed: controller.send,
-                locked: !controller.isButtonActive.value,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "We're here to help! Please share your questions, feedback, or concerns with us."
+                    .tr,
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
               ),
-            ),
-            Gap(getRelativeHeight(80)),
-          ],
+              Gap(getRelativeHeight(20)),
+              DinasonaTextField(
+                hintText: 'Type your message here...'.tr,
+                controller: controller.formController,
+                maxLines: 18,
+              ),
+              Gap(getRelativeHeight(20)),
+              Obx(
+                () => DinasonaButton(
+                  text: 'Send'.tr,
+                  onPressed: controller.send,
+                  locked: !controller.isButtonActive.value,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
