@@ -172,7 +172,6 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: getRelativeWidth(16),
-                                vertical: getRelativeHeight(8),
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
