@@ -44,7 +44,14 @@ class ChoosePathPage extends StatelessWidget {
                             children: <Widget>[
                               CircularProgressIndicator(),
                               SizedBox(width: 20),
-                              Text('Creating donor account...'),
+                              Flexible(
+                                child: Text(
+                                  'Creating donor account...',
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -113,10 +120,18 @@ class ChoosePathPage extends StatelessWidget {
                       builder: (BuildContext context) {
                         return const AlertDialog(
                           content: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CircularProgressIndicator(),
                               SizedBox(width: 20),
-                              Text('Creating beneficiary account...'),
+                              Flexible(
+                                child: Text(
+                                  'Creating beneficiary account...',
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
                             ],
                           ),
                         );

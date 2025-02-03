@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -98,7 +99,7 @@ class DinasonaButton extends StatelessWidget {
                 ),
               )
             else
-              Text(
+              AutoSizeText(
                 text,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -106,6 +107,7 @@ class DinasonaButton extends StatelessWidget {
                   locked ? theme.graphite : textColor,
                 ).k16SemiBold,
                 maxLines: 1,
+                minFontSize: 10,
               ),
             if (showForwardIcon) ...<Widget>[
               Icon(
