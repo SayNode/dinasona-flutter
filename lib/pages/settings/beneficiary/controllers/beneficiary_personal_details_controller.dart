@@ -12,17 +12,17 @@ class BeneficiaryPersonalDetailsController extends GetxController {
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   final UserStateService userStateService = Get.find<UserStateService>();
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController locationController = TextEditingController();
   final TextEditingController birthdayController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final RxString gender = ''.obs;
+  final RxString country = ''.obs;
   final RxBool isFormValid = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     nameController.text = userStateService.user.value.name;
-    locationController.text = userStateService.user.value.beneficiary.location;
+    country.value = userStateService.user.value.beneficiary.country;
     if (userStateService.user.value.beneficiary.dateOfBirth != null) {
       birthdayController.text = dateFormat
           .format(userStateService.user.value.beneficiary.dateOfBirth!);
@@ -37,7 +37,7 @@ class BeneficiaryPersonalDetailsController extends GetxController {
     checkInputs();
 
     nameController.addListener(checkInputs);
-    locationController.addListener(checkInputs);
+    ever(country, (_) => checkInputs());
     birthdayController.addListener(checkInputs);
     descriptionController.addListener(checkInputs);
     ever(gender, (_) => checkInputs());
@@ -45,7 +45,7 @@ class BeneficiaryPersonalDetailsController extends GetxController {
 
   void checkInputs() {
     if (nameController.text.isNotEmpty &&
-        locationController.text.isNotEmpty &&
+        country.value.isNotEmpty &&
         birthdayController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
         gender.value.isNotEmpty) {
@@ -61,13 +61,14 @@ class BeneficiaryPersonalDetailsController extends GetxController {
     await userStateService.updateUserInfo(
       <String, dynamic>{
         'name': nameController.text,
+        'country_string': country.value,
       },
     );
 
     await userStateService.updateBeneficiaryInfo(
       <String, dynamic>{
         'name': nameController.text,
-        'city': locationController.text,
+        'country': country.value.toLowerCase(),
         'email': userStateService.user.value.email,
         'date_of_birth': birthdayController.text,
         'description': descriptionController.text,

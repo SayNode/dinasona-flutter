@@ -48,7 +48,7 @@ class Beneficiary {
           json['description'] as String? ??
           'Empty bio',
       userId: json['id'] as int? ?? -1,
-      country: json['country'] as String? ?? '',
+      country: json['country'] as String? ?? json['location'] as String? ?? '',
     );
   }
   factory Beneficiary.anonymous() {

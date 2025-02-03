@@ -183,13 +183,57 @@ class EditBeneficiaryPage
                     ],
                   ),
                   const Gap(6),
-                  DinasonaTextField(
-                    hintText: 'Location'.tr,
-                    controller: controller.locationController,
-                    textStyle:
-                        CustomTypography.fromColor(theme.shadowed).k16Reg,
-                    hintStyle:
-                        CustomTypography.fromColor(theme.graphite).k16Reg,
+                  Card(
+                    shadowColor: Colors.transparent,
+                    margin: EdgeInsets.zero,
+                    color: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(getRelativeWidth(16)),
+                      ),
+                      side: BorderSide(
+                        color: theme.graphite,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: DropdownButtonFormField<String>(
+                        hint: Text(
+                          'Country',
+                          style:
+                              CustomTypography.fromColor(theme.graphite).k16Reg,
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        value: userStateService.user.value.beneficiary.country
+                                    .toLowerCase() ==
+                                'switzerland'
+                            ? 'Switzerland'
+                            : userStateService.user.value.beneficiary.country
+                                        .toLowerCase() ==
+                                    'other'
+                                ? 'Other'
+                                : null,
+                        items: <String>[
+                          'Switzerland',
+                          'Other',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: CustomTypography.fromColor(
+                                theme.shadowed,
+                              ).k16Reg,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          controller.country.value = newValue!;
+                        },
+                      ),
+                    ),
                   ),
                   const Gap(6),
                   DinasonaTextField(

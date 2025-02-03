@@ -57,9 +57,15 @@ class BeneficiaryPersonalDetailsPage extends StatelessWidget {
               const Gap(6),
               Obx(
                 () => Text(
-                  userStateService.user.value.beneficiary.location.isEmpty
-                      ? 'location placeholder'.tr
-                      : userStateService.user.value.beneficiary.location,
+                  userStateService.user.value.beneficiary.country.isEmpty
+                      ? 'Other'.tr
+                      : userStateService.user.value.beneficiary.country.length >
+                              1
+                          ? userStateService.user.value.beneficiary.country[0]
+                                  .toUpperCase() +
+                              userStateService.user.value.beneficiary.country
+                                  .substring(1)
+                          : userStateService.user.value.beneficiary.country,
                   style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ),

@@ -22,6 +22,8 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
 
   @override
   Widget build(BuildContext context) {
+    //need.beneficiary.country = Get.find<UserStateService>().user.value.country;
+
     Get
       ..delete<MyNeedPopupController>()
       ..put(MyNeedPopupController(need: need));

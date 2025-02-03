@@ -32,7 +32,7 @@ class DonorPersonalDetailsController extends GetxController {
       await userStateService.updateUserInfo(<String, dynamic>{
         'name':
             '${fistNameController.text.trim()} ${secondNameController.text.trim()}',
-        'country': location.value.toLowerCase(),
+        'country_string': location.value.toLowerCase(),
       });
       loading.value = false;
       Get.back();

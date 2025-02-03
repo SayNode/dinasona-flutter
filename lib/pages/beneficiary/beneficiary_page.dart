@@ -83,7 +83,12 @@ class BeneficiaryPage extends GetView<BeneficiaryPageController> {
                 ),
                 Gap(getRelativeWidth(6)),
                 Text(
-                  beneficiary.location,
+                  beneficiary.country.isEmpty
+                      ? 'Other'.tr
+                      : beneficiary.country.length > 1
+                          ? beneficiary.country[0].toUpperCase() +
+                              beneficiary.country.substring(1)
+                          : beneficiary.country,
                   style: CustomTypography.fromColor(theme.graphite).k16Reg,
                 ),
               ],
