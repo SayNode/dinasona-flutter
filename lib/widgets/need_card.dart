@@ -103,7 +103,13 @@ class NeedCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              need.beneficiary.location,
+                              need.beneficiary.country.isEmpty
+                                  ? 'Other'.tr
+                                  : need.beneficiary.country.length > 1
+                                      ? need.beneficiary.country[0]
+                                              .toUpperCase() +
+                                          need.beneficiary.country.substring(1)
+                                      : need.beneficiary.country,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: CustomTypography.fromColor(

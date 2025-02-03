@@ -13,7 +13,7 @@ class DonorPersonalDetailsController extends GetxController {
   final TextEditingController secondNameController = TextEditingController();
   final RxString firstName = ''.obs;
   final RxString lastName = ''.obs;
-  RxString location = ''.tr.obs;
+  RxString country = ''.obs;
 
   @override
   void onInit() {
@@ -23,7 +23,7 @@ class DonorPersonalDetailsController extends GetxController {
     firstName.value = nameParts[0];
     secondNameController.text = nameParts.length > 1 ? nameParts[1] : '';
     lastName.value = nameParts.length > 1 ? nameParts[1] : '';
-    location.value = userStateService.user.value.country;
+    country.value = userStateService.user.value.country;
   }
 
   Future<void> save() async {
@@ -32,7 +32,7 @@ class DonorPersonalDetailsController extends GetxController {
       await userStateService.updateUserInfo(<String, dynamic>{
         'name':
             '${fistNameController.text.trim()} ${secondNameController.text.trim()}',
-        'country_string': location.value.toLowerCase(),
+        'country_string': country.value.toLowerCase(),
       });
       loading.value = false;
       Get.back();

@@ -51,7 +51,7 @@ class PersonalDetailsController extends GetxController {
         userStateService.user.value.beneficiary.dateOfBirth!,
       );
     }
-    if (userState.user.value.beneficiary.location.isNotEmpty) {
+    if (userState.user.value.beneficiary.country.isNotEmpty) {
       country.value = userState.user.value.beneficiary.country;
     }
     if (userState.user.value.beneficiary.bio.isNotEmpty) {

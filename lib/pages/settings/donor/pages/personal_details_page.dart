@@ -111,11 +111,11 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                     ),
                   );
                 }).toList(),
-                value: controller.location.value.isEmpty
+                value: controller.country.value.isEmpty
                     ? null
-                    : controller.location.value.capitalizeFirst,
+                    : controller.country.value.capitalizeFirst,
                 onChanged: (String? value) {
-                  controller.location.value = value!;
+                  controller.country.value = value!;
                 },
               ),
             ),
