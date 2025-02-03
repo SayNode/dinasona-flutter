@@ -37,33 +37,91 @@ class DeleteAccountDialog extends StatelessWidget {
               style: CustomTypography.fromColor(theme.graphite).k16Reg,
             ),
             Gap(getRelativeHeight(10)),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                DinasonaButton(
-                  expand: false,
-                  color: theme.silvershine,
-                  text: 'Yes, I am'.tr,
-                  textColor: theme.graphite,
-                  onPressed: () {
-                    Get.bottomSheet(
-                      isScrollControlled: true,
-                      const DeleteAccountBottomSheet(),
-                    );
-                  },
-                  padding: EdgeInsets.all(getRelativeWidth(14)),
-                ),
-                Gap(getRelativeWidth(30)),
-                DinasonaButton(
-                  expand: false,
-                  color: theme.amberglow,
-                  text: 'No, I am not'.tr,
-                  onPressed: Get.back,
-                  padding: EdgeInsets.all(getRelativeWidth(14)),
-                ),
-              ],
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                if (constraints.maxWidth < 300) {
+                  return Column(
+                    children: <Widget>[
+                      DinasonaButton(
+                        color: theme.silvershine,
+                        text: 'Yes, I am'.tr,
+                        textColor: theme.graphite,
+                        onPressed: () {
+                          Get.bottomSheet(
+                            isScrollControlled: true,
+                            const DeleteAccountBottomSheet(),
+                          );
+                        },
+                        padding: EdgeInsets.all(getRelativeWidth(14)),
+                      ),
+                      Gap(getRelativeHeight(10)),
+                      DinasonaButton(
+                        color: theme.amberglow,
+                        text: 'No, I am not'.tr,
+                        onPressed: Get.back,
+                        padding: EdgeInsets.all(getRelativeWidth(14)),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: DinasonaButton(
+                          expand: false,
+                          color: theme.silvershine,
+                          text: 'Yes, I am'.tr,
+                          textColor: theme.graphite,
+                          onPressed: () {
+                            Get.bottomSheet(
+                              isScrollControlled: true,
+                              const DeleteAccountBottomSheet(),
+                            );
+                          },
+                          padding: EdgeInsets.all(getRelativeWidth(14)),
+                        ),
+                      ),
+                      Gap(getRelativeWidth(10)),
+                      Expanded(
+                        child: DinasonaButton(
+                          expand: false,
+                          color: theme.amberglow,
+                          text: 'No, I am not'.tr,
+                          onPressed: Get.back,
+                          padding: EdgeInsets.all(getRelativeWidth(14)),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: <Widget>[
+            //     DinasonaButton(
+            //       expand: false,
+            //       color: theme.silvershine,
+            //       text: 'Yes, I am'.tr,
+            //       textColor: theme.graphite,
+            //       onPressed: () {
+            //         Get.bottomSheet(
+            //           isScrollControlled: true,
+            //           const DeleteAccountBottomSheet(),
+            //         );
+            //       },
+            //       padding: EdgeInsets.all(getRelativeWidth(14)),
+            //     ),
+            //     DinasonaButton(
+            //       expand: false,
+            //       color: theme.amberglow,
+            //       text: 'No, I am not'.tr,
+            //       onPressed: Get.back,
+            //       padding: EdgeInsets.all(getRelativeWidth(14)),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

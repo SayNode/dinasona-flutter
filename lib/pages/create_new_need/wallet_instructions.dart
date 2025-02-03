@@ -25,56 +25,57 @@ class InstructionsPage extends GetView<CreateNewNeedController> {
         Get.put(CreateNewNeedController(), tag: UniqueKey().toString());
 
     return CustomScaffold(
-      appBarTitle: '',
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(16)),
-        child: Column(
-          children: <Widget>[
-            Gap(getRelativeHeight(15)),
-            Text(
-              'Set up your wallet'.tr,
-              style: CustomTypography.fromColor(theme.shadowed).k24Bold,
-            ),
-            Gap(getRelativeHeight(15)),
-            NumberedInstructionsWidget(
-              number: 1,
-              text: isDonation
-                  ? 'To donate and support people, you first need to add a wallet by creating or importing a wallet.'
-                      .tr
-                  : 'To publish a need and receive support, you first \nneed to add a wallet by creating or importing a wallet.'
-                      .tr,
-            ),
-            Gap(getRelativeHeight(12)),
-            NumberedInstructionsWidget(
-              number: 2,
-              text:
-                  'Enter your existing seedphrase or save your new seed phrase to gain access to your wallet.'
-                      .tr,
-            ),
-            Gap(getRelativeHeight(12)),
-            NumberedInstructionsWidget(
-              number: 3,
-              text:
-                  'If you are setting up a new wallet, enter the 3 seed words requested. For importing a wallet add your existing seed phrase consisting of 12 words.'
-                      .tr,
-            ),
-            Gap(getRelativeHeight(12)),
-            NumberedInstructionsWidget(
-              number: 4,
-              text: isDonation
-                  ? 'Once your wallet is set up, you can donate to a need and support someone financially.'
-                      .tr
-                  : 'Once your wallet is set up, you can publish a need, someone will support you financially.'
-                      .tr,
-            ),
-            const Spacer(),
-            DinasonaButton(
-              text: 'Add wallet'.tr,
-              onPressed: controller.getToWalletScreen,
-              color: theme.amberglow,
-            ),
-            Gap(getRelativeHeight(50)),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Gap(getRelativeHeight(15)),
+              Text(
+                'Set up your wallet'.tr,
+                style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+              ),
+              Gap(getRelativeHeight(15)),
+              NumberedInstructionsWidget(
+                number: 1,
+                text: isDonation
+                    ? 'To donate and support people, you first need to add a wallet by creating or importing a wallet.'
+                        .tr
+                    : 'To publish a need and receive support, you first \nneed to add a wallet by creating or importing a wallet.'
+                        .tr,
+              ),
+              Gap(getRelativeHeight(12)),
+              NumberedInstructionsWidget(
+                number: 2,
+                text:
+                    'Enter your existing seedphrase or save your new seed phrase to gain access to your wallet.'
+                        .tr,
+              ),
+              Gap(getRelativeHeight(12)),
+              NumberedInstructionsWidget(
+                number: 3,
+                text:
+                    'If you are setting up a new wallet, enter the 3 seed words requested. For importing a wallet add your existing seed phrase consisting of 12 words.'
+                        .tr,
+              ),
+              Gap(getRelativeHeight(12)),
+              NumberedInstructionsWidget(
+                number: 4,
+                text: isDonation
+                    ? 'Once your wallet is set up, you can donate to a need and support someone financially.'
+                        .tr
+                    : 'Once your wallet is set up, you can publish a need, someone will support you financially.'
+                        .tr,
+              ),
+              Gap(getRelativeHeight(40)),
+              DinasonaButton(
+                text: 'Add wallet'.tr,
+                onPressed: controller.getToWalletScreen,
+                color: theme.amberglow,
+              ),
+              Gap(getRelativeHeight(20)),
+            ],
+          ),
         ),
       ),
     );
