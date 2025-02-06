@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../service/theme_service.dart';
+import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -21,6 +22,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
     Get.put(PersonalDetailsController());
     final CustomTheme dinasonaTheme = Get.find<ThemeService>().theme;
     final double gap = getRelativeHeight(12);
+    final UserStateService userStateService = Get.find<UserStateService>();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -209,9 +211,60 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                         ],
                       ),
                       SizedBox(height: gap),
-                      DinasonaTextField(
-                        controller: controller.locationController,
-                        hintText: 'Location',
+                      Card(
+                        shadowColor: Colors.transparent,
+                        margin: EdgeInsets.zero,
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(getRelativeWidth(16)),
+                          ),
+                          side: BorderSide(
+                            color: dinasonaTheme.graphite,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: DropdownButtonFormField<String>(
+                            hint: Text(
+                              'Country',
+                              style: CustomTypography.fromColor(
+                                dinasonaTheme.graphite,
+                              ).k16Reg,
+                            ),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            value: userStateService
+                                        .user.value.beneficiary.country
+                                        .toLowerCase() ==
+                                    'switzerland'
+                                ? 'Switzerland'
+                                : userStateService
+                                            .user.value.beneficiary.country
+                                            .toLowerCase() ==
+                                        'other'
+                                    ? 'Other'
+                                    : null,
+                            items: <String>[
+                              'Switzerland',
+                              'Other',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: CustomTypography.fromColor(
+                                    dinasonaTheme.shadowed,
+                                  ).k16Reg,
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              controller.country.value = newValue!;
+                            },
+                          ),
+                        ),
                       ),
                       SizedBox(height: gap),
                       Container(

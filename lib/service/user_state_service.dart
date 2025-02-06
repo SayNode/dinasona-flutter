@@ -121,8 +121,12 @@ class UserStateService extends GetxService {
     // TODO backend not ready
     //unawaited(updatePushNotificationToken());
     await Get.find<UserStateService>().fetchUserInfo();
-    await Get.find<UserStateService>().fetchDonorStatistics();
-    await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+    try {
+      await Get.find<UserStateService>().fetchDonorStatistics();
+    } catch (_) {}
+    try {
+      await Get.find<UserStateService>().fetchBeneficiaryStatistics();
+    } catch (_) {}
   }
 
   Future<void> fetchUserInfo() async {

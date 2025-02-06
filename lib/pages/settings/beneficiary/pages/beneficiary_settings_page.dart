@@ -31,7 +31,13 @@ class BeneficiarySettingsPage
               Obx(
                 () => ProfileWidget(
                   name: controller.user.name,
-                  location: controller.user.beneficiary.country,
+                  location: controller.user.beneficiary.country.isEmpty
+                      ? 'Other'.tr
+                      : controller.user.beneficiary.country.length > 1
+                          ? controller.user.beneficiary.country[0]
+                                  .toUpperCase() +
+                              controller.user.beneficiary.country.substring(1)
+                          : controller.user.beneficiary.country,
                 ),
               ),
               const Gap(12),

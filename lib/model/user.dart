@@ -27,7 +27,7 @@ class User {
         aboutMe = json['about_me'] as String? ?? '',
         isDonor = json['is_donor'] as bool? ?? false,
         currency = json['currency'] as String? ?? '',
-        country = json['country'] as String? ?? '';
+        country = json['country_string'] as String? ?? '';
 
   int id = -1;
   String email = '';
@@ -51,7 +51,7 @@ class User {
         'about_me': aboutMe,
         'is_donor': isDonor,
         'currency': currency,
-        'country': country,
+        'country': country.toLowerCase(),
       };
 
   User copyWith({

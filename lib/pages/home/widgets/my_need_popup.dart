@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../model/need.dart';
 import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
+import '../../../service/user_state_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
@@ -22,6 +23,7 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
 
   @override
   Widget build(BuildContext context) {
+    final UserStateService userStateService = Get.find<UserStateService>();
     Get
       ..delete<MyNeedPopupController>()
       ..put(MyNeedPopupController(need: need));
@@ -87,13 +89,28 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                                 : theme.shadowed,
                           ).k16SemiBold,
                         ),
-                        Text(
-                          need.beneficiary.location,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: CustomTypography.fromColor(
-                            theme.graphite,
-                          ).k14Reg,
+                        Obx(
+                          () => Text(
+                            userStateService
+                                    .user.value.beneficiary.country.isEmpty
+                                ? 'Other'.tr
+                                : userStateService.user.value.beneficiary
+                                            .country.length >
+                                        1
+                                    ? userStateService
+                                            .user.value.beneficiary.country[0]
+                                            .toUpperCase() +
+                                        userStateService
+                                            .user.value.beneficiary.country
+                                            .substring(1)
+                                    : userStateService
+                                        .user.value.beneficiary.country,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: CustomTypography.fromColor(
+                              theme.graphite,
+                            ).k14Reg,
+                          ),
                         ),
                       ],
                     ),

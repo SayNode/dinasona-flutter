@@ -88,16 +88,28 @@ class SecureStorageService extends GetxService
   }
 
   Future<String?> read(String key) async {
-    final bool keyExists = await storage.containsKey(key: key);
-    if (keyExists) {
-      final String? storedValue = await storage.read(key: key);
-      if (storedValue != null) {
-        return storedValue;
+    try {
+      final bool keyExists = await storage.containsKey(key: key);
+      if (keyExists) {
+        final String? storedValue = await storage.read(key: key);
+        if (storedValue != null) {
+          return storedValue;
+        } else {
+          throw StorageException('Key $key is null in Secure Storage');
+        }
       } else {
-        throw StorageException('Key $key is null in Secure Storage');
+        return null;
       }
-    } else {
-      return null;
+    } catch (e) {
+      // happens if some unaccessable storage artifacts are left over from a previous installation
+      // can be fixed by deleting all storage contents which will not affect the user
+      // since all important data is stored on the server
+      if (e.toString().contains('BadPaddingException')) {
+        await deleteAll();
+        return null;
+      } else {
+        rethrow;
+      }
     }
   }
 

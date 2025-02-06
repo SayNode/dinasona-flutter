@@ -25,7 +25,7 @@ class PersonalDetailsController extends GetxController {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final RxString dateOfBirthController = ''.obs;
-  final TextEditingController locationController = TextEditingController();
+  final RxString country = ''.obs;
   final TextEditingController descriptionTextController =
       TextEditingController();
   final int descriptionMaxLenth = 300;
@@ -51,8 +51,8 @@ class PersonalDetailsController extends GetxController {
         userStateService.user.value.beneficiary.dateOfBirth!,
       );
     }
-    if (userState.user.value.beneficiary.location.isNotEmpty) {
-      locationController.text = userState.user.value.beneficiary.location;
+    if (userState.user.value.beneficiary.country.isNotEmpty) {
+      country.value = userState.user.value.beneficiary.country;
     }
     if (userState.user.value.beneficiary.bio.isNotEmpty) {
       descriptionTextController.text = userState.user.value.beneficiary.bio;
@@ -107,7 +107,7 @@ class PersonalDetailsController extends GetxController {
     await userStateService.updateBeneficiaryInfo(
       <String, dynamic>{
         'name': fullNameController.text,
-        'city': locationController.text,
+        'country': country.value.toLowerCase(),
         'email': userStateService.user.value.email,
         'date_of_birth': dateOfBirthController.value,
         'description': descriptionTextController.text,
@@ -128,7 +128,7 @@ class PersonalDetailsController extends GetxController {
   void onClose() {
     fullNameController.dispose();
     emailController.dispose();
-    locationController.dispose();
+    country.value = '';
     descriptionTextController.dispose();
     super.onClose();
   }
