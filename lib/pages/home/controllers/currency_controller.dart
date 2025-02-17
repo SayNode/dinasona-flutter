@@ -12,7 +12,7 @@ class CurrencyController extends GetxController {
   RxList<CurrencyModel> currency = <CurrencyModel>[].obs;
   Rx<CurrencyModel> chosenCurrency = CurrencyModel(
     image: 'assets/images/switzerland.png',
-    name: 'Swiss Frank',
+    name: 'Swiss Franc',
     sign: 'CHF',
     code: 'CHF',
   ).obs;
