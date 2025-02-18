@@ -27,7 +27,6 @@ import 'service/auth_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
 import 'service/main_bindings.dart';
-import 'service/messaging_service.dart';
 import 'service/network_service.dart';
 import 'service/storage/storage_service.dart';
 import 'service/theme_service.dart';
@@ -169,7 +168,6 @@ Future<void> initializeServices() async {
   // Initialize services:
   await Get.find<StorageService>().init();
   Get.find<AuthService>().init();
-  await Get.put(MessagingService()).init();
   Get.put(NetworkService());
 }
 

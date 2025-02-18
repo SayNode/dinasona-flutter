@@ -47,6 +47,3 @@ app.*.map.json
 # FVM Version Cache
 .fvm/
 .run/main.dart.run.xml
-
-# Ignore launch.json file in .vscode to avoid showing configurations you use locally
-.vscode/launch.json
