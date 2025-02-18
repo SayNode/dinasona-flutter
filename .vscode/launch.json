@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "dinasona",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "API_URL=prod.devdinasona.ch",
+                "--dart-define",
+                "BREEZ_API_KEY=",
+            ]
+        },
+    ]
+}
