@@ -57,11 +57,16 @@ android {
 
     namespace = "org.dinasona.dinasona"
     compileSdkVersion = 35
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "28.0.13004108"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     defaultConfig {
@@ -93,9 +98,10 @@ flutter {
 }
 
 dependencies {
-//breez imports start
-implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20"
-implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
-//breez imports end
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+    //breez imports start
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+    //breez imports end
     implementation 'androidx.multidex:multidex:2.0.1'
 }

@@ -115,7 +115,9 @@ class BreezSDKLiquid {
           await _instance!.prepareReceivePayment(
         req: liquid_sdk.PrepareReceiveRequest(
           paymentMethod: liquid_sdk.PaymentMethod.lightning,
-          payerAmountSat: BigInt.from(amountInSatoshi),
+          amount: liquid_sdk.ReceiveAmount.bitcoin(
+            payerAmountSat: BigInt.from(amountInSatoshi),
+          ),
         ),
       );
 

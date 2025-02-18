@@ -1,5 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+/* import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
 import 'logger_service.dart';
@@ -227,3 +226,4 @@ class MessagingService extends GetxService {
 //     Constants.logger.log("MessagingService - message: ${message.data}");
 //   }
 }
+ */
