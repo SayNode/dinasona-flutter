@@ -52,7 +52,6 @@ class AlternateNeedCard extends GetView<AlternateNeedCardController> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   need.title,
-                  overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
                     theme.ferngreen,
                   ).k16SemiBold,
