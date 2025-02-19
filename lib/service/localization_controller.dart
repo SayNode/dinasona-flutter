@@ -31,25 +31,25 @@ class LocalizationController extends GetxController implements GetxService {
     CurrencyModel(
       name: 'Kenyan Shillings',
       code: 'KES',
-      sign: r'KES$',
+      sign: 'KES',
       image: 'assets/images/flags/kenyan.png',
     ),
     CurrencyModel(
       name: 'Zambian Kwacha',
       code: 'ZMW',
-      sign: r'ZMW$',
+      sign: 'ZMW',
       image: 'assets/images/flags/zambian.png',
     ),
     CurrencyModel(
       name: 'Nigerian naira',
       code: 'NGN',
-      sign: r'NGN$',
+      sign: '\u20A6',
       image: 'assets/images/flags/nigerian.png',
     ),
     CurrencyModel(
       name: 'South African rand ',
       code: 'ZAR',
-      sign: r'ZAR$',
+      sign: 'ZAR',
       image: 'assets/images/flags/south_africa.png',
     ),
     CurrencyModel(
@@ -67,7 +67,7 @@ class LocalizationController extends GetxController implements GetxService {
     CurrencyModel(
       name: 'British Pound',
       code: 'GBP',
-      sign: '£',
+      sign: '\u00A3',
       image: 'assets/images/flags/uk.png',
     ),
     CurrencyModel(
@@ -79,7 +79,7 @@ class LocalizationController extends GetxController implements GetxService {
     CurrencyModel(
       name: 'Europe Euro',
       code: 'EUR',
-      sign: '€',
+      sign: '\u20AC',
       image: 'assets/images/flags/europe.png',
     ),
   ];
