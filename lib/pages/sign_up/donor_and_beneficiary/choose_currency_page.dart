@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../model/currency_model.dart';
@@ -47,7 +48,7 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         width: double.infinity,
-                        margin: const EdgeInsets.symmetric(vertical: 7),
+                        margin: const EdgeInsets.symmetric(vertical: 2),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -68,33 +69,28 @@ class ChooseCurrencyPage extends GetView<SignupController> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 15,
-                                vertical: 10,
+                                vertical: 8,
                               ),
                               child: Row(
                                 children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 24,
-                                    backgroundImage:
-                                        AssetImage(currencies[index].image),
+                                  Image.asset(
+                                    currencies[index].image,
+                                    width: 48,
+                                    height: 48,
                                   ),
-                                  const SizedBox(width: 15),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        currencies[index].name,
-                                        style: CustomTypography.fromColor(
-                                          dinasonaTheme.shadowed,
-                                        ).k16Reg,
-                                      ),
-                                      Text(
-                                        currencies[index].sign,
-                                        style: CustomTypography.fromColor(
-                                          dinasonaTheme.shadowed,
-                                        ).k16Reg,
-                                      ),
-                                    ],
+                                  const Gap(15),
+                                  Text(
+                                    currencies[index].code,
+                                    style: CustomTypography.fromColor(
+                                      dinasonaTheme.shadowed,
+                                    ).k16Reg,
+                                  ),
+                                  const Gap(15),
+                                  Text(
+                                    currencies[index].name,
+                                    style: CustomTypography.fromColor(
+                                      dinasonaTheme.graphite,
+                                    ).k14Reg,
                                   ),
                                 ],
                               ),
