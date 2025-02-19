@@ -81,7 +81,7 @@ class CurrencyPopup extends GetView<CurrencyController> {
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.symmetric(vertical: 7),
+                      margin: const EdgeInsets.symmetric(vertical: 2),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
