@@ -24,33 +24,63 @@ class LocalizationController extends GetxController implements GetxService {
     name: 'Swiss Franc',
     code: 'CHF',
     sign: 'CHF',
-    image: 'assets/images/switzerland.png',
+    image: 'assets/images/flags/swiss.png',
   ).obs;
 
   final List<CurrencyModel> supportedCurrencies = <CurrencyModel>[
     CurrencyModel(
-      name: 'Australian Dollar',
-      code: 'AUD',
-      sign: r'AU$',
-      image: 'assets/images/australia.png',
+      name: 'Kenyan Shillings',
+      code: 'KES',
+      sign: r'KES$',
+      image: 'assets/images/flags/kenyan.png',
+    ),
+    CurrencyModel(
+      name: 'Zambian Kwacha',
+      code: 'ZMW',
+      sign: r'ZMW$',
+      image: 'assets/images/flags/zambian.png',
+    ),
+    CurrencyModel(
+      name: 'Nigerian naira',
+      code: 'NGN',
+      sign: r'NGN$',
+      image: 'assets/images/flags/nigerian.png',
+    ),
+    CurrencyModel(
+      name: 'South African rand ',
+      code: 'ZAR',
+      sign: r'ZAR$',
+      image: 'assets/images/flags/south_africa.png',
     ),
     CurrencyModel(
       name: 'Swiss Franc',
       code: 'CHF',
       sign: 'CHF',
-      image: 'assets/images/switzerland.png',
+      image: 'assets/images/flags/swiss.png',
+    ),
+    CurrencyModel(
+      name: 'Australian Dollar',
+      code: 'AUD',
+      sign: r'AU$',
+      image: 'assets/images/flags/australia.png',
     ),
     CurrencyModel(
       name: 'British Pound',
       code: 'GBP',
       sign: '£',
-      image: 'assets/images/great_britain.png',
+      image: 'assets/images/flags/uk.png',
     ),
     CurrencyModel(
       name: 'Canadian Dollar',
       code: 'CAD',
       sign: r'CA$',
-      image: 'assets/images/canada.png',
+      image: 'assets/images/flags/canada.png',
+    ),
+    CurrencyModel(
+      name: 'Europe Euro',
+      code: 'EUR',
+      sign: '€',
+      image: 'assets/images/flags/europe.png',
     ),
   ];
 
