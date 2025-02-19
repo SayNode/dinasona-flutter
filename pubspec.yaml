@@ -79,5 +79,6 @@ flutter:
     - assets/images/
     - assets/images/need_fields/
     - assets/images/logos/
+    - assets/images/flags/
 
   uses-material-design: true
