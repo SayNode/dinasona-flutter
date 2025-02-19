@@ -6,12 +6,14 @@ import '../../../model/need.dart';
 import '../../../service/localization_controller.dart';
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
+import '../../../service/wallet_service.dart';
 import '../../../theme/theme.dart';
 import '../../../theme/typography.dart';
 import '../../../util/util.dart';
 import '../../../widgets/dinasona_button.dart';
 import '../../../widgets/upward_popup.dart';
 import '../../beneficiary/beneficiary_page.dart';
+import '../../create_new_need/wallet_instructions.dart';
 import '../../edit_need/edit_need_page.dart';
 import '../controllers/my_need_popup_controller.dart';
 import 'need_field_chip.dart';
@@ -269,11 +271,17 @@ class MyNeedPopup extends GetView<MyNeedPopupController> {
                 children: <Widget>[
                   DinasonaButton(
                     text: 'Edit your need'.tr,
-                    onPressed: () => Get.to<void>(
-                      EditNeedPage(
-                        need: need,
-                      ),
-                    ),
+                    onPressed: Get.find<WalletService>().isWalletConnected.value
+                        ? () => Get.to<void>(
+                              EditNeedPage(
+                                need: need,
+                              ),
+                            )
+                        : () => Get.to<void>(
+                              const InstructionsPage(
+                                isDonation: false,
+                              ),
+                            ),
                   ),
                   Gap(getRelativeHeight(20)),
                   InkWell(
