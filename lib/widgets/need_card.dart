@@ -184,8 +184,6 @@ class NeedCard extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     need.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                     style: CustomTypography.fromColor(
                       need.status == NeedStatus.past
                           ? theme.graphite
@@ -197,8 +195,6 @@ class NeedCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
                     need.description,
                     style: CustomTypography.fromColor(
                       theme.graphite,
