@@ -31,7 +31,7 @@ class AlternateNeedCard extends GetView<AlternateNeedCardController> {
 
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: getRelativeHeight(200),
+        minHeight: getRelativeHeight(100),
       ),
       child: Material(
         color: Colors.transparent,
