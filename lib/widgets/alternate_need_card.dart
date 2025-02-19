@@ -29,8 +29,10 @@ class AlternateNeedCard extends GetView<AlternateNeedCardController> {
       tag: 'controller_alternateNeedCard_${need.id}',
     );
 
-    return SizedBox(
-      height: getRelativeHeight(200),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: getRelativeHeight(200),
+      ),
       child: Material(
         color: Colors.transparent,
         shape: RoundedRectangleBorder(
@@ -50,7 +52,6 @@ class AlternateNeedCard extends GetView<AlternateNeedCardController> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   need.title,
-                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTypography.fromColor(
                     theme.ferngreen,
@@ -61,7 +62,6 @@ class AlternateNeedCard extends GetView<AlternateNeedCardController> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   need.description,
                   style: CustomTypography.fromColor(
