@@ -196,7 +196,6 @@ class NeedCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    overflow: TextOverflow.ellipsis,
                     need.description,
                     style: CustomTypography.fromColor(
                       theme.graphite,

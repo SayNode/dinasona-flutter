@@ -205,7 +205,6 @@ class NeedPopup extends GetView<NeedPopupController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 need.description,
-                overflow: TextOverflow.ellipsis,
                 style: CustomTypography.fromColor(
                   theme.graphite,
                 ).k16Reg,
