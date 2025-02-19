@@ -37,11 +37,10 @@ class CurrencyTileWidget extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              CircleAvatar(
-                radius: 16,
-                backgroundImage: AssetImage(
-                  imageUrl,
-                ),
+              Image.asset(
+                imageUrl,
+                width: 35,
+                height: 24,
               ),
               const SizedBox(width: 15),
               Text(
