@@ -81,6 +81,10 @@ class CreateNewNeedController extends GetxController {
           : need!.amount.toString();
 
       screen1.text = need!.title;
+      for (int i = 0; i < need!.areasOfInterest.length; i++) {
+        selectedAreasOfInterest.add(need!.areasOfInterest[i]);
+      }
+
       screen3.text = (double.parse(tmpAmount) /
               currencyConversionService.conversionRates.value.USRvsUSD)
           .toStringAsFixed(2);
