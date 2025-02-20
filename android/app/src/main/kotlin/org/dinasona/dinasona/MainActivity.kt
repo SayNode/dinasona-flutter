@@ -1,5 +1,0 @@
-package org.dinasona.dinasona
-
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity()
