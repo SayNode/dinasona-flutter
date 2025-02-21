@@ -120,6 +120,12 @@ void main() async {
       );
     }
 
+    Get.find<ConnectivityService>().init();
+    if (await Get.find<ConnectivityService>().hasInternetConnection() ==
+        false) {
+      await Get.find<ConnectivityService>().waitForNetworkConnection();
+    }
+
     await liquid_sdk.initialize();
     await initializeServices();
 
@@ -168,7 +174,6 @@ Future<void> initializeServices() async {
   // Initialize services:
   await Get.find<StorageService>().init();
   Get.find<AuthService>().init();
-  Get.put(NetworkService());
 }
 
 class MyApp extends StatelessWidget {

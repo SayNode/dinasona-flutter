@@ -36,6 +36,7 @@ import 'currency_conversion_service.dart';
 import 'localization_controller.dart';
 import 'logger_service.dart';
 import 'need_service.dart';
+import 'network_service.dart';
 import 'storage/secure_storage_service.dart';
 import 'storage/shared_storage_service.dart';
 import 'storage/storage_service.dart';
@@ -62,6 +63,7 @@ class MainBindings extends Bindings {
     Get.lazyPut(APIService.new);
 
     Get
+      ..lazyPut(ConnectivityService.new)
       ..lazyPut(APIService.new)
       ..lazyPut(AuthService.new)
       ..lazyPut(UserStateService.new)

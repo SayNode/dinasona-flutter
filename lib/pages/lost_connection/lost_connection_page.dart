@@ -53,7 +53,16 @@ class LostConnectionPage extends StatelessWidget {
               DinasonaButton(
                 text: 'Retry connection',
                 onPressed: () async {
-                  await Get.put(NetworkService()).checkInternetStatus();
+                  final bool hasInternet = await Get.find<ConnectivityService>()
+                      .hasInternetConnection();
+                  if (hasInternet) {
+                    Get.back();
+                  } else {
+                    Get.snackbar(
+                      'No internet connection'.tr,
+                      'Please check your connection and try again'.tr,
+                    );
+                  }
                 },
                 color: theme.amberglow,
               ),
