@@ -40,6 +40,12 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
               decoration: const InputDecoration(
                 border: InputBorder.none,
               ),
+              onTap: () {
+                if (!controller.hadFirstInputTouch.value) {
+                  controller.hadFirstInputTouch.value = true;
+                  controller.receiveBTCInputBTC.text = '';
+                }
+              },
             ),
             Text(
               'BTC',
@@ -74,6 +80,13 @@ class ReceiveBitcoinInput extends GetView<ReceivePaymentController> {
               decoration: const InputDecoration(
                 border: InputBorder.none,
               ),
+              onTap: () {
+                if (!controller.hadFirstInputTouch.value) {
+                  controller.hadFirstInputTouch.value = true;
+                  controller.receiveBTCInputUserCurrency.text = '';
+                  controller.receiveBTCUserCurrencyInputCheck.value = '';
+                }
+              },
             ),
             Text(
               Get.find<LocalizationController>().selectedCurrency.value.sign,

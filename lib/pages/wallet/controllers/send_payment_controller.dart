@@ -243,6 +243,10 @@ class SendPaymentController extends GetxController {
   Future<void> sendPaymentWithFee({Need? needForDonationObject}) async {
     bool canStartPayment = false;
 
+    if (Get.context != null) {
+      showLoadingDialog(Get.context!);
+    }
+
     // Create a donation object for the backend
     if (needForDonationObject != null) {
       try {
@@ -250,6 +254,9 @@ class SendPaymentController extends GetxController {
             await createDonationObject(needForDonationObject);
 
         if (createDonationResponse.statusCode != 201) {
+          if (Get.context != null) {
+            hideLoadingDialog(Get.context!);
+          }
           // ignore: avoid_dynamic_calls
           if (jsonDecode(createDonationResponse.body)['message'] ==
               'Donation already exists for this need') {
@@ -267,6 +274,9 @@ class SendPaymentController extends GetxController {
           canStartPayment = true;
         }
       } catch (e) {
+        if (Get.context != null) {
+          hideLoadingDialog(Get.context!);
+        }
         await PopupManager.donationErrorPopup(
           'Donation could not be created. Please try again later.'.tr,
         );
@@ -277,10 +287,6 @@ class SendPaymentController extends GetxController {
     }
 
     if (canStartPayment) {
-      if (Get.context != null) {
-        showLoadingDialog(Get.context!);
-      }
-
       // Pay the beneficiary invoice
       mainTransactionWentThrough.value = false;
       final dynamic mainTransactionPaymentResponse =
@@ -394,6 +400,10 @@ class SendPaymentController extends GetxController {
         body: json.encode(<String, Object>{
           'need': need.id.toString(),
           'amount': need.amount, // This can be int or double
+          // We currently have no 100% way of knowing if an invoice got paid successfully
+          // Therefore we set the status to completed because we assume that the user
+          // will pay the invoice
+          'status': 'completed',
         }),
       );
 
