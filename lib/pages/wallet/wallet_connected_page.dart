@@ -11,6 +11,7 @@ import '../../widgets/dinasona_button.dart';
 import 'controllers/wallet_page_controller.dart';
 import 'receive_bitcoin_page.dart';
 import 'send_bitcoin_page.dart';
+import 'wallet_tutorial_page.dart';
 import 'widgets/list_of_transactions.dart';
 import 'widgets/wallet_info_card.dart';
 
@@ -65,7 +66,38 @@ class WalletConnectedPage extends GetView<WalletPageController> {
                     ),
                     Gap(getRelativeHeight(15)),
                     const WalletInfoCard(),
-                    Gap(getRelativeHeight(30)),
+                    Gap(getRelativeHeight(10)),
+                    Container(
+                      transform: Matrix4.translationValues(
+                        -getRelativeWidth(10),
+                        0,
+                        0,
+                      ),
+                      child: TextButton(
+                        onPressed: () => Get.to<void>(
+                          WalletTutorialPage.new,
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: getRelativeWidth(10),
+                          ),
+                        ),
+                        child: Text(
+                          'How the wallet works'.tr,
+                          style: CustomTypography.fromColor(theme.shadowed)
+                              .k16SemiBold
+                              .copyWith(
+                                decoration: TextDecoration.underline,
+                                shadows: <Shadow>[
+                                  const Shadow(
+                                    offset: Offset(0, -2),
+                                  ),
+                                ],
+                                color: Colors.transparent,
+                              ),
+                        ),
+                      ),
+                    ),
                     Obx(() {
                       if (Get.find<WalletService>().transactions.isEmpty) {
                         return Expanded(
