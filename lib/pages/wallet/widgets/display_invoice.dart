@@ -94,7 +94,7 @@ class DisplayInvoice extends GetView<ReceivePaymentController> {
               child: TextButton(
                 onPressed: () {
                   Share.share(
-                    controller.createdInvoiceBolt11.value,
+                    'Hey, this is a Lightning invoice I created. You can pay it using any Lightning Network-compatible wallet by copying the payment request (Bolt11 format) below.\n${controller.createdInvoiceBolt11.value}',
                     subject: 'Lightning Network Invoice'.tr,
                   );
                 },
