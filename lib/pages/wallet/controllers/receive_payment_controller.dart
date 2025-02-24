@@ -22,11 +22,12 @@ class ReceivePaymentController extends GetxController {
   RxString createdInvoiceBolt11 = ''.obs;
   TextEditingController userInvoiceMessage = TextEditingController();
   final TextEditingController receiveBTCInputBTC =
-      TextEditingController(text: '0.0');
-  RxString receiveBTCUserCurrencyInputCheck = '0.0'.obs;
+      TextEditingController(text: '0');
+  RxString receiveBTCUserCurrencyInputCheck = '0'.obs;
   final TextEditingController receiveBTCInputUserCurrency =
-      TextEditingController(text: '0.0');
+      TextEditingController(text: '0');
   final RxString error = ''.obs;
+  final RxBool hadFirstInputTouch = false.obs;
 
   @override
   void onInit() {
@@ -93,9 +94,9 @@ class ReceivePaymentController extends GetxController {
           controllerText.isEmpty ||
           controllerText == '0.0') {
         if (isBTCInput) {
-          receiveBTCInputUserCurrency.text = '0.0';
+          receiveBTCInputUserCurrency.text = '0';
         } else {
-          receiveBTCInputBTC.text = '0.0';
+          receiveBTCInputBTC.text = '0';
         }
       } else {
         final double otherValue = double.parse(controllerText);

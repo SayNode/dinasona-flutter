@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -24,10 +25,8 @@ class FooterWidget extends StatelessWidget {
             style: CustomTypography.fromColor(theme.shadowed).k14Reg,
           ),
           const Gap(12),
-          Text(
-            ' Made with 💚 by Dinasona for a better future',
-            style: CustomTypography.fromColor(theme.ferngreen).k14Reg,
-          ),
+          SvgPicture.asset('assets/images/logos/made_by_dinasona.svg'),
+          const Gap(12),
         ],
       ),
     );
