@@ -90,7 +90,6 @@ class PersonalDetailsController extends GetxController {
   }
 
   Future<void> submit() async {
-    print('test 123');
     await userStateService.updateUserInfo(
       <String, dynamic>{
         'name': fullNameController.text,
@@ -99,9 +98,7 @@ class PersonalDetailsController extends GetxController {
     );
 
     final Map<String, dynamic> beneficiaryInfo = <String, dynamic>{};
-    print(
-      'test 123 ${dateOfBirthController.value} ${dateOfBirthController.value.isNotEmpty}',
-    );
+
     if (fullNameController.text.isNotEmpty) {
       beneficiaryInfo['name'] = fullNameController.text;
     }
