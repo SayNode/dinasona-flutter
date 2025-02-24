@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../model/beneficiary.dart';
 import '../../service/theme_service.dart';
 import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
@@ -151,7 +152,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                                             children: <Widget>[
                                               Flexible(
                                                 child: AutoSizeText(
-                                                  gender.text,
+                                                  gender.title,
                                                   minFontSize: 9,
                                                   maxFontSize: 16,
                                                   maxLines: 1,

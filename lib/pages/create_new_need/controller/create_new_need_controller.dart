@@ -277,7 +277,6 @@ class CreateNewNeedController extends GetxController {
   Future<void> updateNeed(int id, bool isDraft) async {
     final double needAmountInUSD = double.parse(screen3.text) *
         currencyConversionService.conversionRates.value.USRvsUSD;
-
     final int needAmountInSatoshi = currencyConversionService.xToSatoshi(
       currencyConversionService.conversionRates.value.USDvsBTC *
           needAmountInUSD,
@@ -288,7 +287,10 @@ class CreateNewNeedController extends GetxController {
       needAmountInSatoshi,
     );
 
-    await needService.updateNeed(id, <String, dynamic>{
+    await needService.updateNeed(id, images: <String>[
+      if (selectedImage.value != null) selectedImage.value!.path,
+      if (selectedImage2.value != null) selectedImage2.value!.path,
+    ], <String, dynamic>{
       'title': screen1.text,
       'description': screen4.text,
       'amount': needAmountInUSD.toStringAsFixed(2),

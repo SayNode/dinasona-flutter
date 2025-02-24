@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 enum Gender {
@@ -13,6 +14,17 @@ enum Gender {
         return 'Male';
       case female:
         return 'Female';
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case anonymous:
+        return Icons.sentiment_satisfied_alt;
+      case male:
+        return Icons.male;
+      case female:
+        return Icons.female;
     }
   }
 }

@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 
-import 'package:dio/dio.dart' as dio_import;
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/need.dart';
 import '../pages/home/controllers/beneficary_home_page_controller.dart';
-import '../util/constants.dart';
 import 'api_service.dart';
 import 'breez_service.dart';
 import 'currency_conversion_service.dart';
@@ -233,37 +229,25 @@ class NeedService extends GetxService {
 
   Future<Need> updateNeed(
     int id,
-    Map<String, dynamic> data,
-  ) async {
+    Map<String, dynamic> data, {
+    List<String> images = const <String>['', ''],
+  }) async {
     try {
       Get.find<LoggerService>().log(
         'NeedService.updateNeed() called...',
       );
-      final String url =
-          Uri.https(Constants.apiDomain, '/need/update/$id/').toString();
-      final dio_import.FormData formData = dio_import.FormData.fromMap(data);
+      final String url = '/need/update/$id/';
 
-      final dio_import.Response<dynamic> response = await dio_import.Dio(
-        dio_import.BaseOptions(
-          validateStatus: (int? code) {
-            return true;
-          },
-        ),
-      ).patch(
+      final http.Response response = await apiService.multipartFilePatch(
         url,
-        data: formData,
-        options: dio_import.Options(
-          headers: <String, dynamic>{
-            HttpHeaders.contentTypeHeader: 'multipart/form-data',
-            HttpHeaders.authorizationHeader:
-                'Bearer ${apiService.authenticationToken}',
-          },
-        ),
+        images,
+        body: data,
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> needJson =
-            response.data as Map<String, dynamic>;
+        final Map<String, dynamic> needJson = Map<String, dynamic>.from(
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>,
+        );
 
         // Beneficiary comes back as an int ??
         // ignore: cascade_invocations
@@ -272,9 +256,9 @@ class NeedService extends GetxService {
         Get.find<LoggerService>().log(
           'NeedService.updateNeed() - updated need',
         );
+
         return Need.fromJson(needJson);
       } else {
-        log('test: ${response.data}');
         throw Exception(
           'Failed to update need - got status code ${response.statusCode}',
         );
