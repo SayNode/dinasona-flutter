@@ -81,6 +81,10 @@ class CreateNewNeedController extends GetxController {
           : need!.amount.toString();
 
       screen1.text = need!.title;
+      for (int i = 0; i < need!.areasOfInterest.length; i++) {
+        selectedAreasOfInterest.add(need!.areasOfInterest[i]);
+      }
+
       screen3.text = (double.parse(tmpAmount) /
               currencyConversionService.conversionRates.value.USRvsUSD)
           .toStringAsFixed(2);
@@ -275,6 +279,13 @@ class CreateNewNeedController extends GetxController {
   }
 
   Future<void> updateNeed(int id, bool isDraft) async {
+    final String areasOfInterest = selectedAreasOfInterest
+        .map(
+          (AreaOfInterest e) => e.title,
+        )
+        .toString()
+        .replaceAll('(', '')
+        .replaceAll(')', '');
     final double needAmountInUSD = double.parse(screen3.text) *
         currencyConversionService.conversionRates.value.USRvsUSD;
 
@@ -292,6 +303,7 @@ class CreateNewNeedController extends GetxController {
       'title': screen1.text,
       'description': screen4.text,
       'amount': needAmountInUSD.toStringAsFixed(2),
+      'area_of_interest': areasOfInterest,
       'bolt11Invoice': bolt11Invoice,
       'status': isDraft ? 'draft' : 'published',
     });
