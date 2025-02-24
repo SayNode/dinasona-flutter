@@ -14,7 +14,7 @@ class AboutDinasonaPage extends StatelessWidget {
   static const Map<String, List<String>> info = <String, List<String>>{
     'Give Directly with Dinasona': <String>[
       'Give directly to those in need',
-      'No costly overheads – only 5% transactions cost',
+      "No costly overheads – transactions cost: 1% fee, with a minimum of CHF 0.50 or 1'000 Satoshi",
       'Money gets directly to the person you choose to give to',
       'The person you give to can spend the money the same day in their local store',
       'You choose who to give to, even small amounts to cover basic necessities',
@@ -26,12 +26,12 @@ class AboutDinasonaPage extends StatelessWidget {
     ],
     'How does the basic Dinasona system work?': <String>[
       'A person in need downloads the APP that shows pictures of items of basic necessity and how to request assistance to buy one or more of the basic commodities. The request is posted on the Dinasona application that is available to donors.',
-      'Donors select potential beneficiary requests to send them funds. The donor pays online including 5% for the cost of transferring the money.',
+      "Donors select potential beneficiary requests to send them funds. The donor pays online including 1% fee, with a minimum of CHF 0.50 or 1'000 Satoshi for the cost of transferring the money.",
       'The recipient receives a notification in the App on their mobile phone notifying them that funds have been credited to their account.',
       'The beneficiary can then go to a local convenience store or kiosk to collect their money or go to an affiliated grocery store and buy commodities with their digital credit.',
       'The donation should reach the beneficiary on the same day as long as the beneficiary goes to withdraw the funds or purchase the requested items.',
       'Kiosks sometimes charge recipients a processing fee which is commonly accepted by mobile banking users. Dedicated kiosks for the particular mobile banking system of a user can allow for withdrawals without any deduction of fees.',
-      'The donor then receives confirmation that the beneficiary has received the donation, including a breakdown of the 5% of transactional fees to deliver the donation.',
+      "The donor then receives confirmation that the beneficiary has received the donation, including a breakdown of the 1% fee, with a minimum of CHF 0.50 or 1'000 Satoshi of transactional fees to deliver the donation.",
     ],
   };
 

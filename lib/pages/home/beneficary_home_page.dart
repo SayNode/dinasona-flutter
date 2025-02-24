@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -35,27 +34,6 @@ class BeneficiaryHomePage extends GetView<BeneficiaryHomePageController> {
             ),
             const Gap(20),
             const CreateNeedContainerWidget(),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.file_download_outlined,
-                    color: theme.shadowed,
-                    size: getRelativeWidth(18),
-                  ),
-                  const Gap(10),
-                  Flexible(
-                    child: AutoSizeText(
-                      'Download our PDF guide and explore using the app'.tr,
-                      maxLines: 2,
-                      style: CustomTypography.fromColor(theme.shadowed).k14Reg,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             const Gap(30),
             Text(
               'Your needs'.tr,

@@ -9,6 +9,7 @@ import '../../util/util.dart';
 import '../../widgets/dinasona_button.dart';
 import 'controllers/wallet_page_controller.dart';
 import 'import_wallet_page.dart';
+import 'wallet_tutorial_page.dart';
 
 class NoWalletConnectedPage extends GetView<WalletPageController> {
   const NoWalletConnectedPage({super.key});
@@ -68,7 +69,32 @@ class NoWalletConnectedPage extends GetView<WalletPageController> {
               ],
             ),
           ),
-          Gap(getRelativeWidth(30)),
+          Gap(getRelativeWidth(5)),
+          TextButton(
+            onPressed: () => Get.to<void>(
+              WalletTutorialPage.new,
+            ),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: getRelativeWidth(10),
+              ),
+            ),
+            child: Text(
+              'How the wallet works'.tr,
+              style: CustomTypography.fromColor(theme.shadowed)
+                  .k16SemiBold
+                  .copyWith(
+                    decoration: TextDecoration.underline,
+                    shadows: <Shadow>[
+                      const Shadow(
+                        offset: Offset(0, -2),
+                      ),
+                    ],
+                    color: Colors.transparent,
+                  ),
+            ),
+          ),
+          Gap(getRelativeWidth(5)),
           DinasonaButton(
             text: 'Create wallet'.tr,
             onPressed: () {

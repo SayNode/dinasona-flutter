@@ -5,23 +5,14 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../../model/beneficiary.dart';
 import '../../../service/theme_service.dart';
 import '../../../service/user_state_service.dart';
 import '../../root/controllers/beneficiary_root_controller.dart';
 
-enum Gender {
-  male('Male', Icons.male),
-  female('Female', Icons.female),
-  other('Prefer not to say', Icons.sentiment_satisfied_alt);
-
-  const Gender(this.text, this.icon);
-  final String text;
-  final IconData icon;
-}
-
 class PersonalDetailsController extends GetxController {
   Gender get selectedGender => _selectedGender.value;
-  final Rx<Gender> _selectedGender = Gender.other.obs;
+  final Rx<Gender> _selectedGender = Gender.anonymous.obs;
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final RxString dateOfBirthController = ''.obs;
@@ -46,6 +37,7 @@ class PersonalDetailsController extends GetxController {
     super.onInit();
     fullNameController.text = userState.user.value.name;
     emailController.text = userState.user.value.email;
+    _selectedGender.value = userState.user.value.beneficiary.gender;
     if (userState.user.value.beneficiary.dateOfBirth != null) {
       dateOfBirthController.value = dateFormat.format(
         userStateService.user.value.beneficiary.dateOfBirth!,
@@ -104,16 +96,29 @@ class PersonalDetailsController extends GetxController {
         // 'email': emailController.text,
       },
     );
-    await userStateService.updateBeneficiaryInfo(
-      <String, dynamic>{
-        'name': fullNameController.text,
-        'country': country.value.toLowerCase(),
-        'email': userStateService.user.value.email,
-        'date_of_birth': dateOfBirthController.value,
-        'description': descriptionTextController.text,
-        'gender': _selectedGender.value.text.toLowerCase() == 'male' ? 0 : 1,
-      },
-    );
+
+    final Map<String, dynamic> beneficiaryInfo = <String, dynamic>{};
+
+    if (fullNameController.text.isNotEmpty) {
+      beneficiaryInfo['name'] = fullNameController.text;
+    }
+    if (country.value.isNotEmpty) {
+      beneficiaryInfo['country'] = country.value.toLowerCase();
+    }
+    if (dateOfBirthController.value.isNotEmpty) {
+      beneficiaryInfo['date_of_birth'] = dateOfBirthController.value;
+    }
+    if (descriptionTextController.text.isNotEmpty) {
+      beneficiaryInfo['description'] = descriptionTextController.text;
+    }
+    if (_selectedGender.value.title != Gender.anonymous.title) {
+      beneficiaryInfo['gender'] =
+          _selectedGender.value.title.toLowerCase() == 'male' ? 0 : 1;
+    }
+
+    if (beneficiaryInfo.isNotEmpty) {
+      await userStateService.updateBeneficiaryInfo(beneficiaryInfo);
+    }
 
     Get.back();
     beneficiaryRootController.changeTabIndex(1);
