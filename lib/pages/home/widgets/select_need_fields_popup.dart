@@ -80,7 +80,9 @@ class SelectAreasOfInterestPopup
                               expand: false,
                               customElevation: 0,
                               padding: EdgeInsets.all(getRelativeHeight(10)),
-                              text: 'See ${controller.count.value} needs'.tr,
+                              text:
+                                  'See ${controller.count.value} need${(controller.count.value > 1 || controller.count.value < 1) ? 's' : ''}'
+                                      .tr,
                               color: LightColor.amberglow,
                               onPressed: controller.close,
                               locked:
