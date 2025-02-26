@@ -76,7 +76,7 @@ class PeopleHelpedWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
-                        '$peopleHelped people',
+                        '$peopleHelped ${peopleHelped > 1 || peopleHelped < 1 ? 'people' : 'person'}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k24Bold,
                       ),
@@ -105,7 +105,7 @@ class PeopleHelpedWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
-                        '$countries countries',
+                        '$countries countr${countries > 1 || countries < 1 ? 'ies' : 'y'}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k24Bold,
                       ),
