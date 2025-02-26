@@ -41,7 +41,7 @@ class HelpedRecievedWidget extends StatelessWidget {
               Obx(
                 () => Get.find<WalletService>().isWalletConnected.value
                     ? Text(
-                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(3))}',
+                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(2))}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k36Bold,
                       )

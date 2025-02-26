@@ -55,7 +55,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
               Gap(getRelativeHeight(5)),
               Obx(
                 () => Text(
-                  '${localizationController.selectedCurrency.value.sign} ${walletService.balanceInUserCurrency.value.toStringAsFixed(3)}',
+                  '${localizationController.selectedCurrency.value.sign} ${walletService.balanceInUserCurrency.value.toStringAsFixed(2)}',
                   style: CustomTypography.fromColor(theme.moonstone).k36Bold,
                 ),
               ),
