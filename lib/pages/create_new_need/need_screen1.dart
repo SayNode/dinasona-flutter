@@ -28,6 +28,7 @@ class NeedScreen1 extends GetView<CreateNewNeedController> {
         DinasonaTextField(
           hintText: 'Give your need a title',
           controller: controller.screen1,
+          maxLength: 255,
         ),
         const Spacer(),
         Obx(
