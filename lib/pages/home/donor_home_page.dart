@@ -216,7 +216,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                         horizontal: getRelativeWidth(20),
                       ),
                       child: Text(
-                        'No needs found, please try changing your filters'.tr,
+                        'No matching results. Please modify your filters.'.tr,
                       ),
                     )
                   : Container();
