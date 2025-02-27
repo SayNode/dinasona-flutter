@@ -50,6 +50,7 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                 controller: controller.fistNameController,
                 onChanged: (String firstName) =>
                     controller.firstName.value = firstName,
+                maxLength: 20,
               ),
             ),
             const Gap(6),
@@ -69,6 +70,7 @@ class DonorPersonalDetailsPage extends GetView<DonorPersonalDetailsController> {
                 controller: controller.secondNameController,
                 onChanged: (String lastName) =>
                     controller.lastName.value = lastName,
+                maxLength: 20,
               ),
             ),
             const Gap(6),

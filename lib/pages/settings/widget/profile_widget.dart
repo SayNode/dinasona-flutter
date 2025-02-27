@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -24,19 +25,24 @@ class ProfileWidget extends StatelessWidget {
       children: <Widget>[
         const AvatarWidget(),
         const Gap(28),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              name.isEmpty ? 'Unknown'.tr : name,
-              style: CustomTypography.fromColor(theme.shadowed).k24Bold,
-            ),
-            Text(
-              location.isEmpty ? 'Unknown'.tr : location,
-              style: CustomTypography.fromColor(theme.graphite).k16Reg,
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              AutoSizeText(
+                name.isEmpty ? 'Unknown'.tr : name,
+                style: CustomTypography.fromColor(theme.shadowed).k24Bold,
+                softWrap: true,
+                maxLines: 2,
+                minFontSize: 8,
+              ),
+              Text(
+                location.isEmpty ? 'Unknown'.tr : location,
+                style: CustomTypography.fromColor(theme.graphite).k16Reg,
+              ),
+            ],
+          ),
         ),
       ],
     );
