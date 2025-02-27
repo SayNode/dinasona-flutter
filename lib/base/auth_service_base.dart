@@ -28,6 +28,12 @@ enum ProviderTypes {
 abstract class AuthServiceBase extends GetxService {
   String verificationToken = '';
   String verificationUid = '';
+  bool usedSocialLogin = false;
+  void setUsedSocialLogin(bool value) {
+    usedSocialLogin = value;
+    //save to storage
+    storageService.writeBool('usedSocialLogin', value);
+  }
 
   final SecureStorageService storageService = Get.find<StorageService>().secure;
   final UserStateService userStateService = Get.find<UserStateService>();
@@ -71,6 +77,9 @@ abstract class AuthServiceBase extends GetxService {
       final AuthResponse authResult = AuthResponse.fromJson(
         jsonDecode(response.body) as Map<String, dynamic>,
       );
+      //get social login status
+      usedSocialLogin =
+          await storageService.readBool('usedSocialLogin') ?? false;
       return authResult;
     } catch (e) {
       // Endpoint failed:
@@ -109,6 +118,9 @@ abstract class AuthServiceBase extends GetxService {
         // Disconnect other providers
         await disconnectProviders();
       }
+
+      //set social login status
+      setUsedSocialLogin(false);
 
       return authResult;
     } catch (e) {
@@ -211,6 +223,8 @@ abstract class AuthServiceBase extends GetxService {
         // Disconnect other providers
         await disconnectProviders();
       }
+      //set social login status
+      setUsedSocialLogin(false);
       return authResult;
     } catch (e) {
       // Endpoint failed:
