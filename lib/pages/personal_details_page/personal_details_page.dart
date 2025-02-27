@@ -105,6 +105,7 @@ class PersonalDetailsPage extends GetView<PersonalDetailsController> {
                       DinasonaTextField(
                         controller: controller.fullNameController,
                         hintText: 'Full name',
+                        maxLength: 40,
                       ),
                       SizedBox(height: gap),
                       DinasonaTextField(

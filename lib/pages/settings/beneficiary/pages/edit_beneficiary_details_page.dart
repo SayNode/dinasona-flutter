@@ -67,6 +67,7 @@ class EditBeneficiaryPage
                         CustomTypography.fromColor(theme.shadowed).k16Reg,
                     hintStyle:
                         CustomTypography.fromColor(theme.graphite).k16Reg,
+                    maxLength: 40,
                   ),
                   const Gap(6),
                   Row(
