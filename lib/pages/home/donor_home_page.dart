@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import '../../model/need.dart';
 import '../../service/theme_service.dart';
-import '../../service/user_state_service.dart';
 import '../../theme/theme.dart';
 import '../../theme/typography.dart';
 import '../../util/util.dart';
@@ -120,7 +119,6 @@ class DonorHomePage extends GetView<DonorHomePageController> {
   @override
   Widget build(BuildContext context) {
     final CustomTheme theme = Get.put(ThemeService()).theme;
-    final UserStateService userStateService = Get.find<UserStateService>();
     Get.put(DonorHomePageController());
 
     return RefreshIndicator(
@@ -135,8 +133,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Hey, ${userStateService.user.value.name.isNotEmpty ? userStateService.user.value.name : "let's make a difference!"}'
-                      .tr,
+                  "Hey, let's make a difference!".tr,
                   style: CustomTypography.fromColor(theme.shadowed).k24Bold,
                 ),
               ),
