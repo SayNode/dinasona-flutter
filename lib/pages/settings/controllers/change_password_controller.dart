@@ -50,6 +50,10 @@ class ChangePasswordController extends GetxController {
         if (response.success) {
           Get.back();
         } else {
+          if (response.result['error'] == null) {
+            errorTextConfirmPassword.value = 'An error occurred';
+            return;
+          }
           final Map<String, dynamic> message =
               response.result['error'] as Map<String, dynamic>;
           if (message['old_password'] != null) {
