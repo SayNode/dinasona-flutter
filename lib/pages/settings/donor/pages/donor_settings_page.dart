@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import '../../../../service/auth_service.dart';
 import '../../about_page.dart';
 import '../../change_password_page.dart';
 import '../../contact_us_page.dart';
@@ -51,12 +52,17 @@ class DonorSettingsPage extends GetView<DonorSettingsPageController> {
                   title: 'Personal details'.tr,
                   onTap: () => Get.to(DonorPersonalDetailsPage.new),
                 ),
-                const Gap(6),
-                SettingsBar(
-                  icon: Symbols.password,
-                  title: 'Change password'.tr,
-                  onTap: () => Get.to(() => const ChangePasswordPage()),
-                ),
+                if (Get.find<AuthService>().usedSocialLogin)
+                  const SizedBox()
+                else
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: SettingsBar(
+                      icon: Symbols.password,
+                      title: 'Change password'.tr,
+                      onTap: () => Get.to(() => const ChangePasswordPage()),
+                    ),
+                  ),
                 const Gap(6),
                 SettingsBar(
                   icon: Symbols.contact_support,

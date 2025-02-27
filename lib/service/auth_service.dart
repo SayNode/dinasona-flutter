@@ -63,6 +63,9 @@ class AuthService extends AuthServiceBase {
             await userStateService.handleUserOnLogin();
             await userStateService.init();
 
+            //set social status
+            setUsedSocialLogin(true);
+
             return authResult;
           } catch (error) {
             await disconnectProviders();
@@ -142,7 +145,8 @@ class AuthService extends AuthServiceBase {
           await storageService.writeString('token', authResult.accessToken);
           await userStateService.handleUserOnLogin();
           await userStateService.init();
-
+          //set social status
+          setUsedSocialLogin(true);
           return authResult;
         } catch (error) {
           await disconnectProviders();
