@@ -34,6 +34,11 @@ class ChangePasswordController extends GetxController {
     errorTextCurrentPassword.value = null;
     errorTextNewPassword.value = null;
     errorTextConfirmPassword.value = null;
+    if (newPasswordController.text == currentPasswordController.text) {
+      errorTextNewPassword.value =
+          'New password cannot be the same as the old password'.tr;
+      return;
+    }
     if (determinePasswordStrength(newPasswordController.value.text) >= 3) {
       if (validPassword.value) {
         final AuthResponse response = await _authService.changePassword(
@@ -45,6 +50,10 @@ class ChangePasswordController extends GetxController {
         if (response.success) {
           Get.back();
         } else {
+          if (response.result['error'] == null) {
+            errorTextConfirmPassword.value = 'An error occurred';
+            return;
+          }
           final Map<String, dynamic> message =
               response.result['error'] as Map<String, dynamic>;
           if (message['old_password'] != null) {
