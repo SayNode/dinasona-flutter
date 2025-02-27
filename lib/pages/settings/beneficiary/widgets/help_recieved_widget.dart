@@ -41,7 +41,7 @@ class HelpedRecievedWidget extends StatelessWidget {
               Obx(
                 () => Get.find<WalletService>().isWalletConnected.value
                     ? Text(
-                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(3))}',
+                        '${Get.find<LocalizationController>().selectedCurrency.value.sign} ${double.parse(Get.find<WalletService>().balanceInUserCurrency.value.toStringAsFixed(2))}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k36Bold,
                       )
@@ -78,7 +78,7 @@ class HelpedRecievedWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
-                        '$peopleHelped people',
+                        '$peopleHelped ${peopleHelped > 1 || peopleHelped < 1 ? 'people' : 'person'}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k24Bold,
                       ),
@@ -107,7 +107,7 @@ class HelpedRecievedWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
-                        '$needsClosed needs',
+                        '$needsClosed need${needsClosed > 1 || needsClosed < 1 ? 's' : ''}',
                         style:
                             CustomTypography.fromColor(theme.moonstone).k24Bold,
                       ),

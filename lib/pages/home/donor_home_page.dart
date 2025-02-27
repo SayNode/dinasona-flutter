@@ -194,6 +194,30 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               ),
             ),
             Gap(getRelativeHeight(20)),
+            Obx(() {
+              final Map<int, String> needCountToShow = <int, String>{};
+
+              for (final AreaOfInterest field
+                  in controller.defaultAreasOfInterest) {
+                for (final Need need in controller.needs) {
+                  if (need.areasOfInterest.contains(field) &&
+                      need.status == NeedStatus.ongoing) {
+                    needCountToShow[need.id] = '';
+                  }
+                }
+              }
+
+              return needCountToShow.entries.isEmpty
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getRelativeWidth(20),
+                      ),
+                      child: Text(
+                        'No matching results. Please modify your filters.'.tr,
+                      ),
+                    )
+                  : Container();
+            }),
             Obx(
               () => Column(
                 children: <Widget>[
