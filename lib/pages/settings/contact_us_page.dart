@@ -23,7 +23,7 @@ class ContactUsPage extends GetView<ContactUsController> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: CustomScaffold(
-        appBarTitle: 'Contact Us'.tr,
+        appBarTitle: 'Contact us'.tr,
         padding: true,
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(

@@ -121,10 +121,10 @@ class WalletInfoCard extends GetView<WalletPageController> {
                                 'Export/Backup'.tr,
                                 style: CustomTypography.fromColor(
                                   theme.shadowed,
-                                ).k14Reg,
+                                ).k16SemiBold,
                               ),
                             ),
-                            Gap(getRelativeHeight(5)),
+                            Gap(getRelativeHeight(7)),
                             TextButton(
                               style: ButtonStyle(
                                 visualDensity: VisualDensity.compact,
@@ -143,7 +143,7 @@ class WalletInfoCard extends GetView<WalletPageController> {
                                 'Delete'.tr,
                                 style: CustomTypography.fromColor(
                                   theme.inferno,
-                                ).k14Reg,
+                                ).k16SemiBold,
                               ),
                             ),
                           ],

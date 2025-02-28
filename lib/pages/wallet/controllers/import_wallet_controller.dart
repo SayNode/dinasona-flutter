@@ -50,7 +50,8 @@ class ImportWalletController extends GetxController {
       );
 
       if (connectionResult == 'invalid word in phrase' ||
-          connectionResult == 'invalid checksum') {
+          connectionResult == 'invalid checksum' ||
+          connectionResult == 'unknown word') {
         if (Get.context != null) {
           hideLoadingDialog(Get.context!);
         }
@@ -88,16 +89,24 @@ class ImportWalletController extends GetxController {
       );
     } catch (e) {
       loggerService.log('Wallet import failed: $e');
-      Future<void>.delayed(const Duration(milliseconds: 1000), () {
+
+      // Wait for the loading dialog to show before hiding it
+      // Todo fix in a later milestone - dirty quick fix for the launch
+      await Future<void>.delayed(const Duration(milliseconds: 1000), () {});
+
+      if (Get.context != null) {
+        hideLoadingDialog(Get.context!);
+      }
+
+      await Future<void>.delayed(const Duration(milliseconds: 1000), () {
         PopupManager.openWalletInfoPopup(
           'Failed to import wallet'.tr,
           'The wallet import was unsuccessful.  Double-check your details and try again, or create a new wallet if necessary to proceed.'
               .tr,
         );
       });
-      if (Get.context != null) {
-        hideLoadingDialog(Get.context!);
-      }
+
+      FocusManager.instance.primaryFocus?.unfocus();
     }
   }
 }

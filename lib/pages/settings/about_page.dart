@@ -57,7 +57,7 @@ class AboutPage extends StatelessWidget {
             const Gap(4),
             BulletPointWidget(
               text:
-                  'Dinasona allows charitable donors to select to donate to individual requests of people in need, in the socio economic category, region, profile type of their choice.'
+                  'Dinasona allows charitable donors to select to donate to individual requests of people in need, in the socio-economic category, region, profile type of their choice.'
                       .tr,
             ),
             const Gap(4),
