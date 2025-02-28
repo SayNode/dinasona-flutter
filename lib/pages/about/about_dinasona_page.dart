@@ -18,7 +18,7 @@ class AboutDinasonaPage extends StatelessWidget {
       'Money gets directly to the person you choose to give to',
       'The person you give to can spend the money the same day in their local store',
       'You choose who to give to, even small amounts to cover basic necessities',
-      'Dinasona allows charitable donors to select to donate to individual requests of people in need, in the socio economic category, region, profile type of their choice.',
+      'Dinasona allows charitable donors to select to donate to individual requests of people in need, in the socio-economic category, region, profile type of their choice.',
       'The donation reaches the beneficiary the same day as they requested it for their immediate needs.',
       'Many potential donors hesitate in giving through traditional means as they would prefer a more immediate return of information on exactly who their money is going to.',
       'Dinasona trusts those in need to be most knowledgeable on their most urgent needs without having to have recourse to external actors or experts.',
