@@ -31,7 +31,7 @@ class LoginPage extends GetView<LoginController> {
             Container(
               width: double.infinity,
               padding: EdgeInsets.only(
-                top: getRelativeWidth(50),
+                top: getRelativeWidth(30),
                 bottom: getRelativeWidth(30),
               ),
               decoration: BoxDecoration(
@@ -58,8 +58,34 @@ class LoginPage extends GetView<LoginController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(
-                    height: getRelativeHeight(30),
+                  Center(
+                    child: Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: getRelativeHeight(10)),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: 'No account? '.tr,
+                          style:
+                              CustomTypography.fromColor(dinasonaTheme.shadowed)
+                                  .k16Reg,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Register now'.tr,
+                              style: CustomTypography.fromColor(
+                                dinasonaTheme.amberglow,
+                              ).k16Reg,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Get.to<void>(
+                                    SignupPage.new,
+                                  );
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                   Text(
                     'Hello again! 👋 '.tr,
@@ -75,9 +101,7 @@ class LoginPage extends GetView<LoginController> {
                     style: CustomTypography.fromColor(dinasonaTheme.shadowed)
                         .k16Reg,
                   ),
-                  SizedBox(
-                    height: getRelativeHeight(30),
-                  ),
+                  SizedBox(height: getRelativeHeight(30)),
                   Form(
                     child: Column(
                       children: <Widget>[

@@ -23,6 +23,7 @@ import 'pages/error/error_page.dart';
 import 'pages/login/donor_and_beneficiary/login_page.dart';
 import 'pages/root/beneficiary_root_page.dart';
 import 'pages/root/donor_root_page.dart';
+import 'pages/sign_up/donor_and_beneficiary/sign_up_page.dart';
 import 'service/auth_service.dart';
 import 'service/localization_controller.dart';
 import 'service/logger_service.dart';
@@ -147,7 +148,7 @@ void main() async {
     }
 
     final AuthService authService = Get.find<AuthService>();
-    Widget initialPage = const LoginPage();
+    Widget initialPage = isFirstRun ? const SignupPage() : const LoginPage();
 
     final AuthResponse response = await authService.silentLogin();
     if (response.success) {
