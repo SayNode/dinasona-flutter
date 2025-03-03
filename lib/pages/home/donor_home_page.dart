@@ -9,7 +9,6 @@ import '../../theme/typography.dart';
 import '../../util/util.dart';
 import '../../widgets/need_card.dart';
 import 'controllers/donor_home_page_controller.dart';
-import 'widgets/need_field_chip.dart';
 import 'widgets/select_need_fields_popup.dart';
 
 class DonorHomePage extends GetView<DonorHomePageController> {
@@ -143,53 +142,48 @@ class DonorHomePage extends GetView<DonorHomePageController> {
               padding: EdgeInsets.symmetric(horizontal: getRelativeWidth(20)),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Obx(
-                  () => Wrap(
-                    spacing: getRelativeWidth(5),
-                    runSpacing: getRelativeHeight(6),
-                    children: <Widget>[
-                      for (final AreaOfInterest field
-                          in controller.defaultAreasOfInterest)
-                        AreaOfInterestChip(field: field),
-                      SizedBox(
-                        height: getRelativeHeight(40),
-                        child: Material(
-                          color: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(128),
-                            side: BorderSide(
-                              color: theme.shadowed,
+                child: Wrap(
+                  spacing: getRelativeWidth(5),
+                  runSpacing: getRelativeHeight(6),
+                  children: <Widget>[
+                    SizedBox(
+                      height: getRelativeHeight(40),
+                      child: Material(
+                        color: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(128),
+                          side: BorderSide(
+                            color: theme.shadowed,
+                          ),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(128),
+                          onTap: () => controller.openExploreMore(
+                            child: SelectAreasOfInterestPopup(
+                              initialSelectedAreasOfInterest:
+                                  controller.defaultAreasOfInterest,
                             ),
                           ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(128),
-                            onTap: () => controller.openExploreMore(
-                              child: SelectAreasOfInterestPopup(
-                                initialSelectedAreasOfInterest:
-                                    controller.defaultAreasOfInterest,
-                              ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: getRelativeWidth(16),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: getRelativeWidth(16),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Explore more'.tr,
-                                    style: CustomTypography.fromColor(
-                                      theme.graphite,
-                                    ).k14Reg,
-                                  ),
-                                ],
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Filter needs'.tr,
+                                  style: CustomTypography.fromColor(
+                                    theme.graphite,
+                                  ).k14Reg,
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -213,7 +207,7 @@ class DonorHomePage extends GetView<DonorHomePageController> {
                         horizontal: getRelativeWidth(20),
                       ),
                       child: Text(
-                        'No matching results. Please modify your filters.'.tr,
+                        'No needs found. Please come back later.'.tr,
                       ),
                     )
                   : Container();

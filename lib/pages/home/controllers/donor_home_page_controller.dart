@@ -16,12 +16,21 @@ class DonorHomePageController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    // Default areas of interest - as per the Figma
+    // Default areas of interest - show all
     defaultAreasOfInterest.addAll(<AreaOfInterest>[
       AreaOfInterest.food,
       AreaOfInterest.water,
-      AreaOfInterest.bread,
+      AreaOfInterest.clothes,
+      AreaOfInterest.firewood,
       AreaOfInterest.babyhood,
+      AreaOfInterest.eggs,
+      AreaOfInterest.electricity,
+      AreaOfInterest.rice,
+      AreaOfInterest.corn,
+      AreaOfInterest.medicalSupplies,
+      AreaOfInterest.schoolSupplies,
+      AreaOfInterest.bread,
+      AreaOfInterest.milk,
     ]);
 
     // Get all needs for the areas of interest

@@ -34,7 +34,7 @@ class AboutPage extends StatelessWidget {
             const Gap(4),
             BulletPointWidget(
               text:
-                  "No costly overheads – transactions cost: only 1% fee, with a minimum of CHF 0.50 or 1'000 Satoshi"
+                  "No costly overheads – transactions cost: only 1% fee, with a minimum of CHF 0.50 or ~1'000 Satoshi"
                       .tr,
             ),
             const Gap(4),
@@ -63,7 +63,7 @@ class AboutPage extends StatelessWidget {
             const Gap(4),
             BulletPointWidget(
               text:
-                  'The donation reaches the benficiary the same day as they requested it for their immediate needs.'
+                  'The donation reaches the beneficiary the same day as they requested it for their immediate needs.'
                       .tr,
             ),
             const Gap(4),
@@ -101,7 +101,7 @@ class AboutPage extends StatelessWidget {
             const Gap(4),
             BulletPointWidget(
               text:
-                  "Donors select potential beneficiary requests to send them funds. The donor pays online including 1% fee, with a minimum of CHF 0.50 or 1'000 Satoshi for the cost of transferring the money."
+                  "Donors select potential beneficiary requests to send them funds. The donor pays online including 1% fee, with a minimum of CHF 0.50 or ~1'000 Satoshi for the cost of transferring the money."
                       .tr,
             ),
             const Gap(4),
@@ -131,7 +131,7 @@ class AboutPage extends StatelessWidget {
             const Gap(4),
             BulletPointWidget(
               text:
-                  " The donor then receives confirmation that the beneficiary has received the donation, including a breakdown of the 1% fee, with a minimum of CHF 0.50 or 1'000 Satoshi of transactional fees to deliver the donation."
+                  " The donor then receives confirmation that the beneficiary has received the donation, including a breakdown of the 1% fee, with a minimum of CHF 0.50 or ~1'000 Satoshi of transactional fees to deliver the donation."
                       .tr,
             ),
             const Gap(12),

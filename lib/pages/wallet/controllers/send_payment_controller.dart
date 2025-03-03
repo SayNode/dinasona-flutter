@@ -35,6 +35,7 @@ class SendPaymentController extends GetxController {
   late PrepareSendResponse preparedSayNodeTransaction;
   final RxBool feesCalculated = false.obs;
   final RxBool mainTransactionWentThrough = false.obs;
+  final RxBool isProcessingFees = false.obs;
 
   @override
   void onInit() {
@@ -43,19 +44,25 @@ class SendPaymentController extends GetxController {
   }
 
   Future<void> getFees() async {
+    isProcessingFees.value = true;
     feesCalculated.value = false;
     int tmpTransactionfee = 0;
 
     if (sendBTCPaymentError.value.isNotEmpty) {
+      isProcessingFees.value = false;
       return;
     }
     if (bolt11Invoice.value.isEmpty) {
       sendPaymentTransactionFee.value = 0;
       sendPaymentSayNodeFee.value = 0;
+      isProcessingFees.value = false;
       return;
     }
-    if (double.parse(invoiceAmountUserCurrency.value) >=
-        Get.find<WalletService>().balanceInUserCurrency.value) {
+
+    if (currencyConversionService
+            .xToSatoshi(double.parse(invoiceAmountBTC.value)) >=
+        await Get.find<WalletService>().breezService.getBalanceInSatoshis()) {
+      isProcessingFees.value = false;
       sendBTCPaymentError.value = 'Insufficient balance'.tr;
     }
     try {
@@ -66,7 +73,7 @@ class SendPaymentController extends GetxController {
       tmpTransactionfee = preparedMainTransation.feesSat.toInt();
       sendPaymentTransactionFee.value = tmpTransactionfee;
 
-      // SayNode fee calculation
+      // Payment processor fee calculation
       if (!Constants.devMode) {
         final double saynodeVariableFeeInUserCurrency =
             currencyConversionService.conversionRates.value.BTCvsUSR *
@@ -78,22 +85,29 @@ class SendPaymentController extends GetxController {
 
         final double breezMinimumTransactionAmountInCHF =
             currencyConversionService.conversionRates.value.USRvsCHF *
-                (currencyConversionService.conversionRates.value.BTCvsUSR *
-                    0.00001);
-
+                Get.find<BreezService>()
+                    .liquidSendReceiveLimitsInUserCurrency
+                    .send
+                    .minUserCurrency;
         if (saynodeVariableFeeInCHF >= 0.5 &&
             saynodeVariableFeeInCHF >= breezMinimumTransactionAmountInCHF) {
-          sendPaymentSayNodeFee.value =
-              ((double.parse(invoiceAmountBTC.value) * 100000000) * 0.01)
-                  .toInt();
+          sendPaymentSayNodeFee.value = (currencyConversionService
+                      .xToSatoshi(double.parse(invoiceAmountBTC.value)) *
+                  0.01)
+              .toInt();
         } else if (breezMinimumTransactionAmountInCHF >= 0.5) {
-          sendPaymentSayNodeFee.value = 1000;
-        } else {
-          // todo julien
           sendPaymentSayNodeFee.value = currencyConversionService.xToSatoshi(
             currencyConversionService.conversionRates.value.USRvsBTC *
-                (0.5 /
-                    currencyConversionService.conversionRates.value.USRvsCHF),
+                Get.find<BreezService>()
+                    .liquidSendReceiveLimitsInUserCurrency
+                    .send
+                    .minUserCurrency,
+          );
+        } else {
+          sendPaymentSayNodeFee.value = currencyConversionService.xToSatoshi(
+            currencyConversionService.conversionRates.value.USRvsBTC *
+                (currencyConversionService.conversionRates.value.CHFvsUSR *
+                    0.5),
           );
         }
 
@@ -114,7 +128,9 @@ class SendPaymentController extends GetxController {
       } else {
         sendPaymentTransactionFee.value = tmpTransactionfee;
       }
+      isProcessingFees.value = false;
     } catch (e) {
+      isProcessingFees.value = false;
       // Invalid invoice provided
       loggerService.log('Error getting invoice: $e');
       if (e.toString().contains('Invoice has expired')) {
@@ -130,6 +146,7 @@ class SendPaymentController extends GetxController {
       return;
     }
     feesCalculated.value = true;
+    isProcessingFees.value = false;
   }
 
   Future<Map<String, double>> getInvoiceAmount() async {

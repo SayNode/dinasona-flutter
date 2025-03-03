@@ -6,6 +6,8 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../model/need.dart';
+import '../../service/breez_service.dart';
+import '../../service/currency_conversion_service.dart';
 import '../../service/localization_controller.dart';
 import '../../service/theme_service.dart';
 import '../../theme/theme.dart';
@@ -152,7 +154,7 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
                 ),
                 Obx(
                   () => Text(
-                    '${controller.sendPaymentTransactionFee.value} sat${controller.sendPaymentTransactionFee.value == 1 ? '' : 's'}',
+                    '${controller.sendPaymentTransactionFee.value} Sat${controller.sendPaymentTransactionFee.value == 1 ? '' : 's'}',
                     style: CustomTypography.fromColor(theme.shadowed).k16Reg,
                   ),
                 ),
@@ -161,15 +163,20 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // TODO change to user currency
-                AutoSizeText(
-                  'SayNode Fee (1%, min CHF 0.50)'.tr,
-                  maxLines: 1,
-                  style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: context.width * 0.65,
+                  ),
+                  child: AutoSizeText(
+                    'Payment processor fee\n(1%, min CHF 0.50 or ${Get.find<CurrencyConversionService>().xToSatoshi(Get.find<CurrencyConversionService>().conversionRates.value.USRvsBTC * Get.find<BreezService>().liquidSendReceiveLimitsInUserCurrency.send.minUserCurrency)} Satoshi)'
+                        .tr,
+                    maxLines: 4,
+                    style: CustomTypography.fromColor(theme.shadowed).k16Reg,
+                  ),
                 ),
                 Obx(
                   () => Text(
-                    '${controller.sendPaymentSayNodeFee.value} sat${controller.sendPaymentSayNodeFee.value == 1 ? '' : 's'}',
+                    '${controller.sendPaymentSayNodeFee.value} Sat${controller.sendPaymentSayNodeFee.value == 1 ? '' : 's'}',
                     style: CustomTypography.fromColor(theme.shadowed).k16Reg,
                   ),
                 ),
@@ -234,6 +241,7 @@ class SendBitcoinPage extends GetView<SendPaymentController> {
                     controller.sendPaymentWithFee();
                   }
                 },
+                loading: controller.isProcessingFees.value,
                 locked: controller.bolt11Invoice.value == '' ||
                     controller.feesCalculated.value == false,
               ),
