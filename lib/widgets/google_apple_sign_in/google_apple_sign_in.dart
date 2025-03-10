@@ -10,13 +10,8 @@ import 'controllers/google_apple_sign_in_controller.dart';
 
 class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
   const GoogleAppleSignIn({
-    this.isBeneficiary = false,
-    this.isRegistration = false,
     super.key,
   });
-
-  final bool isBeneficiary;
-  final bool isRegistration;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +56,7 @@ class GoogleAppleSignIn extends GetView<GoogleAppleSignInController> {
         SizedBox(height: getRelativeHeight(10)),
         if (GetPlatform.isIOS)
           ElevatedButton(
-            onPressed: () =>
-                controller.appleSignInPressed(isBeneficiary, isRegistration),
+            onPressed: () => controller.appleSignInPressed(),
             style: ElevatedButton.styleFrom(
               backgroundColor: theme.moonstone,
               padding: EdgeInsets.all(getRelativeWidth(15)),
