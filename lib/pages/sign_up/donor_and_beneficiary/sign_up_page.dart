@@ -166,10 +166,7 @@ class SignupPage extends GetView<SignupController> {
                     ],
                   ),
                   SizedBox(height: getRelativeHeight(40)),
-                  const GoogleAppleSignIn(
-                    isBeneficiary: true,
-                    isRegistration: true,
-                  ),
+                  const GoogleAppleSignIn(),
                   Center(
                     child: Container(
                       margin:

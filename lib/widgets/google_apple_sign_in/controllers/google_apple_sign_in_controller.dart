@@ -46,9 +46,7 @@ class GoogleAppleSignInController {
     return error.value;
   }
 
-  Future<String> appleSignInPressed(
-    bool isBeneficiary,
-    bool isRegistration, {
+  Future<String> appleSignInPressed({
     String? authorizationCode,
     String? identityToken,
   }) async {
@@ -58,25 +56,17 @@ class GoogleAppleSignInController {
       authorizationCode: authorizationCode,
       identityToken: identityToken,
     );
+    final UserStateService userStateService = Get.find<UserStateService>();
     if (loginResult.success) {
-      if (isRegistration) {
-        await Get.find<UserStateService>().updateUserInfo(<String, dynamic>{
-          'is_donor': !isBeneficiary,
-        });
+      if (loginResult.result['is_signup'] as bool) {
+        unawaited(Get.to(() => const ChoosePathPage()));
+      } else {
+        if (userStateService.user.value.isDonor) {
+          unawaited(Get.to(() => const DonorRootPage()));
+        } else {
+          unawaited(Get.to(() => const BeneficiaryRootPage()));
+        }
       }
-
-      if (isBeneficiary) {
-        // Change this to a dynamic country code
-        await Get.find<UserStateService>().createBeneficiaryInstance();
-      }
-
-      unawaited(
-        Get.to(
-          () => Get.find<UserStateService>().user.value.isDonor
-              ? const DonorRootPage()
-              : const BeneficiaryRootPage(),
-        ),
-      );
     } else {
       if (loginResult.success == false) {
         Get.find<SignupController>().error.value = loginResult.message;
