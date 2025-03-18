@@ -8,7 +8,7 @@
 import 'package:get/get.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-import '../pages/lost_connection/lost_connection_page.dart';
+//import '../pages/lost_connection/lost_connection_page.dart';
 
 class ConnectivityBaseService extends GetxService {
   Rx<InternetStatus> connectionStatus = InternetStatus.disconnected.obs;
@@ -20,10 +20,10 @@ class ConnectivityBaseService extends GetxService {
           connectionStatus.value = status;
         case InternetStatus.disconnected:
           connectionStatus.value = status;
-          Get.to<void>(
+        /* Get.to<void>(
             () => const LostConnectionPage(),
             transition: Transition.cupertino,
-          );
+          ); */
       }
     });
 
